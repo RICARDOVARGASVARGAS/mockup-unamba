@@ -44,35 +44,67 @@
 
         <p data-events-empty class="mt-10 hidden text-text-muted">No hay eventos en esta categoría por el momento.</p>
 
-        <!-- Línea de tiempo -->
+        <!-- Línea de tiempo (los separadores de mes se insertan por JS, ver js/eventos.js) -->
         <ol data-events-timeline class="relative mt-10 flex flex-col gap-8 border-l-2 border-border pl-6 sm:pl-8">
           <li data-event-item data-date="2026-07-15" class="relative">
             <span class="absolute -left-[calc(1.5rem+5px)] top-1 h-3 w-3 rounded-full bg-primary ring-4 ring-bg sm:-left-[calc(2rem+5px)]" aria-hidden="true"></span>
-            <div class="flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 transition hover:border-primary hover:shadow-md sm:flex-row sm:items-center">
+            <div class="group flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 transition hover:border-primary hover:shadow-md sm:flex-row sm:items-center">
               <div class="flex w-16 shrink-0 flex-col items-center justify-center rounded-lg bg-primary py-2 text-onPrimary">
                 <span class="font-heading text-xl font-bold leading-none">15</span>
                 <span class="text-xs uppercase">Jul.</span>
               </div>
               <div class="min-w-0 flex-1">
-                <span class="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary">Institucional</span>
-                <h2 class="mt-2 font-heading text-lg font-semibold text-text">Semana de la Administración 2026</h2>
-                <p class="mt-1 text-sm text-text-muted">9:00 a.m. · Auditorio Principal</p>
+                <span class="inline-flex items-center rounded-full border-2 bg-bg px-2.5 py-1 text-xs font-semibold text-text" style="border-color:#0B3D91">Institucional</span>
+                <h2 class="mt-2 font-heading text-lg font-semibold text-text transition group-hover:text-primary">Semana de la Administración 2026</h2>
+                <p class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-text-muted">
+                  <span>9:00 a.m.</span>
+                  <span aria-hidden="true">·</span>
+                  <span>📍 Auditorio Principal</span>
+                  <span aria-hidden="true">·</span>
+                  <span>💻 También en vivo</span>
+                </p>
               </div>
-              <a href="#" class="shrink-0 text-sm font-semibold text-primary hover:text-primary-dark">Más información →</a>
+              <a href="evento-detalle.html" class="shrink-0 text-sm font-semibold text-primary hover:text-primary-dark">Más información →</a>
             </div>
           </li>
 
           <li data-event-item data-date="2026-07-22" class="relative">
             <span class="absolute -left-[calc(1.5rem+5px)] top-1 h-3 w-3 rounded-full bg-primary ring-4 ring-bg sm:-left-[calc(2rem+5px)]" aria-hidden="true"></span>
-            <div class="flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 transition hover:border-primary hover:shadow-md sm:flex-row sm:items-center">
+            <div class="group flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 transition hover:border-primary hover:shadow-md sm:flex-row sm:items-center">
               <div class="flex w-16 shrink-0 flex-col items-center justify-center rounded-lg bg-primary py-2 text-onPrimary">
                 <span class="font-heading text-xl font-bold leading-none">22</span>
                 <span class="text-xs uppercase">Jul.</span>
               </div>
               <div class="min-w-0 flex-1">
-                <span class="inline-flex items-center rounded-full bg-accent/20 px-2.5 py-1 text-xs font-semibold text-accent-dark">Académico</span>
-                <h2 class="mt-2 font-heading text-lg font-semibold text-text">Charla: Tendencias en Gestión Pública</h2>
-                <p class="mt-1 text-sm text-text-muted">4:00 p.m. · Sala de Grados</p>
+                <span class="inline-flex items-center rounded-full border-2 bg-bg px-2.5 py-1 text-xs font-semibold text-text" style="border-color:#F2B705">Académico</span>
+                <h2 class="mt-2 font-heading text-lg font-semibold text-text transition group-hover:text-primary">Charla: Tendencias en Gestión Pública</h2>
+                <p class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-text-muted">
+                  <span>4:00 p.m.</span>
+                  <span aria-hidden="true">·</span>
+                  <span>📍 Sala de Grados</span>
+                </p>
+              </div>
+              <a href="#" class="shrink-0 text-sm font-semibold text-primary hover:text-primary-dark">Más información →</a>
+            </div>
+          </li>
+
+          <li data-event-item data-date="2026-07-28" class="relative">
+            <span class="absolute -left-[calc(1.5rem+5px)] top-1 h-3 w-3 rounded-full bg-primary ring-4 ring-bg sm:-left-[calc(2rem+5px)]" aria-hidden="true"></span>
+            <div class="group flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 transition hover:border-primary hover:shadow-md sm:flex-row sm:items-center">
+              <div class="flex w-16 shrink-0 flex-col items-center justify-center rounded-lg bg-primary py-2 text-onPrimary">
+                <span class="font-heading text-xl font-bold leading-none">28</span>
+                <span class="text-xs uppercase">Jul.</span>
+              </div>
+              <div class="min-w-0 flex-1">
+                <span class="inline-flex items-center rounded-full border-2 bg-bg px-2.5 py-1 text-xs font-semibold text-text" style="border-color:#7C3AED">Servicios</span>
+                <h2 class="mt-2 font-heading text-lg font-semibold text-text transition group-hover:text-primary">Webinar: Trámites y servicios virtuales para estudiantes</h2>
+                <p class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-text-muted">
+                  <span>6:00 p.m.</span>
+                  <span aria-hidden="true">·</span>
+                  <span>💻 Modalidad virtual</span>
+                  <span aria-hidden="true">·</span>
+                  <span class="font-medium text-accent-dark">🎟️ Cupos limitados</span>
+                </p>
               </div>
               <a href="#" class="shrink-0 text-sm font-semibold text-primary hover:text-primary-dark">Más información →</a>
             </div>
@@ -80,47 +112,64 @@
 
           <li data-event-item data-date="2026-08-05" class="relative">
             <span class="absolute -left-[calc(1.5rem+5px)] top-1 h-3 w-3 rounded-full bg-primary ring-4 ring-bg sm:-left-[calc(2rem+5px)]" aria-hidden="true"></span>
-            <div class="flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 transition hover:border-primary hover:shadow-md sm:flex-row sm:items-center">
+            <div class="group flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 transition hover:border-primary hover:shadow-md sm:flex-row sm:items-center">
               <div class="flex w-16 shrink-0 flex-col items-center justify-center rounded-lg bg-primary py-2 text-onPrimary">
                 <span class="font-heading text-xl font-bold leading-none">05</span>
                 <span class="text-xs uppercase">Ago.</span>
               </div>
               <div class="min-w-0 flex-1">
-                <span class="inline-flex items-center rounded-full bg-surface-2 px-2.5 py-1 text-xs font-medium text-text">Servicios</span>
-                <h2 class="mt-2 font-heading text-lg font-semibold text-text">Feria Laboral y de Prácticas</h2>
-                <p class="mt-1 text-sm text-text-muted">9:00 a.m. – 2:00 p.m. · Patio Central</p>
+                <span class="inline-flex items-center rounded-full border-2 bg-bg px-2.5 py-1 text-xs font-semibold text-text" style="border-color:#7C3AED">Servicios</span>
+                <h2 class="mt-2 font-heading text-lg font-semibold text-text transition group-hover:text-primary">Feria Laboral y de Prácticas</h2>
+                <p class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-text-muted">
+                  <span>9:00 a.m. – 2:00 p.m.</span>
+                  <span aria-hidden="true">·</span>
+                  <span>📍 Patio Central</span>
+                  <span aria-hidden="true">·</span>
+                  <span class="font-medium text-accent-dark">🎟️ Cupos limitados</span>
+                </p>
               </div>
               <a href="#" class="shrink-0 text-sm font-semibold text-primary hover:text-primary-dark">Más información →</a>
             </div>
           </li>
 
-          <li data-event-item data-date="2026-08-20" class="relative">
-            <span class="absolute -left-[calc(1.5rem+5px)] top-1 h-3 w-3 rounded-full bg-primary ring-4 ring-bg sm:-left-[calc(2rem+5px)]" aria-hidden="true"></span>
-            <div class="flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 transition hover:border-primary hover:shadow-md sm:flex-row sm:items-center">
-              <div class="flex w-16 shrink-0 flex-col items-center justify-center rounded-lg bg-primary py-2 text-onPrimary">
+          <li data-event-item data-date="2026-08-20" data-estado="cancelado" class="relative">
+            <span class="absolute -left-[calc(1.5rem+5px)] top-1 h-3 w-3 rounded-full bg-text-muted ring-4 ring-bg sm:-left-[calc(2rem+5px)]" aria-hidden="true"></span>
+            <div class="flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 opacity-70 sm:flex-row sm:items-center">
+              <div class="flex w-16 shrink-0 flex-col items-center justify-center rounded-lg bg-surface-2 py-2 text-text-muted">
                 <span class="font-heading text-xl font-bold leading-none">20</span>
                 <span class="text-xs uppercase">Ago.</span>
               </div>
               <div class="min-w-0 flex-1">
-                <span class="inline-flex items-center rounded-full border border-border px-2.5 py-1 text-xs font-medium text-text-muted">Comunidad</span>
-                <h2 class="mt-2 font-heading text-lg font-semibold text-text">Conversatorio con egresados destacados</h2>
-                <p class="mt-1 text-sm text-text-muted">5:00 p.m. · Auditorio Principal</p>
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="inline-flex items-center rounded-full border-2 bg-bg px-2.5 py-1 text-xs font-semibold text-text" style="border-color:#6B7688">Comunidad</span>
+                  <span class="inline-flex items-center rounded-full bg-danger-bg px-2.5 py-1 text-xs font-semibold text-danger">Cancelado</span>
+                </div>
+                <h2 class="mt-2 font-heading text-lg font-semibold text-text-muted line-through">Conversatorio con egresados destacados</h2>
+                <p class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-text-muted">
+                  <span>5:00 p.m.</span>
+                  <span aria-hidden="true">·</span>
+                  <span>📍 Auditorio Principal</span>
+                </p>
               </div>
-              <a href="#" class="shrink-0 text-sm font-semibold text-primary hover:text-primary-dark">Más información →</a>
+              <span class="shrink-0 text-sm font-medium text-text-muted">Evento cancelado</span>
             </div>
           </li>
 
           <li data-event-item data-date="2026-06-10" class="relative">
             <span class="absolute -left-[calc(1.5rem+5px)] top-1 h-3 w-3 rounded-full bg-text-muted ring-4 ring-bg sm:-left-[calc(2rem+5px)]" aria-hidden="true"></span>
-            <div class="flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 opacity-80 transition hover:opacity-100 sm:flex-row sm:items-center">
+            <div class="group flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 opacity-80 transition hover:opacity-100 sm:flex-row sm:items-center">
               <div class="flex w-16 shrink-0 flex-col items-center justify-center rounded-lg bg-surface-2 py-2 text-text">
                 <span class="font-heading text-xl font-bold leading-none">10</span>
                 <span class="text-xs uppercase">Jun.</span>
               </div>
               <div class="min-w-0 flex-1">
-                <span class="inline-flex items-center rounded-full bg-accent/20 px-2.5 py-1 text-xs font-semibold text-accent-dark">Académico</span>
-                <h2 class="mt-2 font-heading text-lg font-semibold text-text">Seminario de Emprendimiento Universitario</h2>
-                <p class="mt-1 text-sm text-text-muted">10:00 a.m. · Sala de Grados</p>
+                <span class="inline-flex items-center rounded-full border-2 bg-bg px-2.5 py-1 text-xs font-semibold text-text" style="border-color:#F2B705">Académico</span>
+                <h2 class="mt-2 font-heading text-lg font-semibold text-text transition group-hover:text-primary">Seminario de Emprendimiento Universitario</h2>
+                <p class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-text-muted">
+                  <span>10:00 a.m.</span>
+                  <span aria-hidden="true">·</span>
+                  <span>📍 Sala de Grados</span>
+                </p>
               </div>
               <a href="#" class="shrink-0 text-sm font-semibold text-primary hover:text-primary-dark">Más información →</a>
             </div>
@@ -128,15 +177,19 @@
 
           <li data-event-item data-date="2026-05-28" class="relative">
             <span class="absolute -left-[calc(1.5rem+5px)] top-1 h-3 w-3 rounded-full bg-text-muted ring-4 ring-bg sm:-left-[calc(2rem+5px)]" aria-hidden="true"></span>
-            <div class="flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 opacity-80 transition hover:opacity-100 sm:flex-row sm:items-center">
+            <div class="group flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 opacity-80 transition hover:opacity-100 sm:flex-row sm:items-center">
               <div class="flex w-16 shrink-0 flex-col items-center justify-center rounded-lg bg-surface-2 py-2 text-text">
                 <span class="font-heading text-xl font-bold leading-none">28</span>
                 <span class="text-xs uppercase">May.</span>
               </div>
               <div class="min-w-0 flex-1">
-                <span class="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary">Institucional</span>
-                <h2 class="mt-2 font-heading text-lg font-semibold text-text">Aniversario de la Facultad</h2>
-                <p class="mt-1 text-sm text-text-muted">6:00 p.m. · Auditorio Principal</p>
+                <span class="inline-flex items-center rounded-full border-2 bg-bg px-2.5 py-1 text-xs font-semibold text-text" style="border-color:#0B3D91">Institucional</span>
+                <h2 class="mt-2 font-heading text-lg font-semibold text-text transition group-hover:text-primary">Aniversario de la Facultad</h2>
+                <p class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-text-muted">
+                  <span>6:00 p.m.</span>
+                  <span aria-hidden="true">·</span>
+                  <span>📍 Auditorio Principal</span>
+                </p>
               </div>
               <a href="#" class="shrink-0 text-sm font-semibold text-primary hover:text-primary-dark">Más información →</a>
             </div>
@@ -144,15 +197,19 @@
 
           <li data-event-item data-date="2026-05-12" class="relative">
             <span class="absolute -left-[calc(1.5rem+5px)] top-1 h-3 w-3 rounded-full bg-text-muted ring-4 ring-bg sm:-left-[calc(2rem+5px)]" aria-hidden="true"></span>
-            <div class="flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 opacity-80 transition hover:opacity-100 sm:flex-row sm:items-center">
+            <div class="group flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 opacity-80 transition hover:opacity-100 sm:flex-row sm:items-center">
               <div class="flex w-16 shrink-0 flex-col items-center justify-center rounded-lg bg-surface-2 py-2 text-text">
                 <span class="font-heading text-xl font-bold leading-none">12</span>
                 <span class="text-xs uppercase">May.</span>
               </div>
               <div class="min-w-0 flex-1">
-                <span class="inline-flex items-center rounded-full border border-border px-2.5 py-1 text-xs font-medium text-text-muted">Comunidad</span>
-                <h2 class="mt-2 font-heading text-lg font-semibold text-text">Torneo Deportivo Interfacultades</h2>
-                <p class="mt-1 text-sm text-text-muted">8:00 a.m. · Complejo Deportivo</p>
+                <span class="inline-flex items-center rounded-full border-2 bg-bg px-2.5 py-1 text-xs font-semibold text-text" style="border-color:#6B7688">Comunidad</span>
+                <h2 class="mt-2 font-heading text-lg font-semibold text-text transition group-hover:text-primary">Torneo Deportivo Interfacultades</h2>
+                <p class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-text-muted">
+                  <span>8:00 a.m.</span>
+                  <span aria-hidden="true">·</span>
+                  <span>📍 Complejo Deportivo</span>
+                </p>
               </div>
               <a href="#" class="shrink-0 text-sm font-semibold text-primary hover:text-primary-dark">Más información →</a>
             </div>

@@ -4,6 +4,8 @@
  * "Automática" de verdad: compara [data-date] (ISO) de cada evento contra
  * la fecha de hoy en el navegador, no una etiqueta puesta a mano. Corrige
  * el problema del sitio anterior ("presente año académico" sin fecha).
+ * También agrupa visualmente por mes (separadores insertados en cada
+ * render, ya que el grupo cambia según la pestaña activa).
  */
 (function () {
   const timeline = document.querySelector("[data-events-timeline]");
@@ -21,12 +23,37 @@
     item.dataset.status = eventDate >= today ? "proximo" : "pasado";
   });
 
+  function monthLabel(dateStr) {
+    const label = new Date(`${dateStr}T00:00:00`).toLocaleDateString("es-PE", {
+      month: "long",
+      year: "numeric",
+    });
+    return label.charAt(0).toUpperCase() + label.slice(1);
+  }
+
+  function clearDividers() {
+    timeline.querySelectorAll("[data-month-divider]").forEach((el) => el.remove());
+  }
+
   function render(status) {
+    clearDividers();
     let visibleCount = 0;
+    let lastMonthKey = null;
     items.forEach((item) => {
       const visible = item.dataset.status === status;
       item.classList.toggle("hidden", !visible);
-      if (visible) visibleCount += 1;
+      if (!visible) return;
+      visibleCount += 1;
+
+      const monthKey = item.dataset.date.slice(0, 7);
+      if (monthKey !== lastMonthKey) {
+        const divider = document.createElement("li");
+        divider.dataset.monthDivider = "";
+        divider.className = "pt-1 first:pt-0";
+        divider.innerHTML = `<p class="font-heading text-xs font-semibold uppercase tracking-wider text-text-muted">${monthLabel(item.dataset.date)}</p>`;
+        timeline.insertBefore(divider, item);
+        lastMonthKey = monthKey;
+      }
     });
     emptyState.classList.toggle("hidden", visibleCount > 0);
   }

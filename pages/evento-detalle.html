@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Semana de la Administración 2026 — Facultad de Administración UNAMBA (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <link rel="stylesheet" href="../css/base.css" />
+
+    <!-- Leaflet: mapa de ubicación (solo se usa si Lugar tiene coordenadas) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <site-header></site-header>
+
+    <main id="main-content" class="w-full">
+      <!-- Encabezado de sección -->
+      <section class="bg-primary text-onPrimary">
+        <div class="page-container py-10 sm:py-12">
+          <nav aria-label="Ruta de navegación" class="flex flex-wrap items-center gap-2 text-sm text-onPrimary/70">
+            <a href="../index.html" class="transition hover:text-accent">Inicio</a>
+            <span aria-hidden="true">/</span>
+            <a href="eventos.html" class="transition hover:text-accent">Eventos</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page" class="text-onPrimary">Semana de la Administración 2026</span>
+          </nav>
+
+          <span class="mt-4 inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-2.5 py-1 text-xs font-semibold text-onPrimary">
+            <span class="h-2 w-2 rounded-full ring-2 ring-white/50" style="background-color:#0B3D91" aria-hidden="true"></span>
+            Institucional
+          </span>
+          <h1 class="mt-3 max-w-3xl font-heading text-3xl font-bold sm:text-4xl">Semana de la Administración 2026</h1>
+          <div class="mt-2 flex flex-wrap items-center gap-2 text-sm text-onPrimary/70">
+            <span>Facultad de Administración</span>
+            <span aria-hidden="true">·</span>
+            <time>15 al 17 de julio de 2026</time>
+            <span aria-hidden="true">·</span>
+            <span>📍 Auditorio Principal</span>
+            <span aria-hidden="true">·</span>
+            <span>💻 También en vivo</span>
+          </div>
+        </div>
+      </section>
+
+      <article class="page-container py-10 sm:py-14">
+        <div class="grid gap-10 lg:grid-cols-3">
+          <!-- Columna principal -->
+          <div class="lg:col-span-2">
+            <!-- Imagen de portada -->
+            <figure class="relative aspect-video overflow-hidden rounded-xl shadow-sm">
+              <img
+                src="../assets/img/noticias/noticia-laboratorio-computo.jpg"
+                alt="Estudiantes y docentes reunidos en un auditorio durante una actividad institucional"
+                class="absolute inset-0 h-full w-full object-cover"
+                loading="lazy"
+              />
+            </figure>
+
+            <!-- Tarjeta de detalles: solo visible en móvil, antes del cuerpo -->
+            <div class="mt-6 lg:hidden">
+              <div data-event-info-card></div>
+            </div>
+
+            <!-- Compartir -->
+            <div class="mt-6 flex items-center justify-end gap-3 border-b border-border pb-5">
+              <div class="flex items-center gap-2">
+                <span class="text-sm text-text-muted">Compartir:</span>
+                <a href="#" aria-label="Compartir en Facebook" class="flex h-9 w-9 items-center justify-center rounded-full border border-border text-text-muted transition hover:border-primary hover:text-primary">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-7.5h2.5l.4-3H13.5V8.7c0-.87.24-1.46 1.5-1.46h1.6V4.56A21.6 21.6 0 0 0 14.3 4.4c-2.24 0-3.77 1.37-3.77 3.88v2.22H8v3h2.53V21h3Z" fill="currentColor" /></svg>
+                </a>
+                <a href="#" aria-label="Compartir en WhatsApp" class="flex h-9 w-9 items-center justify-center rounded-full border border-border text-text-muted transition hover:border-primary hover:text-primary">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.64-1.03-5.12-2.9-6.98A9.82 9.82 0 0 0 12.04 2Zm5.8 14.14c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.11.11-1.79-.11-.41-.13-.94-.3-1.62-.6-2.85-1.23-4.7-4.1-4.84-4.29-.14-.19-1.16-1.54-1.16-2.94s.73-2.09.99-2.38c.26-.28.56-.35.75-.35h.53c.17 0 .4-.03.62.47.24.55.8 1.9.87 2.04.07.14.11.3.02.49-.09.19-.14.3-.27.46-.14.16-.29.36-.41.48-.14.14-.28.29-.12.57.16.28.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.24 1.38.28.14.44.12.6-.07.16-.19.68-.79.87-1.06.19-.28.38-.23.63-.14.26.09 1.63.77 1.91.91.28.14.46.21.53.33.07.12.07.68-.17 1.36Z" fill="currentColor" /></svg>
+                </a>
+                <a href="#" aria-label="Copiar enlace" class="flex h-9 w-9 items-center justify-center rounded-full border border-border text-text-muted transition hover:border-primary hover:text-primary">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" /></svg>
+                </a>
+              </div>
+            </div>
+
+            <!--
+              Cuerpo del evento: misma clase `prose` que noticia-detalle.html.
+              Es la plantilla compartida por TODOS los eventos (Evento.descripcion):
+              títulos, párrafos, listas e imágenes quedan con buen estilo sin
+              clases por elemento. Solo cambia el contenido.
+            -->
+            <div class="prose prose-lg mt-8 max-w-none">
+              <p class="lead">
+                La Facultad de Administración invita a toda la comunidad universitaria a la Semana de la
+                Administración 2026, tres días de conferencias, talleres y actividades culturales pensadas
+                para estudiantes, docentes y egresados.
+              </p>
+
+              <h2>Programa</h2>
+              <ul>
+                <li><strong>Día 1 — 15 de julio:</strong> Conferencia inaugural "El futuro de la gestión pública y privada en el Perú"</li>
+                <li><strong>Día 2 — 16 de julio:</strong> Talleres simultáneos de finanzas, marketing digital y liderazgo</li>
+                <li><strong>Día 3 — 17 de julio:</strong> Feria de proyectos estudiantiles y clausura</li>
+              </ul>
+              <p>Todas las actividades son de ingreso libre para estudiantes de la facultad, previa inscripción por los canales oficiales.</p>
+
+              <blockquote>
+                <p>Esta semana es la oportunidad de mostrar todo el talento que se forma dentro de la facultad, dentro y fuera del aula.</p>
+              </blockquote>
+              <p class="!mt-2 text-sm text-text-muted">— Decanato de la Facultad de Administración</p>
+
+              <h2>Recomendaciones para asistentes</h2>
+              <p>Se recomienda llegar con 15 minutos de anticipación a cada actividad. El aforo del Auditorio Principal es limitado y el ingreso se realiza por orden de llegada.</p>
+            </div>
+
+            <!--
+              Cómo llegar: solo se muestra si Lugar tiene latitud/longitud
+              (mapa) — si el evento fuera 100% virtual, o el Lugar no tuviera
+              coordenadas cargadas, esta sección completa no existiría.
+              Una sola instancia del mapa (no se clona junto a la tarjeta de
+              detalles) para evitar el bug clásico de Leaflet dentro de un
+              contenedor que se oculta por CSS.
+            -->
+            <section class="mt-10 border-t border-border pt-8">
+              <h2 class="font-heading text-lg font-semibold text-text">Cómo llegar</h2>
+              <p class="mt-1 text-sm text-text-muted">Auditorio Principal — Campus UNAMBA, Tamburco, Abancay.</p>
+              <div
+                id="event-map"
+                class="mt-4 h-72 w-full overflow-hidden rounded-xl border border-border sm:h-96"
+                role="img"
+                aria-label="Mapa de ubicación del Auditorio Principal en el campus de UNAMBA"
+              ></div>
+            </section>
+
+            <a href="eventos.html" class="mt-8 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:text-primary-dark">
+              ← Volver a Eventos
+            </a>
+          </div>
+
+          <!-- Tarjeta de detalles: sticky en escritorio -->
+          <aside class="hidden lg:col-span-1 lg:block">
+            <div class="sticky top-24" data-event-info-card></div>
+          </aside>
+        </div>
+      </article>
+
+      <!--
+        Plantilla de la tarjeta de detalles (se clona en ambas posiciones vía JS).
+        Los botones de abajo son enlaces directos a `Evento.url_inscripcion` y
+        `Evento.enlace_virtual` — no hay login en el sitio público, así que no
+        existe ninguna acción de servidor posible aquí. Cada botón solo se
+        muestra si ese campo tiene valor: pueden aparecer los dos, uno solo, o
+        ninguno. Este evento es híbrido y sí tiene ambos campos cargados, por
+        eso se ven los dos botones.
+      -->
+      <template id="event-info-card-template">
+        <div class="rounded-xl border border-border bg-surface p-5 shadow-sm">
+          <h2 class="font-heading text-base font-semibold text-text">Detalles del evento</h2>
+          <dl class="mt-4 flex flex-col gap-4 text-sm">
+            <div class="flex items-start gap-3">
+              <span aria-hidden="true">📅</span>
+              <div>
+                <dt class="font-medium text-text">Fecha</dt>
+                <dd class="text-text-muted">15 al 17 de julio de 2026</dd>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span aria-hidden="true">🕐</span>
+              <div>
+                <dt class="font-medium text-text">Hora</dt>
+                <dd class="text-text-muted">9:00 a.m. – 1:00 p.m. (cada día)</dd>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span aria-hidden="true">🔀</span>
+              <div>
+                <dt class="font-medium text-text">Modalidad</dt>
+                <dd class="text-text-muted">Híbrida — presencial y en vivo</dd>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span aria-hidden="true">📍</span>
+              <div>
+                <dt class="font-medium text-text">Lugar</dt>
+                <dd class="text-text-muted">Auditorio Principal, campus UNAMBA</dd>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span aria-hidden="true">👥</span>
+              <div>
+                <dt class="font-medium text-text">Cupo</dt>
+                <dd class="text-text-muted">150 personas por día</dd>
+              </div>
+            </div>
+          </dl>
+          <!-- Presente porque Evento.url_inscripcion tiene valor -->
+          <a href="#" target="_blank" rel="noopener" class="mt-5 flex w-full items-center justify-center rounded-md bg-accent px-5 py-3 text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">
+            Inscribirme
+          </a>
+          <!-- Presente porque Evento.enlace_virtual tiene valor -->
+          <a href="#" target="_blank" rel="noopener" class="mt-2 flex w-full items-center justify-center rounded-md border border-border px-5 py-3 text-sm font-semibold text-text transition hover:border-primary hover:text-primary">
+            💻 Unirme a la videollamada
+          </a>
+        </div>
+      </template>
+
+      <!-- Más eventos -->
+      <section class="border-t border-border bg-surface py-12 sm:py-14">
+        <div class="page-container">
+          <h2 class="font-heading text-xl font-semibold text-text">Más eventos</h2>
+
+          <div class="mt-6 grid gap-6 sm:grid-cols-3">
+            <article class="group overflow-hidden rounded-lg border-y border-r border-l-4 border-border bg-bg shadow-sm transition hover:shadow-md" style="border-left-color:#F2B705">
+              <div class="p-4">
+                <time class="text-xs text-text-muted">22 jul. 2026</time>
+                <h3 class="mt-1 font-heading text-sm font-semibold text-text transition group-hover:text-primary">Charla: Tendencias en Gestión Pública</h3>
+                <a href="eventos.html" class="mt-2 inline-block text-sm font-semibold text-primary hover:text-primary-dark">Más información →</a>
+              </div>
+            </article>
+
+            <article class="group overflow-hidden rounded-lg border-y border-r border-l-4 border-border bg-bg shadow-sm transition hover:shadow-md" style="border-left-color:#7C3AED">
+              <div class="p-4">
+                <time class="text-xs text-text-muted">28 jul. 2026</time>
+                <h3 class="mt-1 font-heading text-sm font-semibold text-text transition group-hover:text-primary">Webinar: Trámites y servicios virtuales para estudiantes</h3>
+                <a href="eventos.html" class="mt-2 inline-block text-sm font-semibold text-primary hover:text-primary-dark">Más información →</a>
+              </div>
+            </article>
+
+            <article class="group overflow-hidden rounded-lg border-y border-r border-l-4 border-border bg-bg shadow-sm transition hover:shadow-md" style="border-left-color:#7C3AED">
+              <div class="p-4">
+                <time class="text-xs text-text-muted">05 ago. 2026</time>
+                <h3 class="mt-1 font-heading text-sm font-semibold text-text transition group-hover:text-primary">Feria Laboral y de Prácticas</h3>
+                <a href="eventos.html" class="mt-2 inline-block text-sm font-semibold text-primary hover:text-primary-dark">Más información →</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <site-footer></site-footer>
+    <chatbot-widget></chatbot-widget>
+    <color-picker-tool></color-picker-tool>
+
+    <script src="../js/theme.js"></script>
+    <script src="../js/site-paths.js"></script>
+    <script src="../components/header.js"></script>
+    <script src="../components/footer.js"></script>
+    <script src="../components/chatbot-widget.js"></script>
+    <script src="../components/color-picker.js"></script>
+    <script>
+      // Clona la tarjeta de detalles del evento en sus dos posiciones
+      // (móvil, antes del cuerpo; escritorio, columna lateral sticky).
+      // Una sola plantilla evita mantener el mismo bloque duplicado a mano.
+      document.querySelectorAll("[data-event-info-card]").forEach((slot) => {
+        const template = document.getElementById("event-info-card-template");
+        slot.appendChild(template.content.cloneNode(true));
+      });
+    </script>
+
+    <!-- Leaflet: coordenadas reales del campus UNAMBA (Tamburco, Abancay).
+         Es un pin a nivel de campus, no la posición exacta del Auditorio
+         (esa precisión no es pública); suficiente para un mockup de diseño. -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+      const mapEl = document.getElementById("event-map");
+      if (mapEl) {
+        const coords = [-13.6169, -72.8681];
+        const map = L.map(mapEl, { scrollWheelZoom: false }).setView(coords, 16);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+          maxZoom: 19,
+        }).addTo(map);
+        L.marker(coords).addTo(map).bindPopup("Auditorio Principal — Campus UNAMBA");
+      }
+    </script>
+  </body>
+</html>
