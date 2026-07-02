@@ -1,0 +1,120 @@
+/*
+ * tokens.css — Design tokens del mockup (ver docs/PALETA.md)
+ *
+ * Única fuente de verdad para color, tipografía, radios, sombras y
+ * espaciado. Nada de valores hardcodeados fuera de este archivo:
+ * componentes y páginas solo referencian estas variables por nombre.
+ *
+ * Tema claro/oscuro: misma lista de variables, valores distintos según
+ * [data-theme]. El picker (solo herramienta de mockup) reescribe en vivo
+ * --color-primary y --color-accent con JS; el resto no lo toca.
+ */
+
+:root,
+[data-theme="light"] {
+  /* 1. Colores de marca (provisionales, ver PALETA.md §1) */
+  --color-primary: #0b3d91;
+  --color-primary-dark: #082c6b;
+  --color-primary-light: #3b63b0;
+  --color-accent: #f2b705;
+  --color-accent-dark: #c99503;
+
+  /* 2. Tema claro (PALETA.md §2) */
+  --color-bg: #ffffff;
+  --color-surface: #f5f7fa;
+  --color-surface-2: #ebeef3;
+  --color-text: #1a1f2b;
+  --color-text-muted: #5b6472;
+  --color-border: #d9dee6;
+
+  /* 4. Colores de estado — fijos, no los toca el picker ni el tema (PALETA.md §4) */
+  --color-success: #1b873f;
+  --color-danger: #d02f2f;
+  --color-warning: #e08600;
+  --color-info: #1d6fb8;
+
+  /* Versión de fondo suave (10-15% opacidad) para banners y avisos.
+     Se calcula mezclando con --color-bg para que se adapte sola al tema. */
+  --color-success-bg: color-mix(in srgb, var(--color-success) 12%, var(--color-bg));
+  --color-danger-bg: color-mix(in srgb, var(--color-danger) 12%, var(--color-bg));
+  --color-warning-bg: color-mix(in srgb, var(--color-warning) 12%, var(--color-bg));
+  --color-info-bg: color-mix(in srgb, var(--color-info) 12%, var(--color-bg));
+
+  /* 5. Escala de grises (PALETA.md §5) */
+  --gray-50: #f7f9fc;
+  --gray-100: #edf1f6;
+  --gray-200: #d9dee6;
+  --gray-300: #bac2ce;
+  --gray-400: #95a0b0;
+  --gray-500: #6b7688;
+  --gray-600: #4d5666;
+  --gray-700: #38404e;
+  --gray-800: #252c38;
+  --gray-900: #151a22;
+
+  /* 6. Tipografía (PALETA.md §6) */
+  --font-heading: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --text-xs: 0.75rem; /* 12px */
+  --text-sm: 0.875rem; /* 14px */
+  --text-base: 1rem; /* 16px */
+  --text-lg: 1.125rem; /* 18px */
+  --text-xl: 1.25rem; /* 20px */
+  --text-2xl: 1.5rem; /* 24px */
+  --text-3xl: 1.875rem; /* 30px */
+  --text-4xl: 2.25rem; /* 36px */
+
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+  --leading-heading: 1.2;
+  --leading-body: 1.5;
+
+  /* 7. Radios (PALETA.md §7) */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* 8. Sombras (PALETA.md §8) — sutiles en claro, se atenúan en oscuro */
+  --shadow-sm: 0 1px 2px 0 rgb(15 20 28 / 0.06);
+  --shadow-md: 0 4px 10px -2px rgb(15 20 28 / 0.1);
+  --shadow-lg: 0 12px 24px -4px rgb(15 20 28 / 0.14);
+
+  /* 9. Escala de espaciado (PALETA.md §9)
+     Coincide 1:1 con la escala por defecto de Tailwind (space-4 = p-4, etc.),
+     se listan igual para poder usarlas fuera de clases de Tailwind. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+}
+
+/* 3. Tema oscuro (PALETA.md §3)
+   Solo se redefinen los roles que cambian de valor entre temas.
+   Estado, grises, radios, sombras (base) y las variantes -dark/-light de
+   marca no están definidas por PALETA.md para modo oscuro, así que se
+   mantienen igual entre temas por ahora. */
+[data-theme="dark"] {
+  --color-bg: #0f141c;
+  --color-surface: #1a2130;
+  --color-surface-2: #232c3d;
+  --color-text: #e7ecf3;
+  --color-text-muted: #9aa4b4;
+  --color-border: #2c3648;
+
+  --color-primary: #4c7be0;
+  --color-accent: #ffc933;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 10px -2px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 12px 24px -4px rgb(0 0 0 / 0.5);
+}

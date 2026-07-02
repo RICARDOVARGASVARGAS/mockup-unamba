@@ -1,0 +1,33 @@
+/*
+ * base.css — estilos base mínimos que no son utilidades de Tailwind.
+ * Se carga como <link> normal, después de tokens.css y del CDN de
+ * Tailwind. No define colores ni tamaños propios: todo sale de las
+ * variables de tokens.css.
+ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  line-height: var(--leading-body);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  line-height: var(--leading-heading);
+}
+
+/* Foco visible consistente para navegación por teclado (accesibilidad) */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}

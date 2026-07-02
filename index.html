@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <!-- Metadatos base -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Facultad de Administración — UNAMBA (Mockup)</title>
+
+    <!-- Tipografía: Poppins (títulos) e Inter (cuerpo), ver css/tokens.css -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tokens de diseño (única fuente de verdad de color/tipografía/etc.) -->
+    <link rel="stylesheet" href="./css/tokens.css" />
+    <link rel="stylesheet" href="./css/base.css" />
+
+    <!-- Tailwind vía CDN: sin build, para abrir el archivo directo o con Live Server -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="./js/tailwind-config.js"></script>
+  </head>
+  <body class="bg-bg text-text font-body antialiased">
+    <!--
+      Página base de fundación: aún no es una maqueta de Inicio.
+      Sirve para confirmar que Tailwind, los tokens de color/tipografía
+      y el mecanismo de tema claro/oscuro funcionan antes de maquetar
+      páginas reales (ver docs/ESPECIFICACION.md).
+    -->
+    <main class="flex min-h-screen flex-col items-center justify-center gap-6 p-8 text-center">
+      <h1 class="font-heading text-3xl font-semibold text-primary">
+        Facultad de Administración UNAMBA
+      </h1>
+      <p class="max-w-md text-text-muted">
+        Fundación del mockup lista: estructura de carpetas, Tailwind y
+        tokens de diseño. Las páginas se maquetan en los siguientes pasos.
+      </p>
+
+      <button
+        type="button"
+        data-theme-toggle
+        class="rounded-md bg-primary px-6 py-3 font-medium text-white shadow-md transition hover:bg-primary-dark"
+      >
+        Cambiar a modo oscuro
+      </button>
+    </main>
+
+    <script src="./js/theme.js"></script>
+  </body>
+</html>
