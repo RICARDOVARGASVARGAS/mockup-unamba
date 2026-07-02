@@ -1,0 +1,49 @@
+---
+description: Componentes reutilizables, inyección JS y rutas relativas
+globs: components/**,js/**
+alwaysApply: false
+---
+
+# Componentes reutilizables
+
+Header, footer, chatbot y tarjetas se definen **una sola vez** en `/components/`.
+Las páginas solo declaran la etiqueta custom + el script.
+
+```html
+<!-- En cada página -->
+<site-header></site-header>
+<main>...</main>
+<site-footer></site-footer>
+<chatbot-widget></chatbot-widget>
+
+<script src="./js/site-paths.js"></script>
+<script src="./components/header.js"></script>
+<script src="./components/footer.js"></script>
+<script src="./components/chatbot-widget.js"></script>
+```
+
+Desde `/pages/`, ajustar rutas con `../` (ej. `../js/site-paths.js`).
+
+## Rutas relativas (file://)
+Usar `getBasePath()` de `js/site-paths.js` para enlaces internos.
+**Nunca** rutas absolutas `/pages/...` — fallan con `file://`.
+
+```js
+const base = getBasePath();
+link.href = `${base}pages/noticias.html`;
+```
+
+## Custom elements
+Cada componente registra su etiqueta (`<site-header>`, `<chatbot-widget>`) con `customElements.define`.
+El menú de navegación vive en `components/header.js` según `docs/ESPECIFICACION.md`.
+
+## Separación de responsabilidades
+| Capa | Ubicación |
+|------|-----------|
+| Estructura HTML | `components/*.js` (template) o `pages/*.html` |
+| Tokens/estilos | `css/tokens.css`, `css/base.css` |
+| Comportamiento | `js/theme.js`, lógica en cada componente |
+
+## Scripts globales por página
+Orden en `<head>`: `tokens.css` → `base.css` → Tailwind CDN → `tailwind-config.js`
+Al final del `<body>`: `site-paths.js` → componentes → `theme.js`

@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <!-- Metadatos base -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Facultad de Administración — UNAMBA (Mockup)</title>
 
-    <!-- Tipografía: Poppins (títulos) e Inter (cuerpo), ver css/tokens.css -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -14,39 +12,142 @@
       rel="stylesheet"
     />
 
-    <!-- Tokens de diseño (única fuente de verdad de color/tipografía/etc.) -->
     <link rel="stylesheet" href="./css/tokens.css" />
     <link rel="stylesheet" href="./css/base.css" />
 
-    <!-- Tailwind vía CDN: sin build, para abrir el archivo directo o con Live Server -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="./js/tailwind-config.js"></script>
   </head>
-  <body class="bg-bg text-text font-body antialiased">
-    <!--
-      Página base de fundación: aún no es una maqueta de Inicio.
-      Sirve para confirmar que Tailwind, los tokens de color/tipografía
-      y el mecanismo de tema claro/oscuro funcionan antes de maquetar
-      páginas reales (ver docs/ESPECIFICACION.md).
-    -->
-    <main class="flex min-h-screen flex-col items-center justify-center gap-6 p-8 text-center">
-      <h1 class="font-heading text-3xl font-semibold text-primary">
-        Facultad de Administración UNAMBA
-      </h1>
-      <p class="max-w-md text-text-muted">
-        Fundación del mockup lista: estructura de carpetas, Tailwind y
-        tokens de diseño. Las páginas se maquetan en los siguientes pasos.
-      </p>
+  <body class="w-full bg-bg text-text font-body antialiased">
+  <!--
+    Demo de componentes globales reutilizables.
+    Cada página del mockup repite solo las etiquetas + scripts (ver abajo).
+    La maqueta de Inicio se construye en el siguiente paso.
+  -->
 
-      <button
-        type="button"
-        data-theme-toggle
-        class="rounded-md bg-primary px-6 py-3 font-medium text-white shadow-md transition hover:bg-primary-dark"
-      >
-        Cambiar a modo oscuro
-      </button>
-    </main>
+  <site-header></site-header>
 
-    <script src="./js/theme.js"></script>
+  <main id="main-content" class="w-full">
+    <!-- Hero de demostración -->
+    <section class="w-full border-b border-border bg-surface">
+      <div class="page-container py-16">
+        <div class="mx-auto max-w-2xl text-center">
+          <span class="inline-block rounded-full border border-accent bg-surface px-3 py-1 text-xs font-medium text-text">
+            Mockup de diseño
+          </span>
+          <h1 class="mt-4 font-heading text-3xl font-bold text-text sm:text-4xl">
+            Componentes globales listos
+          </h1>
+          <p class="mt-4 text-text-muted">
+            Header, footer, chatbot y picker de colores definidos una sola vez
+            y reutilizables en todas las páginas. Prueba el menú en móvil, el
+            tema claro/oscuro y el asistente virtual.
+          </p>
+          <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <a
+              href="#reutilizacion"
+              class="rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-white transition hover:bg-primary-dark"
+            >
+              Cómo reutilizar
+            </a>
+            <span class="rounded-md border border-accent bg-surface px-5 py-2.5 text-sm font-medium text-text">
+              Acento amarillo
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vista previa de tarjetas (patrón visual futuro) -->
+    <section class="page-container py-12">
+      <h2 class="font-heading text-2xl font-semibold text-text">Vista previa de estilos</h2>
+      <p class="mt-2 text-text-muted">Tokens de color, tipografía y componentes en acción.</p>
+
+      <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <article class="overflow-hidden rounded-lg border border-border bg-surface shadow-sm">
+          <div class="flex h-40 items-center justify-center bg-surface-2 text-sm text-text-muted">
+            [PLACEHOLDER: imagen noticia]
+          </div>
+          <div class="p-4">
+            <time class="text-xs text-text-muted">2 jul. 2026</time>
+            <h3 class="mt-1 font-heading text-base font-semibold text-text">
+              Ejemplo de tarjeta de noticia
+            </h3>
+            <p class="mt-2 text-sm text-text-muted">
+              Patrón reutilizable para noticias, eventos y listados.
+            </p>
+          </div>
+        </article>
+
+        <article class="overflow-hidden rounded-lg border border-border bg-surface shadow-sm">
+          <div class="flex h-40 items-center justify-center bg-surface-2 text-sm text-text-muted">
+            [PLACEHOLDER: imagen evento]
+          </div>
+          <div class="p-4">
+            <time class="text-xs text-text-muted">15 ago. 2026 · 10:00 a.m.</time>
+            <h3 class="mt-1 font-heading text-base font-semibold text-text">
+              Ejemplo de tarjeta de evento
+            </h3>
+            <p class="mt-2 text-sm text-text-muted">
+              Con fecha y hora concretas, no texto genérico.
+            </p>
+          </div>
+        </article>
+
+        <article class="overflow-hidden rounded-lg border border-border bg-surface shadow-sm sm:col-span-2 lg:col-span-1">
+          <div class="flex h-40 items-center justify-center bg-surface-2 text-sm text-primary">
+            Chatbot IA flotante →
+          </div>
+          <div class="p-4">
+            <h3 class="font-heading text-base font-semibold text-text">
+              Asistente virtual
+            </h3>
+            <p class="mt-2 text-sm text-text-muted">
+              Botón azul abajo a la derecha. Abre el panel de chat (visual, sin IA real).
+            </p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Instrucciones de reutilización -->
+    <section id="reutilizacion" class="w-full border-t border-border bg-surface">
+      <div class="page-container py-12">
+        <h2 class="font-heading text-2xl font-semibold text-text">Cómo reutilizar en cada página</h2>
+        <p class="mt-2 max-w-3xl text-text-muted">
+          Copia las etiquetas y scripts. Desde <code class="rounded bg-surface-2 px-1.5 py-0.5 text-sm">/pages/</code>
+          cambia las rutas a <code class="rounded bg-surface-2 px-1.5 py-0.5 text-sm">../</code>.
+        </p>
+
+        <pre class="mt-6 overflow-x-auto rounded-lg border border-border bg-bg p-4 text-left text-xs leading-relaxed text-text sm:text-sm"><code>&lt;site-header&gt;&lt;/site-header&gt;
+
+&lt;main id="main-content"&gt;
+  &lt;!-- contenido de la página --&gt;
+&lt;/main&gt;
+
+&lt;site-footer&gt;&lt;/site-footer&gt;
+&lt;chatbot-widget&gt;&lt;/chatbot-widget&gt;
+&lt;color-picker-tool&gt;&lt;/color-picker-tool&gt;
+
+&lt;script src="./js/site-paths.js"&gt;&lt;/script&gt;
+&lt;script src="./components/header.js"&gt;&lt;/script&gt;
+&lt;script src="./components/footer.js"&gt;&lt;/script&gt;
+&lt;script src="./components/chatbot-widget.js"&gt;&lt;/script&gt;
+&lt;script src="./components/color-picker.js"&gt;&lt;/script&gt;
+&lt;script src="./js/theme.js"&gt;&lt;/script&gt;</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <site-footer></site-footer>
+  <chatbot-widget></chatbot-widget>
+  <color-picker-tool></color-picker-tool>
+
+  <script src="./js/site-paths.js"></script>
+  <script src="./components/header.js"></script>
+  <script src="./components/footer.js"></script>
+  <script src="./components/chatbot-widget.js"></script>
+  <script src="./components/color-picker.js"></script>
+  <script src="./js/theme.js"></script>
   </body>
 </html>

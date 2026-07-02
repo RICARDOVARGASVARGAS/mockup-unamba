@@ -1,0 +1,51 @@
+---
+description: Páginas a maquetar, menú, alcance del mockup y contenido
+globs: pages/**,index.html
+alwaysApply: false
+---
+
+# Páginas del mockup
+
+Referencia completa: `docs/ESPECIFICACION.md`.
+
+## Alcance
+Maquetar el **sitio público** con datos de ejemplo. Panel admin (Parte 2) y módulos técnicos (Parte 3) quedan fuera salvo indicación explícita.
+
+## Prioridad sugerida (mayor impacto demo)
+1. Inicio (`index.html`)
+2. Noticias + detalle
+3. Eventos + detalle
+4. Comunicados
+5. Docentes (con foto y nombre — corrige el sitio actual)
+6. Documentos
+7. Widget chatbot IA (visual, no funcional)
+
+El resto sigue el mismo patrón visual.
+
+## Páginas públicas (19 + legales)
+`nosotros`, `autoridades`, `docentes`, `academico`, `noticias`, `eventos`, `comunicados`, `bolsa-trabajo`, `documentos`, `galeria`, `posgrado`, `investigacion`, `estudiantes`, `tramites`, `encuestas`, `convenios`, `faq`, `contacto`, `privacidad`, `terminos`
+
+## Componentes globales (todas las páginas)
+Header, footer, chatbot flotante, selector tema claro/oscuro, botón "ir arriba".
+
+## Contenido
+- Usar datos reales de la especificación cuando existan
+- Si falta dato: `[PLACEHOLDER: descripción breve]`
+- Las marcas [BD], [SIS], [EXT] indican qué será dinámico en el sistema final; en el mockup se simulan con datos estáticos
+
+## Plantilla mínima de página nueva
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- meta, fonts, tokens.css, base.css, tailwind CDN, tailwind-config.js -->
+</head>
+<body class="bg-bg text-text font-body antialiased">
+  <site-header></site-header>
+  <main><!-- secciones comentadas --></main>
+  <site-footer></site-footer>
+  <chatbot-widget></chatbot-widget>
+  <!-- scripts: site-paths, componentes, theme -->
+</body>
+</html>
+```

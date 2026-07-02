@@ -62,7 +62,7 @@ function renderDesktopItem(item, base) {
   if (item.children) {
     return `
       <details class="group relative">
-        <summary class="flex cursor-pointer list-none items-center gap-1 rounded-md px-2.5 py-2 text-sm font-medium text-text transition hover:bg-surface-2 hover:text-primary [&::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer list-none items-center gap-0.5 whitespace-nowrap rounded-md px-1.5 py-2 text-xs font-medium text-text transition hover:bg-surface-2 hover:text-primary 2xl:gap-1 2xl:px-2.5 2xl:text-sm [&::-webkit-details-marker]:hidden">
           ${item.label}
           ${icon("chevron", "h-3.5 w-3.5 text-text-muted transition-transform duration-200 group-open:rotate-180")}
         </summary>
@@ -78,7 +78,7 @@ function renderDesktopItem(item, base) {
         </ul>
       </details>`;
   }
-  return `<a href="${base}${item.href}" class="rounded-md px-2.5 py-2 text-sm font-medium text-text transition hover:bg-surface-2 hover:text-primary">${item.label}</a>`;
+  return `<a href="${base}${item.href}" class="whitespace-nowrap rounded-md px-1.5 py-2 text-xs font-medium text-text transition hover:bg-surface-2 hover:text-primary 2xl:px-2.5 2xl:text-sm">${item.label}</a>`;
 }
 
 function renderMobileItem(item, base) {
@@ -110,21 +110,21 @@ class SiteHeader extends HTMLElement {
       <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-white">
         Saltar al contenido
       </a>
-      <header class="sticky top-0 z-30 border-b border-border bg-bg">
-        <div class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+      <header class="sticky top-0 z-30 w-full border-b border-border bg-bg">
+        <div class="page-container flex h-16 items-center gap-3 xl:gap-4">
           <a href="${base}index.html" class="flex shrink-0 items-center gap-2" aria-label="Ir a inicio">
             <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary font-heading text-sm font-bold text-white">FA</span>
-            <span class="hidden flex-col leading-tight sm:flex">
+            <span class="hidden flex-col leading-tight md:flex xl:hidden 2xl:flex">
               <span class="font-heading text-sm font-semibold text-text">Facultad de Administración</span>
               <span class="text-xs text-text-muted">UNAMBA</span>
             </span>
           </a>
 
-          <nav aria-label="Menú principal" class="hidden items-center gap-1 lg:flex">
+          <nav aria-label="Menú principal" class="hidden min-w-0 flex-1 items-center justify-center gap-0.5 xl:flex 2xl:gap-1">
             ${NAV_ITEMS.map((item) => renderDesktopItem(item, base)).join("")}
           </nav>
 
-          <div class="flex items-center gap-1">
+          <div class="ml-auto flex shrink-0 items-center gap-1">
             <button
               type="button"
               data-theme-toggle
@@ -141,7 +141,7 @@ class SiteHeader extends HTMLElement {
               aria-expanded="false"
               aria-controls="mobile-menu"
               aria-label="Abrir menú"
-              class="inline-flex h-10 w-10 items-center justify-center rounded-md text-text transition hover:bg-surface-2 lg:hidden"
+              class="inline-flex h-10 w-10 items-center justify-center rounded-md text-text transition hover:bg-surface-2 xl:hidden"
             >
               <span data-icon-menu>${icon("menu")}</span>
               <span data-icon-close class="hidden">${icon("close")}</span>
@@ -149,8 +149,8 @@ class SiteHeader extends HTMLElement {
           </div>
         </div>
 
-        <div id="mobile-menu" class="hidden border-t border-border bg-bg lg:hidden">
-          <nav aria-label="Menú principal móvil" class="mx-auto max-w-7xl px-2 py-2">
+        <div id="mobile-menu" class="hidden border-t border-border bg-bg xl:hidden">
+          <nav aria-label="Menú principal móvil" class="page-container py-2">
             ${NAV_ITEMS.map((item) => renderMobileItem(item, base)).join("")}
           </nav>
         </div>
@@ -187,7 +187,7 @@ class SiteHeader extends HTMLElement {
       if (event.target.closest("a")) setOpen(false);
     });
 
-    window.matchMedia("(min-width: 1024px)").addEventListener("change", (event) => {
+    window.matchMedia("(min-width: 1280px)").addEventListener("change", (event) => {
       if (event.matches) setOpen(false);
     });
   }

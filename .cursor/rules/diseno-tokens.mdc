@@ -1,0 +1,42 @@
+---
+description: Sistema de color, tokens CSS, modo oscuro y reglas de paleta
+globs: css/**,**/*.html
+alwaysApply: false
+---
+
+# Tokens de diseño
+
+Fuente de verdad: `css/tokens.css` (valores) + `docs/PALETA.md` (referencia).
+
+## Regla principal
+**Nunca** colores hex/rgb en HTML, JS o componentes. Solo variables CSS o clases Tailwind que apuntan a ellas (`text-primary`, `bg-surface`).
+
+```html
+<!-- ❌ MAL -->
+<div style="color: #0B3D91">
+
+<!-- ✅ BIEN -->
+<div class="text-primary">
+```
+
+## Roles de color
+| Variable | Uso |
+|----------|-----|
+| `--color-primary` | Azul marca: cabecera, botones, enlaces |
+| `--color-accent` | Amarillo acento: hover, resaltes (no fondo de botón con texto blanco) |
+| `--color-bg` / `--color-surface` | Fondos y tarjetas |
+| `--color-text` / `--color-text-muted` | Texto principal y secundario |
+
+## Modo oscuro
+Mismas variables, valores distintos bajo `[data-theme="dark"]`. No duplicar estilos.
+Tailwind: `darkMode: ['selector', '[data-theme="dark"]']` en `js/tailwind-config.js`.
+
+## Amarillo (acento)
+Botón amarillo → texto oscuro (`text-text`), nunca blanco. Preferir botones primarios en azul.
+
+## Picker (solo mockup)
+Solo modifica `--color-primary` y `--color-accent` en vivo. Estados, grises, radios y sombras no se tocan.
+
+## Tipografía y espaciado
+Fuentes: `--font-heading` (Poppins), `--font-body` (Inter).
+Espaciado: múltiplos de `--space-*`. Radios: `--radius-md` por defecto en tarjetas.

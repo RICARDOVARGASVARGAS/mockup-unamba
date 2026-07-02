@@ -47,8 +47,8 @@ class SiteFooter extends HTMLElement {
     const year = new Date().getFullYear();
 
     this.innerHTML = `
-      <footer class="border-t border-border bg-surface">
-        <div class="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
+      <footer class="w-full border-t border-border bg-surface">
+        <div class="page-container grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
           <div class="flex flex-col gap-3">
             <a href="${base}index.html" class="flex items-center gap-2" aria-label="Ir a inicio">
               <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary font-heading text-sm font-bold text-white">FA</span>
@@ -104,7 +104,7 @@ class SiteFooter extends HTMLElement {
         </div>
 
         <div class="border-t border-border">
-          <div class="mx-auto flex max-w-7xl flex-col items-center gap-2 px-4 py-6 text-center text-xs text-text-muted sm:flex-row sm:justify-between sm:text-left">
+          <div class="page-container flex flex-col items-center gap-2 py-6 text-center text-xs text-text-muted sm:flex-row sm:justify-between sm:text-left">
             <p>© ${year} Facultad de Administración — UNAMBA. Todos los derechos reservados.</p>
             <p>Mockup de diseño, contenido de ejemplo.</p>
           </div>

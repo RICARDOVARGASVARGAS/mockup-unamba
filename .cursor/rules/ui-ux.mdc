@@ -1,0 +1,40 @@
+---
+description: UI/UX institucional, responsive, accesibilidad y anti-patrones
+globs: "**/*.html,components/**"
+alwaysApply: false
+---
+
+# UI/UX
+
+## Principios
+- Mobile-first: diseñar móvil, escalar a tablet (`md:`) y escritorio (`lg:`)
+- Jerarquía visual clara: escaneable, sin muros de texto
+- Espaciado generoso (`--space-12`/`--space-16` entre secciones)
+- Consistencia: mismos componentes y estilo en todas las pantallas
+
+## Accesibilidad (obligatorio)
+- HTML semántico (`<header>`, `<nav>`, `<main>`, `<article>`, `<footer>`)
+- Contraste suficiente en ambos temas
+- Navegación por teclado y foco visible (`:focus-visible`)
+- `alt` en imágenes; `aria-label` en botones solo con ícono
+- Enlaces y botones distinguibles
+
+## Anti-patrones a evitar
+- Plantillas genéricas sin identidad
+- Tarjetas sin foto (especialmente docentes y noticias)
+- Texto corrido sin jerarquía
+- Desalineación y exceso de colores
+- Eventos sin fecha concreta
+
+## Componentes visuales clave
+- Tarjetas de noticia/evento/docente con imagen, título, metadatos
+- Badges para categorías y estados
+- Breadcrumbs en páginas internas
+- Paginación en listados largos (visual, sin backend)
+- Chatbot IA flotante: parte del diseño, visual en el mockup
+
+## Chatbot
+Widget flotante en todas las páginas (`<chatbot-widget>`). En el mockup es decorativo/interactivo a nivel UI, sin RAG ni backend.
+
+## Presentación
+El picker de colores es herramienta de diseño del mockup, no producto final. Debe poder ocultarse para demos limpias.

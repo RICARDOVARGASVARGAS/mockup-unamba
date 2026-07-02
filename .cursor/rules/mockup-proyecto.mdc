@@ -1,0 +1,42 @@
+---
+description: Identidad del mockup UNAMBA, stack, estructura y restricciones del proyecto
+alwaysApply: true
+---
+
+# Mockup Web Facultad de Administración UNAMBA
+
+## Qué es
+Maqueta visual (HTML + Tailwind + JS mínimo) para aprobar el diseño con la facultad.
+**Sin backend, sin base de datos, sin frameworks pesados.**
+
+## Repo autónomo
+Todo vive aquí. No referenciar ni depender de otros repos (backend, producción, IA real).
+
+## Estructura
+```
+/docs/          → ESPECIFICACION.md (qué construir), PALETA.md (tokens)
+/components/    → header, footer, chatbot, tarjetas (JS que inyecta HTML)
+/pages/         → páginas del mockup (kebab-case: bolsa-trabajo.html)
+/assets/        → imágenes, íconos, logos
+/css/           → tokens.css (variables), base.css (estilos base)
+/js/            → theme.js, site-paths.js, tailwind-config.js
+index.html      → inicio
+```
+
+## Stack
+- HTML5 semántico + Tailwind CDN (sin build)
+- JS solo para: menú, tabs, tema, picker de colores, inyección de componentes
+- Abrir con `file://` o Live Server; rutas relativas obligatorias
+
+## Convenciones
+- Archivos en minúscula con guiones (`bolsa-trabajo.html`)
+- Comentar secciones principales de cada página
+- Contenido: datos de `docs/ESPECIFICACION.md` o placeholders marcados `[PLACEHOLDER]`
+- Nuevos módulos: copiar patrón existente, no reestructurar todo el proyecto
+
+## Prohibido
+- Colores hardcodeados fuera de `css/tokens.css`
+- Copiar header/footer en cada página
+- Inventar contenido institucional falso
+- Backend, BD, librerías pesadas innecesarias
+- Sacrificar accesibilidad por estética
