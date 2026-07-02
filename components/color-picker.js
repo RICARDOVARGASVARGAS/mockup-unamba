@@ -36,6 +36,9 @@ function hexFromCssVar(name) {
 
 function setBrandColor(varName, hex) {
   document.documentElement.style.setProperty(varName, hex);
+  if (varName === "--color-primary" && window.Theme) {
+    window.Theme.syncPrimaryContrast();
+  }
   document.dispatchEvent(
     new CustomEvent("colorchange", { detail: { varName, hex } })
   );
@@ -186,6 +189,7 @@ class ColorPickerTool extends HTMLElement {
     this.querySelector("[data-reset]").addEventListener("click", () => {
       document.documentElement.style.removeProperty("--color-primary");
       document.documentElement.style.removeProperty("--color-accent");
+      if (window.Theme) window.Theme.syncPrimaryContrast();
       syncDisplays();
     });
 

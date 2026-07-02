@@ -47,46 +47,46 @@ class SiteFooter extends HTMLElement {
     const year = new Date().getFullYear();
 
     this.innerHTML = `
-      <footer class="w-full border-t border-border bg-surface">
-        <div class="page-container grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
+      <footer class="w-full bg-primary text-onPrimary">
+        <div class="page-container grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
           <div class="flex flex-col gap-3">
             <a href="${base}index.html" class="flex items-center gap-2" aria-label="Ir a inicio">
-              <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary font-heading text-sm font-bold text-white">FA</span>
-              <span class="font-heading text-sm font-semibold text-text">Facultad de Administración</span>
+              <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-onPrimary font-heading text-sm font-bold text-primary">FA</span>
+              <span class="font-heading text-sm font-semibold text-onPrimary">Facultad de Administración</span>
             </a>
-            <p class="text-sm text-text-muted">
+            <p class="text-sm text-onPrimary/70">
               Universidad Nacional Micaela Bastidas de Apurímac (UNAMBA).
               Formando profesionales en gestión y administración.
             </p>
           </div>
 
           <div>
-            <h2 class="font-heading text-sm font-semibold text-text">Enlaces</h2>
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-onPrimary/60">Enlaces</h2>
             <ul class="mt-4 space-y-2">
               ${LEGAL_LINKS.map(
                 (link) => `
-                <li><a href="${base}${link.href}" class="text-sm text-text-muted transition hover:text-primary">${link.label}</a></li>`
+                <li><a href="${base}${link.href}" class="text-sm text-onPrimary transition hover:text-accent">${link.label}</a></li>`
               ).join("")}
             </ul>
           </div>
 
           <div>
-            <h2 class="font-heading text-sm font-semibold text-text">Accesos a sistemas</h2>
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-onPrimary/60">Accesos a sistemas</h2>
             <ul class="mt-4 space-y-2">
               ${EXTERNAL_LINKS.map(
                 (link) => `
-                <li><a href="${link.href}" class="text-sm text-text-muted transition hover:text-primary">${link.label}</a></li>`
+                <li><a href="${link.href}" class="inline-flex items-center gap-1 text-sm text-onPrimary transition hover:text-accent">${link.label} <span aria-hidden="true">↗</span></a></li>`
               ).join("")}
             </ul>
           </div>
 
           <div>
-            <h2 class="font-heading text-sm font-semibold text-text">Contacto</h2>
-            <address class="mt-4 flex flex-col gap-2 text-sm not-italic text-text-muted">
-              <span>Av. Universitaria s/n, Abancay – Apurímac <em class="text-xs">(dirección de ejemplo)</em></span>
-              <a href="mailto:contacto@ejemplo-unamba.edu.pe" class="transition hover:text-primary">contacto@ejemplo-unamba.edu.pe</a>
-              <a href="tel:+51900000000" class="transition hover:text-primary">+51 900 000 000</a>
-              <span>Lun. a vie., 8:00 a.m. – 4:00 p.m. <em class="text-xs">(ejemplo)</em></span>
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-onPrimary/60">Contacto</h2>
+            <address class="mt-4 flex flex-col gap-2 text-sm not-italic text-onPrimary/90">
+              <span>Av. Universitaria s/n, Abancay – Apurímac <em class="text-onPrimary/60">(dirección de ejemplo)</em></span>
+              <a href="mailto:contacto@ejemplo-unamba.edu.pe" class="transition hover:text-accent">contacto@ejemplo-unamba.edu.pe</a>
+              <a href="tel:+51900000000" class="transition hover:text-accent">+51 900 000 000</a>
+              <span>Lun. a vie., 8:00 a.m. – 4:00 p.m. <em class="text-onPrimary/60">(ejemplo)</em></span>
             </address>
             <div class="mt-4 flex gap-2">
               ${SOCIAL_LINKS.map(
@@ -94,7 +94,7 @@ class SiteFooter extends HTMLElement {
                 <a
                   href="${social.href}"
                   aria-label="${social.label}"
-                  class="flex h-9 w-9 items-center justify-center rounded-full bg-surface-2 text-text-muted transition hover:bg-primary hover:text-white"
+                  class="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-onPrimary transition hover:bg-accent hover:text-primary-dark"
                 >
                   <svg class="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true">${social.path}</svg>
                 </a>`
@@ -103,8 +103,8 @@ class SiteFooter extends HTMLElement {
           </div>
         </div>
 
-        <div class="border-t border-border">
-          <div class="page-container flex flex-col items-center gap-2 py-6 text-center text-xs text-text-muted sm:flex-row sm:justify-between sm:text-left">
+        <div class="border-t border-white/15">
+          <div class="page-container flex flex-col items-center gap-2 py-6 text-center text-xs text-onPrimary/70 sm:flex-row sm:justify-between sm:text-left">
             <p>© ${year} Facultad de Administración — UNAMBA. Todos los derechos reservados.</p>
             <p>Mockup de diseño, contenido de ejemplo.</p>
           </div>

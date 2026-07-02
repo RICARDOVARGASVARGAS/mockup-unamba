@@ -22,6 +22,7 @@ tailwind.config = {
           DEFAULT: "var(--color-accent)",
           dark: "var(--color-accent-dark)",
         },
+        onPrimary: "var(--color-on-primary)",
         bg: "var(--color-bg)",
         surface: {
           DEFAULT: "var(--color-surface)",

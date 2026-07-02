@@ -5,7 +5,11 @@
  * <site-header></site-header> en cada página + este <script>. Cambiar
  * el menú, el logo o el comportamiento se hace solo en este archivo.
  *
- * Menú principal según docs/ESPECIFICACION.md ("Menú de Navegación").
+ * Menú principal: reagrupado desde el listado de docs/ESPECIFICACION.md
+ * ("Menú de Navegación") para bajar de 11 a 7 ítems de primer nivel.
+ * "Actualidad" agrupa Noticias/Eventos/Comunicados; "Comunidad" agrupa
+ * Vida Estudiantil/Posgrado/Galería. Ningún destino se pierde, solo
+ * cambia el agrupamiento.
  */
 
 const NAV_ITEMS = [
@@ -27,9 +31,14 @@ const NAV_ITEMS = [
       { label: "Investigación", href: "pages/investigacion.html" },
     ],
   },
-  { label: "Noticias", href: "pages/noticias.html" },
-  { label: "Eventos", href: "pages/eventos.html" },
-  { label: "Comunicados", href: "pages/comunicados.html" },
+  {
+    label: "Actualidad",
+    children: [
+      { label: "Noticias", href: "pages/noticias.html" },
+      { label: "Eventos", href: "pages/eventos.html" },
+      { label: "Comunicados", href: "pages/comunicados.html" },
+    ],
+  },
   {
     label: "Servicios",
     children: [
@@ -40,9 +49,14 @@ const NAV_ITEMS = [
       { label: "Convenios", href: "pages/convenios.html" },
     ],
   },
-  { label: "Vida Estudiantil", href: "pages/estudiantes.html" },
-  { label: "Posgrado", href: "pages/posgrado.html" },
-  { label: "Galería", href: "pages/galeria.html" },
+  {
+    label: "Comunidad",
+    children: [
+      { label: "Vida Estudiantil", href: "pages/estudiantes.html" },
+      { label: "Posgrado", href: "pages/posgrado.html" },
+      { label: "Galería", href: "pages/galeria.html" },
+    ],
+  },
   { label: "Contacto", href: "pages/contacto.html" },
 ];
 
@@ -62,9 +76,9 @@ function renderDesktopItem(item, base) {
   if (item.children) {
     return `
       <details class="group relative">
-        <summary class="flex cursor-pointer list-none items-center gap-0.5 whitespace-nowrap rounded-md px-1.5 py-2 text-xs font-medium text-text transition hover:bg-surface-2 hover:text-primary 2xl:gap-1 2xl:px-2.5 2xl:text-sm [&::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer list-none items-center gap-1 whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium text-onPrimary transition hover:bg-white/10 hover:text-accent [&::-webkit-details-marker]:hidden">
           ${item.label}
-          ${icon("chevron", "h-3.5 w-3.5 text-text-muted transition-transform duration-200 group-open:rotate-180")}
+          ${icon("chevron", "h-4 w-4 text-onPrimary/70 transition-transform duration-200 group-open:rotate-180")}
         </summary>
         <ul class="absolute left-0 top-full z-20 mt-2 w-56 rounded-lg border border-border bg-surface p-2 shadow-lg">
           ${item.children
@@ -78,7 +92,7 @@ function renderDesktopItem(item, base) {
         </ul>
       </details>`;
   }
-  return `<a href="${base}${item.href}" class="whitespace-nowrap rounded-md px-1.5 py-2 text-xs font-medium text-text transition hover:bg-surface-2 hover:text-primary 2xl:px-2.5 2xl:text-sm">${item.label}</a>`;
+  return `<a href="${base}${item.href}" class="whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium text-onPrimary transition hover:bg-white/10 hover:text-accent">${item.label}</a>`;
 }
 
 function renderMobileItem(item, base) {
@@ -107,20 +121,20 @@ class SiteHeader extends HTMLElement {
     const base = window.getBasePath ? window.getBasePath() : "";
 
     this.innerHTML = `
-      <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-white">
+      <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:text-primary-dark">
         Saltar al contenido
       </a>
-      <header class="sticky top-0 z-30 w-full border-b border-border bg-bg">
-        <div class="page-container flex h-16 items-center gap-3 xl:gap-4">
+      <header data-site-header class="sticky top-0 z-30 w-full bg-primary text-onPrimary transition-shadow duration-200">
+        <div class="page-container flex h-16 items-center gap-3">
           <a href="${base}index.html" class="flex shrink-0 items-center gap-2" aria-label="Ir a inicio">
-            <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary font-heading text-sm font-bold text-white">FA</span>
-            <span class="hidden flex-col leading-tight md:flex xl:hidden 2xl:flex">
-              <span class="font-heading text-sm font-semibold text-text">Facultad de Administración</span>
-              <span class="text-xs text-text-muted">UNAMBA</span>
+            <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-onPrimary font-heading text-sm font-bold text-primary">FA</span>
+            <span class="hidden flex-col leading-tight sm:flex">
+              <span class="font-heading text-sm font-semibold text-onPrimary">Facultad de Administración</span>
+              <span class="text-xs text-onPrimary/70">UNAMBA</span>
             </span>
           </a>
 
-          <nav aria-label="Menú principal" class="hidden min-w-0 flex-1 items-center justify-center gap-0.5 xl:flex 2xl:gap-1">
+          <nav aria-label="Menú principal" class="hidden flex-1 items-center justify-center gap-1 lg:flex">
             ${NAV_ITEMS.map((item) => renderDesktopItem(item, base)).join("")}
           </nav>
 
@@ -130,7 +144,7 @@ class SiteHeader extends HTMLElement {
               data-theme-toggle
               title="Cambiar tema"
               aria-label="Cambiar a modo oscuro"
-              class="inline-flex h-10 w-10 items-center justify-center rounded-md text-text transition hover:bg-surface-2"
+              class="inline-flex h-10 w-10 items-center justify-center rounded-md text-onPrimary transition hover:bg-white/10"
             >
               <span data-icon-sun>${icon("sun")}</span>
               <span data-icon-moon class="hidden">${icon("moon")}</span>
@@ -141,7 +155,7 @@ class SiteHeader extends HTMLElement {
               aria-expanded="false"
               aria-controls="mobile-menu"
               aria-label="Abrir menú"
-              class="inline-flex h-10 w-10 items-center justify-center rounded-md text-text transition hover:bg-surface-2 xl:hidden"
+              class="inline-flex h-10 w-10 items-center justify-center rounded-md text-onPrimary transition hover:bg-white/10 lg:hidden"
             >
               <span data-icon-menu>${icon("menu")}</span>
               <span data-icon-close class="hidden">${icon("close")}</span>
@@ -149,7 +163,7 @@ class SiteHeader extends HTMLElement {
           </div>
         </div>
 
-        <div id="mobile-menu" class="hidden border-t border-border bg-bg xl:hidden">
+        <div id="mobile-menu" class="hidden border-t border-border bg-bg lg:hidden">
           <nav aria-label="Menú principal móvil" class="page-container py-2">
             ${NAV_ITEMS.map((item) => renderMobileItem(item, base)).join("")}
           </nav>
@@ -164,6 +178,7 @@ class SiteHeader extends HTMLElement {
     this.initMobileMenu();
     this.initDropdowns();
     this.initThemeIcon();
+    this.initScrollShadow();
   }
 
   initMobileMenu() {
@@ -187,7 +202,7 @@ class SiteHeader extends HTMLElement {
       if (event.target.closest("a")) setOpen(false);
     });
 
-    window.matchMedia("(min-width: 1280px)").addEventListener("change", (event) => {
+    window.matchMedia("(min-width: 1024px)").addEventListener("change", (event) => {
       if (event.matches) setOpen(false);
     });
   }
@@ -225,6 +240,19 @@ class SiteHeader extends HTMLElement {
 
     sync(window.Theme ? window.Theme.getTheme() : "light");
     document.addEventListener("themechange", (event) => sync(event.detail.theme));
+  }
+
+  initScrollShadow() {
+    // El header ya se separa del body por color; al hacer scroll suma una
+    // sombra para reforzar que queda "flotando" sobre el contenido.
+    const header = this.querySelector("[data-site-header]");
+
+    const sync = () => {
+      header.classList.toggle("shadow-md", window.scrollY > 4);
+    };
+
+    window.addEventListener("scroll", sync, { passive: true });
+    sync();
   }
 }
 

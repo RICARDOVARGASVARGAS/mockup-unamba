@@ -19,6 +19,11 @@
   --color-accent: #f2b705;
   --color-accent-dark: #c99503;
 
+  /* Texto legible sobre --color-primary (header/footer). Valor estático
+     de respaldo; theme.js y color-picker.js lo recalculan en vivo según
+     el contraste real del azul activo (ver syncPrimaryContrast). */
+  --color-on-primary: #ffffff;
+
   /* 2. Tema claro (PALETA.md §2) */
   --color-bg: #ffffff;
   --color-surface: #f5f7fa;
