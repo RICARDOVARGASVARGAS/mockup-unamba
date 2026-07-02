@@ -1,6 +1,10 @@
 /**
  * comunicados.js — filtro por tipo + "cargar más" agrupado por mes,
  * de pages/comunicados.html. Datos de ejemplo estáticos, sin backend.
+ *
+ * También resuelve el estado de las convocatorias con plazo (Comunicado.fecha_vencimiento):
+ * compara contra la fecha de hoy del navegador, igual que hace eventos.js con
+ * "próximo/pasado" — nada de etiquetas puestas a mano.
  */
 (function () {
   const list = document.querySelector("[data-comm-list]");
@@ -10,6 +14,28 @@
   const chips = Array.from(document.querySelectorAll("[data-comm-filter]"));
   const loadMoreBtn = document.querySelector("[data-comm-load-more]");
   const emptyState = document.querySelector("[data-comm-empty]");
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  document.querySelectorAll("[data-vencimiento]").forEach((item) => {
+    const slot = item.querySelector("[data-comm-vencimiento]");
+    if (!slot) return;
+
+    const target = new Date(`${item.dataset.vencimiento}T00:00:00`);
+    const diffDays = Math.round((target - today) / 86400000);
+
+    if (diffDays < 0) {
+      slot.textContent = "Convocatoria cerrada";
+      slot.className = "font-semibold text-text-muted";
+    } else if (diffDays <= 14) {
+      slot.textContent = diffDays === 0 ? "Cierra hoy" : `Cierra en ${diffDays} día${diffDays === 1 ? "" : "s"}`;
+      slot.className = "font-semibold text-warning";
+    } else {
+      const label = target.toLocaleDateString("es-PE", { day: "2-digit", month: "short", year: "numeric" });
+      slot.textContent = `Vence: ${label}`;
+    }
+  });
 
   let currentFilter = "todos";
 

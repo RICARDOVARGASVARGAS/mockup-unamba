@@ -97,3 +97,27 @@ Obs: si `latitud`/`longitud` existen, el detalle del evento muestra un mapa (Lea
 Obs: `estado = cancelado` no se oculta, se sigue mostrando en la línea de tiempo pero atenuado y con etiqueta "Cancelado" (evita el "¿y este evento qué pasó?" si simplemente desaparece).
 
 Obs: sin login en el sitio público, "Inscribirme" y "Unirme a videollamada" son enlaces directos a `url_inscripcion`/`enlace_virtual` (`target="_blank"`), nunca una acción de servidor. Cada uno aparece solo si su campo tiene valor — pueden coexistir los dos, uno solo, o ninguno.
+
+## TipoComunicado
+
+| Campo  | Nota                                    |
+|--------|-------------------------------------------|
+| id     |                                          |
+| nombre | Resolución, Convocatoria, Aviso          |
+| color  | Código hex (ej. #0B3D91)                 |
+
+## Comunicado
+
+| Campo              | Nota                                                        |
+|--------------------|---------------------------------------------------------------|
+| id                 |                                                              |
+| numero             | Opcional. Identificador oficial (ej. "045-2026-UNAMBA-FA"), sobre todo en resoluciones |
+| titulo             |                                                              |
+| tipo_id            | FK → TipoComunicado                                          |
+| documento_id       | FK → Archivo, opcional (no todo comunicado tiene PDF adjunto) |
+| fecha_publicacion  |                                                              |
+| fecha_vencimiento  | Opcional. Solo convocatorias con plazo; si ya pasó, se marca "Cerrada" |
+| estado             | enum: borrador / publicado                                  |
+| autor_id           | FK → Usuario                                                |
+
+Obs: a diferencia de Noticia/Evento, un comunicado no tiene `cuerpo` ni página de detalle — el comunicado ES el documento. El clic va directo al PDF (`documento_id`); si no hay documento adjunto, la fila no es clicable (por ejemplo, un aviso simple sin PDF).
