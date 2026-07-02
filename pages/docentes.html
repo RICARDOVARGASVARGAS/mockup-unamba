@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Docentes — Facultad de Administración UNAMBA (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <link rel="stylesheet" href="../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <site-header></site-header>
+
+    <main id="main-content" class="w-full">
+      <!-- Encabezado de sección -->
+      <section class="bg-primary text-onPrimary">
+        <div class="page-container py-10 sm:py-12">
+          <nav aria-label="Ruta de navegación" class="flex flex-wrap items-center gap-2 text-sm text-onPrimary/70">
+            <a href="../index.html" class="transition hover:text-accent">Inicio</a>
+            <span aria-hidden="true">/</span>
+            <span class="text-onPrimary/70">Nosotros</span>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page" class="text-onPrimary">Docentes</span>
+          </nav>
+          <h1 class="mt-3 font-heading text-3xl font-bold sm:text-4xl">Plana Docente</h1>
+          <p class="mt-2 max-w-2xl text-onPrimary/80">Docentes de la Facultad de Administración, por sede y categoría.</p>
+        </div>
+      </section>
+
+      <section class="page-container py-12 sm:py-16">
+        <!--
+          Filtros como desplegables (mismo patrón <details>/<summary> que ya
+          usa el menú del header, para no reinventar comportamiento). Sede y
+          categoría son independientes y se combinan con AND.
+        -->
+        <div class="flex flex-wrap gap-3">
+          <details class="group relative" data-docente-dropdown>
+            <summary class="flex w-60 cursor-pointer list-none items-center justify-between gap-2 rounded-md border border-border bg-surface px-4 py-2.5 text-sm font-medium text-text transition hover:border-primary [&::-webkit-details-marker]:hidden">
+              <span><span class="text-text-muted">Sede:</span> <span data-docente-dropdown-label>Todas</span></span>
+              <svg class="h-4 w-4 shrink-0 text-text-muted transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+            </summary>
+            <ul class="absolute left-0 top-full z-10 mt-2 w-60 rounded-lg border border-border bg-surface p-2 shadow-lg" role="listbox" aria-label="Filtrar por sede">
+              <li><button type="button" data-docente-filter-sede="todos" data-label="Todas" aria-selected="true" class="block w-full rounded-md px-3 py-2 text-left text-sm text-text transition hover:bg-surface-2 hover:text-primary aria-selected:bg-primary/10 aria-selected:font-semibold aria-selected:text-primary">Todas las sedes</button></li>
+              <li><button type="button" data-docente-filter-sede="abancay" data-label="Abancay" aria-selected="false" class="block w-full rounded-md px-3 py-2 text-left text-sm text-text transition hover:bg-surface-2 hover:text-primary aria-selected:bg-primary/10 aria-selected:font-semibold aria-selected:text-primary">Abancay</button></li>
+              <li><button type="button" data-docente-filter-sede="cotabambas-tambobamba" data-label="Cotabambas-Tambobamba" aria-selected="false" class="block w-full rounded-md px-3 py-2 text-left text-sm text-text transition hover:bg-surface-2 hover:text-primary aria-selected:bg-primary/10 aria-selected:font-semibold aria-selected:text-primary">Cotabambas-Tambobamba</button></li>
+            </ul>
+          </details>
+
+          <details class="group relative" data-docente-dropdown>
+            <summary class="flex w-60 cursor-pointer list-none items-center justify-between gap-2 rounded-md border border-border bg-surface px-4 py-2.5 text-sm font-medium text-text transition hover:border-primary [&::-webkit-details-marker]:hidden">
+              <span><span class="text-text-muted">Categoría:</span> <span data-docente-dropdown-label>Todas</span></span>
+              <svg class="h-4 w-4 shrink-0 text-text-muted transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+            </summary>
+            <ul class="absolute left-0 top-full z-10 mt-2 w-60 rounded-lg border border-border bg-surface p-2 shadow-lg" role="listbox" aria-label="Filtrar por categoría docente">
+              <li><button type="button" data-docente-filter-categoria="todos" data-label="Todas" aria-selected="true" class="block w-full rounded-md px-3 py-2 text-left text-sm text-text transition hover:bg-surface-2 hover:text-primary aria-selected:bg-primary/10 aria-selected:font-semibold aria-selected:text-primary">Todas las categorías</button></li>
+              <li><button type="button" data-docente-filter-categoria="principal" data-label="Principal" aria-selected="false" class="block w-full rounded-md px-3 py-2 text-left text-sm text-text transition hover:bg-surface-2 hover:text-primary aria-selected:bg-primary/10 aria-selected:font-semibold aria-selected:text-primary">Principal</button></li>
+              <li><button type="button" data-docente-filter-categoria="asociado" data-label="Asociado" aria-selected="false" class="block w-full rounded-md px-3 py-2 text-left text-sm text-text transition hover:bg-surface-2 hover:text-primary aria-selected:bg-primary/10 aria-selected:font-semibold aria-selected:text-primary">Asociado</button></li>
+              <li><button type="button" data-docente-filter-categoria="auxiliar" data-label="Auxiliar" aria-selected="false" class="block w-full rounded-md px-3 py-2 text-left text-sm text-text transition hover:bg-surface-2 hover:text-primary aria-selected:bg-primary/10 aria-selected:font-semibold aria-selected:text-primary">Auxiliar</button></li>
+              <li><button type="button" data-docente-filter-categoria="contratado" data-label="Contratado" aria-selected="false" class="block w-full rounded-md px-3 py-2 text-left text-sm text-text transition hover:bg-surface-2 hover:text-primary aria-selected:bg-primary/10 aria-selected:font-semibold aria-selected:text-primary">Contratado</button></li>
+            </ul>
+          </details>
+        </div>
+
+        <p data-docentes-empty class="mt-10 hidden text-text-muted">No hay docentes que coincidan con estos filtros.</p>
+
+        <div data-docentes-grid class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <article data-docente-item data-sede="abancay" data-categoria="principal" class="group overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
+            <div class="relative aspect-[4/5] overflow-hidden bg-surface-2">
+              <img src="../assets/img/docentes/docente-3.jpg" alt="Retrato del Mg. Carlos Huamán Quispe" class="absolute inset-0 h-full w-full object-cover grayscale-[35%] transition duration-300 group-hover:grayscale-0" loading="lazy" />
+            </div>
+            <div class="p-4">
+              <h2 class="font-heading text-base font-semibold text-text">Mg. Carlos Huamán Quispe</h2>
+              <p class="mt-0.5 text-sm text-text-muted">Docente Principal</p>
+              <p class="mt-1 flex items-center gap-1 text-xs text-text-muted"><span aria-hidden="true">📍</span> Sede Abancay</p>
+              <div class="mt-3 flex flex-col gap-1.5 border-t border-border pt-3 text-sm">
+                <a href="mailto:chuaman@unamba.edu.pe" class="inline-flex items-center gap-1.5 text-text-muted transition hover:text-primary">
+                  <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0-.621.504-1.125 1.125-1.125h17.25c.621 0 1.125.504 1.125 1.125v10.5c0 .621-.504 1.125-1.125 1.125H3.375A1.125 1.125 0 0 1 2.25 17.25V6.75Zm0 0 9.75 6.75 9.75-6.75" /></svg>
+                  <span class="truncate">chuaman@unamba.edu.pe</span>
+                </a>
+                <a href="#" class="mt-1 inline-flex w-fit items-center gap-1 rounded-full border border-primary px-3 py-1 text-xs font-semibold text-primary transition hover:bg-primary hover:text-onPrimary">Ver hoja de vida ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article data-docente-item data-sede="abancay" data-categoria="principal" class="group overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
+            <div class="relative aspect-[4/5] overflow-hidden bg-surface-2">
+              <img src="../assets/img/docentes/docente-2.jpg" alt="Retrato de la Dra. Rosa Illanes Cárdenas" class="absolute inset-0 h-full w-full object-cover grayscale-[35%] transition duration-300 group-hover:grayscale-0" loading="lazy" />
+            </div>
+            <div class="p-4">
+              <h2 class="font-heading text-base font-semibold text-text">Dra. Rosa Illanes Cárdenas</h2>
+              <p class="mt-0.5 text-sm text-text-muted">Docente Principal</p>
+              <p class="mt-1 flex items-center gap-1 text-xs text-text-muted"><span aria-hidden="true">📍</span> Sede Abancay</p>
+              <div class="mt-3 flex flex-col gap-1.5 border-t border-border pt-3 text-sm">
+                <a href="mailto:rillanes@unamba.edu.pe" class="inline-flex items-center gap-1.5 text-text-muted transition hover:text-primary">
+                  <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0-.621.504-1.125 1.125-1.125h17.25c.621 0 1.125.504 1.125 1.125v10.5c0 .621-.504 1.125-1.125 1.125H3.375A1.125 1.125 0 0 1 2.25 17.25V6.75Zm0 0 9.75 6.75 9.75-6.75" /></svg>
+                  <span class="truncate">rillanes@unamba.edu.pe</span>
+                </a>
+                <a href="#" class="mt-1 inline-flex w-fit items-center gap-1 rounded-full border border-primary px-3 py-1 text-xs font-semibold text-primary transition hover:bg-primary hover:text-onPrimary">Ver hoja de vida ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article data-docente-item data-sede="cotabambas-tambobamba" data-categoria="asociado" class="group overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
+            <div class="relative aspect-[4/5] overflow-hidden bg-surface-2">
+              <img src="../assets/img/docentes/docente-1.jpg" alt="Retrato del Mg. Jorge Ttito Mamani" class="absolute inset-0 h-full w-full object-cover grayscale-[35%] transition duration-300 group-hover:grayscale-0" loading="lazy" />
+            </div>
+            <div class="p-4">
+              <h2 class="font-heading text-base font-semibold text-text">Mg. Jorge Ttito Mamani</h2>
+              <p class="mt-0.5 text-sm text-text-muted">Docente Asociado</p>
+              <p class="mt-1 flex items-center gap-1 text-xs text-text-muted"><span aria-hidden="true">📍</span> Sede Cotabambas-Tambobamba</p>
+              <div class="mt-3 flex flex-col gap-1.5 border-t border-border pt-3 text-sm">
+                <a href="mailto:jttito@unamba.edu.pe" class="inline-flex items-center gap-1.5 text-text-muted transition hover:text-primary">
+                  <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0-.621.504-1.125 1.125-1.125h17.25c.621 0 1.125.504 1.125 1.125v10.5c0 .621-.504 1.125-1.125 1.125H3.375A1.125 1.125 0 0 1 2.25 17.25V6.75Zm0 0 9.75 6.75 9.75-6.75" /></svg>
+                  <span class="truncate">jttito@unamba.edu.pe</span>
+                </a>
+                <!-- Sin cv_id: aún no ha subido su hoja de vida -->
+              </div>
+            </div>
+          </article>
+
+          <article data-docente-item data-sede="abancay" data-categoria="auxiliar" class="group overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
+            <div class="relative aspect-[4/5] overflow-hidden bg-surface-2">
+              <img src="../assets/img/docentes/docente-4.jpg" alt="Retrato de la Mg. Katherine Vargas Loayza" class="absolute inset-0 h-full w-full object-cover grayscale-[35%] transition duration-300 group-hover:grayscale-0" loading="lazy" />
+            </div>
+            <div class="p-4">
+              <h2 class="font-heading text-base font-semibold text-text">Mg. Katherine Vargas Loayza</h2>
+              <p class="mt-0.5 text-sm text-text-muted">Docente Auxiliar</p>
+              <p class="mt-1 flex items-center gap-1 text-xs text-text-muted"><span aria-hidden="true">📍</span> Sede Abancay</p>
+              <div class="mt-3 flex flex-col gap-1.5 border-t border-border pt-3 text-sm">
+                <a href="mailto:kvargas@unamba.edu.pe" class="inline-flex items-center gap-1.5 text-text-muted transition hover:text-primary">
+                  <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0-.621.504-1.125 1.125-1.125h17.25c.621 0 1.125.504 1.125 1.125v10.5c0 .621-.504 1.125-1.125 1.125H3.375A1.125 1.125 0 0 1 2.25 17.25V6.75Zm0 0 9.75 6.75 9.75-6.75" /></svg>
+                  <span class="truncate">kvargas@unamba.edu.pe</span>
+                </a>
+                <a href="#" class="mt-1 inline-flex w-fit items-center gap-1 rounded-full border border-primary px-3 py-1 text-xs font-semibold text-primary transition hover:bg-primary hover:text-onPrimary">Ver hoja de vida ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article data-docente-item data-sede="cotabambas-tambobamba" data-categoria="contratado" class="group overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
+            <div class="relative aspect-[4/5] overflow-hidden bg-surface-2">
+              <img src="../assets/img/docentes/docente-5.jpg" alt="Retrato del Lic. Percy Aguilar Sotelo" class="absolute inset-0 h-full w-full object-cover grayscale-[35%] transition duration-300 group-hover:grayscale-0" loading="lazy" />
+            </div>
+            <div class="p-4">
+              <h2 class="font-heading text-base font-semibold text-text">Lic. Percy Aguilar Sotelo</h2>
+              <p class="mt-0.5 text-sm text-text-muted">Docente Contratado</p>
+              <p class="mt-1 flex items-center gap-1 text-xs text-text-muted"><span aria-hidden="true">📍</span> Sede Cotabambas-Tambobamba</p>
+              <div class="mt-3 flex flex-col gap-1.5 border-t border-border pt-3 text-sm">
+                <a href="mailto:paguilar@unamba.edu.pe" class="inline-flex items-center gap-1.5 text-text-muted transition hover:text-primary">
+                  <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0-.621.504-1.125 1.125-1.125h17.25c.621 0 1.125.504 1.125 1.125v10.5c0 .621-.504 1.125-1.125 1.125H3.375A1.125 1.125 0 0 1 2.25 17.25V6.75Zm0 0 9.75 6.75 9.75-6.75" /></svg>
+                  <span class="truncate">paguilar@unamba.edu.pe</span>
+                </a>
+                <a href="#" class="mt-1 inline-flex w-fit items-center gap-1 rounded-full border border-primary px-3 py-1 text-xs font-semibold text-primary transition hover:bg-primary hover:text-onPrimary">Ver hoja de vida ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article data-docente-item data-sede="abancay" data-categoria="contratado" class="group overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
+            <div class="relative aspect-[4/5] overflow-hidden bg-surface-2">
+              <img src="../assets/img/docentes/docente-6.jpg" alt="Retrato de la Mg. Miriam Condori Paucar" class="absolute inset-0 h-full w-full object-cover grayscale-[35%] transition duration-300 group-hover:grayscale-0" loading="lazy" />
+            </div>
+            <div class="p-4">
+              <h2 class="font-heading text-base font-semibold text-text">Mg. Miriam Condori Paucar</h2>
+              <p class="mt-0.5 text-sm text-text-muted">Docente Contratado</p>
+              <p class="mt-1 flex items-center gap-1 text-xs text-text-muted"><span aria-hidden="true">📍</span> Sede Abancay</p>
+              <div class="mt-3 flex flex-col gap-1.5 border-t border-border pt-3 text-sm">
+                <a href="mailto:mcondori@unamba.edu.pe" class="inline-flex items-center gap-1.5 text-text-muted transition hover:text-primary">
+                  <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0-.621.504-1.125 1.125-1.125h17.25c.621 0 1.125.504 1.125 1.125v10.5c0 .621-.504 1.125-1.125 1.125H3.375A1.125 1.125 0 0 1 2.25 17.25V6.75Zm0 0 9.75 6.75 9.75-6.75" /></svg>
+                  <span class="truncate">mcondori@unamba.edu.pe</span>
+                </a>
+                <!-- Sin cv_id: aún no ha subido su hoja de vida -->
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <site-footer></site-footer>
+    <chatbot-widget></chatbot-widget>
+    <color-picker-tool></color-picker-tool>
+
+    <script src="../js/theme.js"></script>
+    <script src="../js/site-paths.js"></script>
+    <script src="../components/header.js"></script>
+    <script src="../components/footer.js"></script>
+    <script src="../components/chatbot-widget.js"></script>
+    <script src="../components/color-picker.js"></script>
+    <script src="../js/docentes.js"></script>
+  </body>
+</html>

@@ -121,3 +121,45 @@ Obs: sin login en el sitio público, "Inscribirme" y "Unirme a videollamada" son
 | autor_id           | FK → Usuario                                                |
 
 Obs: a diferencia de Noticia/Evento, un comunicado no tiene `cuerpo` ni página de detalle — el comunicado ES el documento. El clic va directo al PDF (`documento_id`); si no hay documento adjunto, la fila no es clicable (por ejemplo, un aviso simple sin PDF).
+
+## Sede
+
+Sedes reales de la universidad (no confundir con `Lugar`, que son ambientes dentro de un campus).
+
+| Campo  | Nota                              |
+|--------|-------------------------------------|
+| id     |                                    |
+| nombre | Abancay, Cotabambas-Tambobamba     |
+
+## CategoriaDocente
+
+Rango docente (Ley Universitaria), no confundir con `Categoria` (esa es de contenido: Noticia/Evento).
+
+| Campo  | Nota                                      |
+|--------|---------------------------------------------|
+| id     |                                            |
+| nombre | Principal, Asociado, Auxiliar, Contratado |
+
+## Docente
+
+Perfil público informativo — no requiere cuenta de acceso al sistema.
+
+| Campo                | Nota                                                     |
+|----------------------|-------------------------------------------------------------|
+| id                   |                                                          |
+| nombres              |                                                          |
+| apellido_paterno     |                                                          |
+| apellido_materno     |                                                          |
+| foto_id              | FK → Archivo                                             |
+| grado_academico      | Dr., Mg., Lic., Ing., etc.                               |
+| categoria_docente_id | FK → CategoriaDocente                                    |
+| sede_id              | FK → Sede                                                |
+| correo               | Público, de contacto — no es login                       |
+| cv_id                | FK → Archivo, opcional (hoja de vida en PDF)             |
+| usuario_id           | FK → Usuario, opcional — solo si también administra contenido |
+| estado               | enum: borrador / activo / licencia / retirado            |
+| orden                | Número, opcional. Define la posición en el listado (no depende de cuándo se registró) |
+
+Obs: en el listado público solo se muestran docentes con `estado = activo` (o `licencia`, con una nota visible de "actualmente de licencia" — a decidir en diseño). `borrador` y `retirado` nunca se muestran, pero el registro no se borra (memoria institucional: quién fue docente, cuándo).
+
+Obs: orden de listado = `orden` ascendente primero; entre quienes no tengan `orden` (o empaten), por `apellido_paterno` alfabético. Así, registrar un docente al final no lo manda al final de la página — su posición se define aparte, a mano.
