@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="../css/tokens.css" />
     <link rel="stylesheet" href="../css/base.css" />
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <script src="../js/tailwind-config.js"></script>
   </head>
   <body class="w-full bg-bg text-text font-body antialiased">
@@ -45,27 +45,23 @@
           <button type="button" data-news-filter="comunidad" aria-pressed="false" class="h-9 rounded-full border border-border px-4 text-sm font-medium text-text transition hover:border-primary">Comunidad</button>
         </div>
 
-        <!-- Grilla de noticias (la primera es la destacada) -->
+        <!-- Grilla de noticias (todas las tarjetas del mismo tamaño, 1 columna cada una) -->
         <div data-news-grid class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <article data-news-item data-category="institucional" class="group overflow-hidden rounded-lg border border-border bg-surface shadow-sm transition hover:shadow-md sm:col-span-2">
-            <div class="grid sm:grid-cols-2">
-              <div class="h-48 sm:h-full">
-                <img src="../assets/img/noticias/noticia-taller-finanzas.jpg" alt="Grupo de personas en una mesa de trabajo tomando notas durante el taller" class="h-full w-full object-cover" loading="lazy" />
-              </div>
-              <div class="flex flex-col justify-center p-6">
-                <span class="inline-flex w-fit items-center rounded-full bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary">Institucional</span>
-                <time class="mt-3 text-xs text-text-muted">28 jun. 2026</time>
-                <h2 class="mt-1 font-heading text-xl font-bold text-text transition group-hover:text-primary">Taller de finanzas para emprendedores</h2>
-                <p class="mt-2 text-sm text-text-muted">La facultad organizó un taller práctico dirigido a estudiantes con proyectos propios, con especialistas invitados del sector financiero.</p>
-                <a href="#" class="mt-4 text-sm font-semibold text-primary hover:text-primary-dark">Leer más →</a>
-              </div>
+          <article data-news-item data-category="institucional" class="group overflow-hidden rounded-lg border-y border-r border-l-4 border-border bg-surface shadow-sm transition hover:shadow-md" style="border-left-color:#0B3D91">
+            <img src="../assets/img/noticias/noticia-taller-finanzas.jpg" alt="Grupo de personas en una mesa de trabajo tomando notas durante el taller" class="h-40 w-full object-cover" loading="lazy" />
+            <div class="p-4">
+              <span class="inline-flex items-center rounded-full border-2 bg-bg px-2.5 py-1 text-xs font-semibold text-text" style="border-color:#0B3D91">Institucional</span>
+              <time class="mt-2 block text-xs text-text-muted">28 jun. 2026</time>
+              <h3 class="mt-1 font-heading text-base font-semibold text-text transition group-hover:text-primary">Taller de finanzas para emprendedores</h3>
+              <p class="mt-2 text-sm text-text-muted">La facultad organizó un taller práctico dirigido a estudiantes con proyectos propios.</p>
+              <a href="noticia-detalle.html" class="mt-3 inline-block text-sm font-semibold text-primary hover:text-primary-dark">Leer más →</a>
             </div>
           </article>
 
-          <article data-news-item data-category="comunidad" class="group overflow-hidden rounded-lg border border-border bg-surface shadow-sm transition hover:shadow-md">
+          <article data-news-item data-category="comunidad" class="group overflow-hidden rounded-lg border-y border-r border-l-4 border-border bg-surface shadow-sm transition hover:shadow-md" style="border-left-color:#6B7688">
             <img src="../assets/img/noticias/noticia-concurso-estudiantes.jpg" alt="Egresadas celebrando con birretes en alto frente a un edificio universitario" class="h-40 w-full object-cover" loading="lazy" />
             <div class="p-4">
-              <span class="inline-flex items-center rounded-full border border-border px-2.5 py-1 text-xs font-medium text-text-muted">Comunidad</span>
+              <span class="inline-flex items-center rounded-full border-2 bg-bg px-2.5 py-1 text-xs font-semibold text-text" style="border-color:#6B7688">Comunidad</span>
               <time class="mt-2 block text-xs text-text-muted">24 jun. 2026</time>
               <h3 class="mt-1 font-heading text-base font-semibold text-text transition group-hover:text-primary">Estudiantes destacan en concurso interuniversitario</h3>
               <p class="mt-2 text-sm text-text-muted">Un equipo de la facultad obtuvo reconocimiento en un concurso de gestión de proyectos.</p>
@@ -73,10 +69,10 @@
             </div>
           </article>
 
-          <article data-news-item data-category="convenios" class="group overflow-hidden rounded-lg border border-border bg-surface shadow-sm transition hover:shadow-md">
+          <article data-news-item data-category="convenios" class="group overflow-hidden rounded-lg border-y border-r border-l-4 border-border bg-surface shadow-sm transition hover:shadow-md" style="border-left-color:#1B873F">
             <img src="../assets/img/noticias/noticia-convenio-practicas.jpg" alt="Apretón de manos entre dos representantes de organizaciones" class="h-40 w-full object-cover" loading="lazy" />
             <div class="p-4">
-              <span class="inline-flex items-center rounded-full bg-surface-2 px-2.5 py-1 text-xs font-medium text-text">Convenios</span>
+              <span class="inline-flex items-center rounded-full border-2 bg-bg px-2.5 py-1 text-xs font-semibold text-text" style="border-color:#1B873F">Convenios</span>
               <time class="mt-2 block text-xs text-text-muted">20 jun. 2026</time>
               <h3 class="mt-1 font-heading text-base font-semibold text-text transition group-hover:text-primary">Convenio para prácticas pre-profesionales</h3>
               <p class="mt-2 text-sm text-text-muted">Nuevo convenio con una empresa local amplía las oportunidades de práctica.</p>
@@ -84,10 +80,10 @@
             </div>
           </article>
 
-          <article data-news-item data-category="academico" class="group overflow-hidden rounded-lg border border-border bg-surface shadow-sm transition hover:shadow-md">
+          <article data-news-item data-category="academico" class="group overflow-hidden rounded-lg border-y border-r border-l-4 border-border bg-surface shadow-sm transition hover:shadow-md" style="border-left-color:#F2B705">
             <img src="../assets/img/noticias/noticia-congreso-docentes.jpg" alt="Público asistiendo a una presentación en un congreso académico" class="h-40 w-full object-cover" loading="lazy" />
             <div class="p-4">
-              <span class="inline-flex items-center rounded-full bg-accent/20 px-2.5 py-1 text-xs font-semibold text-accent-dark">Académico</span>
+              <span class="inline-flex items-center rounded-full border-2 bg-bg px-2.5 py-1 text-xs font-semibold text-text" style="border-color:#F2B705">Académico</span>
               <time class="mt-2 block text-xs text-text-muted">15 jun. 2026</time>
               <h3 class="mt-1 font-heading text-base font-semibold text-text transition group-hover:text-primary">Docentes participan en congreso nacional</h3>
               <p class="mt-2 text-sm text-text-muted">Representantes de la facultad expusieron investigaciones en gestión pública.</p>
@@ -95,10 +91,10 @@
             </div>
           </article>
 
-          <article data-news-item data-category="institucional" class="group overflow-hidden rounded-lg border border-border bg-surface shadow-sm transition hover:shadow-md">
+          <article data-news-item data-category="institucional" class="group overflow-hidden rounded-lg border-y border-r border-l-4 border-border bg-surface shadow-sm transition hover:shadow-md" style="border-left-color:#0B3D91">
             <img src="../assets/img/noticias/noticia-laboratorio-computo.jpg" alt="Estudiantes trabajando en computadoras dentro de un laboratorio de cómputo" class="h-40 w-full object-cover" loading="lazy" />
             <div class="p-4">
-              <span class="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary">Institucional</span>
+              <span class="inline-flex items-center rounded-full border-2 bg-bg px-2.5 py-1 text-xs font-semibold text-text" style="border-color:#0B3D91">Institucional</span>
               <time class="mt-2 block text-xs text-text-muted">10 jun. 2026</time>
               <h3 class="mt-1 font-heading text-base font-semibold text-text transition group-hover:text-primary">Facultad renueva equipos del laboratorio de cómputo</h3>
               <p class="mt-2 text-sm text-text-muted">La inversión busca mejorar la formación práctica en herramientas de gestión.</p>
@@ -106,10 +102,10 @@
             </div>
           </article>
 
-          <article data-news-item data-category="academico" class="group overflow-hidden rounded-lg border border-border bg-surface shadow-sm transition hover:shadow-md">
+          <article data-news-item data-category="academico" class="group overflow-hidden rounded-lg border-y border-r border-l-4 border-border bg-surface shadow-sm transition hover:shadow-md" style="border-left-color:#F2B705">
             <img src="../assets/img/noticias/noticia-egresados-experiencia.jpg" alt="Sala de conferencias preparada para un conversatorio" class="h-40 w-full object-cover" loading="lazy" />
             <div class="p-4">
-              <span class="inline-flex items-center rounded-full bg-accent/20 px-2.5 py-1 text-xs font-semibold text-accent-dark">Académico</span>
+              <span class="inline-flex items-center rounded-full border-2 bg-bg px-2.5 py-1 text-xs font-semibold text-text" style="border-color:#F2B705">Académico</span>
               <time class="mt-2 block text-xs text-text-muted">5 jun. 2026</time>
               <h3 class="mt-1 font-heading text-base font-semibold text-text transition group-hover:text-primary">Egresados comparten experiencia laboral con estudiantes</h3>
               <p class="mt-2 text-sm text-text-muted">Un conversatorio acercó a los estudiantes al mundo profesional real.</p>
@@ -117,10 +113,10 @@
             </div>
           </article>
 
-          <article data-news-item data-category="comunidad" class="group overflow-hidden rounded-lg border border-border bg-surface shadow-sm transition hover:shadow-md">
+          <article data-news-item data-category="comunidad" class="group overflow-hidden rounded-lg border-y border-r border-l-4 border-border bg-surface shadow-sm transition hover:shadow-md" style="border-left-color:#6B7688">
             <img src="../assets/img/noticias/noticia-campana-reforestacion.jpg" alt="Voluntarios plantando un árbol durante una jornada de reforestación" class="h-40 w-full object-cover" loading="lazy" />
             <div class="p-4">
-              <span class="inline-flex items-center rounded-full border border-border px-2.5 py-1 text-xs font-medium text-text-muted">Comunidad</span>
+              <span class="inline-flex items-center rounded-full border-2 bg-bg px-2.5 py-1 text-xs font-semibold text-text" style="border-color:#6B7688">Comunidad</span>
               <time class="mt-2 block text-xs text-text-muted">1 jun. 2026</time>
               <h3 class="mt-1 font-heading text-base font-semibold text-text transition group-hover:text-primary">Centro Federado organiza campaña de reforestación</h3>
               <p class="mt-2 text-sm text-text-muted">Estudiantes voluntarios participaron en una jornada de proyección social.</p>
@@ -128,10 +124,10 @@
             </div>
           </article>
 
-          <article data-news-item data-category="convenios" class="group overflow-hidden rounded-lg border border-border bg-surface shadow-sm transition hover:shadow-md">
+          <article data-news-item data-category="convenios" class="group overflow-hidden rounded-lg border-y border-r border-l-4 border-border bg-surface shadow-sm transition hover:shadow-md" style="border-left-color:#1B873F">
             <img src="../assets/img/noticias/noticia-convenio-camara-comercio.jpg" alt="Dos personas estrechando la mano en una oficina tras firmar un acuerdo" class="h-40 w-full object-cover" loading="lazy" />
             <div class="p-4">
-              <span class="inline-flex items-center rounded-full bg-surface-2 px-2.5 py-1 text-xs font-medium text-text">Convenios</span>
+              <span class="inline-flex items-center rounded-full border-2 bg-bg px-2.5 py-1 text-xs font-semibold text-text" style="border-color:#1B873F">Convenios</span>
               <time class="mt-2 block text-xs text-text-muted">28 may. 2026</time>
               <h3 class="mt-1 font-heading text-base font-semibold text-text transition group-hover:text-primary">Nuevo convenio con cámara de comercio regional</h3>
               <p class="mt-2 text-sm text-text-muted">Facilitará pasantías y proyectos conjuntos con el sector empresarial.</p>
@@ -139,10 +135,10 @@
             </div>
           </article>
 
-          <article data-news-item data-category="institucional" class="group overflow-hidden rounded-lg border border-border bg-surface shadow-sm transition hover:shadow-md">
+          <article data-news-item data-category="institucional" class="group overflow-hidden rounded-lg border-y border-r border-l-4 border-border bg-surface shadow-sm transition hover:shadow-md" style="border-left-color:#0B3D91">
             <img src="../assets/img/noticias/noticia-feria-vocacional.jpg" alt="Estudiante llenando un formulario en una mesa de registro durante una feria" class="h-40 w-full object-cover" loading="lazy" />
             <div class="p-4">
-              <span class="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary">Institucional</span>
+              <span class="inline-flex items-center rounded-full border-2 bg-bg px-2.5 py-1 text-xs font-semibold text-text" style="border-color:#0B3D91">Institucional</span>
               <time class="mt-2 block text-xs text-text-muted">22 may. 2026</time>
               <h3 class="mt-1 font-heading text-base font-semibold text-text transition group-hover:text-primary">Facultad participa en feria de orientación vocacional</h3>
               <p class="mt-2 text-sm text-text-muted">Escolares de la región conocieron la oferta académica de la facultad.</p>
@@ -150,10 +146,10 @@
             </div>
           </article>
 
-          <article data-news-item data-category="academico" class="group overflow-hidden rounded-lg border border-border bg-surface shadow-sm transition hover:shadow-md">
+          <article data-news-item data-category="academico" class="group overflow-hidden rounded-lg border-y border-r border-l-4 border-border bg-surface shadow-sm transition hover:shadow-md" style="border-left-color:#F2B705">
             <img src="../assets/img/noticias/noticia-investigacion-mypes.jpg" alt="Pantalla mostrando gráficos y datos de un análisis de investigación" class="h-40 w-full object-cover" loading="lazy" />
             <div class="p-4">
-              <span class="inline-flex items-center rounded-full bg-accent/20 px-2.5 py-1 text-xs font-semibold text-accent-dark">Académico</span>
+              <span class="inline-flex items-center rounded-full border-2 bg-bg px-2.5 py-1 text-xs font-semibold text-text" style="border-color:#F2B705">Académico</span>
               <time class="mt-2 block text-xs text-text-muted">18 may. 2026</time>
               <h3 class="mt-1 font-heading text-base font-semibold text-text transition group-hover:text-primary">Publican resultados de investigación sobre mypes en Apurímac</h3>
               <p class="mt-2 text-sm text-text-muted">El estudio analiza el impacto de la gestión formal en la sostenibilidad de las mypes.</p>

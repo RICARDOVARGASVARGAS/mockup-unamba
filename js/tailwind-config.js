@@ -1,8 +1,11 @@
 /**
  * tailwind-config.js — configuración del Tailwind CDN (Play CDN).
  *
- * Debe cargarse DESPUÉS de <script src="https://cdn.tailwindcss.com">
+ * Debe cargarse DESPUÉS de <script src="https://cdn.tailwindcss.com?plugins=typography">
  * y ANTES del contenido de la página, en todas las páginas del mockup.
+ * El plugin "typography" (clase `prose`) da estilo automático a cualquier
+ * cuerpo de contenido enriquecido (noticias, comunicados...): títulos,
+ * párrafos, citas, listas e imágenes quedan bien sin clases por elemento.
  * Mismo criterio que un tailwind.config.js normal: Tailwind no define
  * colores, tipografía, radios ni sombras propios, todo apunta a las
  * variables CSS de css/tokens.css. Cambiar un valor de diseño se hace

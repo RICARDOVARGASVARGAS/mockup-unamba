@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taller de finanzas para emprendedores — Facultad de Administración UNAMBA (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <link rel="stylesheet" href="../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <site-header></site-header>
+
+    <main id="main-content" class="w-full">
+      <!-- Encabezado de sección -->
+      <section class="bg-primary text-onPrimary">
+        <div class="page-container py-10 sm:py-12">
+          <nav aria-label="Ruta de navegación" class="flex flex-wrap items-center gap-2 text-sm text-onPrimary/70">
+            <a href="../index.html" class="transition hover:text-accent">Inicio</a>
+            <span aria-hidden="true">/</span>
+            <a href="noticias.html" class="transition hover:text-accent">Noticias</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page" class="text-onPrimary">Taller de finanzas para emprendedores</span>
+          </nav>
+
+          <span class="mt-4 inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-2.5 py-1 text-xs font-semibold text-onPrimary">
+            <span class="h-2 w-2 rounded-full ring-2 ring-white/50" style="background-color:#0B3D91" aria-hidden="true"></span>
+            Institucional
+          </span>
+          <h1 class="mt-3 max-w-3xl font-heading text-3xl font-bold sm:text-4xl">Taller de finanzas para emprendedores</h1>
+          <div class="mt-2 flex flex-wrap items-center gap-2 text-sm text-onPrimary/70">
+            <span>Facultad de Administración</span>
+            <span aria-hidden="true">·</span>
+            <time>28 de junio de 2026</time>
+            <span aria-hidden="true">·</span>
+            <span>3 min de lectura</span>
+          </div>
+        </div>
+      </section>
+
+      <article class="page-container py-10 sm:py-14">
+        <div class="mx-auto max-w-3xl">
+          <!-- Imagen de portada -->
+          <figure class="relative aspect-video overflow-hidden rounded-xl shadow-sm">
+            <img
+              src="../assets/img/noticias/noticia-taller-finanzas.jpg"
+              alt="Grupo de personas en una mesa de trabajo tomando notas durante el taller"
+              class="absolute inset-0 h-full w-full object-cover"
+              loading="lazy"
+            />
+          </figure>
+
+          <!-- Compartir -->
+          <div class="mt-4 flex items-center justify-end gap-3 border-b border-border pb-5">
+            <div class="flex items-center gap-2">
+              <span class="text-sm text-text-muted">Compartir:</span>
+              <a href="#" aria-label="Compartir en Facebook" class="flex h-9 w-9 items-center justify-center rounded-full border border-border text-text-muted transition hover:border-primary hover:text-primary">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-7.5h2.5l.4-3H13.5V8.7c0-.87.24-1.46 1.5-1.46h1.6V4.56A21.6 21.6 0 0 0 14.3 4.4c-2.24 0-3.77 1.37-3.77 3.88v2.22H8v3h2.53V21h3Z" fill="currentColor" /></svg>
+              </a>
+              <a href="#" aria-label="Compartir en WhatsApp" class="flex h-9 w-9 items-center justify-center rounded-full border border-border text-text-muted transition hover:border-primary hover:text-primary">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.64-1.03-5.12-2.9-6.98A9.82 9.82 0 0 0 12.04 2Zm5.8 14.14c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.11.11-1.79-.11-.41-.13-.94-.3-1.62-.6-2.85-1.23-4.7-4.1-4.84-4.29-.14-.19-1.16-1.54-1.16-2.94s.73-2.09.99-2.38c.26-.28.56-.35.75-.35h.53c.17 0 .4-.03.62.47.24.55.8 1.9.87 2.04.07.14.11.3.02.49-.09.19-.14.3-.27.46-.14.16-.29.36-.41.48-.14.14-.28.29-.12.57.16.28.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.24 1.38.28.14.44.12.6-.07.16-.19.68-.79.87-1.06.19-.28.38-.23.63-.14.26.09 1.63.77 1.91.91.28.14.46.21.53.33.07.12.07.68-.17 1.36Z" fill="currentColor" /></svg>
+              </a>
+              <a href="#" aria-label="Copiar enlace" class="flex h-9 w-9 items-center justify-center rounded-full border border-border text-text-muted transition hover:border-primary hover:text-primary">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" /></svg>
+              </a>
+            </div>
+          </div>
+
+          <!--
+            Cuerpo de la noticia: clase `prose` (plugin de tipografía de
+            Tailwind). Esta plantilla es la que comparten TODOS los posts de
+            noticias — títulos, párrafos, listas, citas e imágenes dentro de
+            `cuerpo` quedan con buen estilo automáticamente, sin clases por
+            elemento. Solo cambia el contenido, nunca la estructura de acá.
+          -->
+          <div class="prose prose-lg mt-8 max-w-none">
+            <p class="lead">
+              La Facultad de Administración organizó un taller práctico de finanzas dirigido a estudiantes
+              con proyectos de emprendimiento propios, con la participación de especialistas invitados del
+              sector financiero regional.
+            </p>
+
+            <h2>¿Qué se trabajó en el taller?</h2>
+            <p>Durante la jornada, los participantes trabajaron con herramientas concretas para ordenar sus finanzas desde el primer día:</p>
+            <ul>
+              <li>Elaboración de presupuestos</li>
+              <li>Control de flujo de caja</li>
+              <li>Opciones de acceso a financiamiento para negocios en etapa inicial</li>
+            </ul>
+            <p>La actividad se desarrolló en modalidad de taller, con ejercicios prácticos sobre casos reales de emprendimientos locales.</p>
+
+            <blockquote>
+              <p>Los emprendedores necesitan herramientas concretas para ordenar sus finanzas desde el primer día, no solo teoría.</p>
+            </blockquote>
+            <p class="!mt-2 text-sm text-text-muted">— Facilitadora del taller</p>
+
+            <figure class="not-prose">
+              <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <img
+                  src="../assets/img/noticias/noticia-taller-finanzas-2.jpg"
+                  alt="Dos asistentes celebrando frente a una pizarra con gráficos financieros"
+                  class="h-48 w-full rounded-lg object-cover"
+                  loading="lazy"
+                />
+                <img
+                  src="../assets/img/noticias/noticia-taller-finanzas-3.jpg"
+                  alt="Grupo de participantes con laptops durante la sesión del taller"
+                  class="h-48 w-full rounded-lg object-cover"
+                  loading="lazy"
+                />
+              </div>
+              <figcaption class="mt-2 text-sm text-text-muted">
+                De izquierda a derecha: participantes celebrando al cierre de un ejercicio, y grupo de trabajo durante la sesión.
+              </figcaption>
+            </figure>
+
+            <h2>Próximas actividades</h2>
+            <p>La facultad tiene previsto repetir este tipo de talleres de forma periódica, como parte de su estrategia de vínculo con la comunidad emprendedora de la región.</p>
+          </div>
+
+          <a href="noticias.html" class="mt-10 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:text-primary-dark">
+            ← Volver a Noticias
+          </a>
+        </div>
+      </article>
+
+      <!-- Más noticias -->
+      <section class="border-t border-border bg-surface py-12 sm:py-14">
+        <div class="page-container">
+          <h2 class="font-heading text-xl font-semibold text-text">Más noticias</h2>
+
+          <div class="mt-6 grid gap-6 sm:grid-cols-3">
+            <article class="group overflow-hidden rounded-lg border-y border-r border-l-4 border-border bg-bg shadow-sm transition hover:shadow-md" style="border-left-color:#6B7688">
+              <img src="../assets/img/noticias/noticia-concurso-estudiantes.jpg" alt="Egresadas celebrando con birretes en alto frente a un edificio universitario" class="h-36 w-full object-cover" loading="lazy" />
+              <div class="p-4">
+                <time class="text-xs text-text-muted">24 jun. 2026</time>
+                <h3 class="mt-1 font-heading text-sm font-semibold text-text transition group-hover:text-primary">Estudiantes destacan en concurso interuniversitario</h3>
+                <a href="noticias.html" class="mt-2 inline-block text-sm font-semibold text-primary hover:text-primary-dark">Leer más →</a>
+              </div>
+            </article>
+
+            <article class="group overflow-hidden rounded-lg border-y border-r border-l-4 border-border bg-bg shadow-sm transition hover:shadow-md" style="border-left-color:#1B873F">
+              <img src="../assets/img/noticias/noticia-convenio-practicas.jpg" alt="Apretón de manos entre dos representantes de organizaciones" class="h-36 w-full object-cover" loading="lazy" />
+              <div class="p-4">
+                <time class="text-xs text-text-muted">20 jun. 2026</time>
+                <h3 class="mt-1 font-heading text-sm font-semibold text-text transition group-hover:text-primary">Convenio para prácticas pre-profesionales</h3>
+                <a href="noticias.html" class="mt-2 inline-block text-sm font-semibold text-primary hover:text-primary-dark">Leer más →</a>
+              </div>
+            </article>
+
+            <article class="group overflow-hidden rounded-lg border-y border-r border-l-4 border-border bg-bg shadow-sm transition hover:shadow-md" style="border-left-color:#0B3D91">
+              <img src="../assets/img/noticias/noticia-laboratorio-computo.jpg" alt="Estudiantes trabajando en computadoras dentro de un laboratorio de cómputo" class="h-36 w-full object-cover" loading="lazy" />
+              <div class="p-4">
+                <time class="text-xs text-text-muted">10 jun. 2026</time>
+                <h3 class="mt-1 font-heading text-sm font-semibold text-text transition group-hover:text-primary">Facultad renueva equipos del laboratorio de cómputo</h3>
+                <a href="noticias.html" class="mt-2 inline-block text-sm font-semibold text-primary hover:text-primary-dark">Leer más →</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <site-footer></site-footer>
+    <chatbot-widget></chatbot-widget>
+    <color-picker-tool></color-picker-tool>
+
+    <script src="../js/theme.js"></script>
+    <script src="../js/site-paths.js"></script>
+    <script src="../components/header.js"></script>
+    <script src="../components/footer.js"></script>
+    <script src="../components/chatbot-widget.js"></script>
+    <script src="../components/color-picker.js"></script>
+  </body>
+</html>

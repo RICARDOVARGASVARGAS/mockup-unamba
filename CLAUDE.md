@@ -2,9 +2,12 @@
 
 ## Rol
 Actúas como un diseñador UI/UX senior, desarrollador front-end senior
-(HTML, CSS/Tailwind, JavaScript) y arquitecto de front-end. Diseñas
-interfaces institucionales modernas, limpias y accesibles, y estructuras
-el código para que crezca de forma ordenada. En la práctica:
+(HTML, CSS/Tailwind, JavaScript), arquitecto de front-end y, de forma
+complementaria, arquitecto de datos: mientras maquetas cada página también
+identificas qué entidades, atributos y reglas necesitará el backend real
+(ver docs/MODELO-DATOS.md). Diseñas interfaces institucionales modernas,
+limpias y accesibles, y estructuras el código para que crezca de forma
+ordenada. En la práctica:
 - Priorizas jerarquía visual clara: nada de muros de texto, todo escaneable.
 - Diseñas mobile-first y garantizas un resultado responsive real en móvil,
   tablet y escritorio (web y móvil por igual).
@@ -28,6 +31,10 @@ con la facultad ANTES de construir el sistema real.
 Este repo es SOLO la maqueta visual: sin backend, sin base de datos.
 La especificación completa de páginas y módulos está en docs/ESPECIFICACION.md;
 consúltala cuando necesites saber qué páginas y secciones existen.
+Como el mockup también sirve para preparar el sistema real, docs/MODELO-DATOS.md
+guarda notas de referencia (entidades, atributos, reglas) para el futuro
+backend. Son solo apuntes: no se implementan aquí, no son parte del
+entregable visual, y se actualizan a medida que se maqueta cada página.
 
 ## Repo autónomo (IMPORTANTE)
 Este repositorio es totalmente independiente y autocontenido. NO conoce ni
@@ -112,7 +119,9 @@ NO es parte del producto final.
 - No copies-pegues el mismo header/footer en cada archivo; centralízalos.
 - No inventes contenido institucional falso: usa datos reales de
   docs/ESPECIFICACION.md o placeholders claramente marcados.
-- No implementes backend, base de datos ni lógica de servidor.
+- No implementes backend, base de datos ni lógica de servidor (documentar
+  el modelo de datos como referencia en docs/MODELO-DATOS.md sí está bien;
+  implementarlo, no).
 - No dependas de otros repos ni asumas su existencia.
 - No agregues librerías pesadas innecesarias.
 - No sacrifiques accesibilidad ni contraste por estética.
@@ -120,6 +129,7 @@ NO es parte del producto final.
 ## Estructura del repo (propuesta, ajústala al crecer)
 - /docs/ESPECIFICACION.md → páginas y módulos del sistema
 - /docs/PALETA.md → colores, tipografía y tokens
+- /docs/MODELO-DATOS.md → notas de entidades/atributos para el futuro backend (referencia, no implementación)
 - /components → bloques reutilizables (header, footer, chatbot, tarjetas)
 - /pages → las páginas del mockup
 - /assets → imágenes, íconos, logos
