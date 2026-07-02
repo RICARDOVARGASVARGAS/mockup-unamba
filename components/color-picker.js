@@ -120,11 +120,6 @@ class ColorPickerTool extends HTMLElement {
     const feedback = this.querySelector("[data-copy-feedback]");
     const inputs = this.querySelectorAll("[data-color-input]");
 
-    const defaults = {
-      "--color-primary": readCssVar("--color-primary"),
-      "--color-accent": readCssVar("--color-accent"),
-    };
-
     const syncDisplays = () => {
       inputs.forEach((input) => {
         const varName = input.dataset.colorInput;

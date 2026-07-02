@@ -23,15 +23,19 @@ body {
 /* Custom elements son inline por defecto: sin esto no ocupan el ancho completo */
 site-header,
 site-footer,
+chatbot-widget,
+color-picker-tool,
 main {
   display: block;
   width: 100%;
 }
 
-/* Contenedor horizontal reutilizable: ancho completo con márgenes seguros */
+/* Contenedor horizontal reutilizable: ancho completo con márgenes seguros,
+   con tope para que el contenido no se estire sin límite en monitores muy
+   anchos (proyector, pantallas 4K en la presentación a la facultad). */
 .page-container {
   width: 100%;
-  max-width: 100%;
+  max-width: 96rem; /* 1536px, alineado al breakpoint 2xl usado en el header */
   margin-inline: auto;
   padding-inline: var(--space-4);
 }
