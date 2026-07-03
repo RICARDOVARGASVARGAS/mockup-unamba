@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Documentos — Facultad de Administración UNAMBA (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <link rel="stylesheet" href="../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <site-header></site-header>
+
+    <main id="main-content" class="w-full">
+      <!-- Encabezado de sección -->
+      <section class="bg-primary text-onPrimary">
+        <div class="page-container py-10 sm:py-12">
+          <nav aria-label="Ruta de navegación" class="flex flex-wrap items-center gap-2 text-sm text-onPrimary/70">
+            <a href="../index.html" class="transition hover:text-accent">Inicio</a>
+            <span aria-hidden="true">/</span>
+            <span class="text-onPrimary/70">Servicios</span>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page" class="text-onPrimary">Documentos</span>
+          </nav>
+          <h1 class="mt-3 font-heading text-3xl font-bold sm:text-4xl">Repositorio de Documentos</h1>
+          <p class="mt-2 max-w-2xl text-onPrimary/80">Reglamentos, sílabos, planes de estudio y resoluciones, organizados y siempre disponibles — sin depender de una carpeta de Drive.</p>
+        </div>
+      </section>
+
+      <section class="page-container py-12 sm:py-16">
+        <!-- Buscador -->
+        <label class="relative block max-w-lg">
+          <span class="sr-only">Buscar documento por nombre</span>
+          <svg class="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
+          <input
+            type="search"
+            data-doc-search
+            placeholder="Buscar por nombre del documento…"
+            class="h-11 w-full rounded-md border border-border bg-surface pl-10 pr-4 text-sm text-text placeholder:text-text-muted focus:border-primary focus:outline-none"
+          />
+        </label>
+
+        <!-- Filtros como desplegables (mismo patrón que pages/docentes.html) -->
+        <div class="mt-4 flex flex-wrap gap-3">
+          <details class="group relative" data-doc-dropdown>
+            <summary class="flex w-44 cursor-pointer list-none items-center justify-between gap-2 rounded-md border border-border bg-surface px-4 py-2.5 text-sm font-medium text-text transition hover:border-primary [&::-webkit-details-marker]:hidden">
+              <span><span class="text-text-muted">Año:</span> <span data-doc-dropdown-label>Todos</span></span>
+              <svg class="h-4 w-4 shrink-0 text-text-muted transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+            </summary>
+            <ul class="absolute left-0 top-full z-10 mt-2 w-44 rounded-lg border border-border bg-surface p-2 shadow-lg" role="listbox" aria-label="Filtrar por año">
+              <li><button type="button" data-doc-filter-anio="todos" data-label="Todos" aria-selected="true" class="block w-full rounded-md px-3 py-2 text-left text-sm text-text transition hover:bg-surface-2 hover:text-primary aria-selected:bg-primary/10 aria-selected:font-semibold aria-selected:text-primary">Todos</button></li>
+              <li><button type="button" data-doc-filter-anio="2026" data-label="2026" aria-selected="false" class="block w-full rounded-md px-3 py-2 text-left text-sm text-text transition hover:bg-surface-2 hover:text-primary aria-selected:bg-primary/10 aria-selected:font-semibold aria-selected:text-primary">2026</button></li>
+              <li><button type="button" data-doc-filter-anio="2025" data-label="2025" aria-selected="false" class="block w-full rounded-md px-3 py-2 text-left text-sm text-text transition hover:bg-surface-2 hover:text-primary aria-selected:bg-primary/10 aria-selected:font-semibold aria-selected:text-primary">2025</button></li>
+              <li><button type="button" data-doc-filter-anio="2024" data-label="2024" aria-selected="false" class="block w-full rounded-md px-3 py-2 text-left text-sm text-text transition hover:bg-surface-2 hover:text-primary aria-selected:bg-primary/10 aria-selected:font-semibold aria-selected:text-primary">2024</button></li>
+              <li><button type="button" data-doc-filter-anio="2020" data-label="2020" aria-selected="false" class="block w-full rounded-md px-3 py-2 text-left text-sm text-text transition hover:bg-surface-2 hover:text-primary aria-selected:bg-primary/10 aria-selected:font-semibold aria-selected:text-primary">2020</button></li>
+            </ul>
+          </details>
+
+          <details class="group relative" data-doc-dropdown>
+            <summary class="flex w-48 cursor-pointer list-none items-center justify-between gap-2 rounded-md border border-border bg-surface px-4 py-2.5 text-sm font-medium text-text transition hover:border-primary [&::-webkit-details-marker]:hidden">
+              <span><span class="text-text-muted">Semestre:</span> <span data-doc-dropdown-label>Todos</span></span>
+              <svg class="h-4 w-4 shrink-0 text-text-muted transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+            </summary>
+            <ul class="absolute left-0 top-full z-10 mt-2 w-48 rounded-lg border border-border bg-surface p-2 shadow-lg" role="listbox" aria-label="Filtrar por semestre">
+              <li><button type="button" data-doc-filter-semestre="todos" data-label="Todos" aria-selected="true" class="block w-full rounded-md px-3 py-2 text-left text-sm text-text transition hover:bg-surface-2 hover:text-primary aria-selected:bg-primary/10 aria-selected:font-semibold aria-selected:text-primary">Todos</button></li>
+              <li><button type="button" data-doc-filter-semestre="I" data-label="Semestre I" aria-selected="false" class="block w-full rounded-md px-3 py-2 text-left text-sm text-text transition hover:bg-surface-2 hover:text-primary aria-selected:bg-primary/10 aria-selected:font-semibold aria-selected:text-primary">Semestre I</button></li>
+              <li><button type="button" data-doc-filter-semestre="II" data-label="Semestre II" aria-selected="false" class="block w-full rounded-md px-3 py-2 text-left text-sm text-text transition hover:bg-surface-2 hover:text-primary aria-selected:bg-primary/10 aria-selected:font-semibold aria-selected:text-primary">Semestre II</button></li>
+            </ul>
+          </details>
+
+          <details class="group relative" data-doc-dropdown>
+            <summary class="flex w-60 cursor-pointer list-none items-center justify-between gap-2 rounded-md border border-border bg-surface px-4 py-2.5 text-sm font-medium text-text transition hover:border-primary [&::-webkit-details-marker]:hidden">
+              <span><span class="text-text-muted">Sede:</span> <span data-doc-dropdown-label>Todas</span></span>
+              <svg class="h-4 w-4 shrink-0 text-text-muted transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+            </summary>
+            <ul class="absolute left-0 top-full z-10 mt-2 w-60 rounded-lg border border-border bg-surface p-2 shadow-lg" role="listbox" aria-label="Filtrar por sede">
+              <li><button type="button" data-doc-filter-sede="todos" data-label="Todas" aria-selected="true" class="block w-full rounded-md px-3 py-2 text-left text-sm text-text transition hover:bg-surface-2 hover:text-primary aria-selected:bg-primary/10 aria-selected:font-semibold aria-selected:text-primary">Todas las sedes</button></li>
+              <li><button type="button" data-doc-filter-sede="abancay" data-label="Abancay" aria-selected="false" class="block w-full rounded-md px-3 py-2 text-left text-sm text-text transition hover:bg-surface-2 hover:text-primary aria-selected:bg-primary/10 aria-selected:font-semibold aria-selected:text-primary">Abancay</button></li>
+              <li><button type="button" data-doc-filter-sede="cotabambas-tambobamba" data-label="Cotabambas-Tambobamba" aria-selected="false" class="block w-full rounded-md px-3 py-2 text-left text-sm text-text transition hover:bg-surface-2 hover:text-primary aria-selected:bg-primary/10 aria-selected:font-semibold aria-selected:text-primary">Cotabambas-Tambobamba</button></li>
+            </ul>
+          </details>
+        </div>
+
+        <p data-doc-empty class="mt-10 hidden text-text-muted">No hay documentos que coincidan con la búsqueda o los filtros.</p>
+
+        <!-- Agrupado por tipo de documento (TipoDocumento) -->
+        <div data-doc-groups class="mt-8 flex flex-col gap-10">
+          <div data-doc-group>
+            <h2 class="font-heading text-base font-semibold text-text">Reglamentos</h2>
+            <div class="mt-3 divide-y divide-border overflow-hidden rounded-lg border border-border bg-surface">
+              <a href="#" data-doc-item data-anio="2025" data-semestre="" data-sede="" data-nombre="reglamento de grados y títulos" class="flex items-center gap-4 p-4 transition hover:bg-surface-2">
+                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>
+                </span>
+                <div class="min-w-0 flex-1">
+                  <p class="line-clamp-2 text-sm font-medium text-text">Reglamento de Grados y Títulos</p>
+                  <p class="mt-0.5 text-xs text-text-muted">2025 · Todas las sedes · 1.4 MB</p>
+                </div>
+                <span class="shrink-0 text-xs font-semibold text-primary">Descargar ↓</span>
+              </a>
+              <a href="#" data-doc-item data-anio="2024" data-semestre="" data-sede="" data-nombre="reglamento de prácticas pre-profesionales" class="flex items-center gap-4 p-4 transition hover:bg-surface-2">
+                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>
+                </span>
+                <div class="min-w-0 flex-1">
+                  <p class="line-clamp-2 text-sm font-medium text-text">Reglamento de Prácticas Pre-profesionales</p>
+                  <p class="mt-0.5 text-xs text-text-muted">2024 · Todas las sedes · 980 KB</p>
+                </div>
+                <span class="shrink-0 text-xs font-semibold text-primary">Descargar ↓</span>
+              </a>
+            </div>
+          </div>
+
+          <div data-doc-group>
+            <h2 class="font-heading text-base font-semibold text-text">Sílabos</h2>
+            <div class="mt-3 divide-y divide-border overflow-hidden rounded-lg border border-border bg-surface">
+              <a href="#" data-doc-item data-anio="2026" data-semestre="I" data-sede="abancay" data-nombre="sílabo de contabilidad i" class="flex items-center gap-4 p-4 transition hover:bg-surface-2">
+                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>
+                </span>
+                <div class="min-w-0 flex-1">
+                  <p class="line-clamp-2 text-sm font-medium text-text">Sílabo de Contabilidad I</p>
+                  <p class="mt-0.5 text-xs text-text-muted">2026 · Semestre I · Sede Abancay · 420 KB</p>
+                </div>
+                <span class="shrink-0 text-xs font-semibold text-primary">Descargar ↓</span>
+              </a>
+              <a href="#" data-doc-item data-anio="2026" data-semestre="I" data-sede="cotabambas-tambobamba" data-nombre="sílabo de gestión financiera" class="flex items-center gap-4 p-4 transition hover:bg-surface-2">
+                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>
+                </span>
+                <div class="min-w-0 flex-1">
+                  <p class="line-clamp-2 text-sm font-medium text-text">Sílabo de Gestión Financiera</p>
+                  <p class="mt-0.5 text-xs text-text-muted">2026 · Semestre I · Sede Cotabambas-Tambobamba · 395 KB</p>
+                </div>
+                <span class="shrink-0 text-xs font-semibold text-primary">Descargar ↓</span>
+              </a>
+              <a href="#" data-doc-item data-anio="2025" data-semestre="II" data-sede="abancay" data-nombre="sílabo de marketing ii" class="flex items-center gap-4 p-4 transition hover:bg-surface-2">
+                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>
+                </span>
+                <div class="min-w-0 flex-1">
+                  <p class="line-clamp-2 text-sm font-medium text-text">Sílabo de Marketing II</p>
+                  <p class="mt-0.5 text-xs text-text-muted">2025 · Semestre II · Sede Abancay · 410 KB</p>
+                </div>
+                <span class="shrink-0 text-xs font-semibold text-primary">Descargar ↓</span>
+              </a>
+            </div>
+          </div>
+
+          <div data-doc-group>
+            <h2 class="font-heading text-base font-semibold text-text">Planes y Mallas Curriculares</h2>
+            <div class="mt-3 divide-y divide-border overflow-hidden rounded-lg border border-border bg-surface">
+              <a href="#" data-doc-item data-anio="2026" data-semestre="" data-sede="" data-nombre="plan de estudios 2026" class="flex items-center gap-4 p-4 transition hover:bg-surface-2">
+                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>
+                </span>
+                <div class="min-w-0 flex-1">
+                  <p class="line-clamp-2 text-sm font-medium text-text">Plan de Estudios 2026</p>
+                  <p class="mt-0.5 text-xs text-text-muted">2026 · Todas las sedes · 2.1 MB</p>
+                </div>
+                <span class="shrink-0 text-xs font-semibold text-primary">Descargar ↓</span>
+              </a>
+              <a href="#" data-doc-item data-anio="2020" data-semestre="" data-sede="" data-nombre="malla curricular 2020" class="flex items-center gap-4 p-4 transition hover:bg-surface-2">
+                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>
+                </span>
+                <div class="min-w-0 flex-1">
+                  <p class="line-clamp-2 text-sm font-medium text-text">Malla Curricular 2020</p>
+                  <p class="mt-0.5 text-xs text-text-muted">2020 · Todas las sedes · 1.8 MB</p>
+                </div>
+                <span class="shrink-0 text-xs font-semibold text-primary">Descargar ↓</span>
+              </a>
+            </div>
+          </div>
+
+          <div data-doc-group>
+            <h2 class="font-heading text-base font-semibold text-text">Resoluciones</h2>
+            <div class="mt-3 divide-y divide-border overflow-hidden rounded-lg border border-border bg-surface">
+              <a href="#" data-doc-item data-anio="2026" data-semestre="" data-sede="" data-nombre="n.° 045-2026-unamba-fa: cronograma académico 2026-ii" class="flex items-center gap-4 p-4 transition hover:bg-surface-2">
+                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>
+                </span>
+                <div class="min-w-0 flex-1">
+                  <p class="line-clamp-2 text-sm font-medium text-text"><span class="font-semibold">N.° 045-2026-UNAMBA-FA</span> — Cronograma académico 2026-II</p>
+                  <p class="mt-0.5 text-xs text-text-muted">2026 · Todas las sedes · 310 KB</p>
+                </div>
+                <span class="shrink-0 text-xs font-semibold text-primary">Descargar ↓</span>
+              </a>
+            </div>
+            <p class="mt-2 text-xs text-text-muted">Este mismo documento también aparece en <a href="comunicados.html" class="font-semibold text-primary hover:text-primary-dark">Comunicados</a> el día que se publicó — aquí queda archivado de forma permanente.</p>
+          </div>
+
+          <div data-doc-group>
+            <h2 class="font-heading text-base font-semibold text-text">Documentos de Gestión</h2>
+            <div class="mt-3 divide-y divide-border overflow-hidden rounded-lg border border-border bg-surface">
+              <a href="#" data-doc-item data-anio="2026" data-semestre="" data-sede="" data-nombre="plan operativo institucional (poi) 2026" class="flex items-center gap-4 p-4 transition hover:bg-surface-2">
+                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>
+                </span>
+                <div class="min-w-0 flex-1">
+                  <p class="line-clamp-2 text-sm font-medium text-text">Plan Operativo Institucional (POI) 2026</p>
+                  <p class="mt-0.5 text-xs text-text-muted">2026 · Todas las sedes · 1.1 MB</p>
+                </div>
+                <span class="shrink-0 text-xs font-semibold text-primary">Descargar ↓</span>
+              </a>
+              <a href="#" data-doc-item data-anio="2025" data-semestre="" data-sede="" data-nombre="manual de organización y funciones (mof)" class="flex items-center gap-4 p-4 transition hover:bg-surface-2">
+                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>
+                </span>
+                <div class="min-w-0 flex-1">
+                  <p class="line-clamp-2 text-sm font-medium text-text">Manual de Organización y Funciones (MOF)</p>
+                  <p class="mt-0.5 text-xs text-text-muted">2025 · Todas las sedes · 890 KB</p>
+                </div>
+                <span class="shrink-0 text-xs font-semibold text-primary">Descargar ↓</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <site-footer></site-footer>
+    <chatbot-widget></chatbot-widget>
+    <color-picker-tool></color-picker-tool>
+
+    <script src="../js/theme.js"></script>
+    <script src="../js/site-paths.js"></script>
+    <script src="../components/header.js"></script>
+    <script src="../components/footer.js"></script>
+    <script src="../components/chatbot-widget.js"></script>
+    <script src="../components/color-picker.js"></script>
+    <script src="../js/documentos.js"></script>
+  </body>
+</html>

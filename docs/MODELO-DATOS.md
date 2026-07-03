@@ -163,3 +163,27 @@ Perfil público informativo — no requiere cuenta de acceso al sistema.
 Obs: en el listado público solo se muestran docentes con `estado = activo` (o `licencia`, con una nota visible de "actualmente de licencia" — a decidir en diseño). `borrador` y `retirado` nunca se muestran, pero el registro no se borra (memoria institucional: quién fue docente, cuándo).
 
 Obs: orden de listado = `orden` ascendente primero; entre quienes no tengan `orden` (o empaten), por `apellido_paterno` alfabético. Así, registrar un docente al final no lo manda al final de la página — su posición se define aparte, a mano.
+
+## TipoDocumento
+
+| Campo  | Nota                                                        |
+|--------|----------------------------------------------------------------|
+| id     |                                                              |
+| nombre | Reglamentos, Sílabos, Planes y Mallas Curriculares, Resoluciones, Documentos de Gestión |
+
+## Documento
+
+| Campo               | Nota                                                      |
+|---------------------|---------------------------------------------------------------|
+| id                  |                                                            |
+| titulo              |                                                            |
+| tipo_documento_id   | FK → TipoDocumento                                        |
+| anio                |                                                            |
+| semestre            | enum: I / II, opcional (solo aplica a sílabos y planes)   |
+| sede_id             | FK → Sede, opcional (vacío = aplica a todas las sedes)    |
+| archivo_id          | FK → Archivo                                              |
+| fecha_publicacion   |                                                            |
+| estado              | enum: borrador / publicado                                |
+| autor_id            | FK → Usuario                                              |
+
+Obs: "Resoluciones" existe como tipo aquí y también como tipo en `Comunicado`, a propósito — no es error de diseño. `Comunicado` es el feed cronológico (se anuncia una vez, se archiva por mes); `Documento` es el repositorio permanente, organizado para buscar ("necesito el reglamento vigente"), no para enterarse de algo nuevo. Una misma resolución puede tener una fila en cada tabla, ambas apuntando al mismo `Archivo` — no se duplica el PDF, solo la forma de encontrarlo.
