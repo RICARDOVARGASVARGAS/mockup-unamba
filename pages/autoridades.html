@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Autoridades — Facultad de Administración UNAMBA (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <link rel="stylesheet" href="../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <site-header></site-header>
+
+    <main id="main-content" class="w-full">
+      <!-- Encabezado de sección -->
+      <section class="bg-primary text-onPrimary">
+        <div class="page-container py-10 sm:py-12">
+          <nav aria-label="Ruta de navegación" class="flex flex-wrap items-center gap-2 text-sm text-onPrimary/70">
+            <a href="../index.html" class="transition hover:text-accent">Inicio</a>
+            <span aria-hidden="true">/</span>
+            <span class="text-onPrimary/70">Nosotros</span>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page" class="text-onPrimary">Autoridades</span>
+          </nav>
+          <h1 class="mt-3 font-heading text-3xl font-bold sm:text-4xl">Autoridades y Organización</h1>
+          <p class="mt-2 max-w-2xl text-onPrimary/80">Gestión actual de la Facultad de Administración: autoridades, Consejo de Facultad y comités.</p>
+        </div>
+      </section>
+
+      <!-- Autoridades unipersonales: Decano, Directora de Escuela, Director de Departamento -->
+      <section class="page-container py-12 sm:py-16">
+        <h2 class="font-heading text-xl font-semibold text-text">Autoridades</h2>
+
+        <div class="mt-6 grid gap-6 sm:grid-cols-3">
+          <!-- Decano: destacado, es la máxima autoridad de la facultad -->
+          <article class="overflow-hidden rounded-xl border-2 border-primary bg-surface shadow-sm sm:col-span-3 sm:flex sm:items-stretch lg:col-span-1 lg:flex-col">
+            <div class="relative aspect-square shrink-0 overflow-hidden bg-surface-2 sm:w-56 lg:w-full lg:aspect-[4/5]">
+              <img src="../assets/img/docentes/docente-3.jpg" alt="Retrato del Mg. Carlos Huamán Quispe" class="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+            </div>
+            <div class="flex flex-1 flex-col p-5">
+              <span class="inline-flex w-fit items-center rounded-full bg-primary px-2.5 py-1 text-xs font-semibold text-onPrimary">Decano</span>
+              <h3 class="mt-2 font-heading text-lg font-semibold text-text">Mg. Carlos Huamán Quispe</h3>
+              <p class="mt-0.5 text-sm text-text-muted">Gestión 2024 – actualidad</p>
+              <div class="mt-auto flex flex-col gap-1.5 pt-4 text-sm">
+                <a href="docentes.html" class="font-semibold text-primary hover:text-primary-dark">Ver perfil de docente →</a>
+                <a href="documentos.html" class="text-text-muted hover:text-primary">Ver resolución de designación ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="overflow-hidden rounded-xl border border-border bg-surface shadow-sm">
+            <div class="relative aspect-[4/5] overflow-hidden bg-surface-2">
+              <img src="../assets/img/docentes/docente-2.jpg" alt="Retrato de la Dra. Rosa Illanes Cárdenas" class="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+            </div>
+            <div class="p-4">
+              <span class="inline-flex w-fit items-center rounded-full border border-border px-2.5 py-1 text-xs font-semibold text-text">Directora de Escuela</span>
+              <h3 class="mt-2 font-heading text-base font-semibold text-text">Dra. Rosa Illanes Cárdenas</h3>
+              <p class="mt-0.5 text-sm text-text-muted">Gestión 2025 – actualidad</p>
+              <div class="mt-3 flex flex-col gap-1.5 text-sm">
+                <a href="docentes.html" class="font-semibold text-primary hover:text-primary-dark">Ver perfil de docente →</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="overflow-hidden rounded-xl border border-border bg-surface shadow-sm">
+            <div class="relative aspect-[4/5] overflow-hidden bg-surface-2">
+              <img src="../assets/img/docentes/docente-1.jpg" alt="Retrato del Mg. Jorge Ttito Mamani" class="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+            </div>
+            <div class="p-4">
+              <span class="inline-flex w-fit items-center rounded-full border border-border px-2.5 py-1 text-xs font-semibold text-text">Director de Departamento Académico</span>
+              <h3 class="mt-2 font-heading text-base font-semibold text-text">Mg. Jorge Ttito Mamani</h3>
+              <p class="mt-0.5 text-sm text-text-muted">Gestión 2025 – 2027</p>
+              <div class="mt-3 flex flex-col gap-1.5 text-sm">
+                <a href="docentes.html" class="font-semibold text-primary hover:text-primary-dark">Ver perfil de docente →</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Consejo de Facultad: cuerpo colegiado, incluye representación estudiantil -->
+      <section class="border-t border-border bg-surface py-12 sm:py-16">
+        <div class="page-container">
+          <h2 class="font-heading text-xl font-semibold text-text">Consejo de Facultad</h2>
+          <p class="mt-1 max-w-2xl text-sm text-text-muted">Órgano de gobierno de la facultad, integrado por docentes de las tres categorías y representantes estudiantiles, según la Ley Universitaria.</p>
+
+          <ul class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <li class="flex items-center gap-3 rounded-lg border border-border bg-bg p-3">
+              <img src="../assets/img/docentes/docente-3.jpg" alt="" class="h-11 w-11 shrink-0 rounded-full object-cover" loading="lazy" />
+              <div class="min-w-0">
+                <p class="truncate text-sm font-medium text-text">Mg. Carlos Huamán Quispe</p>
+                <p class="text-xs text-text-muted">Presidente</p>
+              </div>
+            </li>
+            <li class="flex items-center gap-3 rounded-lg border border-border bg-bg p-3">
+              <img src="../assets/img/docentes/docente-2.jpg" alt="" class="h-11 w-11 shrink-0 rounded-full object-cover" loading="lazy" />
+              <div class="min-w-0">
+                <p class="truncate text-sm font-medium text-text">Dra. Rosa Illanes Cárdenas</p>
+                <p class="text-xs text-text-muted">Miembro</p>
+              </div>
+            </li>
+            <li class="flex items-center gap-3 rounded-lg border border-border bg-bg p-3">
+              <img src="../assets/img/docentes/docente-6.jpg" alt="" class="h-11 w-11 shrink-0 rounded-full object-cover" loading="lazy" />
+              <div class="min-w-0">
+                <p class="truncate text-sm font-medium text-text">Mg. Miriam Condori Paucar</p>
+                <p class="text-xs text-text-muted">Secretaria</p>
+              </div>
+            </li>
+            <li class="flex items-center gap-3 rounded-lg border border-border bg-bg p-3">
+              <img src="../assets/img/docentes/docente-4.jpg" alt="" class="h-11 w-11 shrink-0 rounded-full object-cover" loading="lazy" />
+              <div class="min-w-0">
+                <p class="truncate text-sm font-medium text-text">Mg. Katherine Vargas Loayza</p>
+                <p class="text-xs text-text-muted">Miembro</p>
+              </div>
+            </li>
+            <!-- Representantes estudiantiles: sin docente_id, sin foto — avatar con iniciales -->
+            <li class="flex items-center gap-3 rounded-lg border border-border bg-bg p-3">
+              <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary" aria-hidden="true">DF</span>
+              <div class="min-w-0">
+                <p class="truncate text-sm font-medium text-text">Diego Farfán Rojas</p>
+                <p class="text-xs text-text-muted">Representante estudiantil</p>
+              </div>
+            </li>
+            <li class="flex items-center gap-3 rounded-lg border border-border bg-bg p-3">
+              <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary" aria-hidden="true">XC</span>
+              <div class="min-w-0">
+                <p class="truncate text-sm font-medium text-text">Xiomara Ccorimanya Huillca</p>
+                <p class="text-xs text-text-muted">Representante estudiantil</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Comités y comisiones: varios cuerpos, se listan como acordeón para no saturar la página -->
+      <section class="page-container py-12 sm:py-16">
+        <h2 class="font-heading text-xl font-semibold text-text">Comités y Comisiones</h2>
+        <p class="mt-1 max-w-2xl text-sm text-text-muted">Haz clic en un comité para ver su función, resolución de conformación y miembros.</p>
+
+        <div class="mt-6 flex flex-col gap-3">
+          <details class="group rounded-lg border border-border bg-surface open:shadow-sm" data-committee>
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 p-4 [&::-webkit-details-marker]:hidden">
+              <div>
+                <p class="font-heading text-base font-semibold text-text">Comité de Currícula</p>
+                <p class="mt-0.5 text-sm text-text-muted">Revisa y actualiza el plan de estudios y la malla curricular.</p>
+              </div>
+              <svg class="h-5 w-5 shrink-0 text-text-muted transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+            </summary>
+            <div class="border-t border-border p-4">
+              <p class="text-xs font-medium text-text-muted">Periodo: 2024 – actualidad</p>
+              <a href="documentos.html" class="mt-1 inline-block text-sm font-semibold text-primary hover:text-primary-dark">Ver resolución de conformación ↗</a>
+              <ul class="mt-4 flex flex-col gap-3">
+                <li class="flex items-center gap-3">
+                  <img src="../assets/img/docentes/docente-2.jpg" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover" loading="lazy" />
+                  <div class="min-w-0"><p class="truncate text-sm font-medium text-text">Dra. Rosa Illanes Cárdenas</p><p class="text-xs text-text-muted">Presidenta</p></div>
+                </li>
+                <li class="flex items-center gap-3">
+                  <img src="../assets/img/docentes/docente-1.jpg" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover" loading="lazy" />
+                  <div class="min-w-0"><p class="truncate text-sm font-medium text-text">Mg. Jorge Ttito Mamani</p><p class="text-xs text-text-muted">Miembro</p></div>
+                </li>
+                <li class="flex items-center gap-3">
+                  <img src="../assets/img/docentes/docente-5.jpg" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover" loading="lazy" />
+                  <div class="min-w-0"><p class="truncate text-sm font-medium text-text">Lic. Percy Aguilar Sotelo</p><p class="text-xs text-text-muted">Miembro</p></div>
+                </li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="group rounded-lg border border-border bg-surface open:shadow-sm" data-committee>
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 p-4 [&::-webkit-details-marker]:hidden">
+              <div>
+                <p class="font-heading text-base font-semibold text-text">Comité de Calidad y Acreditación</p>
+                <p class="mt-0.5 text-sm text-text-muted">Conduce el proceso de autoevaluación con fines de acreditación de la carrera.</p>
+              </div>
+              <svg class="h-5 w-5 shrink-0 text-text-muted transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+            </summary>
+            <div class="border-t border-border p-4">
+              <p class="text-xs font-medium text-text-muted">Periodo: 2025 – actualidad</p>
+              <!-- Sin resolucion_id: comité aún no tiene resolución de conformación cargada -->
+              <p class="mt-1 text-sm text-text-muted">Resolución de conformación: pendiente de publicar.</p>
+              <ul class="mt-4 flex flex-col gap-3">
+                <li class="flex items-center gap-3">
+                  <img src="../assets/img/docentes/docente-3.jpg" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover" loading="lazy" />
+                  <div class="min-w-0"><p class="truncate text-sm font-medium text-text">Mg. Carlos Huamán Quispe</p><p class="text-xs text-text-muted">Presidente</p></div>
+                </li>
+                <li class="flex items-center gap-3">
+                  <img src="../assets/img/docentes/docente-4.jpg" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover" loading="lazy" />
+                  <div class="min-w-0"><p class="truncate text-sm font-medium text-text">Mg. Katherine Vargas Loayza</p><p class="text-xs text-text-muted">Miembro</p></div>
+                </li>
+                <li class="flex items-center gap-3">
+                  <img src="../assets/img/docentes/docente-6.jpg" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover" loading="lazy" />
+                  <div class="min-w-0"><p class="truncate text-sm font-medium text-text">Mg. Miriam Condori Paucar</p><p class="text-xs text-text-muted">Miembro</p></div>
+                </li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="group rounded-lg border border-border bg-surface open:shadow-sm" data-committee>
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 p-4 [&::-webkit-details-marker]:hidden">
+              <div>
+                <p class="font-heading text-base font-semibold text-text">Comisión de Fiscalización y Procesos Administrativos</p>
+                <p class="mt-0.5 text-sm text-text-muted">Atiende denuncias y procesos disciplinarios internos según el reglamento vigente.</p>
+              </div>
+              <svg class="h-5 w-5 shrink-0 text-text-muted transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+            </summary>
+            <div class="border-t border-border p-4">
+              <p class="text-xs font-medium text-text-muted">Periodo: 2023 – 2026</p>
+              <a href="documentos.html" class="mt-1 inline-block text-sm font-semibold text-primary hover:text-primary-dark">Ver resolución de conformación ↗</a>
+              <ul class="mt-4 flex flex-col gap-3">
+                <li class="flex items-center gap-3">
+                  <img src="../assets/img/docentes/docente-1.jpg" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover" loading="lazy" />
+                  <div class="min-w-0"><p class="truncate text-sm font-medium text-text">Mg. Jorge Ttito Mamani</p><p class="text-xs text-text-muted">Presidente</p></div>
+                </li>
+                <li class="flex items-center gap-3">
+                  <img src="../assets/img/docentes/docente-5.jpg" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover" loading="lazy" />
+                  <div class="min-w-0"><p class="truncate text-sm font-medium text-text">Lic. Percy Aguilar Sotelo</p><p class="text-xs text-text-muted">Secretario</p></div>
+                </li>
+                <li class="flex items-center gap-3">
+                  <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary" aria-hidden="true">DF</span>
+                  <div class="min-w-0"><p class="truncate text-sm font-medium text-text">Diego Farfán Rojas</p><p class="text-xs text-text-muted">Representante estudiantil</p></div>
+                </li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    <site-footer></site-footer>
+    <chatbot-widget></chatbot-widget>
+    <color-picker-tool></color-picker-tool>
+
+    <script src="../js/theme.js"></script>
+    <script src="../js/site-paths.js"></script>
+    <script src="../components/header.js"></script>
+    <script src="../components/footer.js"></script>
+    <script src="../components/chatbot-widget.js"></script>
+    <script src="../components/color-picker.js"></script>
+  </body>
+</html>

@@ -187,3 +187,97 @@ Obs: orden de listado = `orden` ascendente primero; entre quienes no tengan `ord
 | autor_id            | FK → Usuario                                              |
 
 Obs: "Resoluciones" existe como tipo aquí y también como tipo en `Comunicado`, a propósito — no es error de diseño. `Comunicado` es el feed cronológico (se anuncia una vez, se archiva por mes); `Documento` es el repositorio permanente, organizado para buscar ("necesito el reglamento vigente"), no para enterarse de algo nuevo. Una misma resolución puede tener una fila en cada tabla, ambas apuntando al mismo `Archivo` — no se duplica el PDF, solo la forma de encontrarlo.
+
+## CargoAutoridad
+
+| Campo  | Nota                                                          |
+|--------|-------------------------------------------------------------------|
+| id     |                                                                |
+| nombre | Decano, Directora de Escuela, Director de Departamento Académico |
+
+## Autoridad
+
+Cargo unipersonal con gestión (a diferencia de `Comite`, que es un cuerpo colegiado con varios miembros).
+
+| Campo         | Nota                                                        |
+|---------------|-----------------------------------------------------------------|
+| id            |                                                              |
+| cargo_id      | FK → CargoAutoridad                                          |
+| docente_id    | FK → Docente — quien ocupa el cargo (un decano es, por ley, un docente principal) |
+| fecha_inicio  | Inicio de la gestión                                         |
+| fecha_fin     | Fin de la gestión, opcional (vacío = en funciones actualmente) |
+| resolucion_id | FK → Documento, opcional (resolución de designación)         |
+| orden         | Posición de aparición (Decano primero, etc.)                |
+
+Obs: no hay campo `estado` — "vigente" se calcula de `fecha_fin IS NULL O fecha_fin >= hoy` (una gestión puede tener fecha de término ya definida, ej. un periodo fijo de 2 años, y seguir vigente hasta que llegue); "concluida" es `fecha_fin < hoy`. No se guarda aparte para evitar que ambos datos queden contradictorios. Así, cuando cambie el decano, no se borra el registro anterior: se le pone `fecha_fin` y se crea una fila nueva — queda el historial de gestiones.
+
+## Comite
+
+Cuerpo colegiado (Consejo de Facultad, comités, comisiones) — mismo campo `funcion`/`resolucion_id` para cualquiera de los dos, tal como pide la especificación.
+
+| Campo         | Nota                                          |
+|---------------|--------------------------------------------------|
+| id            |                                                |
+| nombre        | Ej. "Consejo de Facultad", "Comité de Currícula" |
+| funcion       | Texto breve: para qué existe                  |
+| resolucion_id | FK → Documento, opcional (resolución de conformación) |
+| fecha_inicio  | Inicio del periodo                             |
+| fecha_fin     | Fin del periodo, opcional (vacío = vigente)   |
+
+## ComiteMiembro
+
+| Campo      | Nota                                                          |
+|------------|-------------------------------------------------------------------|
+| id         |                                                                |
+| comite_id  | FK → Comite                                                    |
+| docente_id | FK → Docente, opcional                                        |
+| nombre     | Nombre completo (se guarda siempre, aunque sea docente)       |
+| rol        | Ej. Presidente, Secretario, Miembro, Representante estudiantil |
+| orden      | Posición dentro de la lista del comité                        |
+
+Obs: `docente_id` es opcional porque el Consejo de Facultad incluye representantes estudiantiles por ley, y esos no son docentes — no existe (todavía) una tabla de estudiantes en este mockup. `nombre` se guarda siempre en texto para no depender de un JOIN al mostrar la lista; `docente_id`, cuando existe, solo sirve para enlazar a su foto/ficha en `Docente`.
+
+## LaFacultad
+
+**Tabla singleton** — a diferencia de Noticia/Evento/Docente (catálogos con muchas filas, cada una una noticia distinta), aquí existe **una sola fila para toda la página** "/nosotros". No se "publica contenido nuevo" cada vez, se edita el que ya existe.
+
+| Campo               | Nota                                          |
+|---------------------|---------------------------------------------------|
+| id                  | Fijo en 1 — nunca hay una segunda fila         |
+| resena_historica    | Texto enriquecido                              |
+| mision              | Texto enriquecido                              |
+| vision              | Texto enriquecido                              |
+| organigrama_id      | FK → Archivo, opcional (imagen del organigrama) |
+| actualizado_por     | FK → Usuario                                    |
+| fecha_actualizacion |                                                 |
+
+Obs: la especificación permite organigrama como "imagen o interactivo". La versión interactiva **no necesita tabla propia** — se arma en pantalla leyendo `Autoridad` + `Comite`, que ya existen. Si se deja como imagen simple (`organigrama_id`), es más fácil de mantener oficial/aprobado (documento visado), pero se desactualiza si cambian las autoridades y nadie sube una imagen nueva.
+
+## ValorInstitucional
+
+| Campo       | Nota    |
+|-------------|---------|
+| id          |         |
+| nombre      |         |
+| descripcion |         |
+| orden       |         |
+
+## ObjetivoEducacional
+
+| Campo       | Nota |
+|-------------|------|
+| id          |      |
+| descripcion |      |
+| orden       |      |
+
+## Fortaleza
+
+Oferta/fortalezas de la facultad (biblioteca, cómputo, intercambio, eventos).
+
+| Campo       | Nota                          |
+|-------------|----------------------------------|
+| id          |                                |
+| titulo      |                                |
+| descripcion |                                |
+| icono_id    | FK → Archivo, opcional          |
+| orden       |                                |
