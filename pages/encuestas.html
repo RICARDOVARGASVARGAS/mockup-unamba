@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Encuestas — Facultad de Administración UNAMBA (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <link rel="stylesheet" href="../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <site-header></site-header>
+
+    <main id="main-content" class="w-full">
+      <!-- Encabezado de sección -->
+      <section class="bg-primary text-onPrimary">
+        <div class="page-container py-10 sm:py-12">
+          <nav aria-label="Ruta de navegación" class="flex flex-wrap items-center gap-2 text-sm text-onPrimary/70">
+            <a href="../index.html" class="transition hover:text-accent">Inicio</a>
+            <span aria-hidden="true">/</span>
+            <span class="text-onPrimary/70">Servicios</span>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page" class="text-onPrimary">Encuestas</span>
+          </nav>
+          <h1 class="mt-3 font-heading text-3xl font-bold sm:text-4xl">Encuestas</h1>
+          <p class="mt-2 max-w-2xl text-onPrimary/80">Encuestas activas dirigidas a estudiantes, egresados, docentes y empleadores.</p>
+        </div>
+      </section>
+
+      <section class="page-container py-12 sm:py-16">
+        <!-- Filtro por audiencia -->
+        <div class="flex flex-wrap gap-2" role="group" aria-label="Filtrar por audiencia">
+          <button type="button" data-encuesta-filter="todos" aria-pressed="true" class="h-9 rounded-full border border-primary bg-primary px-4 text-sm font-medium text-onPrimary transition">Todas</button>
+          <button type="button" data-encuesta-filter="estudiantes" aria-pressed="false" class="h-9 rounded-full border border-border px-4 text-sm font-medium text-text transition hover:border-primary">Estudiantes</button>
+          <button type="button" data-encuesta-filter="egresados" aria-pressed="false" class="h-9 rounded-full border border-border px-4 text-sm font-medium text-text transition hover:border-primary">Egresados</button>
+          <button type="button" data-encuesta-filter="docentes" aria-pressed="false" class="h-9 rounded-full border border-border px-4 text-sm font-medium text-text transition hover:border-primary">Docentes</button>
+          <button type="button" data-encuesta-filter="empleadores" aria-pressed="false" class="h-9 rounded-full border border-border px-4 text-sm font-medium text-text transition hover:border-primary">Empleadores</button>
+        </div>
+
+        <p data-encuestas-empty class="mt-10 hidden text-text-muted">No hay encuestas activas para esta audiencia.</p>
+
+        <div data-encuestas-list class="mt-8 flex flex-col gap-4">
+          <article data-encuesta-item data-audiencia="estudiantes" data-vigencia="2026-07-25" class="flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 transition hover:border-primary hover:shadow-md sm:flex-row sm:items-center">
+            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary" aria-hidden="true">
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H6a2.25 2.25 0 0 1-2.25-2.25V6.75A2.25 2.25 0 0 1 6 4.5h3.879a1.5 1.5 0 0 1 1.06.44l1.122 1.12a1.5 1.5 0 0 0 1.06.44H18a2.25 2.25 0 0 1 2.25 2.25v8.25A2.25 2.25 0 0 1 18 18.75Z" /></svg>
+            </span>
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="inline-flex items-center rounded-full border border-border px-2.5 py-1 text-xs font-medium text-text-muted">Estudiantes</span>
+                <span data-encuesta-vigencia class="text-xs font-semibold"></span>
+              </div>
+              <h2 class="mt-2 font-heading text-base font-semibold text-text">Encuesta de satisfacción estudiantil 2026-I</h2>
+              <p class="mt-0.5 text-sm text-text-muted">Evalúa tu experiencia con los servicios académicos y administrativos del semestre.</p>
+            </div>
+            <a href="#" target="_blank" rel="noopener" class="shrink-0 rounded-md bg-accent px-5 py-2.5 text-center text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">Responder ↗</a>
+          </article>
+
+          <article data-encuesta-item data-audiencia="docentes" data-vigencia="2026-07-15" class="flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 transition hover:border-primary hover:shadow-md sm:flex-row sm:items-center">
+            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary" aria-hidden="true">
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H6a2.25 2.25 0 0 1-2.25-2.25V6.75A2.25 2.25 0 0 1 6 4.5h3.879a1.5 1.5 0 0 1 1.06.44l1.122 1.12a1.5 1.5 0 0 0 1.06.44H18a2.25 2.25 0 0 1 2.25 2.25v8.25A2.25 2.25 0 0 1 18 18.75Z" /></svg>
+            </span>
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="inline-flex items-center rounded-full border border-border px-2.5 py-1 text-xs font-medium text-text-muted">Docentes</span>
+                <span data-encuesta-vigencia class="text-xs font-semibold"></span>
+              </div>
+              <h2 class="mt-2 font-heading text-base font-semibold text-text">Evaluación docente 2026-I</h2>
+              <p class="mt-0.5 text-sm text-text-muted">Autoevaluación de desempeño docente del semestre en curso.</p>
+            </div>
+            <a href="#" target="_blank" rel="noopener" class="shrink-0 rounded-md bg-accent px-5 py-2.5 text-center text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">Responder ↗</a>
+          </article>
+
+          <article data-encuesta-item data-audiencia="empleadores" class="flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 transition hover:border-primary hover:shadow-md sm:flex-row sm:items-center">
+            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary" aria-hidden="true">
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H6a2.25 2.25 0 0 1-2.25-2.25V6.75A2.25 2.25 0 0 1 6 4.5h3.879a1.5 1.5 0 0 1 1.06.44l1.122 1.12a1.5 1.5 0 0 0 1.06.44H18a2.25 2.25 0 0 1 2.25 2.25v8.25A2.25 2.25 0 0 1 18 18.75Z" /></svg>
+            </span>
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="inline-flex items-center rounded-full border border-border px-2.5 py-1 text-xs font-medium text-text-muted">Empleadores</span>
+                <!-- Sin fecha_vigencia -->
+                <span class="text-xs font-medium text-text-muted">Sin fecha límite</span>
+              </div>
+              <h2 class="mt-2 font-heading text-base font-semibold text-text">Encuesta a empleadores sobre desempeño de egresados</h2>
+              <p class="mt-0.5 text-sm text-text-muted">Percepción de empresas e instituciones sobre el desempeño de nuestros egresados.</p>
+            </div>
+            <a href="#" target="_blank" rel="noopener" class="shrink-0 rounded-md bg-accent px-5 py-2.5 text-center text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">Responder ↗</a>
+          </article>
+
+          <article data-encuesta-item data-audiencia="docentes" data-vigencia="2026-05-01" class="flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 opacity-70 sm:flex-row sm:items-center">
+            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-surface-2 text-text-muted" aria-hidden="true">
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H6a2.25 2.25 0 0 1-2.25-2.25V6.75A2.25 2.25 0 0 1 6 4.5h3.879a1.5 1.5 0 0 1 1.06.44l1.122 1.12a1.5 1.5 0 0 0 1.06.44H18a2.25 2.25 0 0 1 2.25 2.25v8.25A2.25 2.25 0 0 1 18 18.75Z" /></svg>
+            </span>
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="inline-flex items-center rounded-full border border-border px-2.5 py-1 text-xs font-medium text-text-muted">Docentes</span>
+                <span data-encuesta-vigencia class="text-xs font-semibold"></span>
+              </div>
+              <h2 class="mt-2 font-heading text-base font-semibold text-text-muted line-through">Encuesta de clima institucional 2026</h2>
+              <p class="mt-0.5 text-sm text-text-muted">Percepción del ambiente laboral y organizacional en la facultad.</p>
+            </div>
+            <span class="shrink-0 text-sm font-medium text-text-muted">Encuesta cerrada</span>
+          </article>
+        </div>
+      </section>
+
+      <!-- Seguimiento al egresado: misma tabla Encuesta filtrada por audiencia = Egresados, no un módulo aparte -->
+      <section class="border-t border-border bg-surface py-12 sm:py-16">
+        <div class="page-container">
+          <h2 class="font-heading text-xl font-semibold text-text">Seguimiento al egresado</h2>
+          <p class="mt-2 max-w-2xl text-sm text-text-muted">
+            La facultad da seguimiento a sus egresados mediante encuestas periódicas sobre inserción laboral,
+            desarrollo profesional y vínculo con la institución. Es la misma sección de encuestas de arriba,
+            filtrada para egresados — no un sistema aparte.
+          </p>
+          <div data-encuesta-item data-audiencia="egresados" class="mt-5 flex flex-col gap-4 rounded-lg border border-border bg-bg p-5 sm:flex-row sm:items-center">
+            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary" aria-hidden="true">
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H6a2.25 2.25 0 0 1-2.25-2.25V6.75A2.25 2.25 0 0 1 6 4.5h3.879a1.5 1.5 0 0 1 1.06.44l1.122 1.12a1.5 1.5 0 0 0 1.06.44H18a2.25 2.25 0 0 1 2.25 2.25v8.25A2.25 2.25 0 0 1 18 18.75Z" /></svg>
+            </span>
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="inline-flex items-center rounded-full border border-border px-2.5 py-1 text-xs font-medium text-text-muted">Egresados</span>
+                <span class="text-xs font-medium text-text-muted">Vigente hasta: 31 dic. 2026</span>
+              </div>
+              <h3 class="mt-2 font-heading text-base font-semibold text-text">Seguimiento al egresado 2026</h3>
+              <p class="mt-0.5 text-sm text-text-muted">Situación laboral, sector de trabajo y valoración de la formación recibida.</p>
+            </div>
+            <a href="#" target="_blank" rel="noopener" class="shrink-0 rounded-md bg-accent px-5 py-2.5 text-center text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">Responder ↗</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <site-footer></site-footer>
+    <chatbot-widget></chatbot-widget>
+    <color-picker-tool></color-picker-tool>
+
+    <script src="../js/theme.js"></script>
+    <script src="../js/site-paths.js"></script>
+    <script src="../components/header.js"></script>
+    <script src="../components/footer.js"></script>
+    <script src="../components/chatbot-widget.js"></script>
+    <script src="../components/color-picker.js"></script>
+    <script src="../js/encuestas.js"></script>
+  </body>
+</html>

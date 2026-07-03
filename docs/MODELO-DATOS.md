@@ -169,7 +169,7 @@ Obs: orden de listado = `orden` ascendente primero; entre quienes no tengan `ord
 | Campo  | Nota                                                        |
 |--------|----------------------------------------------------------------|
 | id     |                                                              |
-| nombre | Reglamentos, Sílabos, Planes y Mallas Curriculares, Resoluciones, Documentos de Gestión |
+| nombre | Reglamentos, Sílabos, Planes y Mallas Curriculares, Resoluciones, Documentos de Gestión, Formatos de Trámite |
 
 ## Documento
 
@@ -284,3 +284,306 @@ Oferta/fortalezas de la facultad (biblioteca, cómputo, intercambio, eventos).
 | descripcion |                                |
 | icono_id    | FK → Archivo, opcional          |
 | orden       |                                |
+
+## InformacionAcademica
+
+**Tabla singleton**, mismo criterio que `LaFacultad`: una sola fila para la página "/academico".
+
+| Campo               | Nota                                                    |
+|---------------------|-------------------------------------------------------------|
+| id                  | Fijo en 1                                                |
+| grado_titulo        | Texto enriquecido — qué grado/título se obtiene al egresar |
+| actualizado_por     | FK → Usuario                                              |
+| fecha_actualizacion |                                                            |
+
+## PerfilIngresante
+
+| Campo       | Nota |
+|-------------|------|
+| id          |      |
+| descripcion |      |
+| orden       |      |
+
+## PerfilEgresado
+
+| Campo       | Nota |
+|-------------|------|
+| id          |      |
+| descripcion |      |
+| orden       |      |
+
+## CampoOcupacional
+
+| Campo       | Nota                                     |
+|-------------|---------------------------------------------|
+| id          |                                            |
+| nombre      | Ej. "Consultoría y asesoría empresarial"  |
+| descripcion | Opcional                                  |
+| orden       |                                            |
+
+## TipoCompetencia
+
+| Campo  | Nota                            |
+|--------|-------------------------------------|
+| id     |                                  |
+| nombre | Genérica, Específica, Técnica    |
+
+## Competencia
+
+| Campo               | Nota                     |
+|---------------------|------------------------------|
+| id                  |                          |
+| tipo_competencia_id | FK → TipoCompetencia      |
+| descripcion         |                          |
+| orden               |                          |
+
+Obs: Malla curricular y Plan de estudios **no tienen tabla propia** — se muestran como filas de `Documento` (mismo `TipoDocumento = "Planes y Mallas Curriculares"` ya usado en /documentos). Se decidió así en vez de modelar un curso por curso con prerrequisitos, para no ampliar el alcance del mockup; si más adelante se quiere una malla interactiva real, sería un módulo aparte.
+
+## LineaInvestigacion
+
+| Campo       | Nota |
+|-------------|------|
+| id          |      |
+| nombre      |      |
+| descripcion |      |
+| orden       |      |
+
+## ProyectoInvestigacion
+
+| Campo                | Nota                                   |
+|----------------------|---------------------------------------------|
+| id                   |                                        |
+| titulo               |                                        |
+| descripcion          |                                        |
+| linea_investigacion_id | FK → LineaInvestigacion, opcional    |
+| responsable_id       | FK → Docente                            |
+| fecha_inicio         |                                        |
+| fecha_fin            | Opcional (vacío = en curso)             |
+
+Obs: no hay campo `estado` — "en curso" o "concluido" se calcula de `fecha_fin IS NULL O fecha_fin >= hoy`, mismo criterio que ya usamos en `Autoridad`.
+
+## Publicacion
+
+| Campo            | Nota                                                        |
+|------------------|-----------------------------------------------------------------|
+| id               |                                                              |
+| titulo           |                                                              |
+| autor            | Texto (nombre visible, admite coautores externos separados por coma) |
+| autor_docente_id | FK → Docente, opcional — si el autor principal es de la facultad |
+| fecha_publicacion |                                                             |
+| archivo_id       | FK → Archivo, opcional                                       |
+| enlace_externo   | URL, opcional (ej. revista indexada externa)                 |
+
+Obs: "Docentes investigadores" (pedido en la especificación) **no es una tabla ni un campo nuevo en `Docente`** — es la lista de docentes que aparecen como `ProyectoInvestigacion.responsable_id` o `Publicacion.autor_docente_id`. Agregar un flag `es_investigador` hubiera sido dato redundante (se puede desincronizar de la realidad); mejor calcularlo.
+
+## Empresa
+
+Se separó de `Oferta` para no repetir/desalinear el nombre de la misma empresa cada vez que publica (y para poder mostrar su logo).
+
+| Campo   | Nota                        |
+|---------|-----------------------------|
+| id      |                             |
+| nombre  |                             |
+| logo_id | FK → Archivo, opcional       |
+| sector  | Opcional (ej. "Finanzas", "Retail") |
+
+## TipoOferta
+
+| Campo  | Nota                                                     |
+|--------|--------------------------------------------------------------|
+| id     |                                                            |
+| nombre | Práctica pre-profesional, Práctica profesional, Empleo    |
+
+## Oferta
+
+| Campo          | Nota                                        |
+|----------------|------------------------------------------------|
+| id             |                                              |
+| titulo         |                                              |
+| empresa_id     | FK → Empresa                                 |
+| tipo_oferta_id | FK → TipoOferta                              |
+| descripcion    |                                              |
+| enlace         | URL de postulación (obligatorio)             |
+| fecha_publicacion |                                           |
+| fecha_vigencia | Opcional (vacío = sin fecha límite)          |
+| estado         | enum: borrador / publicado                   |
+| autor_id       | FK → Usuario                                  |
+
+Obs: "vigente" o "vencida" se calcula de `fecha_vigencia`, mismo criterio que `Comunicado.fecha_vencimiento` — no se guarda aparte.
+
+## Tramite
+
+| Campo               | Nota                                                      |
+|---------------------|----------------------------------------------------------------|
+| id                  |                                                            |
+| nombre              | Ej. "Constancia de matrícula"                              |
+| descripcion         |                                                            |
+| requisitos          | Texto (lista simple, con saltos de línea)                  |
+| pasos               | Texto (lista simple, con saltos de línea)                  |
+| formato_documento_id | FK → Documento, opcional (formato descargable asociado)   |
+| orden               |                                                            |
+
+Obs: "Formatos descargables" de la especificación **no es tabla propia** — son filas de `Documento` con un `TipoDocumento` nuevo ("Formatos de Trámite"), igual que ya hicimos con Malla/Plan. "Enlaces a sistemas oficiales" (matrícula, pagos, biblioteca) son `[EXT]` en la especificación: enlaces externos fijos, no se guardan en esta base de datos — es la misma sección "Accesos a sistemas" que ya existe en Inicio.
+
+## AudienciaEncuesta
+
+| Campo  | Nota                                       |
+|--------|------------------------------------------------|
+| id     |                                             |
+| nombre | Estudiantes, Egresados, Docentes, Empleadores |
+
+## Encuesta
+
+| Campo              | Nota                                    |
+|--------------------|---------------------------------------------|
+| id                 |                                          |
+| titulo             |                                          |
+| descripcion        |                                          |
+| audiencia_id       | FK → AudienciaEncuesta                   |
+| enlace             | URL externo (ej. Google Forms)           |
+| fecha_publicacion  |                                          |
+| fecha_vigencia     | Opcional (vacío = sin fecha límite)      |
+| estado             | enum: borrador / publicado               |
+
+Obs: "Seguimiento al egresado" **no es una tabla aparte** — es la sección de esta misma página que filtra `Encuesta` por `audiencia_id = Egresados`, con un texto introductorio fijo explicando el programa. Un sistema real de seguimiento (empleabilidad, salarios, ubicación del egresado en el tiempo) sería un módulo mucho más grande, fuera de alcance por ahora.
+
+## Institucion
+
+Igual criterio que `Empresa` en Bolsa de Trabajo: se separa para no repetir el nombre cada vez que renueva o firma otro convenio, y para poder mostrar su logo.
+
+| Campo   | Nota                     |
+|---------|--------------------------|
+| id      |                          |
+| nombre  |                          |
+| logo_id | FK → Archivo, opcional    |
+| pais    | Opcional                |
+
+## TipoConvenio
+
+| Campo  | Nota                                                                  |
+|--------|---------------------------------------------------------------------------|
+| id     |                                                                       |
+| nombre | Intercambio académico, Prácticas profesionales, Cooperación técnica, Investigación conjunta |
+
+## Convenio
+
+| Campo            | Nota                                        |
+|------------------|------------------------------------------------|
+| id               |                                              |
+| institucion_id   | FK → Institucion                             |
+| tipo_convenio_id | FK → TipoConvenio                            |
+| descripcion      |                                              |
+| fecha_inicio     |                                              |
+| fecha_fin        | Opcional (vacío = vigencia indefinida)       |
+| documento_id     | FK → Archivo, opcional (documento firmado)   |
+| estado           | enum: borrador / publicado                   |
+
+Obs: `documento_id` apunta directo a `Archivo`, no a `Documento` — el convenio ya tiene su propia ficha en esta página, no necesita aparecer también en el repositorio general de /documentos (a diferencia de una resolución, que sí tiene sentido encontrar por los dos caminos).
+
+Obs: "vigente" se calcula de `fecha_fin IS NULL O fecha_fin >= hoy`, mismo criterio que `Autoridad` y `Comite`.
+
+## GrupoEstudiantil
+
+| Campo       | Nota                                    |
+|-------------|---------------------------------------------|
+| id          |                                          |
+| nombre      |                                          |
+| descripcion |                                          |
+| logo_id     | FK → Archivo, opcional                    |
+| contacto    | Texto (correo o red social)              |
+| orden       |                                          |
+
+Obs: "Centro Federado" **no es un concepto especial aparte** — es una fila más de `GrupoEstudiantil`, como cualquier otro grupo estudiantil.
+
+## EstudianteDestacado
+
+| Campo   | Nota                                          |
+|---------|----------------------------------------------|
+| id      |                                               |
+| nombre  | Texto — no es un `Usuario` ni `Docente`, es un estudiante (no modelado en este mockup) |
+| logro   |                                               |
+| foto_id | FK → Archivo                                  |
+| fecha   |                                               |
+| orden   |                                               |
+
+## Maestria
+
+| Campo                  | Nota                                              |
+|------------------------|--------------------------------------------------------|
+| id                     |                                                    |
+| nombre                 |                                                    |
+| descripcion            | Información general del programa                  |
+| admision               | Texto — requisitos de admisión                     |
+| coordinador_id         | FK → Docente, opcional                              |
+| plan_estudio_documento_id | FK → Documento, opcional (mismo `TipoDocumento = "Planes y Mallas Curriculares"`) |
+| estado                 | enum: borrador / publicado                          |
+| orden                  |                                                    |
+
+## CategoriaAlbum
+
+| Campo  | Nota                                                |
+|--------|----------------------------------------------------------|
+| id     |                                                      |
+| nombre | Instalaciones, Eventos, Proyección Social, Alumnos   |
+
+## Album
+
+| Campo           | Nota                        |
+|-----------------|-----------------------------|
+| id              |                             |
+| titulo          |                             |
+| categoria_id    | FK → CategoriaAlbum          |
+| fecha           |                             |
+| portada_id      | FK → Archivo, opcional (si no hay, se usa la primera foto) |
+
+## AlbumFoto
+
+Tabla puente — las fotos de un álbum.
+
+| Campo      | Nota           |
+|------------|----------------|
+| id         |                |
+| album_id   | FK → Album      |
+| archivo_id | FK → Archivo    |
+| orden      |                |
+
+## Contacto
+
+**Tabla singleton**, mismo criterio que `LaFacultad` e `InformacionAcademica`.
+
+| Campo               | Nota                                          |
+|---------------------|---------------------------------------------------|
+| id                  | Fijo en 1                                      |
+| correo              |                                                |
+| telefono            |                                                |
+| direccion           |                                                |
+| horario_atencion    |                                                |
+| ubicacion_id        | FK → Lugar, opcional (mapa — reusa la misma tabla de Eventos) |
+| actualizado_por     | FK → Usuario                                    |
+| fecha_actualizacion |                                                |
+
+## RedSocial
+
+| Campo  | Nota                              |
+|--------|------------------------------------|
+| id     |                                    |
+| nombre | Facebook, Instagram, TikTok, YouTube |
+| url    |                                    |
+
+Obs: tabla en vez de columnas fijas (`facebook_url`, `instagram_url`...) en `Contacto`, para poder agregar/quitar una red sin tocar el esquema.
+
+## MensajeContacto
+
+Buzón de contacto — lo que llega del formulario público.
+
+| Campo       | Nota                                  |
+|-------------|-------------------------------------------|
+| id          |                                        |
+| nombre      |                                        |
+| correo      |                                        |
+| asunto      |                                        |
+| mensaje     |                                        |
+| fecha_envio |                                        |
+| estado      | enum: nuevo / leído / respondido       |
+
+Obs: el formulario del mockup es solo visual — sin backend no hay a dónde enviar el mensaje de verdad. Esta tabla es la referencia de a dónde llegaría en el sistema real.

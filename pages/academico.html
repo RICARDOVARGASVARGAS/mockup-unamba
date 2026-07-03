@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Información Académica — Facultad de Administración UNAMBA (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <link rel="stylesheet" href="../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <site-header></site-header>
+
+    <main id="main-content" class="w-full">
+      <!-- Encabezado de sección -->
+      <section class="bg-primary text-onPrimary">
+        <div class="page-container py-10 sm:py-12">
+          <nav aria-label="Ruta de navegación" class="flex flex-wrap items-center gap-2 text-sm text-onPrimary/70">
+            <a href="../index.html" class="transition hover:text-accent">Inicio</a>
+            <span aria-hidden="true">/</span>
+            <span class="text-onPrimary/70">Académico</span>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page" class="text-onPrimary">Información Académica</span>
+          </nav>
+          <h1 class="mt-3 font-heading text-3xl font-bold sm:text-4xl">Información Académica</h1>
+          <p class="mt-2 max-w-2xl text-onPrimary/80">Perfiles, competencias, malla curricular y plan de estudios de la Escuela Profesional de Administración.</p>
+        </div>
+      </section>
+
+      <!--
+        Sin nav de anclas aquí a propósito: el dropdown del header
+        (Académico → Perfiles/Malla curricular/Plan de estudios/Investigación)
+        ya resuelve el salto entre secciones, y está disponible desde
+        cualquier página, no solo estando parado en esta. Duplicar esa
+        navegación adentro de la página no sumaba, competía.
+      -->
+      <p class="page-container pt-8 text-xs font-medium uppercase tracking-wide text-text-muted">Contenido de ejemplo en esta página — pendiente de validar con la redacción oficial de la escuela</p>
+
+      <!-- Perfil del ingresante: PerfilIngresante (lista) -->
+      <section id="ingresante" class="page-container py-12 sm:py-16">
+        <h2 class="font-heading text-xl font-semibold text-text">Perfil del ingresante</h2>
+        <p class="mt-1 max-w-2xl text-sm text-text-muted">Características deseables en quien postula a la carrera.</p>
+        <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+          <li class="flex items-start gap-3 rounded-lg border border-border bg-surface p-4">
+            <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary" aria-hidden="true">✓</span>
+            <p class="text-sm text-text-muted">Interés por la gestión, la economía y el mundo empresarial.</p>
+          </li>
+          <li class="flex items-start gap-3 rounded-lg border border-border bg-surface p-4">
+            <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary" aria-hidden="true">✓</span>
+            <p class="text-sm text-text-muted">Habilidad para el razonamiento lógico-matemático.</p>
+          </li>
+          <li class="flex items-start gap-3 rounded-lg border border-border bg-surface p-4">
+            <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary" aria-hidden="true">✓</span>
+            <p class="text-sm text-text-muted">Capacidad de comunicación oral y escrita.</p>
+          </li>
+          <li class="flex items-start gap-3 rounded-lg border border-border bg-surface p-4">
+            <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary" aria-hidden="true">✓</span>
+            <p class="text-sm text-text-muted">Disposición al trabajo en equipo y a la resolución de problemas.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Perfil del egresado: PerfilEgresado (lista) -->
+      <section id="egresado" class="border-t border-border bg-surface py-12 sm:py-16">
+        <div class="page-container">
+          <h2 class="font-heading text-xl font-semibold text-text">Perfil del egresado</h2>
+          <p class="mt-1 max-w-2xl text-sm text-text-muted">Al concluir la carrera, el egresado de Administración:</p>
+          <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+            <li class="flex items-start gap-3 rounded-lg border border-border bg-bg p-4">
+              <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary" aria-hidden="true">✓</span>
+              <p class="text-sm text-text-muted">Administra y gestiona organizaciones públicas y privadas con eficiencia.</p>
+            </li>
+            <li class="flex items-start gap-3 rounded-lg border border-border bg-bg p-4">
+              <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary" aria-hidden="true">✓</span>
+              <p class="text-sm text-text-muted">Formula, evalúa y gestiona proyectos de inversión pública y privada.</p>
+            </li>
+            <li class="flex items-start gap-3 rounded-lg border border-border bg-bg p-4">
+              <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary" aria-hidden="true">✓</span>
+              <p class="text-sm text-text-muted">Actúa con ética, responsabilidad social y visión estratégica.</p>
+            </li>
+            <li class="flex items-start gap-3 rounded-lg border border-border bg-bg p-4">
+              <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary" aria-hidden="true">✓</span>
+              <p class="text-sm text-text-muted">Aplica tecnologías de información y comunicación en la toma de decisiones.</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Campo ocupacional: CampoOcupacional (lista) -->
+      <section id="campo-ocupacional" class="page-container py-12 sm:py-16">
+        <h2 class="font-heading text-xl font-semibold text-text">Campo ocupacional</h2>
+        <p class="mt-1 max-w-2xl text-sm text-text-muted">El egresado de Administración se desempeña en:</p>
+        <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div class="rounded-lg border border-border bg-surface p-4 text-center shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+            <p class="text-sm font-medium text-text">Empresas privadas</p>
+          </div>
+          <div class="rounded-lg border border-border bg-surface p-4 text-center shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+            <p class="text-sm font-medium text-text">Entidades del Estado</p>
+          </div>
+          <div class="rounded-lg border border-border bg-surface p-4 text-center shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+            <p class="text-sm font-medium text-text">Consultoría y asesoría</p>
+          </div>
+          <div class="rounded-lg border border-border bg-surface p-4 text-center shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+            <p class="text-sm font-medium text-text">Emprendimiento propio</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Competencias: TipoCompetencia + Competencia -->
+      <section id="competencias" class="border-t border-border bg-surface py-12 sm:py-16">
+        <div class="page-container">
+          <h2 class="font-heading text-xl font-semibold text-text">Competencias</h2>
+          <p class="mt-1 max-w-2xl text-sm text-text-muted">Organizadas por tipo, según el diseño curricular por competencias.</p>
+
+          <div class="mt-6 grid gap-5 lg:grid-cols-3">
+            <div class="rounded-xl border-y border-r border-l-4 border-border bg-bg p-5" style="border-left-color:#0B3D91">
+              <h3 class="font-heading text-base font-semibold text-text">Genéricas</h3>
+              <ul class="mt-3 flex flex-col gap-2 text-sm text-text-muted">
+                <li>Comunicación efectiva</li>
+                <li>Trabajo en equipo</li>
+                <li>Pensamiento crítico</li>
+              </ul>
+            </div>
+            <div class="rounded-xl border-y border-r border-l-4 border-border bg-bg p-5" style="border-left-color:#1B873F">
+              <h3 class="font-heading text-base font-semibold text-text">Específicas</h3>
+              <ul class="mt-3 flex flex-col gap-2 text-sm text-text-muted">
+                <li>Gestión financiera</li>
+                <li>Marketing y ventas</li>
+                <li>Gestión del talento humano</li>
+              </ul>
+            </div>
+            <div class="rounded-xl border-y border-r border-l-4 border-border bg-bg p-5" style="border-left-color:#7C3AED">
+              <h3 class="font-heading text-base font-semibold text-text">Técnicas</h3>
+              <ul class="mt-3 flex flex-col gap-2 text-sm text-text-muted">
+                <li>Manejo de hojas de cálculo y ERP</li>
+                <li>Elaboración de planes de negocio</li>
+                <li>Análisis de estados financieros</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Malla curricular: Documento destacado, TipoDocumento = "Planes y Mallas Curriculares" -->
+      <section id="malla" class="page-container py-12 sm:py-16">
+        <h2 class="font-heading text-xl font-semibold text-text">Malla curricular</h2>
+        <p class="mt-1 max-w-2xl text-sm text-text-muted">Mismo documento ya publicado en el <a href="documentos.html" class="font-semibold text-primary hover:text-primary-dark">Repositorio de Documentos</a>, mostrado aquí en su sección natural.</p>
+        <a href="documentos.html" class="mt-5 flex flex-col items-start gap-4 rounded-xl border border-border bg-surface p-6 shadow-sm transition hover:border-primary hover:shadow-md sm:flex-row sm:items-center">
+          <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>
+          </span>
+          <div class="min-w-0 flex-1">
+            <p class="font-heading text-base font-semibold text-text">Malla Curricular 2020</p>
+            <p class="mt-1 text-sm text-text-muted">Distribución de cursos por ciclo, con sus créditos académicos.</p>
+            <p class="mt-1 text-xs text-text-muted">2020 · Todas las sedes · 1.8 MB</p>
+          </div>
+          <span class="shrink-0 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-onPrimary transition group-hover:bg-primary-dark sm:self-center">Descargar ↓</span>
+        </a>
+      </section>
+
+      <!-- Plan de estudios: Documento destacado, mismo TipoDocumento -->
+      <section id="plan" class="border-t border-border bg-surface py-12 sm:py-16">
+        <div class="page-container">
+          <h2 class="font-heading text-xl font-semibold text-text">Plan de estudios</h2>
+          <p class="mt-1 max-w-2xl text-sm text-text-muted">Currículo por competencias vigente, con la descripción completa de cada curso por ciclo.</p>
+          <a href="documentos.html" class="mt-5 flex flex-col items-start gap-4 rounded-xl border border-border bg-bg p-6 shadow-sm transition hover:border-primary hover:shadow-md sm:flex-row sm:items-center">
+            <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>
+            </span>
+            <div class="min-w-0 flex-1">
+              <p class="font-heading text-base font-semibold text-text">Plan de Estudios 2026</p>
+              <p class="mt-1 text-sm text-text-muted">Sumillas de cursos, competencias y metodología de enseñanza por ciclo.</p>
+              <p class="mt-1 text-xs text-text-muted">2026 · Todas las sedes · 2.1 MB</p>
+            </div>
+            <span class="shrink-0 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-onPrimary sm:self-center">Descargar ↓</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Grado y título: InformacionAcademica.grado_titulo (singleton) -->
+      <section id="grado-titulo" class="page-container py-12 sm:py-16">
+        <h2 class="font-heading text-xl font-semibold text-text">Grado y título</h2>
+        <div class="prose prose-lg mt-4 max-w-none">
+          <p>
+            Al concluir el plan de estudios, el egresado obtiene el <strong>Grado Académico de Bachiller en
+            Administración</strong>. Tras cumplir con los requisitos establecidos en el Reglamento de Grados
+            y Títulos de la facultad, puede optar por el <strong>Título Profesional de Licenciado en
+            Administración</strong>.
+          </p>
+        </div>
+        <a href="documentos.html" class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:text-primary-dark">Ver Reglamento de Grados y Títulos ↗</a>
+      </section>
+    </main>
+
+    <site-footer></site-footer>
+    <chatbot-widget></chatbot-widget>
+    <color-picker-tool></color-picker-tool>
+
+    <script src="../js/theme.js"></script>
+    <script src="../js/site-paths.js"></script>
+    <script src="../components/header.js"></script>
+    <script src="../components/footer.js"></script>
+    <script src="../components/chatbot-widget.js"></script>
+    <script src="../components/color-picker.js"></script>
+  </body>
+</html>

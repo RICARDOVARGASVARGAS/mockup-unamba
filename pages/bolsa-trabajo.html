@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bolsa de Trabajo — Facultad de Administración UNAMBA (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <link rel="stylesheet" href="../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <site-header></site-header>
+
+    <main id="main-content" class="w-full">
+      <!-- Encabezado de sección -->
+      <section class="bg-primary text-onPrimary">
+        <div class="page-container py-10 sm:py-12">
+          <nav aria-label="Ruta de navegación" class="flex flex-wrap items-center gap-2 text-sm text-onPrimary/70">
+            <a href="../index.html" class="transition hover:text-accent">Inicio</a>
+            <span aria-hidden="true">/</span>
+            <span class="text-onPrimary/70">Servicios</span>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page" class="text-onPrimary">Bolsa de Trabajo</span>
+          </nav>
+          <h1 class="mt-3 font-heading text-3xl font-bold sm:text-4xl">Bolsa de Trabajo</h1>
+          <p class="mt-2 max-w-2xl text-onPrimary/80">Prácticas pre-profesionales, prácticas profesionales y empleos para estudiantes y egresados.</p>
+        </div>
+      </section>
+
+      <section class="page-container py-12 sm:py-16">
+        <!-- Filtro por tipo -->
+        <div class="flex flex-wrap gap-2" role="group" aria-label="Filtrar por tipo de oferta">
+          <button type="button" data-oferta-filter="todos" aria-pressed="true" class="h-9 rounded-full border border-primary bg-primary px-4 text-sm font-medium text-onPrimary transition">Todas</button>
+          <button type="button" data-oferta-filter="practica-pre" aria-pressed="false" class="h-9 rounded-full border border-border px-4 text-sm font-medium text-text transition hover:border-primary">Prácticas pre-profesionales</button>
+          <button type="button" data-oferta-filter="practica-pro" aria-pressed="false" class="h-9 rounded-full border border-border px-4 text-sm font-medium text-text transition hover:border-primary">Prácticas profesionales</button>
+          <button type="button" data-oferta-filter="empleo" aria-pressed="false" class="h-9 rounded-full border border-border px-4 text-sm font-medium text-text transition hover:border-primary">Empleos</button>
+        </div>
+
+        <p data-ofertas-empty class="mt-10 hidden text-text-muted">No hay ofertas de este tipo por el momento.</p>
+
+        <div data-ofertas-list class="mt-8 flex flex-col gap-4">
+          <article data-oferta-item data-tipo="practica-pre" data-vigencia="2026-07-20" class="flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 transition hover:border-primary hover:shadow-md sm:flex-row sm:items-center">
+            <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-primary/10 font-heading text-base font-bold text-primary" aria-hidden="true">CA</span>
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="inline-flex items-center rounded-full border-2 bg-bg px-2.5 py-1 text-xs font-semibold text-text" style="border-color:#0B3D91">Práctica pre-profesional</span>
+                <span data-oferta-vigencia class="text-xs font-semibold"></span>
+              </div>
+              <h2 class="mt-2 font-heading text-base font-semibold text-text">Practicante de Contabilidad</h2>
+              <p class="mt-0.5 text-sm text-text-muted">Consultora Andina SAC</p>
+            </div>
+            <a href="#" target="_blank" rel="noopener" class="shrink-0 rounded-md bg-accent px-5 py-2.5 text-center text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">Postular ↗</a>
+          </article>
+
+          <article data-oferta-item data-tipo="practica-pro" data-vigencia="2026-07-10" class="flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 transition hover:border-primary hover:shadow-md sm:flex-row sm:items-center">
+            <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-primary/10 font-heading text-base font-bold text-primary" aria-hidden="true">GA</span>
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="inline-flex items-center rounded-full border-2 bg-bg px-2.5 py-1 text-xs font-semibold text-text" style="border-color:#1B873F">Práctica profesional</span>
+                <span data-oferta-vigencia class="text-xs font-semibold"></span>
+              </div>
+              <h2 class="mt-2 font-heading text-base font-semibold text-text">Asistente Administrativo</h2>
+              <p class="mt-0.5 text-sm text-text-muted">Grupo Empresarial Apurímac</p>
+            </div>
+            <a href="#" target="_blank" rel="noopener" class="shrink-0 rounded-md bg-accent px-5 py-2.5 text-center text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">Postular ↗</a>
+          </article>
+
+          <article data-oferta-item data-tipo="empleo" data-vigencia="2026-06-15" class="flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 opacity-70 sm:flex-row sm:items-center">
+            <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-surface-2 font-heading text-base font-bold text-text-muted" aria-hidden="true">FR</span>
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="inline-flex items-center rounded-full border-2 bg-bg px-2.5 py-1 text-xs font-semibold text-text" style="border-color:#7C3AED">Empleo</span>
+                <span data-oferta-vigencia class="text-xs font-semibold"></span>
+              </div>
+              <h2 class="mt-2 font-heading text-base font-semibold text-text-muted line-through">Analista de Créditos</h2>
+              <p class="mt-0.5 text-sm text-text-muted">Financiera Regional del Sur</p>
+            </div>
+            <span class="shrink-0 text-sm font-medium text-text-muted">Oferta cerrada</span>
+          </article>
+
+          <article data-oferta-item data-tipo="practica-pre" class="flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 transition hover:border-primary hover:shadow-md sm:flex-row sm:items-center">
+            <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-primary/10 font-heading text-base font-bold text-primary" aria-hidden="true">AS</span>
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="inline-flex items-center rounded-full border-2 bg-bg px-2.5 py-1 text-xs font-semibold text-text" style="border-color:#0B3D91">Práctica pre-profesional</span>
+                <!-- Sin fecha_vigencia: convocatoria abierta permanentemente -->
+                <span class="text-xs font-medium text-text-muted">Sin fecha límite</span>
+              </div>
+              <h2 class="mt-2 font-heading text-base font-semibold text-text">Practicante de Recursos Humanos</h2>
+              <p class="mt-0.5 text-sm text-text-muted">AgroSur Perú</p>
+            </div>
+            <a href="#" target="_blank" rel="noopener" class="shrink-0 rounded-md bg-accent px-5 py-2.5 text-center text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">Postular ↗</a>
+          </article>
+
+          <article data-oferta-item data-tipo="empleo" data-vigencia="2026-09-01" class="flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 transition hover:border-primary hover:shadow-md sm:flex-row sm:items-center">
+            <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-primary/10 font-heading text-base font-bold text-primary" aria-hidden="true">TN</span>
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="inline-flex items-center rounded-full border-2 bg-bg px-2.5 py-1 text-xs font-semibold text-text" style="border-color:#7C3AED">Empleo</span>
+                <span data-oferta-vigencia class="text-xs font-semibold"></span>
+              </div>
+              <h2 class="mt-2 font-heading text-base font-semibold text-text">Coordinador de Proyectos</h2>
+              <p class="mt-0.5 text-sm text-text-muted">TúNegocio Consultores</p>
+            </div>
+            <a href="#" target="_blank" rel="noopener" class="shrink-0 rounded-md bg-accent px-5 py-2.5 text-center text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">Postular ↗</a>
+          </article>
+
+          <article data-oferta-item data-tipo="practica-pro" data-vigencia="2026-08-15" class="flex flex-col gap-4 rounded-lg border border-border bg-surface p-5 transition hover:border-primary hover:shadow-md sm:flex-row sm:items-center">
+            <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-primary/10 font-heading text-base font-bold text-primary" aria-hidden="true">GA</span>
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="inline-flex items-center rounded-full border-2 bg-bg px-2.5 py-1 text-xs font-semibold text-text" style="border-color:#1B873F">Práctica profesional</span>
+                <span data-oferta-vigencia class="text-xs font-semibold"></span>
+              </div>
+              <h2 class="mt-2 font-heading text-base font-semibold text-text">Asistente de Marketing</h2>
+              <p class="mt-0.5 text-sm text-text-muted">Grupo Empresarial Apurímac</p>
+            </div>
+            <a href="#" target="_blank" rel="noopener" class="shrink-0 rounded-md bg-accent px-5 py-2.5 text-center text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">Postular ↗</a>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <site-footer></site-footer>
+    <chatbot-widget></chatbot-widget>
+    <color-picker-tool></color-picker-tool>
+
+    <script src="../js/theme.js"></script>
+    <script src="../js/site-paths.js"></script>
+    <script src="../components/header.js"></script>
+    <script src="../components/footer.js"></script>
+    <script src="../components/chatbot-widget.js"></script>
+    <script src="../components/color-picker.js"></script>
+    <script src="../js/bolsa-trabajo.js"></script>
+  </body>
+</html>

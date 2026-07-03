@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Posgrado — Facultad de Administración UNAMBA (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <link rel="stylesheet" href="../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <site-header></site-header>
+
+    <main id="main-content" class="w-full">
+      <!-- Encabezado de sección -->
+      <section class="bg-primary text-onPrimary">
+        <div class="page-container py-10 sm:py-12">
+          <nav aria-label="Ruta de navegación" class="flex flex-wrap items-center gap-2 text-sm text-onPrimary/70">
+            <a href="../index.html" class="transition hover:text-accent">Inicio</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page" class="text-onPrimary">Posgrado</span>
+          </nav>
+          <h1 class="mt-3 font-heading text-3xl font-bold sm:text-4xl">Posgrado / Maestrías</h1>
+          <p class="mt-2 max-w-2xl text-onPrimary/80">Programas de maestría de la Escuela de Posgrado vinculados a la Facultad de Administración.</p>
+        </div>
+      </section>
+
+      <!-- Maestrías: Maestria -->
+      <section class="page-container py-12 sm:py-16">
+        <div class="flex flex-col gap-6">
+          <article class="overflow-hidden rounded-xl border border-border bg-surface shadow-sm">
+            <div class="border-b border-border bg-primary/5 p-6">
+              <h2 class="font-heading text-xl font-semibold text-text">Maestría en Gestión Pública</h2>
+              <p class="mt-2 max-w-3xl text-sm text-text-muted">
+                Formación de posgrado orientada a fortalecer las capacidades de gestión y liderazgo en
+                entidades del Estado, con énfasis en políticas públicas y modernización de la gestión
+                municipal y regional.
+              </p>
+            </div>
+            <div class="grid gap-6 p-6 sm:grid-cols-3">
+              <div class="sm:col-span-2">
+                <h3 class="font-heading text-sm font-semibold uppercase tracking-wide text-text-muted">Admisión</h3>
+                <ul class="mt-2 flex flex-col gap-1.5 text-sm text-text-muted">
+                  <li>Bachiller universitario en cualquier especialidad.</li>
+                  <li>Currículo vitae documentado.</li>
+                  <li>Entrevista personal.</li>
+                </ul>
+                <a href="documentos.html" class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:text-primary-dark">Ver plan de estudios ↓</a>
+              </div>
+              <div class="rounded-lg border border-border bg-bg p-4">
+                <p class="text-xs font-semibold uppercase tracking-wide text-text-muted">Coordinadora</p>
+                <div class="mt-2 flex items-center gap-3">
+                  <img src="../assets/img/docentes/docente-2.jpg" alt="" class="h-11 w-11 shrink-0 rounded-full object-cover" loading="lazy" />
+                  <div class="min-w-0">
+                    <p class="truncate text-sm font-medium text-text">Dra. Rosa Illanes Cárdenas</p>
+                    <a href="docentes.html" class="text-xs font-semibold text-primary hover:text-primary-dark">Ver perfil →</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="overflow-hidden rounded-xl border border-border bg-surface shadow-sm">
+            <div class="border-b border-border bg-primary/5 p-6">
+              <h2 class="font-heading text-xl font-semibold text-text">Maestría en Gestión de Proyectos</h2>
+              <p class="mt-2 max-w-3xl text-sm text-text-muted">
+                Especializa a profesionales en la formulación, evaluación y gestión de proyectos de inversión
+                pública y privada, con enfoque en metodologías ágiles y estándares internacionales.
+              </p>
+            </div>
+            <div class="grid gap-6 p-6 sm:grid-cols-3">
+              <div class="sm:col-span-2">
+                <h3 class="font-heading text-sm font-semibold uppercase tracking-wide text-text-muted">Admisión</h3>
+                <ul class="mt-2 flex flex-col gap-1.5 text-sm text-text-muted">
+                  <li>Bachiller universitario.</li>
+                  <li>Experiencia laboral referencial de 1 año (no excluyente).</li>
+                  <li>Entrevista personal.</li>
+                </ul>
+                <a href="documentos.html" class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:text-primary-dark">Ver plan de estudios ↓</a>
+              </div>
+              <div class="rounded-lg border border-border bg-bg p-4">
+                <p class="text-xs font-semibold uppercase tracking-wide text-text-muted">Coordinador</p>
+                <div class="mt-2 flex items-center gap-3">
+                  <img src="../assets/img/docentes/docente-3.jpg" alt="" class="h-11 w-11 shrink-0 rounded-full object-cover" loading="lazy" />
+                  <div class="min-w-0">
+                    <p class="truncate text-sm font-medium text-text">Mg. Carlos Huamán Quispe</p>
+                    <a href="docentes.html" class="text-xs font-semibold text-primary hover:text-primary-dark">Ver perfil →</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <site-footer></site-footer>
+    <chatbot-widget></chatbot-widget>
+    <color-picker-tool></color-picker-tool>
+
+    <script src="../js/theme.js"></script>
+    <script src="../js/site-paths.js"></script>
+    <script src="../components/header.js"></script>
+    <script src="../components/footer.js"></script>
+    <script src="../components/chatbot-widget.js"></script>
+    <script src="../components/color-picker.js"></script>
+  </body>
+</html>

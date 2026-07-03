@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vida Estudiantil — Facultad de Administración UNAMBA (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <link rel="stylesheet" href="../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <site-header></site-header>
+
+    <main id="main-content" class="w-full">
+      <!-- Encabezado de sección -->
+      <section class="bg-primary text-onPrimary">
+        <div class="page-container py-10 sm:py-12">
+          <nav aria-label="Ruta de navegación" class="flex flex-wrap items-center gap-2 text-sm text-onPrimary/70">
+            <a href="../index.html" class="transition hover:text-accent">Inicio</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page" class="text-onPrimary">Vida Estudiantil</span>
+          </nav>
+          <h1 class="mt-3 font-heading text-3xl font-bold sm:text-4xl">Vida Estudiantil</h1>
+          <p class="mt-2 max-w-2xl text-onPrimary/80">Grupos estudiantiles, el Centro Federado y estudiantes destacados de la facultad.</p>
+        </div>
+      </section>
+
+      <!-- Grupos estudiantiles: GrupoEstudiantil (incluye Centro Federado, sin caso especial) -->
+      <section class="page-container py-12 sm:py-16">
+        <h2 class="font-heading text-xl font-semibold text-text">Grupos estudiantiles</h2>
+        <div class="mt-6 grid gap-5 sm:grid-cols-2">
+          <div class="flex items-start gap-4 rounded-xl border-2 border-primary bg-surface p-5 shadow-sm">
+            <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-primary/10 font-heading text-base font-bold text-primary" aria-hidden="true">CF</span>
+            <div class="min-w-0 flex-1">
+              <span class="inline-flex items-center rounded-full bg-primary px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-onPrimary">Centro Federado</span>
+              <h3 class="mt-2 font-heading text-base font-semibold text-text">Centro Federado de Estudiantes de Administración</h3>
+              <p class="mt-1 text-sm text-text-muted">Representa a los estudiantes ante las autoridades de la facultad y organiza actividades de bienestar estudiantil.</p>
+              <a href="mailto:cefa@unamba.edu.pe" class="mt-2 inline-block text-sm font-semibold text-primary hover:text-primary-dark">cefa@unamba.edu.pe</a>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 rounded-xl border border-border bg-surface p-5 shadow-sm">
+            <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-primary/10 font-heading text-base font-bold text-primary" aria-hidden="true">CE</span>
+            <div class="min-w-0 flex-1">
+              <h3 class="font-heading text-base font-semibold text-text">Círculo de Emprendimiento Universitario</h3>
+              <p class="mt-1 text-sm text-text-muted">Espacio para estudiantes con ideas de negocio, mentoría entre pares y ferias de emprendimiento.</p>
+              <a href="#" class="mt-2 inline-block text-sm font-semibold text-primary hover:text-primary-dark">Instagram: @emprendeunamba</a>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 rounded-xl border border-border bg-surface p-5 shadow-sm">
+            <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-primary/10 font-heading text-base font-bold text-primary" aria-hidden="true">DO</span>
+            <div class="min-w-0 flex-1">
+              <h3 class="font-heading text-base font-semibold text-text">Grupo de Debate y Oratoria</h3>
+              <p class="mt-1 text-sm text-text-muted">Prepara a estudiantes para concursos interuniversitarios de debate y oratoria.</p>
+              <a href="mailto:debate.admin@unamba.edu.pe" class="mt-2 inline-block text-sm font-semibold text-primary hover:text-primary-dark">debate.admin@unamba.edu.pe</a>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 rounded-xl border border-border bg-surface p-5 shadow-sm">
+            <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-primary/10 font-heading text-base font-bold text-primary" aria-hidden="true">VS</span>
+            <div class="min-w-0 flex-1">
+              <h3 class="font-heading text-base font-semibold text-text">Voluntariado Social Administración</h3>
+              <p class="mt-1 text-sm text-text-muted">Actividades de proyección social en comunidades de la región Apurímac.</p>
+              <a href="mailto:voluntariado.fa@unamba.edu.pe" class="mt-2 inline-block text-sm font-semibold text-primary hover:text-primary-dark">voluntariado.fa@unamba.edu.pe</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Estudiantes destacados: EstudianteDestacado -->
+      <section class="border-t border-border bg-surface py-12 sm:py-16">
+        <div class="page-container">
+          <h2 class="font-heading text-xl font-semibold text-text">Estudiantes destacados</h2>
+          <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <article class="overflow-hidden rounded-lg border border-border bg-bg shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+              <div class="relative aspect-square overflow-hidden">
+                <img src="../assets/img/estudiantes/estudiante-1.jpg" alt="Retrato de Kelly Huamaní Torres" class="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+              </div>
+              <div class="p-4">
+                <h3 class="font-heading text-sm font-semibold text-text">Kelly Huamaní Torres</h3>
+                <p class="mt-1 text-xs text-text-muted">Mejor promedio ponderado de la promoción 2025-II.</p>
+                <time class="mt-2 block text-xs text-text-muted">15 dic. 2025</time>
+              </div>
+            </article>
+
+            <article class="overflow-hidden rounded-lg border border-border bg-bg shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+              <div class="relative aspect-square overflow-hidden">
+                <img src="../assets/img/estudiantes/estudiante-2.jpg" alt="Retrato de Diego Farfán Rojas" class="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+              </div>
+              <div class="p-4">
+                <h3 class="font-heading text-sm font-semibold text-text">Diego Farfán Rojas</h3>
+                <p class="mt-1 text-xs text-text-muted">Representante estudiantil ante el Consejo de Facultad 2026.</p>
+                <time class="mt-2 block text-xs text-text-muted">10 mar. 2026</time>
+              </div>
+            </article>
+
+            <article class="overflow-hidden rounded-lg border border-border bg-bg shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+              <div class="relative aspect-square overflow-hidden">
+                <img src="../assets/img/noticias/noticia-concurso-estudiantes.jpg" alt="Equipo de estudiantes celebrando un logro académico" class="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+              </div>
+              <div class="p-4">
+                <h3 class="font-heading text-sm font-semibold text-text">Equipo de Finanzas UNAMBA</h3>
+                <p class="mt-1 text-xs text-text-muted">Primer puesto en el Concurso Interuniversitario de Planes de Negocio 2026.</p>
+                <time class="mt-2 block text-xs text-text-muted">24 jun. 2026</time>
+              </div>
+            </article>
+
+            <article class="overflow-hidden rounded-lg border border-border bg-bg shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+              <div class="relative aspect-square overflow-hidden">
+                <img src="../assets/img/noticias/noticia-egresados-experiencia.jpg" alt="Retrato de Mariana Quispe Álvarez" class="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+              </div>
+              <div class="p-4">
+                <h3 class="font-heading text-sm font-semibold text-text">Mariana Quispe Álvarez</h3>
+                <p class="mt-1 text-xs text-text-muted">Beca de posgrado internacional por mérito académico.</p>
+                <time class="mt-2 block text-xs text-text-muted">5 may. 2026</time>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <site-footer></site-footer>
+    <chatbot-widget></chatbot-widget>
+    <color-picker-tool></color-picker-tool>
+
+    <script src="../js/theme.js"></script>
+    <script src="../js/site-paths.js"></script>
+    <script src="../components/header.js"></script>
+    <script src="../components/footer.js"></script>
+    <script src="../components/chatbot-widget.js"></script>
+    <script src="../components/color-picker.js"></script>
+  </body>
+</html>

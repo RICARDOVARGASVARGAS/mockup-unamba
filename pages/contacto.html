@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contacto — Facultad de Administración UNAMBA (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <link rel="stylesheet" href="../css/base.css" />
+
+    <!-- Leaflet: mapa de ubicación (mismo componente que evento-detalle.html) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <site-header></site-header>
+
+    <main id="main-content" class="w-full">
+      <!-- Encabezado de sección -->
+      <section class="bg-primary text-onPrimary">
+        <div class="page-container py-10 sm:py-12">
+          <nav aria-label="Ruta de navegación" class="flex flex-wrap items-center gap-2 text-sm text-onPrimary/70">
+            <a href="../index.html" class="transition hover:text-accent">Inicio</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page" class="text-onPrimary">Contacto</span>
+          </nav>
+          <h1 class="mt-3 font-heading text-3xl font-bold sm:text-4xl">Contacto</h1>
+          <p class="mt-2 max-w-2xl text-onPrimary/80">Escríbenos, llámanos o visítanos — Facultad de Administración, campus UNAMBA.</p>
+        </div>
+      </section>
+
+      <section class="page-container py-12 sm:py-16">
+        <div class="grid gap-10 lg:grid-cols-2">
+          <!-- Datos de contacto: Contacto (singleton) -->
+          <div>
+            <h2 class="font-heading text-xl font-semibold text-text">Datos de contacto</h2>
+            <dl class="mt-5 flex flex-col gap-4">
+              <div class="flex items-start gap-3">
+                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary" aria-hidden="true">
+                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0-.621.504-1.125 1.125-1.125h17.25c.621 0 1.125.504 1.125 1.125v10.5c0 .621-.504 1.125-1.125 1.125H3.375A1.125 1.125 0 0 1 2.25 17.25V6.75Zm0 0 9.75 6.75 9.75-6.75" /></svg>
+                </span>
+                <div>
+                  <dt class="text-sm font-medium text-text">Correo</dt>
+                  <dd><a href="mailto:administracion@unamba.edu.pe" class="text-sm text-primary hover:text-primary-dark">administracion@unamba.edu.pe</a></dd>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary" aria-hidden="true">
+                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a1.5 1.5 0 0 0 1.5-1.5v-2.372a1.5 1.5 0 0 0-1.06-1.436l-4.09-1.09a1.5 1.5 0 0 0-1.548.44l-1.08 1.24a12.06 12.06 0 0 1-5.324-5.323l1.24-1.08a1.5 1.5 0 0 0 .44-1.548l-1.09-4.09A1.5 1.5 0 0 0 6.622 2.25H4.25a1.5 1.5 0 0 0-1.5 1.5v3Z" /></svg>
+                </span>
+                <div>
+                  <dt class="text-sm font-medium text-text">Teléfono</dt>
+                  <dd class="text-sm text-text-muted">(083) 32-XXXX</dd>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary" aria-hidden="true">
+                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" /></svg>
+                </span>
+                <div>
+                  <dt class="text-sm font-medium text-text">Dirección</dt>
+                  <dd class="text-sm text-text-muted">Av. Garcilazo de la Vega S/N, Tamburco, Abancay, Apurímac</dd>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary" aria-hidden="true">
+                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                </span>
+                <div>
+                  <dt class="text-sm font-medium text-text">Horario de atención</dt>
+                  <dd class="text-sm text-text-muted">Lunes a viernes, 8:00 a.m. – 1:00 p.m. y 2:30 p.m. – 4:30 p.m.</dd>
+                </div>
+              </div>
+            </dl>
+
+            <!-- Redes sociales: RedSocial -->
+            <div class="mt-6 flex items-center gap-3">
+              <a href="#" aria-label="Facebook" class="flex h-10 w-10 items-center justify-center rounded-full border border-border text-text-muted transition hover:border-primary hover:text-primary">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-7.5h2.5l.4-3H13.5V8.7c0-.87.24-1.46 1.5-1.46h1.6V4.56A21.6 21.6 0 0 0 14.3 4.4c-2.24 0-3.77 1.37-3.77 3.88v2.22H8v3h2.53V21h3Z" fill="currentColor" /></svg>
+              </a>
+              <a href="#" aria-label="Instagram" class="flex h-10 w-10 items-center justify-center rounded-full border border-border text-text-muted transition hover:border-primary hover:text-primary">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5" /><circle cx="12" cy="12" r="3.5" /><circle cx="17" cy="7" r="0.75" fill="currentColor" stroke="none" /></svg>
+              </a>
+              <a href="#" aria-label="TikTok" class="flex h-10 w-10 items-center justify-center rounded-full border border-border text-text-muted transition hover:border-primary hover:text-primary">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 3h2.2c.2 1.6 1.3 3 2.9 3.4v2.3c-1.2 0-2.3-.4-3.2-1v6.4a5 5 0 1 1-5-5c.2 0 .4 0 .6.03v2.3a2.7 2.7 0 1 0 2.2 2.66V3Z" fill="currentColor" /></svg>
+              </a>
+              <a href="#" aria-label="YouTube" class="flex h-10 w-10 items-center justify-center rounded-full border border-border text-text-muted transition hover:border-primary hover:text-primary">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="3.5" /><path d="M10.5 9.5v5l4.5-2.5-4.5-2.5Z" fill="currentColor" stroke="none" /></svg>
+              </a>
+            </div>
+
+            <!-- Mapa de ubicación: Contacto.ubicacion_id -> Lugar, mismas coordenadas reales de Eventos -->
+            <div
+              id="contact-map"
+              class="mt-6 h-64 w-full overflow-hidden rounded-xl border border-border"
+              role="img"
+              aria-label="Mapa de ubicación del campus UNAMBA en Tamburco, Abancay"
+            ></div>
+          </div>
+
+          <!-- Formulario de contacto: MensajeContacto — visual, sin backend -->
+          <div>
+            <h2 class="font-heading text-xl font-semibold text-text">Escríbenos</h2>
+            <p class="mt-1 text-xs font-medium uppercase tracking-wide text-text-muted">Formulario visual — sin backend, no envía mensajes reales en esta maqueta</p>
+
+            <form data-contact-form class="mt-5 flex flex-col gap-4" onsubmit="return false;">
+              <div>
+                <label for="contact-nombre" class="block text-sm font-medium text-text">Nombre</label>
+                <input id="contact-nombre" type="text" required class="mt-1.5 h-11 w-full rounded-md border border-border bg-surface px-3 text-sm text-text focus:border-primary focus:outline-none" />
+              </div>
+              <div>
+                <label for="contact-correo" class="block text-sm font-medium text-text">Correo</label>
+                <input id="contact-correo" type="email" required class="mt-1.5 h-11 w-full rounded-md border border-border bg-surface px-3 text-sm text-text focus:border-primary focus:outline-none" />
+              </div>
+              <div>
+                <label for="contact-asunto" class="block text-sm font-medium text-text">Asunto</label>
+                <input id="contact-asunto" type="text" required class="mt-1.5 h-11 w-full rounded-md border border-border bg-surface px-3 text-sm text-text focus:border-primary focus:outline-none" />
+              </div>
+              <div>
+                <label for="contact-mensaje" class="block text-sm font-medium text-text">Mensaje</label>
+                <textarea id="contact-mensaje" rows="5" required class="mt-1.5 w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-text focus:border-primary focus:outline-none"></textarea>
+              </div>
+              <button type="submit" data-contact-submit class="mt-1 rounded-md bg-accent px-5 py-3 text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">
+                Enviar mensaje
+              </button>
+              <p data-contact-success class="hidden rounded-md bg-success-bg px-4 py-3 text-sm font-medium text-success">
+                Mensaje enviado (simulado). En el sistema real, esto llegaría al buzón de contacto de la facultad.
+              </p>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <site-footer></site-footer>
+    <chatbot-widget></chatbot-widget>
+    <color-picker-tool></color-picker-tool>
+
+    <script src="../js/theme.js"></script>
+    <script src="../js/site-paths.js"></script>
+    <script src="../components/header.js"></script>
+    <script src="../components/footer.js"></script>
+    <script src="../components/chatbot-widget.js"></script>
+    <script src="../components/color-picker.js"></script>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+      const mapEl = document.getElementById("contact-map");
+      if (mapEl) {
+        const coords = [-13.6169, -72.8681];
+        const map = L.map(mapEl, { scrollWheelZoom: false }).setView(coords, 15);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+          maxZoom: 19,
+        }).addTo(map);
+        L.marker(coords).addTo(map).bindPopup("Facultad de Administración — Campus UNAMBA");
+      }
+
+      // Formulario visual: sin backend, solo simula la confirmación de envío.
+      const form = document.querySelector("[data-contact-form]");
+      const successMsg = document.querySelector("[data-contact-success]");
+      if (form && successMsg) {
+        form.addEventListener("submit", () => {
+          successMsg.classList.remove("hidden");
+          form.reset();
+        });
+      }
+    </script>
+  </body>
+</html>
