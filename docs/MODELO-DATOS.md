@@ -244,12 +244,15 @@ Obs: `docente_id` es opcional porque el Consejo de Facultad incluye representant
 | Campo               | Nota                                          |
 |---------------------|---------------------------------------------------|
 | id                  | Fijo en 1 — nunca hay una segunda fila         |
+| foto_portada_id     | FK → Archivo, opcional (foto de fachada/campus, cabecera de la página) |
 | resena_historica    | Texto enriquecido                              |
 | mision              | Texto enriquecido                              |
 | vision              | Texto enriquecido                              |
 | organigrama_id      | FK → Archivo, opcional (imagen del organigrama) |
 | actualizado_por     | FK → Usuario                                    |
 | fecha_actualizacion |                                                 |
+
+Obs: las fotos del organigrama interactivo (Decano, Directora de Escuela, Director de Departamento) **no son un campo nuevo aquí** — salen de `Autoridad → Docente.foto_id`, ya existente. Solo `foto_portada_id` es un campo realmente nuevo en esta tabla.
 
 Obs: la especificación permite organigrama como "imagen o interactivo". La versión interactiva **no necesita tabla propia** — se arma en pantalla leyendo `Autoridad` + `Comite`, que ya existen. Si se deja como imagen simple (`organigrama_id`), es más fácil de mantener oficial/aprobado (documento visado), pero se desactualiza si cambian las autoridades y nadie sube una imagen nueva.
 

@@ -49,6 +49,17 @@
         </div>
       </nav>
 
+      <!-- Foto de portada: LaFacultad.foto_portada_id -->
+      <figure class="relative aspect-[21/9] w-full overflow-hidden sm:aspect-[3/1]">
+        <img
+          src="../assets/img/nosotros/fachada-facultad.jpg"
+          alt="Fachada de un edificio universitario moderno (imagen ilustrativa, mockup)"
+          class="absolute inset-0 h-full w-full object-cover"
+          loading="lazy"
+        />
+        <figcaption class="absolute bottom-2 right-3 rounded-full bg-black/40 px-2.5 py-1 text-xs text-white">Imagen ilustrativa — reemplazar por foto real del campus</figcaption>
+      </figure>
+
       <!-- Reseña histórica: LaFacultad.resena_historica -->
       <section id="resena" class="page-container py-12 sm:py-16">
         <div class="grid gap-8 lg:grid-cols-3 lg:gap-12">
@@ -170,9 +181,12 @@
 
           <div class="mt-10 flex flex-col items-center">
             <!-- Nivel 1: Decano -->
-            <div class="rounded-lg border-2 border-primary bg-bg px-5 py-3 text-center shadow-sm transition hover:shadow-md">
-              <p class="text-sm font-semibold text-text">Mg. Carlos Huamán Quispe</p>
-              <p class="text-xs text-text-muted">Decano</p>
+            <div class="flex items-center gap-3 rounded-lg border-2 border-primary bg-bg py-3 pl-3 pr-6 text-left shadow-sm transition hover:shadow-md">
+              <img src="../assets/img/docentes/docente-3.jpg" alt="" class="h-12 w-12 shrink-0 rounded-full object-cover" loading="lazy" />
+              <div>
+                <p class="text-sm font-semibold text-text">Mg. Carlos Huamán Quispe</p>
+                <p class="text-xs text-text-muted">Decano</p>
+              </div>
             </div>
 
             <!-- Conector en T: tronco vertical + barra horizontal + caídas a cada tarjeta -->
@@ -182,16 +196,22 @@
             <div class="flex w-full max-w-2xl flex-col items-center gap-6 sm:flex-row sm:items-start sm:justify-center sm:gap-8">
               <div class="flex flex-1 flex-col items-center">
                 <div class="h-6 w-px bg-border" aria-hidden="true"></div>
-                <div class="rounded-lg border border-border bg-bg px-5 py-3 text-center shadow-sm transition hover:shadow-md">
-                  <p class="text-sm font-semibold text-text">Dra. Rosa Illanes Cárdenas</p>
-                  <p class="text-xs text-text-muted">Directora de Escuela</p>
+                <div class="flex items-center gap-3 rounded-lg border border-border bg-bg py-3 pl-3 pr-6 text-left shadow-sm transition hover:shadow-md">
+                  <img src="../assets/img/docentes/docente-2.jpg" alt="" class="h-11 w-11 shrink-0 rounded-full object-cover" loading="lazy" />
+                  <div>
+                    <p class="text-sm font-semibold text-text">Dra. Rosa Illanes Cárdenas</p>
+                    <p class="text-xs text-text-muted">Directora de Escuela</p>
+                  </div>
                 </div>
               </div>
               <div class="flex flex-1 flex-col items-center">
                 <div class="h-6 w-px bg-border" aria-hidden="true"></div>
-                <div class="rounded-lg border border-border bg-bg px-5 py-3 text-center shadow-sm transition hover:shadow-md">
-                  <p class="text-sm font-semibold text-text">Mg. Jorge Ttito Mamani</p>
-                  <p class="text-xs text-text-muted">Director de Departamento Académico</p>
+                <div class="flex items-center gap-3 rounded-lg border border-border bg-bg py-3 pl-3 pr-6 text-left shadow-sm transition hover:shadow-md">
+                  <img src="../assets/img/docentes/docente-1.jpg" alt="" class="h-11 w-11 shrink-0 rounded-full object-cover" loading="lazy" />
+                  <div>
+                    <p class="text-sm font-semibold text-text">Mg. Jorge Ttito Mamani</p>
+                    <p class="text-xs text-text-muted">Director de Departamento Académico</p>
+                  </div>
                 </div>
               </div>
             </div>
