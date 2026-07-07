@@ -1,0 +1,217 @@
+<!-- pages/admin/biblioteca.html -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../../assets/img/facultad/logo_universidad.ico" />
+    <title>Biblioteca de archivos — Panel de Administración | Facultad de Administración UNAMBA (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <admin-sidebar></admin-sidebar>
+
+    <div class="admin-canvas flex min-h-screen flex-col lg:pl-72">
+      <admin-topbar page-title="Biblioteca de archivos"></admin-topbar>
+
+      <main class="flex-1 space-y-6 p-4 sm:p-6 lg:p-8">
+        <div>
+          <h2 class="font-heading text-xl font-bold text-text">Biblioteca de archivos</h2>
+          <p class="mt-1 max-w-2xl text-sm text-text-muted">
+            Todas las imágenes, PDFs y videos subidos al sitio (entidad <code>Archivo</code>), en un solo lugar —
+            distinto de <a href="galeria.html" class="font-medium text-primary hover:text-primary-dark">Galería</a>,
+            que son álbumes curados para mostrar en el sitio público. Aquí subes un archivo una vez y copias su link
+            para usarlo donde haga falta: imagen destacada de una Noticia, foto de un Docente, o insertado dentro de
+            un texto enriquecido con el botón "Imagen" del editor.
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-3 admin-card p-4 sm:flex-row sm:items-center">
+          <div class="relative flex-1">
+            <svg class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+            <input type="search" data-table-search placeholder="Buscar por nombre de archivo..." class="h-10 w-full rounded-md border border-border bg-bg pl-9 pr-3 text-sm text-text focus:border-primary focus:outline-none" />
+          </div>
+          <select data-table-filter="tipo" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none">
+            <option value="">Todos los tipos</option>
+            <option value="imagen">Imágenes</option>
+            <option value="pdf">PDF</option>
+            <option value="video">Videos</option>
+          </select>
+        </div>
+
+        <div data-admin-table class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+          <div data-row data-search="banner_1.png" data-tipo="imagen" class="overflow-hidden admin-card">
+            <div class="relative aspect-video overflow-hidden bg-surface-2">
+              <img src="../../assets/img/banners/banner_1.png" alt="" class="h-full w-full object-cover" loading="lazy" />
+            </div>
+            <div class="p-3">
+              <p class="truncate text-sm font-medium text-text">banner_1.png</p>
+              <p class="text-xs text-text-muted">Imagen · 2.2 MB</p>
+              <div class="mt-2 flex items-center justify-between gap-1">
+                <button type="button" data-copy-link data-link-value="assets/img/banners/banner_1.png" class="inline-flex items-center gap-1 rounded-md border border-border px-2 py-1 text-xs font-medium text-text transition hover:bg-surface-2">
+                  <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" /></svg>
+                  Copiar link
+                </button>
+                <button type="button" data-delete-trigger data-delete-name="banner_1.png" aria-label="Eliminar" class="rounded-md p-1.5 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div data-row data-search="banner_2.png" data-tipo="imagen" class="overflow-hidden admin-card">
+            <div class="relative aspect-video overflow-hidden bg-surface-2">
+              <img src="../../assets/img/banners/banner_2.png" alt="" class="h-full w-full object-cover" loading="lazy" />
+            </div>
+            <div class="p-3">
+              <p class="truncate text-sm font-medium text-text">banner_2.png</p>
+              <p class="text-xs text-text-muted">Imagen · 1.9 MB</p>
+              <div class="mt-2 flex items-center justify-between gap-1">
+                <button type="button" data-copy-link data-link-value="assets/img/banners/banner_2.png" class="inline-flex items-center gap-1 rounded-md border border-border px-2 py-1 text-xs font-medium text-text transition hover:bg-surface-2">
+                  <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" /></svg>
+                  Copiar link
+                </button>
+                <button type="button" data-delete-trigger data-delete-name="banner_2.png" aria-label="Eliminar" class="rounded-md p-1.5 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div data-row data-search="fachada-facultad.jpg" data-tipo="imagen" class="overflow-hidden admin-card">
+            <div class="relative aspect-video overflow-hidden bg-surface-2">
+              <img src="../../assets/img/nosotros/fachada-facultad.jpg" alt="" class="h-full w-full object-cover" loading="lazy" />
+            </div>
+            <div class="p-3">
+              <p class="truncate text-sm font-medium text-text">fachada-facultad.jpg</p>
+              <p class="text-xs text-text-muted">Imagen · 640 KB</p>
+              <div class="mt-2 flex items-center justify-between gap-1">
+                <button type="button" data-copy-link data-link-value="assets/img/nosotros/fachada-facultad.jpg" class="inline-flex items-center gap-1 rounded-md border border-border px-2 py-1 text-xs font-medium text-text transition hover:bg-surface-2">
+                  <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" /></svg>
+                  Copiar link
+                </button>
+                <button type="button" data-delete-trigger data-delete-name="fachada-facultad.jpg" aria-label="Eliminar" class="rounded-md p-1.5 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div data-row data-search="docente-3.jpg" data-tipo="imagen" class="overflow-hidden admin-card">
+            <div class="relative aspect-video overflow-hidden bg-surface-2">
+              <img src="../../assets/img/docentes/docente-3.jpg" alt="" class="h-full w-full object-cover" loading="lazy" />
+            </div>
+            <div class="p-3">
+              <p class="truncate text-sm font-medium text-text">docente-3.jpg</p>
+              <p class="text-xs text-text-muted">Imagen · 310 KB</p>
+              <div class="mt-2 flex items-center justify-between gap-1">
+                <button type="button" data-copy-link data-link-value="assets/img/docentes/docente-3.jpg" class="inline-flex items-center gap-1 rounded-md border border-border px-2 py-1 text-xs font-medium text-text transition hover:bg-surface-2">
+                  <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" /></svg>
+                  Copiar link
+                </button>
+                <button type="button" data-delete-trigger data-delete-name="docente-3.jpg" aria-label="Eliminar" class="rounded-md p-1.5 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div data-row data-search="noticia-taller-finanzas.jpg" data-tipo="imagen" class="overflow-hidden admin-card">
+            <div class="relative aspect-video overflow-hidden bg-surface-2">
+              <img src="../../assets/img/noticias/noticia-taller-finanzas.jpg" alt="" class="h-full w-full object-cover" loading="lazy" />
+            </div>
+            <div class="p-3">
+              <p class="truncate text-sm font-medium text-text">noticia-taller-finanzas.jpg</p>
+              <p class="text-xs text-text-muted">Imagen · 480 KB</p>
+              <div class="mt-2 flex items-center justify-between gap-1">
+                <button type="button" data-copy-link data-link-value="assets/img/noticias/noticia-taller-finanzas.jpg" class="inline-flex items-center gap-1 rounded-md border border-border px-2 py-1 text-xs font-medium text-text transition hover:bg-surface-2">
+                  <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" /></svg>
+                  Copiar link
+                </button>
+                <button type="button" data-delete-trigger data-delete-name="noticia-taller-finanzas.jpg" aria-label="Eliminar" class="rounded-md p-1.5 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div data-row data-search="resolucion-045-2026-unamba-fa.pdf" data-tipo="pdf" class="overflow-hidden admin-card">
+            <div class="flex aspect-video items-center justify-center bg-surface-2 text-danger">
+              <svg class="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>
+            </div>
+            <div class="p-3">
+              <p class="truncate text-sm font-medium text-text">resolucion-045-2026-unamba-fa.pdf</p>
+              <p class="text-xs text-text-muted">PDF · 1.1 MB</p>
+              <div class="mt-2 flex items-center justify-between gap-1">
+                <button type="button" data-copy-link data-link-value="assets/documentos/resolucion-045-2026-unamba-fa.pdf" class="inline-flex items-center gap-1 rounded-md border border-border px-2 py-1 text-xs font-medium text-text transition hover:bg-surface-2">
+                  <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" /></svg>
+                  Copiar link
+                </button>
+                <button type="button" data-delete-trigger data-delete-name="resolucion-045-2026-unamba-fa.pdf" aria-label="Eliminar" class="rounded-md p-1.5 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div data-row data-search="cv-carlos-huaman-quispe.pdf" data-tipo="pdf" class="overflow-hidden admin-card">
+            <div class="flex aspect-video items-center justify-center bg-surface-2 text-danger">
+              <svg class="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>
+            </div>
+            <div class="p-3">
+              <p class="truncate text-sm font-medium text-text">cv-carlos-huaman-quispe.pdf</p>
+              <p class="text-xs text-text-muted">PDF · 890 KB</p>
+              <div class="mt-2 flex items-center justify-between gap-1">
+                <button type="button" data-copy-link data-link-value="assets/documentos/cv-carlos-huaman-quispe.pdf" class="inline-flex items-center gap-1 rounded-md border border-border px-2 py-1 text-xs font-medium text-text transition hover:bg-surface-2">
+                  <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" /></svg>
+                  Copiar link
+                </button>
+                <button type="button" data-delete-trigger data-delete-name="cv-carlos-huaman-quispe.pdf" aria-label="Eliminar" class="rounded-md p-1.5 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <input type="file" data-media-input class="hidden" />
+          <button
+            type="button"
+            data-media-add
+            class="flex aspect-square flex-col items-center justify-center gap-1 rounded-md border-2 border-dashed border-border text-text-muted transition hover:border-primary hover:text-primary"
+          >
+            <svg class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            <span class="text-sm">Subir archivo</span>
+          </button>
+
+          <p data-empty-row class="hidden py-10 text-center text-sm text-text-muted sm:col-span-3 lg:col-span-4">No se encontraron resultados.</p>
+        </div>
+      </main>
+    </div>
+
+    <admin-modal-confirm></admin-modal-confirm>
+    <admin-toast></admin-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/admin-common.js"></script>
+    <script src="../../components/admin-sidebar.js"></script>
+    <script src="../../components/admin-topbar.js"></script>
+    <script src="../../components/admin-modal-confirm.js"></script>
+    <script src="../../components/admin-toast.js"></script>
+  </body>
+</html>

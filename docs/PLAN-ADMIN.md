@@ -1905,6 +1905,30 @@ abriendo el formulario normal, esa regla no aplica aquí.
   hacia `pages/admin/login.html` — así se puede entrar al panel desde
   cualquier página pública sin que sea visualmente prominente.
 
+- [x] 4.6 **Biblioteca de archivos** ✅ *(módulo nuevo, no estaba en las
+      25 secciones originales de `ESPECIFICACION.md` — hueco real
+      detectado por el usuario)*. `pages/admin/biblioteca.html`.
+      Repositorio general de la entidad `Archivo` (ya existía en
+      `MODELO-DATOS.md`, nunca tuvo pantalla propia): subir, buscar,
+      filtrar por tipo, copiar link, eliminar. **Distinto de Galería**:
+      Galería son álbumes curados para mostrar en el sitio público;
+      Biblioteca es el repositorio general para *reutilizar* un archivo
+      ya subido en cualquier otro módulo. El botón "Imagen" de los
+      editores de texto enriquecido (antes decorativo) ahora abre
+      `<admin-media-picker>` (componente nuevo) y al elegir una imagen
+      la inserta en el `<textarea>` correspondiente — conectado en
+      `noticias-form.html` (Cuerpo) y `eventos-form.html` (Descripción),
+      los dos únicos editores que ya tenían el ícono de imagen en su
+      barra. Mismo criterio que tendría TipTap en el sistema real (ver
+      nota de la Fase 3).
+
+  **3 comportamientos nuevos en `admin-common.js`**: `initMediaLibrary`
+  (agregar archivo al grid con preview real, imagen o ícono según tipo),
+  `initCopyLink` (usa `navigator.clipboard`, reutilizable en cualquier
+  tarjeta de archivo futura), `initImageInsert` (conecta cualquier botón
+  `[data-insert-image]` con el picker, sin que el picker necesite saber
+  qué editor lo llamó).
+
 ## Fase 5 — La Facultad ✅
 
 Construida directamente (sin Cursor). Orden real: 5.4 → 5.2 → 5.3 → 5.1,
@@ -1969,12 +1993,27 @@ nuevo `initListManager` (agregar/quitar tanto en miembros de Comité
 como en Valores de Nosotros), pills de 4 estados, claro/oscuro. Sin
 errores de consola, sin 404 dentro del alcance de la fase.
 
-## Fase 6 — Académico
+## Fase 6 — Académico ✅
 
-- [ ] 6.1 **Información académica** — formulario único (singleton) +
-      gestión de `PerfilIngresante`, `PerfilEgresado`,
-      `CampoOcupacional`, `Competencia`/`TipoCompetencia`.
-- [ ] 6.2 **Posgrado** — listado + formulario. Entidad: `Maestria`.
+- [x] 6.1 **Información académica** — `pages/admin/academico.html`
+      (singleton, sin "-form"). Grado y título (texto enriquecido) +
+      Perfil del ingresante/egresado + Campo ocupacional (3
+      `initListManager` independientes) + Competencias agrupadas en 3
+      columnas por `TipoCompetencia` (Genéricas/Específicas/Técnicas),
+      cada una su propio `initListManager` — confirmado que múltiples
+      gestores en la misma página no chocan entre sí. Malla curricular
+      y Plan de estudios NO están aquí (son `Documento`, se gestionan en
+      Fase 8). Contenido real de `pages/academico.html`.
+- [x] 6.2 **Posgrado** — `pages/admin/posgrado.html` + `posgrado-form.html`.
+      Las 2 maestrías reales (`pages/posgrado.html`): Gestión Pública
+      (coordina Rosa Illanes) y Gestión de Proyectos (coordina Carlos
+      Huamán). Admisión como textarea de requisitos (un requisito por
+      línea, mismo criterio que `Tramite.requisitos`), plan de estudios
+      con el patrón de uploader PDF ya usado en Autoridades/Comités.
+
+**Verificado con Playwright:** 6 `initListManager` en la misma página
+(`academico.html`) funcionando de forma independiente, filtro de
+Posgrado, sin errores de consola, sin 404.
 
 ## Fase 7 — Investigación
 

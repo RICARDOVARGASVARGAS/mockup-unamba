@@ -31,6 +31,7 @@ const ADMIN_NAV_GROUPS = [
       { label: "Comunicados", href: "comunicados.html" },
       { label: "Banners", href: "banners.html" },
       { label: "Galería", href: "galeria.html" },
+      { label: "Biblioteca de archivos", href: "biblioteca.html" },
     ],
   },
   {

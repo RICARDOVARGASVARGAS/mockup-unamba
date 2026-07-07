@@ -1,0 +1,322 @@
+<!-- pages/admin/academico.html -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../../assets/img/facultad/logo_universidad.ico" />
+    <title>Información Académica — Panel de Administración | Facultad de Administración UNAMBA (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <admin-sidebar></admin-sidebar>
+
+    <div class="admin-canvas flex min-h-screen flex-col lg:pl-72">
+      <admin-topbar page-title="Información académica"></admin-topbar>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <div class="mx-auto max-w-3xl">
+          <h2 class="font-heading text-xl font-bold text-text">Información Académica</h2>
+          <p class="mt-1 text-sm text-text-muted">
+            Página única — no es un listado, edita el contenido que ya existe. La Malla curricular y el Plan de
+            estudios se gestionan en <a href="documentos.html" class="font-medium text-primary hover:text-primary-dark">Documentos</a>,
+            no aquí.
+          </p>
+
+          <form data-admin-form data-redirect="academico.html" class="mt-6 space-y-6">
+            <!-- Grado y título -->
+            <div class="admin-card p-5 sm:p-6">
+              <h3 class="font-heading text-base font-semibold text-text">Grado y título</h3>
+              <div class="mt-4 overflow-hidden rounded-md border border-border bg-bg">
+                <div class="admin-toolbar">
+                  <button type="button" tabindex="-1" class="rounded px-2 py-1 text-sm font-bold text-text-muted hover:bg-surface">B</button>
+                  <button type="button" tabindex="-1" class="rounded px-2 py-1 text-sm italic text-text-muted hover:bg-surface">I</button>
+                  <span class="mx-1 h-4 w-px bg-border"></span>
+                  <button type="button" tabindex="-1" aria-label="Enlace" class="rounded p-1.5 text-text-muted hover:bg-surface">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" /></svg>
+                  </button>
+                </div>
+                <textarea rows="4" class="w-full resize-y border-0 bg-transparent px-3 py-2 text-sm text-text focus:outline-none">Al concluir el plan de estudios, el egresado obtiene el Grado Académico de Bachiller en Administración. Tras cumplir con los requisitos establecidos en el Reglamento de Grados y Títulos de la facultad, puede optar por el Título Profesional de Licenciado en Administración.</textarea>
+              </div>
+            </div>
+
+            <!-- Perfil del ingresante -->
+            <div class="admin-card p-5 sm:p-6" data-list-manager>
+              <h3 class="font-heading text-base font-semibold text-text">Perfil del ingresante</h3>
+              <p class="mt-1 text-xs text-text-muted">El orden de la lista es el orden de aparición en la página pública.</p>
+              <div class="mt-4 space-y-2" data-list-items>
+                <div data-list-item class="flex items-center gap-2 rounded-md border border-border p-3">
+                  <input type="text" value="Interés por la gestión, la economía y el mundo empresarial." class="h-10 flex-1 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+                <div data-list-item class="flex items-center gap-2 rounded-md border border-border p-3">
+                  <input type="text" value="Habilidad para el razonamiento lógico-matemático." class="h-10 flex-1 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+                <div data-list-item class="flex items-center gap-2 rounded-md border border-border p-3">
+                  <input type="text" value="Capacidad de comunicación oral y escrita." class="h-10 flex-1 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+                <div data-list-item class="flex items-center gap-2 rounded-md border border-border p-3">
+                  <input type="text" value="Disposición al trabajo en equipo y a la resolución de problemas." class="h-10 flex-1 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+              </div>
+              <template data-list-template>
+                <div data-list-item class="flex items-center gap-2 rounded-md border border-border p-3">
+                  <input type="text" placeholder="Descripción" class="h-10 flex-1 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+              </template>
+              <button type="button" data-list-add class="mt-3 inline-flex items-center gap-1.5 rounded-md border border-dashed border-border px-4 py-2 text-sm font-medium text-text-muted transition hover:border-primary hover:text-primary">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                Agregar característica
+              </button>
+            </div>
+
+            <!-- Perfil del egresado -->
+            <div class="admin-card p-5 sm:p-6" data-list-manager>
+              <h3 class="font-heading text-base font-semibold text-text">Perfil del egresado</h3>
+              <p class="mt-1 text-xs text-text-muted">El orden de la lista es el orden de aparición en la página pública.</p>
+              <div class="mt-4 space-y-2" data-list-items>
+                <div data-list-item class="flex items-center gap-2 rounded-md border border-border p-3">
+                  <input type="text" value="Administra y gestiona organizaciones públicas y privadas con eficiencia." class="h-10 flex-1 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+                <div data-list-item class="flex items-center gap-2 rounded-md border border-border p-3">
+                  <input type="text" value="Formula, evalúa y gestiona proyectos de inversión pública y privada." class="h-10 flex-1 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+                <div data-list-item class="flex items-center gap-2 rounded-md border border-border p-3">
+                  <input type="text" value="Actúa con ética, responsabilidad social y visión estratégica." class="h-10 flex-1 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+                <div data-list-item class="flex items-center gap-2 rounded-md border border-border p-3">
+                  <input type="text" value="Aplica tecnologías de información y comunicación en la toma de decisiones." class="h-10 flex-1 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+              </div>
+              <template data-list-template>
+                <div data-list-item class="flex items-center gap-2 rounded-md border border-border p-3">
+                  <input type="text" placeholder="Descripción" class="h-10 flex-1 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+              </template>
+              <button type="button" data-list-add class="mt-3 inline-flex items-center gap-1.5 rounded-md border border-dashed border-border px-4 py-2 text-sm font-medium text-text-muted transition hover:border-primary hover:text-primary">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                Agregar característica
+              </button>
+            </div>
+
+            <!-- Campo ocupacional -->
+            <div class="admin-card p-5 sm:p-6" data-list-manager>
+              <h3 class="font-heading text-base font-semibold text-text">Campo ocupacional</h3>
+              <p class="mt-1 text-xs text-text-muted">El orden de la lista es el orden de aparición en la página pública.</p>
+              <div class="mt-4 space-y-2" data-list-items>
+                <div data-list-item class="flex items-center gap-2 rounded-md border border-border p-3">
+                  <input type="text" value="Empresas privadas" class="h-10 flex-1 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+                <div data-list-item class="flex items-center gap-2 rounded-md border border-border p-3">
+                  <input type="text" value="Entidades del Estado" class="h-10 flex-1 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+                <div data-list-item class="flex items-center gap-2 rounded-md border border-border p-3">
+                  <input type="text" value="Consultoría y asesoría" class="h-10 flex-1 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+                <div data-list-item class="flex items-center gap-2 rounded-md border border-border p-3">
+                  <input type="text" value="Emprendimiento propio" class="h-10 flex-1 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+              </div>
+              <template data-list-template>
+                <div data-list-item class="flex items-center gap-2 rounded-md border border-border p-3">
+                  <input type="text" placeholder="Nombre" class="h-10 flex-1 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+              </template>
+              <button type="button" data-list-add class="mt-3 inline-flex items-center gap-1.5 rounded-md border border-dashed border-border px-4 py-2 text-sm font-medium text-text-muted transition hover:border-primary hover:text-primary">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                Agregar campo ocupacional
+              </button>
+            </div>
+
+            <!-- Competencias -->
+            <div class="admin-card p-5 sm:p-6">
+              <h3 class="font-heading text-base font-semibold text-text">Competencias</h3>
+              <p class="mt-1 text-xs text-text-muted">Organizadas por tipo (`TipoCompetencia`), según el diseño curricular por competencias.</p>
+
+              <div class="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-3">
+                <!-- Genéricas -->
+                <div data-list-manager>
+                  <h4 class="text-sm font-semibold text-text">Genéricas</h4>
+                  <div class="mt-2 space-y-2" data-list-items>
+                    <div data-list-item class="flex items-center gap-1 rounded-md border border-border p-2">
+                      <input type="text" value="Comunicación efectiva" class="h-9 flex-1 rounded-md border border-border bg-bg px-2 text-sm text-text focus:border-primary focus:outline-none" />
+                      <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-1.5 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                      </button>
+                    </div>
+                    <div data-list-item class="flex items-center gap-1 rounded-md border border-border p-2">
+                      <input type="text" value="Trabajo en equipo" class="h-9 flex-1 rounded-md border border-border bg-bg px-2 text-sm text-text focus:border-primary focus:outline-none" />
+                      <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-1.5 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                      </button>
+                    </div>
+                    <div data-list-item class="flex items-center gap-1 rounded-md border border-border p-2">
+                      <input type="text" value="Pensamiento crítico" class="h-9 flex-1 rounded-md border border-border bg-bg px-2 text-sm text-text focus:border-primary focus:outline-none" />
+                      <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-1.5 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                      </button>
+                    </div>
+                  </div>
+                  <template data-list-template>
+                    <div data-list-item class="flex items-center gap-1 rounded-md border border-border p-2">
+                      <input type="text" placeholder="Competencia" class="h-9 flex-1 rounded-md border border-border bg-bg px-2 text-sm text-text focus:border-primary focus:outline-none" />
+                      <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-1.5 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                      </button>
+                    </div>
+                  </template>
+                  <button type="button" data-list-add class="mt-2 inline-flex items-center gap-1 rounded-md border border-dashed border-border px-3 py-1.5 text-xs font-medium text-text-muted transition hover:border-primary hover:text-primary">
+                    <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                    Agregar
+                  </button>
+                </div>
+
+                <!-- Específicas -->
+                <div data-list-manager>
+                  <h4 class="text-sm font-semibold text-text">Específicas</h4>
+                  <div class="mt-2 space-y-2" data-list-items>
+                    <div data-list-item class="flex items-center gap-1 rounded-md border border-border p-2">
+                      <input type="text" value="Gestión financiera" class="h-9 flex-1 rounded-md border border-border bg-bg px-2 text-sm text-text focus:border-primary focus:outline-none" />
+                      <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-1.5 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                      </button>
+                    </div>
+                    <div data-list-item class="flex items-center gap-1 rounded-md border border-border p-2">
+                      <input type="text" value="Marketing y ventas" class="h-9 flex-1 rounded-md border border-border bg-bg px-2 text-sm text-text focus:border-primary focus:outline-none" />
+                      <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-1.5 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                      </button>
+                    </div>
+                    <div data-list-item class="flex items-center gap-1 rounded-md border border-border p-2">
+                      <input type="text" value="Gestión del talento humano" class="h-9 flex-1 rounded-md border border-border bg-bg px-2 text-sm text-text focus:border-primary focus:outline-none" />
+                      <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-1.5 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                      </button>
+                    </div>
+                  </div>
+                  <template data-list-template>
+                    <div data-list-item class="flex items-center gap-1 rounded-md border border-border p-2">
+                      <input type="text" placeholder="Competencia" class="h-9 flex-1 rounded-md border border-border bg-bg px-2 text-sm text-text focus:border-primary focus:outline-none" />
+                      <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-1.5 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                      </button>
+                    </div>
+                  </template>
+                  <button type="button" data-list-add class="mt-2 inline-flex items-center gap-1 rounded-md border border-dashed border-border px-3 py-1.5 text-xs font-medium text-text-muted transition hover:border-primary hover:text-primary">
+                    <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                    Agregar
+                  </button>
+                </div>
+
+                <!-- Técnicas -->
+                <div data-list-manager>
+                  <h4 class="text-sm font-semibold text-text">Técnicas</h4>
+                  <div class="mt-2 space-y-2" data-list-items>
+                    <div data-list-item class="flex items-center gap-1 rounded-md border border-border p-2">
+                      <input type="text" value="Manejo de hojas de cálculo y ERP" class="h-9 flex-1 rounded-md border border-border bg-bg px-2 text-sm text-text focus:border-primary focus:outline-none" />
+                      <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-1.5 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                      </button>
+                    </div>
+                    <div data-list-item class="flex items-center gap-1 rounded-md border border-border p-2">
+                      <input type="text" value="Elaboración de planes de negocio" class="h-9 flex-1 rounded-md border border-border bg-bg px-2 text-sm text-text focus:border-primary focus:outline-none" />
+                      <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-1.5 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                      </button>
+                    </div>
+                    <div data-list-item class="flex items-center gap-1 rounded-md border border-border p-2">
+                      <input type="text" value="Análisis de estados financieros" class="h-9 flex-1 rounded-md border border-border bg-bg px-2 text-sm text-text focus:border-primary focus:outline-none" />
+                      <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-1.5 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                      </button>
+                    </div>
+                  </div>
+                  <template data-list-template>
+                    <div data-list-item class="flex items-center gap-1 rounded-md border border-border p-2">
+                      <input type="text" placeholder="Competencia" class="h-9 flex-1 rounded-md border border-border bg-bg px-2 text-sm text-text focus:border-primary focus:outline-none" />
+                      <button type="button" data-list-remove aria-label="Quitar" class="shrink-0 rounded-md p-1.5 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                      </button>
+                    </div>
+                  </template>
+                  <button type="button" data-list-add class="mt-2 inline-flex items-center gap-1 rounded-md border border-dashed border-border px-3 py-1.5 text-xs font-medium text-text-muted transition hover:border-primary hover:text-primary">
+                    <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                    Agregar
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-3">
+              <button type="submit" class="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <admin-toast></admin-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/admin-common.js"></script>
+    <script src="../../components/admin-sidebar.js"></script>
+    <script src="../../components/admin-topbar.js"></script>
+    <script src="../../components/admin-toast.js"></script>
+  </body>
+</html>
