@@ -1,0 +1,133 @@
+<!-- pages/admin/banners-form.html -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editar banner — Panel de Administración | Facultad de Administración UNAMBA (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <admin-sidebar></admin-sidebar>
+
+    <div class="admin-canvas flex min-h-screen flex-col lg:pl-72">
+      <admin-topbar page-title="Banners"></admin-topbar>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <div class="mx-auto max-w-3xl">
+          <a href="banners.html" class="inline-flex items-center gap-1.5 text-sm font-medium text-text-muted transition hover:text-text">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+            Volver a Banners
+          </a>
+          <h2 class="mt-2 font-heading text-xl font-bold text-text">Editar banner</h2>
+
+          <form data-admin-form data-redirect="banners.html" class="mt-6 space-y-6">
+            <!-- Contenido -->
+            <div class="admin-card p-5 sm:p-6">
+              <h3 class="font-heading text-base font-semibold text-text">Contenido</h3>
+              <div class="mt-4 grid grid-cols-1 gap-4">
+                <div>
+                  <label for="banner-etiqueta" class="block text-sm font-medium text-text">Etiqueta <span class="text-text-muted">(opcional)</span></label>
+                  <input id="banner-etiqueta" type="text" value="Facultad de Administración" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                </div>
+                <div>
+                  <label for="banner-titulo" class="block text-sm font-medium text-text">Título</label>
+                  <input id="banner-titulo" type="text" value="Formamos líderes en gestión y administración" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                </div>
+                <div>
+                  <label for="banner-descripcion" class="block text-sm font-medium text-text">Descripción</label>
+                  <textarea id="banner-descripcion" rows="2" class="mt-1.5 w-full resize-y rounded-md border border-border bg-bg px-3 py-2 text-sm text-text focus:border-primary focus:outline-none">Educación superior de calidad, con vocación de servicio a la región Apurímac y al país.</textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Imagen de fondo -->
+            <div class="admin-card p-5 sm:p-6" data-upload>
+              <h3 class="font-heading text-base font-semibold text-text">Imagen de fondo <span class="font-normal text-text-muted">(opcional)</span></h3>
+              <div class="mt-4 flex flex-col gap-4 sm:flex-row">
+                <div class="relative flex h-24 w-full max-w-[280px] shrink-0 items-center justify-center overflow-hidden rounded-md border border-dashed border-border bg-gradient-to-br from-primary to-primary-dark text-onPrimary/70">
+                  <span data-upload-placeholder class="hidden text-xs">Sin imagen — se usa un degradado</span>
+                  <img data-upload-preview src="../../assets/img/banners/banner_1.png" class="h-full w-full object-cover" alt="" />
+                </div>
+                <div class="flex-1 space-y-3">
+                  <input type="file" accept="image/*" data-upload-input class="hidden" />
+                  <button type="button" data-upload-trigger class="rounded-md border border-border px-4 py-2 text-sm font-medium text-text transition hover:bg-surface-2">Reemplazar imagen</button>
+                  <p class="text-xs text-text-muted">JPG o PNG, mínimo 1600px de ancho. Si no se sube ninguna, el slide usa un degradado azul institucional.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="admin-card p-5 sm:p-6">
+              <h3 class="font-heading text-base font-semibold text-text">Botones</h3>
+              <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label for="banner-boton1-texto" class="block text-sm font-medium text-text">Botón principal — texto</label>
+                  <input id="banner-boton1-texto" type="text" value="Conoce la Facultad" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                </div>
+                <div>
+                  <label for="banner-boton1-url" class="block text-sm font-medium text-text">Botón principal — enlace</label>
+                  <input id="banner-boton1-url" type="text" value="nosotros.html" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                </div>
+                <div>
+                  <label for="banner-boton2-texto" class="block text-sm font-medium text-text">Botón secundario — texto <span class="text-text-muted">(opcional)</span></label>
+                  <input id="banner-boton2-texto" type="text" value="Ver carreras" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                </div>
+                <div>
+                  <label for="banner-boton2-url" class="block text-sm font-medium text-text">Botón secundario — enlace</label>
+                  <input id="banner-boton2-url" type="text" value="academico.html" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Publicación -->
+            <div class="admin-card p-5 sm:p-6">
+              <h3 class="font-heading text-base font-semibold text-text">Publicación</h3>
+              <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label for="banner-orden" class="block text-sm font-medium text-text">Orden</label>
+                  <input id="banner-orden" type="number" min="1" value="1" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <p class="mt-1.5 text-xs text-text-muted">Define la posición en el slider (1 = primero).</p>
+                </div>
+                <div data-status-group>
+                  <span class="block text-sm font-medium text-text">Estado</span>
+                  <div class="mt-1.5 inline-flex rounded-md border border-border p-1">
+                    <button type="button" data-status-option data-status-active-class="bg-primary text-onPrimary" class="rounded px-4 py-1.5 text-sm font-medium text-text-muted transition">Borrador</button>
+                    <button type="button" data-status-option data-status-active-class="bg-primary text-onPrimary" class="rounded bg-primary px-4 py-1.5 text-sm font-medium text-onPrimary transition">Publicado</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-3">
+              <a href="banners.html" class="rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-text transition hover:bg-surface-2">Cancelar</a>
+              <button type="submit" class="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <admin-toast></admin-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/admin-common.js"></script>
+    <script src="../../components/admin-sidebar.js"></script>
+    <script src="../../components/admin-topbar.js"></script>
+    <script src="../../components/admin-toast.js"></script>
+  </body>
+</html>

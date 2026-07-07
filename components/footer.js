@@ -106,7 +106,10 @@ class SiteFooter extends HTMLElement {
         <div class="border-t border-white/15">
           <div class="page-container flex flex-col items-center gap-2 py-6 text-center text-xs text-onPrimary/70 sm:flex-row sm:justify-between sm:text-left">
             <p>© ${year} Facultad de Administración — UNAMBA. Todos los derechos reservados.</p>
-            <p>Mockup de diseño, contenido de ejemplo.</p>
+            <p class="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 sm:justify-end">
+              <span>Mockup de diseño, contenido de ejemplo.</span>
+              <a href="${base}pages/admin/login.html" class="text-onPrimary/40 transition hover:text-onPrimary/80">Acceso administrativo</a>
+            </p>
           </div>
         </div>
       </footer>

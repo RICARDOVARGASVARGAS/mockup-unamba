@@ -45,6 +45,29 @@ Compartida por Noticia y Evento (mismo color en ambos si el nombre coincide).
 | nombre | Institucional, Académico, Convenios, Comunidad, Servicios (solo eventos) |
 | color  | Código hex (ej. #0B3D91)                                     |
 
+## Banner
+
+Slides rotativos del hero de Inicio (`index.html`, `[data-hero]`).
+
+| Campo                    | Nota                                                        |
+|---------------------------|--------------------------------------------------------------|
+| id                        |                                                              |
+| etiqueta                  | Opcional. Texto corto sobre el título (ej. "Admisión")       |
+| titulo                    |                                                              |
+| descripcion               | Texto breve, una línea (no es texto enriquecido)             |
+| imagen_id                 | FK → Archivo, opcional                                       |
+| boton_texto               | Opcional (ej. "Conoce la Facultad")                          |
+| boton_url                 | Obligatorio si `boton_texto` tiene valor                     |
+| boton_texto_secundario    | Opcional (ej. "Ver carreras")                                |
+| boton_url_secundario      | Obligatorio si `boton_texto_secundario` tiene valor          |
+| orden                     | Define la posición en el slider                              |
+| estado                    | enum: borrador / publicado                                   |
+
+Obs: si `imagen_id` está vacío, el slide usa un degradado de
+`--color-primary` como fondo (tal como ya se ve hoy en `index.html`) en
+vez de dejar un hueco visual — así un banner sin foto sigue viéndose
+presentable.
+
 ## Noticia
 
 | Campo             | Nota                            |

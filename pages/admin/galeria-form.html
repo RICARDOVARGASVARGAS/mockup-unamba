@@ -1,0 +1,152 @@
+<!-- pages/admin/galeria-form.html -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editar álbum — Panel de Administración | Facultad de Administración UNAMBA (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <admin-sidebar></admin-sidebar>
+
+    <div class="admin-canvas flex min-h-screen flex-col lg:pl-72">
+      <admin-topbar page-title="Galería"></admin-topbar>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <div class="mx-auto max-w-3xl">
+          <a href="galeria.html" class="inline-flex items-center gap-1.5 text-sm font-medium text-text-muted transition hover:text-text">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+            Volver a Galería
+          </a>
+          <h2 class="mt-2 font-heading text-xl font-bold text-text">Editar álbum</h2>
+
+          <form data-admin-form data-redirect="galeria.html" class="mt-6 space-y-6">
+            <!-- Información general -->
+            <div class="admin-card p-5 sm:p-6">
+              <h3 class="font-heading text-base font-semibold text-text">Información general</h3>
+              <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div class="sm:col-span-2">
+                  <label for="album-titulo" class="block text-sm font-medium text-text">Título</label>
+                  <input id="album-titulo" type="text" value="Semana de la Administración 2026" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                </div>
+                <div>
+                  <label for="album-categoria" class="block text-sm font-medium text-text">Categoría</label>
+                  <select id="album-categoria" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none">
+                    <option>Instalaciones</option>
+                    <option selected>Eventos</option>
+                    <option>Proyección Social</option>
+                    <option>Alumnos</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="album-fecha" class="block text-sm font-medium text-text">Fecha</label>
+                  <input id="album-fecha" type="date" value="2026-07-16" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Portada -->
+            <div class="admin-card p-5 sm:p-6" data-upload>
+              <h3 class="font-heading text-base font-semibold text-text">Portada <span class="font-normal text-text-muted">(opcional)</span></h3>
+              <div class="mt-4 flex flex-col gap-4 sm:flex-row">
+                <div class="relative flex h-32 w-full max-w-[220px] shrink-0 items-center justify-center overflow-hidden rounded-md border border-dashed border-border bg-bg text-text-muted">
+                  <span data-upload-placeholder class="hidden text-xs">Sin portada</span>
+                  <img data-upload-preview src="../../assets/img/noticias/noticia-taller-finanzas.jpg" class="h-full w-full object-cover" alt="" />
+                </div>
+                <div class="flex-1 space-y-3">
+                  <input type="file" accept="image/*" data-upload-input class="hidden" />
+                  <button type="button" data-upload-trigger class="rounded-md border border-border px-4 py-2 text-sm font-medium text-text transition hover:bg-surface-2">Cambiar portada</button>
+                  <p class="text-xs text-text-muted">Si no se elige una portada, se usa la primera foto del álbum.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Fotos del álbum -->
+            <div class="admin-card p-5 sm:p-6" data-gallery>
+              <h3 class="font-heading text-base font-semibold text-text">Fotos del álbum</h3>
+              <p class="mt-1 text-xs text-text-muted">4 fotos. Pasa el cursor sobre una foto para quitarla.</p>
+              <div class="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-4" data-gallery-grid>
+                <div data-gallery-item class="group relative aspect-square overflow-hidden rounded-md border border-border">
+                  <img src="../../assets/img/noticias/noticia-taller-finanzas.jpg" class="h-full w-full object-cover" alt="" />
+                  <button type="button" data-gallery-remove aria-label="Quitar foto" class="absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-gray-900/70 text-white opacity-0 transition group-hover:opacity-100 focus:opacity-100">
+                    <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+                <div data-gallery-item class="group relative aspect-square overflow-hidden rounded-md border border-border">
+                  <img src="../../assets/img/noticias/noticia-taller-finanzas-2.jpg" class="h-full w-full object-cover" alt="" />
+                  <button type="button" data-gallery-remove aria-label="Quitar foto" class="absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-gray-900/70 text-white opacity-0 transition group-hover:opacity-100 focus:opacity-100">
+                    <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+                <div data-gallery-item class="group relative aspect-square overflow-hidden rounded-md border border-border">
+                  <img src="../../assets/img/noticias/noticia-taller-finanzas-3.jpg" class="h-full w-full object-cover" alt="" />
+                  <button type="button" data-gallery-remove aria-label="Quitar foto" class="absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-gray-900/70 text-white opacity-0 transition group-hover:opacity-100 focus:opacity-100">
+                    <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+                <div data-gallery-item class="group relative aspect-square overflow-hidden rounded-md border border-border">
+                  <img src="../../assets/img/noticias/noticia-feria-vocacional.jpg" class="h-full w-full object-cover" alt="" />
+                  <button type="button" data-gallery-remove aria-label="Quitar foto" class="absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-gray-900/70 text-white opacity-0 transition group-hover:opacity-100 focus:opacity-100">
+                    <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+
+                <input type="file" accept="image/*" multiple data-gallery-input class="hidden" />
+                <button
+                  type="button"
+                  data-gallery-add
+                  class="flex aspect-square flex-col items-center justify-center gap-1 rounded-md border-2 border-dashed border-border text-text-muted transition hover:border-primary hover:text-primary"
+                >
+                  <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                  </svg>
+                  <span class="text-xs">Agregar</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Publicación -->
+            <div class="admin-card p-5 sm:p-6">
+              <h3 class="font-heading text-base font-semibold text-text">Publicación</h3>
+              <div class="mt-4" data-status-group>
+                <span class="block text-sm font-medium text-text">Estado</span>
+                <div class="mt-2 inline-flex rounded-md border border-border p-1">
+                  <button type="button" data-status-option data-status-active-class="bg-primary text-onPrimary" class="rounded px-4 py-1.5 text-sm font-medium text-text-muted transition">Borrador</button>
+                  <button type="button" data-status-option data-status-active-class="bg-primary text-onPrimary" class="rounded bg-primary px-4 py-1.5 text-sm font-medium text-onPrimary transition">Publicado</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-3">
+              <a href="galeria.html" class="rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-text transition hover:bg-surface-2">Cancelar</a>
+              <button type="submit" class="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <admin-toast></admin-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/admin-common.js"></script>
+    <script src="../../components/admin-sidebar.js"></script>
+    <script src="../../components/admin-topbar.js"></script>
+    <script src="../../components/admin-toast.js"></script>
+  </body>
+</html>
