@@ -1,0 +1,382 @@
+<!-- pages/admin/autoridades.html -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../../assets/img/facultad/logo_universidad.ico" />
+    <title>Autoridades — Panel de Administración | Facultad de Administración UNAMBA (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <admin-sidebar></admin-sidebar>
+
+    <div class="admin-canvas flex min-h-screen flex-col lg:pl-72">
+      <admin-topbar page-title="Autoridades"></admin-topbar>
+
+      <main class="flex-1 space-y-6 p-4 sm:p-6 lg:p-8">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h2 class="font-heading text-xl font-bold text-text">Autoridades</h2>
+            <p class="text-sm text-text-muted">Decano, Directora de Escuela y Director de Departamento Académico — histórico de gestiones.</p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button
+              type="button"
+              data-open-orgchart
+              class="inline-flex items-center gap-2 rounded-md border border-border bg-bg px-4 py-2.5 text-sm font-semibold text-text transition hover:bg-surface-2"
+            >
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                <rect x="9" y="3" width="6" height="4" rx="1" />
+                <rect x="3" y="15" width="6" height="4" rx="1" />
+                <rect x="15" y="15" width="6" height="4" rx="1" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 7v4M6 11h12M6 11v4M18 11v4" />
+              </svg>
+              Ver organigrama
+            </button>
+            <a href="autoridades-form.html" class="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-onPrimary transition hover:bg-primary-dark">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+              Nueva autoridad
+            </a>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-3 admin-card p-4 sm:flex-row sm:items-center">
+          <div class="relative flex-1">
+            <svg class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+            <input type="search" data-table-search placeholder="Buscar por docente..." class="h-10 w-full rounded-md border border-border bg-bg pl-9 pr-3 text-sm text-text focus:border-primary focus:outline-none" />
+          </div>
+          <select data-table-filter="cargo" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none">
+            <option value="">Todos los cargos</option>
+            <option value="decano">Decano</option>
+            <option value="directoraescuela">Directora de Escuela</option>
+            <option value="directordepartamento">Director de Departamento Académico</option>
+            <option value="coordinadorescuela">Coordinador de Escuela</option>
+          </select>
+          <select data-table-filter="estado" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none">
+            <option value="">Vigentes y concluidas</option>
+            <option value="vigente">Vigente</option>
+            <option value="concluida">Concluida</option>
+          </select>
+        </div>
+
+        <div class="overflow-hidden admin-card">
+          <div class="overflow-x-auto">
+            <table data-admin-table class="w-full text-left text-sm">
+              <thead class="border-b border-border bg-surface-2 text-xs uppercase tracking-wide text-text-muted">
+                <tr>
+                  <th class="px-4 py-3 font-semibold">Orden</th>
+                  <th class="px-4 py-3 font-semibold">Cargo</th>
+                  <th class="px-4 py-3 font-semibold">Depende de</th>
+                  <th class="px-4 py-3 font-semibold">Docente</th>
+                  <th class="px-4 py-3 font-semibold">Inicio</th>
+                  <th class="px-4 py-3 font-semibold">Fin</th>
+                  <th class="px-4 py-3 font-semibold">Estado</th>
+                  <th class="px-4 py-3 font-semibold text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-border">
+                <tr data-row data-search="carlos huamán quispe decano" data-cargo="decano" data-estado="vigente">
+                  <td class="px-4 py-3 text-text-muted">1</td>
+                  <td class="px-4 py-3 font-medium text-text">Decano</td>
+                  <td class="px-4 py-3 text-text-muted">— (raíz)</td>
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      <img src="../../assets/img/docentes/docente-3.jpg" alt="" class="h-8 w-8 shrink-0 rounded-full object-cover" />
+                      <span class="text-text-muted">Mg. Carlos Huamán Quispe</span>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 text-text-muted">01 ene. 2024</td>
+                  <td class="px-4 py-3 text-text-muted">—</td>
+                  <td class="px-4 py-3"><span class="badge badge-success">Vigente</span></td>
+                  <td class="px-4 py-3">
+                    <div class="flex justify-end gap-1">
+                      <a href="autoridades-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
+                        </svg>
+                      </a>
+                      <button type="button" data-delete-trigger data-delete-name="Decano — Mg. Carlos Huamán Quispe" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-row data-search="rosa illanes cárdenas directora de escuela" data-cargo="directoraescuela" data-estado="vigente">
+                  <td class="px-4 py-3 text-text-muted">2</td>
+                  <td class="px-4 py-3 font-medium text-text">Directora de Escuela</td>
+                  <td class="px-4 py-3 text-text-muted">Decano</td>
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      <img src="../../assets/img/docentes/docente-2.jpg" alt="" class="h-8 w-8 shrink-0 rounded-full object-cover" />
+                      <span class="text-text-muted">Dra. Rosa Illanes Cárdenas</span>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 text-text-muted">01 ene. 2024</td>
+                  <td class="px-4 py-3 text-text-muted">—</td>
+                  <td class="px-4 py-3"><span class="badge badge-success">Vigente</span></td>
+                  <td class="px-4 py-3">
+                    <div class="flex justify-end gap-1">
+                      <a href="autoridades-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
+                        </svg>
+                      </a>
+                      <button type="button" data-delete-trigger data-delete-name="Directora de Escuela — Dra. Rosa Illanes Cárdenas" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-row data-search="jorge ttito mamani director de departamento académico" data-cargo="directordepartamento" data-estado="vigente">
+                  <td class="px-4 py-3 text-text-muted">3</td>
+                  <td class="px-4 py-3 font-medium text-text">Director de Departamento Académico</td>
+                  <td class="px-4 py-3 text-text-muted">Decano</td>
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      <img src="../../assets/img/docentes/docente-1.jpg" alt="" class="h-8 w-8 shrink-0 rounded-full object-cover" />
+                      <span class="text-text-muted">Mg. Jorge Ttito Mamani</span>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 text-text-muted">01 ene. 2024</td>
+                  <td class="px-4 py-3 text-text-muted">—</td>
+                  <td class="px-4 py-3"><span class="badge badge-success">Vigente</span></td>
+                  <td class="px-4 py-3">
+                    <div class="flex justify-end gap-1">
+                      <a href="autoridades-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
+                        </svg>
+                      </a>
+                      <button type="button" data-delete-trigger data-delete-name="Director de Departamento Académico — Mg. Jorge Ttito Mamani" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-row data-search="katherine vargas loayza director de departamento académico" data-cargo="directordepartamento" data-estado="concluida" class="opacity-70">
+                  <td class="px-4 py-3 text-text-muted">—</td>
+                  <td class="px-4 py-3 font-medium text-text">Director de Departamento Académico</td>
+                  <td class="px-4 py-3 text-text-muted">Decano</td>
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      <img src="../../assets/img/docentes/docente-4.jpg" alt="" class="h-8 w-8 shrink-0 rounded-full object-cover" />
+                      <span class="text-text-muted">Mg. Katherine Vargas Loayza</span>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 text-text-muted">01 ene. 2022</td>
+                  <td class="px-4 py-3 text-text-muted">31 dic. 2023</td>
+                  <td class="px-4 py-3"><span class="badge badge-neutral">Concluida</span></td>
+                  <td class="px-4 py-3">
+                    <div class="flex justify-end gap-1">
+                      <a href="autoridades-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
+                        </svg>
+                      </a>
+                      <button type="button" data-delete-trigger data-delete-name="Director de Departamento Académico — Mg. Katherine Vargas Loayza (gestión concluida)" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-row data-search="percy aguilar sotelo coordinador de escuela de administración" data-cargo="coordinadorescuela" data-estado="vigente">
+                  <td class="px-4 py-3 text-text-muted">1</td>
+                  <td class="px-4 py-3 font-medium text-text">Coordinador de Escuela de Administración</td>
+                  <td class="px-4 py-3 text-text-muted">Directora de Escuela</td>
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      <img src="../../assets/img/docentes/docente-5.jpg" alt="" class="h-8 w-8 shrink-0 rounded-full object-cover" />
+                      <span class="text-text-muted">Lic. Percy Aguilar Sotelo</span>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 text-text-muted">15 mar. 2025</td>
+                  <td class="px-4 py-3 text-text-muted">—</td>
+                  <td class="px-4 py-3"><span class="badge badge-success">Vigente</span></td>
+                  <td class="px-4 py-3">
+                    <div class="flex justify-end gap-1">
+                      <a href="autoridades-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
+                        </svg>
+                      </a>
+                      <button type="button" data-delete-trigger data-delete-name="Coordinador de Escuela de Administración — Lic. Percy Aguilar Sotelo" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-empty-row class="hidden">
+                  <td colspan="8" class="px-4 py-10 text-center text-sm text-text-muted">No se encontraron resultados.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!--
+      Modal "Ver organigrama": vista previa de solo lectura. El árbol NO
+      está hardcodeado en el HTML — se arma por JS a partir de una lista
+      plana con padre_id (mismo modelo que Autoridad.padre_id), así
+      cualquier autoridad puede depender de cualquier otra a cualquier
+      profundidad, no solo "Decano + 2 debajo". Ver el <script> al final
+      del archivo (buildTree / renderOrgNode).
+    -->
+    <div data-orgchart-modal class="fixed inset-0 z-50 hidden items-center justify-center bg-gray-900/50 p-4">
+      <div class="w-full max-w-3xl rounded-lg bg-surface p-6 shadow-lg">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h2 class="font-heading text-lg font-semibold text-text">Vista previa del organigrama</h2>
+            <p class="mt-1 text-sm text-text-muted">
+              Así se arma la versión interactiva de <span class="font-medium">/nosotros</span>, leyendo "Depende de"
+              y "Orden" de cada autoridad vigente. No es editable aquí.
+            </p>
+          </div>
+          <button type="button" data-close-orgchart aria-label="Cerrar" class="shrink-0 rounded-md p-1.5 text-text-muted transition hover:bg-surface-2 hover:text-text">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div data-orgchart-tree class="mt-8 flex justify-center overflow-x-auto pb-2"></div>
+
+        <div class="mt-6 flex justify-end">
+          <button type="button" data-close-orgchart class="rounded-md border border-border px-4 py-2 text-sm font-semibold text-text transition hover:bg-surface-2">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <admin-modal-confirm></admin-modal-confirm>
+    <admin-toast></admin-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/admin-common.js"></script>
+    <script src="../../components/admin-sidebar.js"></script>
+    <script src="../../components/admin-topbar.js"></script>
+    <script src="../../components/admin-modal-confirm.js"></script>
+    <script src="../../components/admin-toast.js"></script>
+
+    <!--
+      Organigrama del modal "Ver organigrama". Específico de esta página
+      (no es un patrón que se repita todavía en otro módulo, por eso no
+      vive en admin-common.js).
+
+      AUTORIDADES_VIGENTES es la misma info que ya está en las filas de
+      la tabla de arriba (solo las vigentes — una gestión concluida no
+      aparece en el organigrama), con dos campos que SÍ importan para el
+      árbol: padreId (= Autoridad.padre_id: de quién depende, null =
+      raíz) y orden (posición entre "hermanos", los que comparten el
+      mismo padreId). buildTree() arma la jerarquía real a partir de eso
+      — no hay ningún límite de niveles ni de cuántos hijos puede tener
+      un nodo, a diferencia de la versión anterior que tenía el Decano y
+      exactamente 2 cargos fijos debajo.
+    -->
+    <script>
+      const AUTORIDADES_VIGENTES = [
+        { id: "decano", nombre: "Mg. Carlos Huamán Quispe", cargo: "Decano", foto: "docente-3.jpg", padreId: null, orden: 1 },
+        { id: "directora-escuela", nombre: "Dra. Rosa Illanes Cárdenas", cargo: "Directora de Escuela", foto: "docente-2.jpg", padreId: "decano", orden: 1 },
+        { id: "director-departamento", nombre: "Mg. Jorge Ttito Mamani", cargo: "Director de Departamento Académico", foto: "docente-1.jpg", padreId: "decano", orden: 2 },
+        { id: "coordinador-escuela", nombre: "Lic. Percy Aguilar Sotelo", cargo: "Coordinador de Escuela de Administración", foto: "docente-5.jpg", padreId: "directora-escuela", orden: 1 },
+      ];
+
+      function buildTree(nodes, padreId = null) {
+        return nodes
+          .filter((n) => n.padreId === padreId)
+          .sort((a, b) => a.orden - b.orden)
+          .map((n) => ({ ...n, children: buildTree(nodes, n.id) }));
+      }
+
+      function renderOrgNode(node) {
+        const isRoot = node.padreId === null;
+        const hasChildren = node.children.length > 0;
+        const box = `
+          <div class="flex items-center gap-3 rounded-lg border ${isRoot ? "border-2 border-primary" : "border-border"} bg-bg py-3 pl-3 pr-6 text-left shadow-sm">
+            <img src="../../assets/img/docentes/${node.foto}" alt="" class="${isRoot ? "h-12 w-12" : "h-11 w-11"} shrink-0 rounded-full object-cover" />
+            <div>
+              <p class="text-sm font-semibold text-text">${node.nombre}</p>
+              <p class="text-xs text-text-muted">${node.cargo}</p>
+            </div>
+          </div>
+        `;
+        if (!hasChildren) {
+          return `<div class="flex flex-col items-center">${box}</div>`;
+        }
+        return `
+          <div class="flex flex-col items-center">
+            ${box}
+            <div class="h-6 w-px bg-border"></div>
+            <div class="flex flex-wrap items-start justify-center gap-8 ${node.children.length > 1 ? "border-t border-border" : ""}">
+              ${node.children
+                .map(
+                  (child) => `
+                <div class="flex flex-col items-center">
+                  <div class="h-6 w-px bg-border"></div>
+                  ${renderOrgNode(child)}
+                </div>`
+                )
+                .join("")}
+            </div>
+          </div>
+        `;
+      }
+
+      const orgchartTree = document.querySelector("[data-orgchart-tree]");
+      orgchartTree.innerHTML = buildTree(AUTORIDADES_VIGENTES)
+        .map((root) => renderOrgNode(root))
+        .join("");
+
+      const orgchartModal = document.querySelector("[data-orgchart-modal]");
+      document.querySelector("[data-open-orgchart]").addEventListener("click", () => {
+        orgchartModal.classList.remove("hidden");
+        orgchartModal.classList.add("flex");
+      });
+      document.querySelectorAll("[data-close-orgchart]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          orgchartModal.classList.add("hidden");
+          orgchartModal.classList.remove("flex");
+        });
+      });
+      orgchartModal.addEventListener("click", (event) => {
+        if (event.target === orgchartModal) {
+          orgchartModal.classList.add("hidden");
+          orgchartModal.classList.remove("flex");
+        }
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !orgchartModal.classList.contains("hidden")) {
+          orgchartModal.classList.add("hidden");
+          orgchartModal.classList.remove("flex");
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -51,13 +51,14 @@ class SiteFooter extends HTMLElement {
         <div class="page-container grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
           <div class="flex flex-col gap-3">
             <a href="${base}index.html" class="flex items-center gap-2" aria-label="Ir a inicio">
-              <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-onPrimary font-heading text-sm font-bold text-primary">FA</span>
+              <img src="${base}assets/img/facultad/logo_facultad.jpg" alt="" class="h-9 w-9 shrink-0 rounded-lg bg-onPrimary object-contain p-0.5" />
               <span class="font-heading text-sm font-semibold text-onPrimary">Facultad de Administración</span>
             </a>
             <p class="text-sm text-onPrimary/70">
               Universidad Nacional Micaela Bastidas de Apurímac (UNAMBA).
               Formando profesionales en gestión y administración.
             </p>
+            <img src="${base}assets/img/facultad/logo_universidad.jpg" alt="Universidad Nacional Micaela Bastidas de Apurímac" class="mt-1 h-14 w-14 rounded-full bg-onPrimary object-contain p-0.5" />
           </div>
 
           <div>

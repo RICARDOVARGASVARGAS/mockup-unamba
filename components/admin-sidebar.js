@@ -149,7 +149,7 @@ class AdminSidebar extends HTMLElement {
       >
         <div class="flex h-16 shrink-0 items-center justify-between gap-2 border-b border-border px-4">
           <a href="dashboard.html" class="flex items-center gap-2">
-            <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary font-heading text-sm font-bold text-onPrimary">FA</span>
+            <img src="../../assets/img/facultad/logo_facultad.jpg" alt="" class="h-9 w-9 shrink-0 rounded-lg bg-primary object-contain p-0.5" />
             <span class="flex flex-col leading-tight">
               <span class="font-heading text-sm font-semibold text-text">Panel Admin</span>
               <span class="text-xs text-text-muted">Fac. Administración</span>

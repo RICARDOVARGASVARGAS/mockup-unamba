@@ -1,0 +1,154 @@
+<!-- pages/admin/docentes-form.html -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../../assets/img/facultad/logo_universidad.ico" />
+    <title>Editar docente — Panel de Administración | Facultad de Administración UNAMBA (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <admin-sidebar></admin-sidebar>
+
+    <div class="admin-canvas flex min-h-screen flex-col lg:pl-72">
+      <admin-topbar page-title="Docentes"></admin-topbar>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <div class="mx-auto max-w-3xl">
+          <a href="docentes.html" class="inline-flex items-center gap-1.5 text-sm font-medium text-text-muted transition hover:text-text">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+            Volver a Docentes
+          </a>
+          <h2 class="mt-2 font-heading text-xl font-bold text-text">Editar docente</h2>
+
+          <form data-admin-form data-redirect="docentes.html" class="mt-6 space-y-6">
+            <!-- Información personal -->
+            <div class="admin-card p-5 sm:p-6">
+              <h3 class="font-heading text-base font-semibold text-text">Información personal</h3>
+              <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <div>
+                  <label for="docente-nombres" class="block text-sm font-medium text-text">Nombres</label>
+                  <input id="docente-nombres" type="text" value="Carlos" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                </div>
+                <div>
+                  <label for="docente-ap-paterno" class="block text-sm font-medium text-text">Apellido paterno</label>
+                  <input id="docente-ap-paterno" type="text" value="Huamán" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                </div>
+                <div>
+                  <label for="docente-ap-materno" class="block text-sm font-medium text-text">Apellido materno</label>
+                  <input id="docente-ap-materno" type="text" value="Quispe" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                </div>
+                <div>
+                  <label for="docente-grado" class="block text-sm font-medium text-text">Grado académico</label>
+                  <input id="docente-grado" type="text" value="Mg." placeholder="Dr., Mg., Lic., Ing...." class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                </div>
+                <div>
+                  <label for="docente-categoria" class="block text-sm font-medium text-text">Categoría</label>
+                  <select id="docente-categoria" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none">
+                    <option selected>Principal</option>
+                    <option>Asociado</option>
+                    <option>Auxiliar</option>
+                    <option>Contratado</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="docente-sede" class="block text-sm font-medium text-text">Sede</label>
+                  <select id="docente-sede" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none">
+                    <option selected>Abancay</option>
+                    <option>Cotabambas-Tambobamba</option>
+                  </select>
+                </div>
+                <div class="sm:col-span-2">
+                  <label for="docente-correo" class="block text-sm font-medium text-text">Correo</label>
+                  <input id="docente-correo" type="email" value="chuaman@unamba.edu.pe" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <p class="mt-1.5 text-xs text-text-muted">Correo público de contacto — no es el login del docente.</p>
+                </div>
+                <div>
+                  <label for="docente-orden" class="block text-sm font-medium text-text">Orden <span class="text-text-muted">(opcional)</span></label>
+                  <input id="docente-orden" type="number" min="1" value="1" placeholder="Sin definir" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Foto -->
+            <div class="admin-card p-5 sm:p-6" data-upload>
+              <h3 class="font-heading text-base font-semibold text-text">Foto</h3>
+              <div class="mt-4 flex flex-col gap-4 sm:flex-row">
+                <div class="relative flex h-32 w-28 shrink-0 items-center justify-center overflow-hidden rounded-md border border-dashed border-border bg-bg text-text-muted">
+                  <span data-upload-placeholder class="hidden text-xs">Sin foto</span>
+                  <img data-upload-preview src="../../assets/img/docentes/docente-3.jpg" class="h-full w-full object-cover" alt="" />
+                </div>
+                <div class="flex-1 space-y-3">
+                  <input type="file" accept="image/*" data-upload-input class="hidden" />
+                  <button type="button" data-upload-trigger class="rounded-md border border-border px-4 py-2 text-sm font-medium text-text transition hover:bg-surface-2">Cambiar foto</button>
+                  <p class="text-xs text-text-muted">JPG o PNG, retrato en formato vertical (4:5) recomendado.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hoja de vida -->
+            <div class="admin-card p-5 sm:p-6" data-upload>
+              <h3 class="font-heading text-base font-semibold text-text">Hoja de vida <span class="font-normal text-text-muted">(opcional)</span></h3>
+              <div class="mt-4 flex items-center gap-4">
+                <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-danger-bg text-danger">
+                  <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                  </svg>
+                </span>
+                <div class="min-w-0 flex-1">
+                  <p data-upload-filename class="truncate text-sm font-medium text-text">cv-carlos-huaman-quispe.pdf</p>
+                  <p class="text-xs text-text-muted">PDF, máx. 10MB.</p>
+                </div>
+                <input type="file" accept="application/pdf" data-upload-input class="hidden" />
+                <button type="button" data-upload-trigger class="shrink-0 rounded-md border border-border px-4 py-2 text-sm font-medium text-text transition hover:bg-surface-2">Reemplazar</button>
+              </div>
+            </div>
+
+            <!-- Publicación -->
+            <div class="admin-card p-5 sm:p-6">
+              <h3 class="font-heading text-base font-semibold text-text">Publicación</h3>
+              <p class="mt-1 text-xs text-text-muted">En el listado público solo se muestran docentes en estado Activo (o Licencia, con una nota). Borrador y Retirado nunca se muestran, pero el registro no se borra.</p>
+              <div class="mt-4" data-status-group>
+                <span class="block text-sm font-medium text-text">Estado</span>
+                <div class="mt-2 inline-flex flex-wrap rounded-md border border-border p-1">
+                  <button type="button" data-status-option data-status-active-class="bg-surface-2 text-text" class="rounded px-4 py-1.5 text-sm font-medium text-text-muted transition">Borrador</button>
+                  <button type="button" data-status-option data-status-active-class="bg-success text-white" class="rounded bg-success px-4 py-1.5 text-sm font-medium text-white transition">Activo</button>
+                  <button type="button" data-status-option data-status-active-class="bg-warning text-white" class="rounded px-4 py-1.5 text-sm font-medium text-text-muted transition">Licencia</button>
+                  <button type="button" data-status-option data-status-active-class="bg-text-muted text-white" class="rounded px-4 py-1.5 text-sm font-medium text-text-muted transition">Retirado</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-3">
+              <a href="docentes.html" class="rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-text transition hover:bg-surface-2">Cancelar</a>
+              <button type="submit" class="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <admin-toast></admin-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/admin-common.js"></script>
+    <script src="../../components/admin-sidebar.js"></script>
+    <script src="../../components/admin-topbar.js"></script>
+    <script src="../../components/admin-toast.js"></script>
+  </body>
+</html>

@@ -1905,16 +1905,69 @@ abriendo el formulario normal, esa regla no aplica aquí.
   hacia `pages/admin/login.html` — así se puede entrar al panel desde
   cualquier página pública sin que sea visualmente prominente.
 
-## Fase 5 — La Facultad
+## Fase 5 — La Facultad ✅
 
-- [ ] 5.1 **Nosotros / La Facultad** — formulario único (singleton) +
-      gestión de `ValorInstitucional`, `ObjetivoEducacional`, `Fortaleza`.
-- [ ] 5.2 **Autoridades** — listado + formulario. Entidades: `Autoridad`,
-      `CargoAutoridad`.
-- [ ] 5.3 **Comités** — listado + formulario + gestión de miembros.
-      Entidades: `Comite`, `ComiteMiembro`.
-- [ ] 5.4 **Docentes** — listado (con filtro sede/categoría) + formulario.
-      Entidades: `Docente`, `CategoriaDocente`, `Sede`.
+Construida directamente (sin Cursor). Orden real: 5.4 → 5.2 → 5.3 → 5.1,
+reutilizando los mismos 6 docentes en todos los módulos (mismo criterio
+de continuidad que Noticias/Eventos/Comunicados/Dashboard).
+
+- [x] 5.4 **Docentes** — `pages/admin/docentes.html` + `docentes-form.html`.
+      Filtros sede/categoría/estado. 4 estados reales (no 2): pills
+      Borrador/Activo/Licencia/Retirado con `data-status-active-class`
+      por color. Uploader de foto + hoja de vida (PDF, opcional). Datos
+      de ejemplo = los 6 docentes reales de `pages/docentes.html`.
+- [x] 5.2 **Autoridades** — `pages/admin/autoridades.html` + `autoridades-form.html`.
+      **Sin campo estado**: el formulario solo pide fecha_inicio/fecha_fin,
+      el listado calcula el badge Vigente/Concluida por fecha (decisión
+      de BD — ver nota abajo). 5 filas: Decano/Directora de
+      Escuela/Director de Departamento vigentes + 1 gestión concluida de
+      ejemplo (Katherine Vargas, 2022–2023) + 1 nivel 3 (Coordinador de
+      Escuela, ver corrección abajo).
+
+  **Corrección post-entrega:** el primer diseño del organigrama tenía
+  el árbol hardcodeado a 2 niveles fijos (Decano + exactamente 2 cargos
+  debajo) — no soportaba colgar una autoridad de cualquier otra a
+  cualquier profundidad. Se agregó `Autoridad.padre_id` (FK auto-
+  referenciada, opcional) a `MODELO-DATOS.md`; `orden` pasó a significar
+  "orden entre hermanos del mismo `padre_id`", no un orden global. El
+  formulario ganó una sección "Posición en el organigrama" (select
+  "Depende de" + "Orden"), el listado ganó la columna "Depende de", y
+  el modal "Ver organigrama" ya no tiene HTML fijo: arma el árbol por
+  JS (`buildTree`/`renderOrgNode`, recursivo, sin límite de niveles ni
+  de hijos) a partir de una lista plana con `padreId`. `Cargo` pasó de
+  `<select>` cerrado a `<input>` + `<datalist>` (catálogo abierto,
+  necesario para poder crear cargos nuevos en niveles más profundos).
+  Fila de ejemplo agregada: "Coordinador de Escuela de Administración"
+  (Lic. Percy Aguilar Sotelo), depende de Directora de Escuela — 3er
+  nivel, verificado que renderiza correctamente debajo del nodo
+  izquierdo del nivel 2.
+- [x] 5.3 **Comités** — `pages/admin/comites.html` + `comites-form.html`.
+      Mismo criterio de vigencia calculada. Gestor de miembros inline
+      nuevo (`initListManager` en `admin-common.js`, agregar/quitar
+      filas con `<template>`) — el ejemplo del formulario es el Consejo
+      de Facultad, con 4 docentes + 2 representantes estudiantiles sin
+      `docente_id` ni foto (avatar con iniciales).
+- [x] 5.1 **Nosotros / La Facultad** — `pages/admin/nosotros.html` (un
+      solo archivo, sin "-form": es singleton, no hay listado). Reseña
+      histórica (texto enriquecido) + Misión/Visión + 3 mini-listas
+      inline reutilizando `initListManager` (Valores, Objetivos,
+      Fortalezas) + Organigrama (imagen de respaldo opcional, con nota
+      de que la versión interactiva ya se arma sola desde
+      Autoridades/Comités). Contenido real de `pages/nosotros.html`.
+
+**Decisión de BD (pedida explícitamente):** se evaluó agregar un campo
+`estado` a `Autoridad`/`Comite` para manejar vigente/concluida a mano,
+pero se descartó — ya estaba bien resuelto en `MODELO-DATOS.md`
+(computado por fecha, evita datos contradictorios/desincronizados). Se
+completó la documentación: `Comite` no tenía la Obs explícita que
+`Autoridad` ya tenía, se agregó por consistencia. Ningún campo nuevo en
+el modelo.
+
+**Verificado con Playwright:** filtros (sede, categoría, estado, cargo,
+vigencia) en los 3 listados, eliminar con `[data-row]` genérico, el
+nuevo `initListManager` (agregar/quitar tanto en miembros de Comité
+como en Valores de Nosotros), pills de 4 estados, claro/oscuro. Sin
+errores de consola, sin 404 dentro del alcance de la fase.
 
 ## Fase 6 — Académico
 

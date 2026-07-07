@@ -127,7 +127,7 @@ class SiteHeader extends HTMLElement {
       <header data-site-header class="sticky top-0 z-30 w-full bg-primary text-onPrimary transition-shadow duration-200">
         <div class="page-container flex h-16 items-center gap-3">
           <a href="${base}index.html" class="flex shrink-0 items-center gap-2" aria-label="Ir a inicio">
-            <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-onPrimary font-heading text-sm font-bold text-primary">FA</span>
+            <img src="${base}assets/img/facultad/logo_facultad.jpg" alt="" class="h-10 w-10 shrink-0 rounded-lg bg-onPrimary object-contain p-0.5" />
             <span class="hidden flex-col leading-tight sm:flex">
               <span class="font-heading text-sm font-semibold text-onPrimary">Facultad de Administración</span>
               <span class="text-xs text-onPrimary/70">UNAMBA</span>

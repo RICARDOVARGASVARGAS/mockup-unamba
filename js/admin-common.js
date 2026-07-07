@@ -17,6 +17,10 @@
  *    Eventos, pero genérico para cualquier módulo futuro)
  * 7) Gestor de fotos múltiples — [data-gallery] (agregado en Fase 4.5,
  *    para el álbum de Galería)
+ * 8) Gestor de listas repetibles — [data-list-manager] (agregado en
+ *    Fase 5.3, para miembros de Comité; reutilizable para cualquier
+ *    mini-catálogo inline futuro, ej. Valores/Objetivos/Fortalezas de
+ *    LaFacultad en 5.1)
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -27,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initUploadPreview();
   initConditionalFields();
   initGalleryManager();
+  initListManager();
 });
 
 function initTableFilters() {
@@ -203,6 +208,32 @@ function initGalleryManager() {
         grid.insertBefore(item, addBtn);
       });
       input.value = "";
+    });
+  });
+}
+
+function initListManager() {
+  // Lista repetible genérica: [data-list-manager] envuelve
+  // [data-list-items] (filas [data-list-item], cada una con su botón
+  // [data-list-remove]) + un <template data-list-template> que define
+  // la forma de una fila NUEVA + un botón [data-list-add]. No sabe nada
+  // del contenido de la fila (nombre/rol de un miembro, texto de un
+  // valor institucional, etc.) — el markup de cada fila vive en el
+  // propio <template> de cada página, este script solo clona y quita filas.
+  document.querySelectorAll("[data-list-manager]").forEach((wrapper) => {
+    const items = wrapper.querySelector("[data-list-items]");
+    const template = wrapper.querySelector("[data-list-template]");
+    const addBtn = wrapper.querySelector("[data-list-add]");
+    if (!items) return;
+
+    items.addEventListener("click", (event) => {
+      const removeBtn = event.target.closest("[data-list-remove]");
+      if (removeBtn) removeBtn.closest("[data-list-item]")?.remove();
+    });
+
+    addBtn?.addEventListener("click", () => {
+      if (!template) return;
+      items.appendChild(template.content.cloneNode(true));
     });
   });
 }

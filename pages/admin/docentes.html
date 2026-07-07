@@ -1,11 +1,11 @@
-<!-- pages/admin/eventos.html -->
+<!-- pages/admin/docentes.html -->
 <!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="../../assets/img/facultad/logo_universidad.ico" />
-    <title>Eventos — Panel de Administración | Facultad de Administración UNAMBA (Mockup)</title>
+    <title>Docentes — Panel de Administración | Facultad de Administración UNAMBA (Mockup)</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -24,19 +24,19 @@
     <admin-sidebar></admin-sidebar>
 
     <div class="admin-canvas flex min-h-screen flex-col lg:pl-72">
-      <admin-topbar page-title="Eventos"></admin-topbar>
+      <admin-topbar page-title="Docentes"></admin-topbar>
 
       <main class="flex-1 space-y-6 p-4 sm:p-6 lg:p-8">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 class="font-heading text-xl font-bold text-text">Eventos</h2>
-            <p class="text-sm text-text-muted">Gestiona los eventos y actividades de la facultad.</p>
+            <h2 class="font-heading text-xl font-bold text-text">Plana Docente</h2>
+            <p class="text-sm text-text-muted">Docentes de la facultad, por sede y categoría.</p>
           </div>
-          <a href="eventos-form.html" class="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-onPrimary transition hover:bg-primary-dark">
+          <a href="docentes-form.html" class="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-onPrimary transition hover:bg-primary-dark">
             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
-            Nuevo evento
+            Nuevo docente
           </a>
         </div>
 
@@ -45,27 +45,26 @@
             <svg class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
             </svg>
-            <input type="search" data-table-search placeholder="Buscar por título..." class="h-10 w-full rounded-md border border-border bg-bg pl-9 pr-3 text-sm text-text focus:border-primary focus:outline-none" />
+            <input type="search" data-table-search placeholder="Buscar por nombre..." class="h-10 w-full rounded-md border border-border bg-bg pl-9 pr-3 text-sm text-text focus:border-primary focus:outline-none" />
           </div>
+          <select data-table-filter="sede" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none">
+            <option value="">Todas las sedes</option>
+            <option value="abancay">Abancay</option>
+            <option value="cotabambastambobamba">Cotabambas-Tambobamba</option>
+          </select>
           <select data-table-filter="categoria" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none">
             <option value="">Todas las categorías</option>
-            <option value="institucional">Institucional</option>
-            <option value="academico">Académico</option>
-            <option value="convenios">Convenios</option>
-            <option value="comunidad">Comunidad</option>
-            <option value="servicios">Servicios</option>
-          </select>
-          <select data-table-filter="modalidad" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none">
-            <option value="">Todas las modalidades</option>
-            <option value="presencial">Presencial</option>
-            <option value="virtual">Virtual</option>
-            <option value="hibrido">Híbrido</option>
+            <option value="principal">Principal</option>
+            <option value="asociado">Asociado</option>
+            <option value="auxiliar">Auxiliar</option>
+            <option value="contratado">Contratado</option>
           </select>
           <select data-table-filter="estado" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none">
             <option value="">Todos los estados</option>
-            <option value="publicado">Publicado</option>
+            <option value="activo">Activo</option>
+            <option value="licencia">Licencia</option>
             <option value="borrador">Borrador</option>
-            <option value="cancelado">Cancelado</option>
+            <option value="retirado">Retirado</option>
           </select>
         </div>
 
@@ -74,31 +73,34 @@
             <table data-admin-table class="w-full text-left text-sm">
               <thead class="border-b border-border bg-surface-2 text-xs uppercase tracking-wide text-text-muted">
                 <tr>
-                  <th class="px-4 py-3 font-semibold">Título</th>
+                  <th class="px-4 py-3 font-semibold">Docente</th>
                   <th class="px-4 py-3 font-semibold">Categoría</th>
-                  <th class="px-4 py-3 font-semibold">Modalidad</th>
-                  <th class="px-4 py-3 font-semibold">Fecha inicio</th>
-                  <th class="px-4 py-3 font-semibold">Lugar</th>
+                  <th class="px-4 py-3 font-semibold">Sede</th>
+                  <th class="px-4 py-3 font-semibold">Correo</th>
                   <th class="px-4 py-3 font-semibold">Estado</th>
                   <th class="px-4 py-3 font-semibold text-right">Acciones</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-border">
-                <tr data-row data-search="semana de la administración 2026" data-categoria="institucional" data-modalidad="hibrido" data-estado="publicado">
-                  <td class="px-4 py-3 font-medium text-text">Semana de la Administración 2026</td>
-                  <td class="px-4 py-3 text-text-muted">Institucional</td>
-                  <td class="px-4 py-3 text-text-muted">Híbrido</td>
-                  <td class="px-4 py-3 text-text-muted">15 jul. 2026</td>
-                  <td class="px-4 py-3 text-text-muted">Auditorio Principal</td>
-                  <td class="px-4 py-3"><span class="badge badge-success">Publicado</span></td>
+                <tr data-row data-search="carlos huamán quispe" data-sede="abancay" data-categoria="principal" data-estado="activo">
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      <img src="../../assets/img/docentes/docente-3.jpg" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover" />
+                      <span class="font-medium text-text">Mg. Carlos Huamán Quispe</span>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 text-text-muted">Principal</td>
+                  <td class="px-4 py-3 text-text-muted">Abancay</td>
+                  <td class="px-4 py-3 text-text-muted">chuaman@unamba.edu.pe</td>
+                  <td class="px-4 py-3"><span class="badge badge-success">Activo</span></td>
                   <td class="px-4 py-3">
                     <div class="flex justify-end gap-1">
-                      <a href="eventos-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
+                      <a href="docentes-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
                         </svg>
                       </a>
-                      <button type="button" data-delete-trigger data-delete-name="Semana de la Administración 2026" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                      <button type="button" data-delete-trigger data-delete-name="Mg. Carlos Huamán Quispe" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                         </svg>
@@ -106,21 +108,25 @@
                     </div>
                   </td>
                 </tr>
-                <tr data-row data-search="charla tendencias en gestión pública" data-categoria="academico" data-modalidad="presencial" data-estado="publicado">
-                  <td class="px-4 py-3 font-medium text-text">Charla: Tendencias en Gestión Pública</td>
-                  <td class="px-4 py-3 text-text-muted">Académico</td>
-                  <td class="px-4 py-3 text-text-muted">Presencial</td>
-                  <td class="px-4 py-3 text-text-muted">22 jul. 2026</td>
-                  <td class="px-4 py-3 text-text-muted">Sala de Grados</td>
-                  <td class="px-4 py-3"><span class="badge badge-success">Publicado</span></td>
+                <tr data-row data-search="rosa illanes cárdenas" data-sede="abancay" data-categoria="principal" data-estado="activo">
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      <img src="../../assets/img/docentes/docente-2.jpg" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover" />
+                      <span class="font-medium text-text">Dra. Rosa Illanes Cárdenas</span>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 text-text-muted">Principal</td>
+                  <td class="px-4 py-3 text-text-muted">Abancay</td>
+                  <td class="px-4 py-3 text-text-muted">rillanes@unamba.edu.pe</td>
+                  <td class="px-4 py-3"><span class="badge badge-success">Activo</span></td>
                   <td class="px-4 py-3">
                     <div class="flex justify-end gap-1">
-                      <a href="eventos-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
+                      <a href="docentes-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
                         </svg>
                       </a>
-                      <button type="button" data-delete-trigger data-delete-name="Charla: Tendencias en Gestión Pública" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                      <button type="button" data-delete-trigger data-delete-name="Dra. Rosa Illanes Cárdenas" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                         </svg>
@@ -128,21 +134,25 @@
                     </div>
                   </td>
                 </tr>
-                <tr data-row data-search="webinar trámites y servicios virtuales para estudiantes" data-categoria="servicios" data-modalidad="virtual" data-estado="publicado">
-                  <td class="px-4 py-3 font-medium text-text">Webinar: Trámites y servicios virtuales para estudiantes</td>
-                  <td class="px-4 py-3 text-text-muted">Servicios</td>
-                  <td class="px-4 py-3 text-text-muted">Virtual</td>
-                  <td class="px-4 py-3 text-text-muted">28 jul. 2026</td>
-                  <td class="px-4 py-3 text-text-muted">Virtual</td>
-                  <td class="px-4 py-3"><span class="badge badge-success">Publicado</span></td>
+                <tr data-row data-search="jorge ttito mamani" data-sede="cotabambastambobamba" data-categoria="asociado" data-estado="activo">
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      <img src="../../assets/img/docentes/docente-1.jpg" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover" />
+                      <span class="font-medium text-text">Mg. Jorge Ttito Mamani</span>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 text-text-muted">Asociado</td>
+                  <td class="px-4 py-3 text-text-muted">Cotabambas-Tambobamba</td>
+                  <td class="px-4 py-3 text-text-muted">jttito@unamba.edu.pe</td>
+                  <td class="px-4 py-3"><span class="badge badge-success">Activo</span></td>
                   <td class="px-4 py-3">
                     <div class="flex justify-end gap-1">
-                      <a href="eventos-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
+                      <a href="docentes-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
                         </svg>
                       </a>
-                      <button type="button" data-delete-trigger data-delete-name="Webinar: Trámites y servicios virtuales para estudiantes" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                      <button type="button" data-delete-trigger data-delete-name="Mg. Jorge Ttito Mamani" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                         </svg>
@@ -150,21 +160,25 @@
                     </div>
                   </td>
                 </tr>
-                <tr data-row data-search="feria laboral y de prácticas" data-categoria="servicios" data-modalidad="presencial" data-estado="publicado">
-                  <td class="px-4 py-3 font-medium text-text">Feria Laboral y de Prácticas</td>
-                  <td class="px-4 py-3 text-text-muted">Servicios</td>
-                  <td class="px-4 py-3 text-text-muted">Presencial</td>
-                  <td class="px-4 py-3 text-text-muted">05 ago. 2026</td>
-                  <td class="px-4 py-3 text-text-muted">Patio Central</td>
-                  <td class="px-4 py-3"><span class="badge badge-success">Publicado</span></td>
+                <tr data-row data-search="katherine vargas loayza" data-sede="abancay" data-categoria="auxiliar" data-estado="activo">
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      <img src="../../assets/img/docentes/docente-4.jpg" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover" />
+                      <span class="font-medium text-text">Mg. Katherine Vargas Loayza</span>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 text-text-muted">Auxiliar</td>
+                  <td class="px-4 py-3 text-text-muted">Abancay</td>
+                  <td class="px-4 py-3 text-text-muted">kvargas@unamba.edu.pe</td>
+                  <td class="px-4 py-3"><span class="badge badge-success">Activo</span></td>
                   <td class="px-4 py-3">
                     <div class="flex justify-end gap-1">
-                      <a href="eventos-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
+                      <a href="docentes-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
                         </svg>
                       </a>
-                      <button type="button" data-delete-trigger data-delete-name="Feria Laboral y de Prácticas" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                      <button type="button" data-delete-trigger data-delete-name="Mg. Katherine Vargas Loayza" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                         </svg>
@@ -172,21 +186,25 @@
                     </div>
                   </td>
                 </tr>
-                <tr data-row data-search="conversatorio con egresados destacados" data-categoria="comunidad" data-modalidad="presencial" data-estado="cancelado" class="opacity-60">
-                  <td class="px-4 py-3 font-medium text-text">Conversatorio con egresados destacados</td>
-                  <td class="px-4 py-3 text-text-muted">Comunidad</td>
-                  <td class="px-4 py-3 text-text-muted">Presencial</td>
-                  <td class="px-4 py-3 text-text-muted">20 ago. 2026</td>
-                  <td class="px-4 py-3 text-text-muted">Auditorio Principal</td>
-                  <td class="px-4 py-3"><span class="badge badge-danger">Cancelado</span></td>
+                <tr data-row data-search="percy aguilar sotelo" data-sede="cotabambastambobamba" data-categoria="contratado" data-estado="activo">
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      <img src="../../assets/img/docentes/docente-5.jpg" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover" />
+                      <span class="font-medium text-text">Lic. Percy Aguilar Sotelo</span>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 text-text-muted">Contratado</td>
+                  <td class="px-4 py-3 text-text-muted">Cotabambas-Tambobamba</td>
+                  <td class="px-4 py-3 text-text-muted">paguilar@unamba.edu.pe</td>
+                  <td class="px-4 py-3"><span class="badge badge-warning">Licencia</span></td>
                   <td class="px-4 py-3">
                     <div class="flex justify-end gap-1">
-                      <a href="eventos-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
+                      <a href="docentes-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
                         </svg>
                       </a>
-                      <button type="button" data-delete-trigger data-delete-name="Conversatorio con egresados destacados" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                      <button type="button" data-delete-trigger data-delete-name="Lic. Percy Aguilar Sotelo" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                         </svg>
@@ -194,21 +212,25 @@
                     </div>
                   </td>
                 </tr>
-                <tr data-row data-search="aniversario de la facultad" data-categoria="institucional" data-modalidad="presencial" data-estado="borrador">
-                  <td class="px-4 py-3 font-medium text-text">Aniversario de la Facultad</td>
-                  <td class="px-4 py-3 text-text-muted">Institucional</td>
-                  <td class="px-4 py-3 text-text-muted">Presencial</td>
-                  <td class="px-4 py-3 text-text-muted">28 may. 2026</td>
-                  <td class="px-4 py-3 text-text-muted">Auditorio Principal</td>
+                <tr data-row data-search="miriam condori paucar" data-sede="abancay" data-categoria="contratado" data-estado="borrador">
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      <img src="../../assets/img/docentes/docente-6.jpg" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover" />
+                      <span class="font-medium text-text">Mg. Miriam Condori Paucar</span>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 text-text-muted">Contratado</td>
+                  <td class="px-4 py-3 text-text-muted">Abancay</td>
+                  <td class="px-4 py-3 text-text-muted">mcondori@unamba.edu.pe</td>
                   <td class="px-4 py-3"><span class="badge badge-neutral">Borrador</span></td>
                   <td class="px-4 py-3">
                     <div class="flex justify-end gap-1">
-                      <a href="eventos-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
+                      <a href="docentes-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
                         </svg>
                       </a>
-                      <button type="button" data-delete-trigger data-delete-name="Aniversario de la Facultad" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                      <button type="button" data-delete-trigger data-delete-name="Mg. Miriam Condori Paucar" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                         </svg>
@@ -217,19 +239,10 @@
                   </td>
                 </tr>
                 <tr data-empty-row class="hidden">
-                  <td colspan="7" class="px-4 py-10 text-center text-sm text-text-muted">No se encontraron resultados.</td>
+                  <td colspan="6" class="px-4 py-10 text-center text-sm text-text-muted">No se encontraron resultados.</td>
                 </tr>
               </tbody>
             </table>
-          </div>
-        </div>
-
-        <div class="flex items-center justify-between text-sm text-text-muted">
-          <p>Mostrando 1–6 de 6</p>
-          <div class="flex items-center gap-1">
-            <button class="rounded-md border border-border px-3 py-1.5 hover:bg-surface-2">Anterior</button>
-            <button class="rounded-md bg-primary px-3 py-1.5 text-onPrimary">1</button>
-            <button class="rounded-md border border-border px-3 py-1.5 hover:bg-surface-2">Siguiente</button>
           </div>
         </div>
       </main>

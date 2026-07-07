@@ -1,11 +1,11 @@
-<!-- pages/admin/banners.html -->
+<!-- pages/admin/comites.html -->
 <!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="../../assets/img/facultad/logo_universidad.ico" />
-    <title>Banners — Panel de Administración | Facultad de Administración UNAMBA (Mockup)</title>
+    <title>Comités — Panel de Administración | Facultad de Administración UNAMBA (Mockup)</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -24,19 +24,19 @@
     <admin-sidebar></admin-sidebar>
 
     <div class="admin-canvas flex min-h-screen flex-col lg:pl-72">
-      <admin-topbar page-title="Banners"></admin-topbar>
+      <admin-topbar page-title="Comités"></admin-topbar>
 
       <main class="flex-1 space-y-6 p-4 sm:p-6 lg:p-8">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 class="font-heading text-xl font-bold text-text">Banners de Inicio</h2>
-            <p class="text-sm text-text-muted">Slides rotativos del hero de la página principal.</p>
+            <h2 class="font-heading text-xl font-bold text-text">Comités y Comisiones</h2>
+            <p class="text-sm text-text-muted">Consejo de Facultad, comités y comisiones — incluye el Consejo de Facultad como cuerpo colegiado.</p>
           </div>
-          <a href="banners-form.html" class="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-onPrimary transition hover:bg-primary-dark">
+          <a href="comites-form.html" class="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-onPrimary transition hover:bg-primary-dark">
             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
-            Nuevo banner
+            Nuevo comité
           </a>
         </div>
 
@@ -45,12 +45,12 @@
             <svg class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
             </svg>
-            <input type="search" data-table-search placeholder="Buscar por título..." class="h-10 w-full rounded-md border border-border bg-bg pl-9 pr-3 text-sm text-text focus:border-primary focus:outline-none" />
+            <input type="search" data-table-search placeholder="Buscar por nombre..." class="h-10 w-full rounded-md border border-border bg-bg pl-9 pr-3 text-sm text-text focus:border-primary focus:outline-none" />
           </div>
           <select data-table-filter="estado" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none">
-            <option value="">Todos los estados</option>
-            <option value="publicado">Publicado</option>
-            <option value="borrador">Borrador</option>
+            <option value="">Vigentes y concluidos</option>
+            <option value="vigente">Vigente</option>
+            <option value="concluida">Concluido</option>
           </select>
         </div>
 
@@ -59,34 +59,29 @@
             <table data-admin-table class="w-full text-left text-sm">
               <thead class="border-b border-border bg-surface-2 text-xs uppercase tracking-wide text-text-muted">
                 <tr>
-                  <th class="px-4 py-3 font-semibold">Vista previa</th>
-                  <th class="px-4 py-3 font-semibold">Título</th>
-                  <th class="px-4 py-3 font-semibold">Botones</th>
-                  <th class="px-4 py-3 font-semibold">Orden</th>
+                  <th class="px-4 py-3 font-semibold">Nombre</th>
+                  <th class="px-4 py-3 font-semibold">Función</th>
+                  <th class="px-4 py-3 font-semibold">Periodo</th>
+                  <th class="px-4 py-3 font-semibold">Miembros</th>
                   <th class="px-4 py-3 font-semibold">Estado</th>
                   <th class="px-4 py-3 font-semibold text-right">Acciones</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-border">
-                <tr data-row data-search="formamos líderes en gestión y administración" data-estado="publicado">
-                  <td class="px-4 py-3">
-                    <img src="../../assets/img/banners/banner_1.png" alt="" class="h-12 w-20 rounded-md object-cover" />
-                  </td>
-                  <td class="px-4 py-3">
-                    <p class="font-medium text-text">Formamos líderes en gestión y administración</p>
-                    <p class="text-xs text-text-muted">Etiqueta: Facultad de Administración</p>
-                  </td>
-                  <td class="px-4 py-3 text-text-muted">Conoce la Facultad + Ver carreras</td>
-                  <td class="px-4 py-3 text-text-muted">1</td>
-                  <td class="px-4 py-3"><span class="badge badge-success">Publicado</span></td>
+                <tr data-row data-search="consejo de facultad" data-estado="vigente">
+                  <td class="px-4 py-3 font-medium text-text">Consejo de Facultad</td>
+                  <td class="px-4 py-3 max-w-xs truncate text-text-muted">Órgano de gobierno de la facultad, con representación estudiantil.</td>
+                  <td class="px-4 py-3 text-text-muted">Desde 01 ene. 2024</td>
+                  <td class="px-4 py-3 text-text-muted">6</td>
+                  <td class="px-4 py-3"><span class="badge badge-success">Vigente</span></td>
                   <td class="px-4 py-3">
                     <div class="flex justify-end gap-1">
-                      <a href="banners-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
+                      <a href="comites-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
                         </svg>
                       </a>
-                      <button type="button" data-delete-trigger data-delete-name="Formamos líderes en gestión y administración" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                      <button type="button" data-delete-trigger data-delete-name="Consejo de Facultad" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                         </svg>
@@ -94,51 +89,62 @@
                     </div>
                   </td>
                 </tr>
-                <tr data-row data-search="nueva convocatoria de admisión abierta" data-estado="publicado">
-                  <td class="px-4 py-3">
-                    <img src="../../assets/img/banners/banner_2.png" alt="" class="h-12 w-20 rounded-md object-cover" />
-                  </td>
-                  <td class="px-4 py-3">
-                    <p class="font-medium text-text">Nueva convocatoria de admisión abierta</p>
-                    <p class="text-xs text-text-muted">Etiqueta: Admisión</p>
-                  </td>
-                  <td class="px-4 py-3 text-text-muted">Ver requisitos + Malla curricular</td>
-                  <td class="px-4 py-3 text-text-muted">2</td>
-                  <td class="px-4 py-3"><span class="badge badge-success">Publicado</span></td>
-                  <td class="px-4 py-3">
-                    <div class="flex justify-end gap-1">
-                      <a href="banners-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
-                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
-                        </svg>
-                      </a>
-                      <button type="button" data-delete-trigger data-delete-name="Nueva convocatoria de admisión abierta" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
-                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                        </svg>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr data-row data-search="conectamos talento con el mundo laboral" data-estado="borrador">
-                  <td class="px-4 py-3">
-                    <img src="../../assets/img/banners/banner_3.png" alt="" class="h-12 w-20 rounded-md object-cover" />
-                  </td>
-                  <td class="px-4 py-3">
-                    <p class="font-medium text-text">Conectamos talento con el mundo laboral</p>
-                    <p class="text-xs text-text-muted">Etiqueta: Vida profesional</p>
-                  </td>
-                  <td class="px-4 py-3 text-text-muted">Ver bolsa de trabajo</td>
+                <tr data-row data-search="comité de currícula" data-estado="vigente">
+                  <td class="px-4 py-3 font-medium text-text">Comité de Currícula</td>
+                  <td class="px-4 py-3 max-w-xs truncate text-text-muted">Revisa y actualiza el plan de estudios y la malla curricular.</td>
+                  <td class="px-4 py-3 text-text-muted">Desde 2024</td>
                   <td class="px-4 py-3 text-text-muted">3</td>
-                  <td class="px-4 py-3"><span class="badge badge-neutral">Borrador</span></td>
+                  <td class="px-4 py-3"><span class="badge badge-success">Vigente</span></td>
                   <td class="px-4 py-3">
                     <div class="flex justify-end gap-1">
-                      <a href="banners-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
+                      <a href="comites-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
                         </svg>
                       </a>
-                      <button type="button" data-delete-trigger data-delete-name="Conectamos talento con el mundo laboral" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                      <button type="button" data-delete-trigger data-delete-name="Comité de Currícula" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-row data-search="comité de calidad y acreditación" data-estado="vigente">
+                  <td class="px-4 py-3 font-medium text-text">Comité de Calidad y Acreditación</td>
+                  <td class="px-4 py-3 max-w-xs truncate text-text-muted">Conduce el proceso de autoevaluación con fines de acreditación.</td>
+                  <td class="px-4 py-3 text-text-muted">Desde 2025</td>
+                  <td class="px-4 py-3 text-text-muted">3</td>
+                  <td class="px-4 py-3"><span class="badge badge-success">Vigente</span></td>
+                  <td class="px-4 py-3">
+                    <div class="flex justify-end gap-1">
+                      <a href="comites-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
+                        </svg>
+                      </a>
+                      <button type="button" data-delete-trigger data-delete-name="Comité de Calidad y Acreditación" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-row data-search="comisión de fiscalización y procesos administrativos" data-estado="concluida" class="opacity-70">
+                  <td class="px-4 py-3 font-medium text-text">Comisión de Fiscalización y Procesos Administrativos</td>
+                  <td class="px-4 py-3 max-w-xs truncate text-text-muted">Atiende denuncias y procesos disciplinarios internos.</td>
+                  <td class="px-4 py-3 text-text-muted">2023 – 30 jun. 2026</td>
+                  <td class="px-4 py-3 text-text-muted">3</td>
+                  <td class="px-4 py-3"><span class="badge badge-neutral">Concluido</span></td>
+                  <td class="px-4 py-3">
+                    <div class="flex justify-end gap-1">
+                      <a href="comites-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
+                        </svg>
+                      </a>
+                      <button type="button" data-delete-trigger data-delete-name="Comisión de Fiscalización y Procesos Administrativos" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                         </svg>

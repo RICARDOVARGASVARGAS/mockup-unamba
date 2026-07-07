@@ -1,0 +1,285 @@
+<!-- pages/admin/nosotros.html -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../../assets/img/facultad/logo_universidad.ico" />
+    <title>Nosotros / La Facultad — Panel de Administración | Facultad de Administración UNAMBA (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <admin-sidebar></admin-sidebar>
+
+    <div class="admin-canvas flex min-h-screen flex-col lg:pl-72">
+      <admin-topbar page-title="Nosotros"></admin-topbar>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <div class="mx-auto max-w-3xl">
+          <h2 class="font-heading text-xl font-bold text-text">Nosotros / La Facultad</h2>
+          <p class="mt-1 text-sm text-text-muted">
+            Página única — no es un listado, edita el contenido que ya existe. Última actualización: 05 jul. 2026 por María Rojas.
+          </p>
+
+          <form data-admin-form data-redirect="nosotros.html" class="mt-6 space-y-6">
+            <!-- Foto de portada -->
+            <div class="admin-card p-5 sm:p-6" data-upload>
+              <h3 class="font-heading text-base font-semibold text-text">Foto de portada <span class="font-normal text-text-muted">(opcional)</span></h3>
+              <div class="mt-4 flex flex-col gap-4 sm:flex-row">
+                <div class="relative flex h-24 w-full max-w-[280px] shrink-0 items-center justify-center overflow-hidden rounded-md border border-dashed border-border bg-bg text-text-muted">
+                  <span data-upload-placeholder class="hidden text-xs">Sin foto</span>
+                  <img data-upload-preview src="../../assets/img/nosotros/fachada-facultad.jpg" class="h-full w-full object-cover" alt="" />
+                </div>
+                <div class="flex-1 space-y-3">
+                  <input type="file" accept="image/*" data-upload-input class="hidden" />
+                  <button type="button" data-upload-trigger class="rounded-md border border-border px-4 py-2 text-sm font-medium text-text transition hover:bg-surface-2">Cambiar foto</button>
+                  <p class="text-xs text-text-muted">Cabecera de la página pública "/nosotros".</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reseña histórica -->
+            <div class="admin-card p-5 sm:p-6">
+              <h3 class="font-heading text-base font-semibold text-text">Reseña histórica</h3>
+              <div class="mt-4 overflow-hidden rounded-md border border-border bg-bg">
+                <div class="admin-toolbar">
+                  <button type="button" tabindex="-1" class="rounded px-2 py-1 text-sm font-bold text-text-muted hover:bg-surface">B</button>
+                  <button type="button" tabindex="-1" class="rounded px-2 py-1 text-sm italic text-text-muted hover:bg-surface">I</button>
+                  <span class="mx-1 h-4 w-px bg-border"></span>
+                  <button type="button" tabindex="-1" aria-label="Lista" class="rounded p-1.5 text-text-muted hover:bg-surface">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg>
+                  </button>
+                  <button type="button" tabindex="-1" aria-label="Enlace" class="rounded p-1.5 text-text-muted hover:bg-surface">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" /></svg>
+                  </button>
+                </div>
+                <textarea rows="8" class="w-full resize-y border-0 bg-transparent px-3 py-2 text-sm text-text focus:outline-none">La Universidad Nacional Micaela Bastidas de Apurímac (UNAMBA) fue creada el 26 de setiembre del año 2000 mediante Ley N.° 27348, con cuatro carreras profesionales iniciales: Administración de Empresas, Ingeniería Agroindustrial, Ingeniería de Minas, y Educación. La Facultad de Administración es, así, una de las cuatro escuelas fundadoras de la universidad.
+
+El 25 de abril de 2002, el CONAFU autorizó el funcionamiento provisional de la universidad y se iniciaron las labores académicas y administrativas. En noviembre de 2009, la UNAMBA logró su institucionalización y autorización definitiva de funcionamiento, tras aprobar de manera satisfactoria sus autoevaluaciones ante comisiones externas.
+
+El 4 de febrero de 2020, la SUNEDU otorgó a la UNAMBA la Licencia Institucional, con una vigencia de 6 años, para ofrecer el servicio educativo superior universitario en el país.</textarea>
+              </div>
+            </div>
+
+            <!-- Misión y Visión -->
+            <div class="admin-card p-5 sm:p-6">
+              <h3 class="font-heading text-base font-semibold text-text">Misión y Visión</h3>
+              <div class="mt-4">
+                <label for="facultad-mision" class="block text-sm font-medium text-text">Misión</label>
+                <textarea id="facultad-mision" rows="3" class="mt-1.5 w-full resize-y rounded-md border border-border bg-bg px-3 py-2 text-sm text-text focus:border-primary focus:outline-none">Formar profesionales en Administración con solidez humanística, científica y tecnológica, con valores, identidad cultural y responsabilidad social, orientados al desarrollo sostenible de la región y el país.</textarea>
+              </div>
+              <div class="mt-4">
+                <label for="facultad-vision" class="block text-sm font-medium text-text">Visión</label>
+                <textarea id="facultad-vision" rows="3" class="mt-1.5 w-full resize-y rounded-md border border-border bg-bg px-3 py-2 text-sm text-text focus:border-primary focus:outline-none">Ser una facultad referente en la formación de administradores en la macrorregión sur, reconocida por la calidad de sus egresados, su vínculo con el sector productivo y su aporte a la competitividad regional.</textarea>
+              </div>
+            </div>
+
+            <!-- Valores institucionales -->
+            <div class="admin-card p-5 sm:p-6" data-list-manager>
+              <h3 class="font-heading text-base font-semibold text-text">Valores institucionales</h3>
+              <p class="mt-1 text-xs text-text-muted">El orden de la lista es el orden de aparición en la página pública.</p>
+
+              <div class="mt-4 space-y-2" data-list-items>
+                <div data-list-item class="grid grid-cols-1 gap-2 rounded-md border border-border p-3 sm:grid-cols-[1fr_2fr_auto] sm:items-center">
+                  <input type="text" value="Ética" placeholder="Nombre" class="h-10 rounded-md border border-border bg-bg px-3 text-sm font-medium text-text focus:border-primary focus:outline-none" />
+                  <input type="text" value="Coherencia entre lo que se enseña y lo que se practica." placeholder="Descripción" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar valor" class="justify-self-end rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger sm:justify-self-center">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+                <div data-list-item class="grid grid-cols-1 gap-2 rounded-md border border-border p-3 sm:grid-cols-[1fr_2fr_auto] sm:items-center">
+                  <input type="text" value="Liderazgo" placeholder="Nombre" class="h-10 rounded-md border border-border bg-bg px-3 text-sm font-medium text-text focus:border-primary focus:outline-none" />
+                  <input type="text" value="Capacidad de guiar equipos y tomar decisiones con criterio." placeholder="Descripción" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar valor" class="justify-self-end rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger sm:justify-self-center">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+                <div data-list-item class="grid grid-cols-1 gap-2 rounded-md border border-border p-3 sm:grid-cols-[1fr_2fr_auto] sm:items-center">
+                  <input type="text" value="Responsabilidad social" placeholder="Nombre" class="h-10 rounded-md border border-border bg-bg px-3 text-sm font-medium text-text focus:border-primary focus:outline-none" />
+                  <input type="text" value="Compromiso con el desarrollo de la región y su gente." placeholder="Descripción" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar valor" class="justify-self-end rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger sm:justify-self-center">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+                <div data-list-item class="grid grid-cols-1 gap-2 rounded-md border border-border p-3 sm:grid-cols-[1fr_2fr_auto] sm:items-center">
+                  <input type="text" value="Innovación" placeholder="Nombre" class="h-10 rounded-md border border-border bg-bg px-3 text-sm font-medium text-text focus:border-primary focus:outline-none" />
+                  <input type="text" value="Búsqueda constante de mejores formas de enseñar y gestionar." placeholder="Descripción" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar valor" class="justify-self-end rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger sm:justify-self-center">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+                <div data-list-item class="grid grid-cols-1 gap-2 rounded-md border border-border p-3 sm:grid-cols-[1fr_2fr_auto] sm:items-center">
+                  <input type="text" value="Compromiso" placeholder="Nombre" class="h-10 rounded-md border border-border bg-bg px-3 text-sm font-medium text-text focus:border-primary focus:outline-none" />
+                  <input type="text" value="Vocación de servicio con estudiantes y comunidad." placeholder="Descripción" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar valor" class="justify-self-end rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger sm:justify-self-center">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+              </div>
+
+              <template data-list-template>
+                <div data-list-item class="grid grid-cols-1 gap-2 rounded-md border border-border p-3 sm:grid-cols-[1fr_2fr_auto] sm:items-center">
+                  <input type="text" placeholder="Nombre" class="h-10 rounded-md border border-border bg-bg px-3 text-sm font-medium text-text focus:border-primary focus:outline-none" />
+                  <input type="text" placeholder="Descripción" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar valor" class="justify-self-end rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger sm:justify-self-center">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+              </template>
+
+              <button type="button" data-list-add class="mt-3 inline-flex items-center gap-1.5 rounded-md border border-dashed border-border px-4 py-2 text-sm font-medium text-text-muted transition hover:border-primary hover:text-primary">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                Agregar valor
+              </button>
+            </div>
+
+            <!-- Objetivos educacionales -->
+            <div class="admin-card p-5 sm:p-6" data-list-manager>
+              <h3 class="font-heading text-base font-semibold text-text">Objetivos educacionales</h3>
+              <p class="mt-1 text-xs text-text-muted">El orden de la lista es el orden de aparición en la página pública.</p>
+
+              <div class="mt-4 space-y-2" data-list-items>
+                <div data-list-item class="flex items-center gap-2 rounded-md border border-border p-3">
+                  <input type="text" value="Formación integral, científica, tecnológica, humanística, ética y moral del egresado." placeholder="Descripción" class="h-10 flex-1 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar objetivo" class="shrink-0 rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+                <div data-list-item class="flex items-center gap-2 rounded-md border border-border p-3">
+                  <input type="text" value="Capacidad emprendedora y de gestión organizacional en el marco de la productividad y competitividad." placeholder="Descripción" class="h-10 flex-1 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar objetivo" class="shrink-0 rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+                <div data-list-item class="flex items-center gap-2 rounded-md border border-border p-3">
+                  <input type="text" value="Capacidad para formular, evaluar y gestionar proyectos de inversión pública y privada." placeholder="Descripción" class="h-10 flex-1 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar objetivo" class="shrink-0 rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+                <div data-list-item class="flex items-center gap-2 rounded-md border border-border p-3">
+                  <input type="text" value="Uso de tecnologías de la información y comunicación como herramienta de desarrollo competitivo personal, social y profesional." placeholder="Descripción" class="h-10 flex-1 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar objetivo" class="shrink-0 rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+              </div>
+
+              <template data-list-template>
+                <div data-list-item class="flex items-center gap-2 rounded-md border border-border p-3">
+                  <input type="text" placeholder="Descripción" class="h-10 flex-1 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar objetivo" class="shrink-0 rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+              </template>
+
+              <button type="button" data-list-add class="mt-3 inline-flex items-center gap-1.5 rounded-md border border-dashed border-border px-4 py-2 text-sm font-medium text-text-muted transition hover:border-primary hover:text-primary">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                Agregar objetivo
+              </button>
+            </div>
+
+            <!-- Fortalezas -->
+            <div class="admin-card p-5 sm:p-6" data-list-manager>
+              <h3 class="font-heading text-base font-semibold text-text">Oferta y fortalezas</h3>
+              <p class="mt-1 text-xs text-text-muted">El orden de la lista es el orden de aparición en la página pública.</p>
+
+              <div class="mt-4 space-y-2" data-list-items>
+                <div data-list-item class="grid grid-cols-1 gap-2 rounded-md border border-border p-3 sm:grid-cols-[1fr_2fr_auto] sm:items-center">
+                  <input type="text" value="Biblioteca especializada" placeholder="Título" class="h-10 rounded-md border border-border bg-bg px-3 text-sm font-medium text-text focus:border-primary focus:outline-none" />
+                  <input type="text" value="Fondo bibliográfico físico y digital en gestión, finanzas y administración pública." placeholder="Descripción" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar fortaleza" class="justify-self-end rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger sm:justify-self-center">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+                <div data-list-item class="grid grid-cols-1 gap-2 rounded-md border border-border p-3 sm:grid-cols-[1fr_2fr_auto] sm:items-center">
+                  <input type="text" value="Laboratorio de cómputo" placeholder="Título" class="h-10 rounded-md border border-border bg-bg px-3 text-sm font-medium text-text focus:border-primary focus:outline-none" />
+                  <input type="text" value="Equipos y software actualizados para prácticas de ofimática, estadística y sistemas de gestión." placeholder="Descripción" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar fortaleza" class="justify-self-end rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger sm:justify-self-center">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+                <div data-list-item class="grid grid-cols-1 gap-2 rounded-md border border-border p-3 sm:grid-cols-[1fr_2fr_auto] sm:items-center">
+                  <input type="text" value="Convenios e intercambio" placeholder="Título" class="h-10 rounded-md border border-border bg-bg px-3 text-sm font-medium text-text focus:border-primary focus:outline-none" />
+                  <input type="text" value="Movilidad estudiantil y convenios con universidades e instituciones aliadas." placeholder="Descripción" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar fortaleza" class="justify-self-end rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger sm:justify-self-center">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+                <div data-list-item class="grid grid-cols-1 gap-2 rounded-md border border-border p-3 sm:grid-cols-[1fr_2fr_auto] sm:items-center">
+                  <input type="text" value="Eventos y actividades" placeholder="Título" class="h-10 rounded-md border border-border bg-bg px-3 text-sm font-medium text-text focus:border-primary focus:outline-none" />
+                  <input type="text" value="Talleres, semanas de administración y actividades de vínculo con la comunidad, todo el año." placeholder="Descripción" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar fortaleza" class="justify-self-end rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger sm:justify-self-center">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+              </div>
+
+              <template data-list-template>
+                <div data-list-item class="grid grid-cols-1 gap-2 rounded-md border border-border p-3 sm:grid-cols-[1fr_2fr_auto] sm:items-center">
+                  <input type="text" placeholder="Título" class="h-10 rounded-md border border-border bg-bg px-3 text-sm font-medium text-text focus:border-primary focus:outline-none" />
+                  <input type="text" placeholder="Descripción" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar fortaleza" class="justify-self-end rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger sm:justify-self-center">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+              </template>
+
+              <button type="button" data-list-add class="mt-3 inline-flex items-center gap-1.5 rounded-md border border-dashed border-border px-4 py-2 text-sm font-medium text-text-muted transition hover:border-primary hover:text-primary">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                Agregar fortaleza
+              </button>
+            </div>
+
+            <!-- Organigrama -->
+            <div class="admin-card p-5 sm:p-6" data-upload>
+              <h3 class="font-heading text-base font-semibold text-text">Organigrama <span class="font-normal text-text-muted">(opcional)</span></h3>
+              <p class="mt-1 text-xs text-text-muted">
+                La versión interactiva de la página pública ya se arma sola con los datos de
+                <a href="autoridades.html" class="font-medium text-primary hover:text-primary-dark">Autoridades</a> y
+                <a href="comites.html" class="font-medium text-primary hover:text-primary-dark">Comités</a> — no hace falta
+                mantenerla aquí. Esta imagen es un respaldo alternativo (ej. un organigrama oficial visado en PDF/imagen),
+                solo se usa si se sube una.
+              </p>
+              <div class="mt-4 flex flex-col gap-4 sm:flex-row">
+                <div class="relative flex h-24 w-full max-w-[280px] shrink-0 items-center justify-center overflow-hidden rounded-md border border-dashed border-border bg-bg text-text-muted">
+                  <span data-upload-placeholder class="text-xs">Sin imagen — se usa la versión interactiva</span>
+                  <img data-upload-preview class="hidden h-full w-full object-cover" alt="" />
+                </div>
+                <div class="flex-1 space-y-3">
+                  <input type="file" accept="image/*" data-upload-input class="hidden" />
+                  <button type="button" data-upload-trigger class="rounded-md border border-border px-4 py-2 text-sm font-medium text-text transition hover:bg-surface-2">Subir imagen</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-3">
+              <button type="submit" class="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <admin-toast></admin-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/admin-common.js"></script>
+    <script src="../../components/admin-sidebar.js"></script>
+    <script src="../../components/admin-topbar.js"></script>
+    <script src="../../components/admin-toast.js"></script>
+  </body>
+</html>

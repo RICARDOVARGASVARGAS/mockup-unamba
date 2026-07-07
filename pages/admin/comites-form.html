@@ -1,0 +1,197 @@
+<!-- pages/admin/comites-form.html -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../../assets/img/facultad/logo_universidad.ico" />
+    <title>Editar comité — Panel de Administración | Facultad de Administración UNAMBA (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <admin-sidebar></admin-sidebar>
+
+    <div class="admin-canvas flex min-h-screen flex-col lg:pl-72">
+      <admin-topbar page-title="Comités"></admin-topbar>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <div class="mx-auto max-w-3xl">
+          <a href="comites.html" class="inline-flex items-center gap-1.5 text-sm font-medium text-text-muted transition hover:text-text">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+            Volver a Comités
+          </a>
+          <h2 class="mt-2 font-heading text-xl font-bold text-text">Editar comité</h2>
+
+          <form data-admin-form data-redirect="comites.html" class="mt-6 space-y-6">
+            <!-- Información general -->
+            <div class="admin-card p-5 sm:p-6">
+              <h3 class="font-heading text-base font-semibold text-text">Información general</h3>
+              <div class="mt-4 grid grid-cols-1 gap-4">
+                <div>
+                  <label for="comite-nombre" class="block text-sm font-medium text-text">Nombre</label>
+                  <input id="comite-nombre" type="text" value="Consejo de Facultad" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                </div>
+                <div>
+                  <label for="comite-funcion" class="block text-sm font-medium text-text">Función</label>
+                  <textarea id="comite-funcion" rows="2" class="mt-1.5 w-full resize-y rounded-md border border-border bg-bg px-3 py-2 text-sm text-text focus:border-primary focus:outline-none">Órgano de gobierno de la facultad, integrado por docentes de las tres categorías y representantes estudiantiles, según la Ley Universitaria.</textarea>
+                </div>
+              </div>
+              <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label for="comite-inicio" class="block text-sm font-medium text-text">Fecha de inicio</label>
+                  <input id="comite-inicio" type="date" value="2024-01-01" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                </div>
+                <div>
+                  <label for="comite-fin" class="block text-sm font-medium text-text">Fecha de fin <span class="text-text-muted">(opcional)</span></label>
+                  <input id="comite-fin" type="date" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                </div>
+              </div>
+              <p class="mt-3 rounded-md bg-info-bg px-3 py-2 text-xs text-info">
+                Sin campo de estado: vacío o fecha futura en "Fecha de fin" = <strong>Vigente</strong> en el
+                listado; si ya pasó, se muestra <strong>Concluido</strong> automáticamente.
+              </p>
+            </div>
+
+            <!-- Resolución -->
+            <div class="admin-card p-5 sm:p-6" data-upload>
+              <h3 class="font-heading text-base font-semibold text-text">Resolución de conformación <span class="font-normal text-text-muted">(opcional)</span></h3>
+              <div class="mt-4 flex items-center gap-4">
+                <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-danger-bg text-danger">
+                  <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                  </svg>
+                </span>
+                <div class="min-w-0 flex-1">
+                  <p data-upload-filename class="truncate text-sm font-medium text-text">resolucion-conformacion-consejo-facultad.pdf</p>
+                  <p class="text-xs text-text-muted">PDF, máx. 10MB.</p>
+                </div>
+                <input type="file" accept="application/pdf" data-upload-input class="hidden" />
+                <button type="button" data-upload-trigger class="shrink-0 rounded-md border border-border px-4 py-2 text-sm font-medium text-text transition hover:bg-surface-2">Reemplazar</button>
+              </div>
+            </div>
+
+            <!-- Miembros -->
+            <div class="admin-card p-5 sm:p-6" data-list-manager>
+              <h3 class="font-heading text-base font-semibold text-text">Miembros</h3>
+              <p class="mt-1 text-xs text-text-muted">El nombre siempre se guarda como texto. Vincula un docente solo si aplica — los representantes estudiantiles no tienen ficha de Docente.</p>
+
+              <div class="mt-4 space-y-2" data-list-items>
+                <div data-list-item class="flex flex-col gap-2 rounded-md border border-border p-3 sm:flex-row sm:items-center">
+                  <img src="../../assets/img/docentes/docente-3.jpg" class="h-10 w-10 shrink-0 rounded-full object-cover" alt="" />
+                  <div class="grid flex-1 grid-cols-1 gap-2 sm:grid-cols-2">
+                    <input type="text" value="Mg. Carlos Huamán Quispe" placeholder="Nombre completo" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                    <input type="text" value="Presidente" placeholder="Rol" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  </div>
+                  <button type="button" data-list-remove aria-label="Quitar miembro" class="shrink-0 self-end rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger sm:self-center">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+
+                <div data-list-item class="flex flex-col gap-2 rounded-md border border-border p-3 sm:flex-row sm:items-center">
+                  <img src="../../assets/img/docentes/docente-2.jpg" class="h-10 w-10 shrink-0 rounded-full object-cover" alt="" />
+                  <div class="grid flex-1 grid-cols-1 gap-2 sm:grid-cols-2">
+                    <input type="text" value="Dra. Rosa Illanes Cárdenas" placeholder="Nombre completo" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                    <input type="text" value="Miembro" placeholder="Rol" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  </div>
+                  <button type="button" data-list-remove aria-label="Quitar miembro" class="shrink-0 self-end rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger sm:self-center">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+
+                <div data-list-item class="flex flex-col gap-2 rounded-md border border-border p-3 sm:flex-row sm:items-center">
+                  <img src="../../assets/img/docentes/docente-6.jpg" class="h-10 w-10 shrink-0 rounded-full object-cover" alt="" />
+                  <div class="grid flex-1 grid-cols-1 gap-2 sm:grid-cols-2">
+                    <input type="text" value="Mg. Miriam Condori Paucar" placeholder="Nombre completo" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                    <input type="text" value="Secretaria" placeholder="Rol" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  </div>
+                  <button type="button" data-list-remove aria-label="Quitar miembro" class="shrink-0 self-end rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger sm:self-center">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+
+                <div data-list-item class="flex flex-col gap-2 rounded-md border border-border p-3 sm:flex-row sm:items-center">
+                  <img src="../../assets/img/docentes/docente-4.jpg" class="h-10 w-10 shrink-0 rounded-full object-cover" alt="" />
+                  <div class="grid flex-1 grid-cols-1 gap-2 sm:grid-cols-2">
+                    <input type="text" value="Mg. Katherine Vargas Loayza" placeholder="Nombre completo" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                    <input type="text" value="Miembro" placeholder="Rol" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  </div>
+                  <button type="button" data-list-remove aria-label="Quitar miembro" class="shrink-0 self-end rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger sm:self-center">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+
+                <!-- Representantes estudiantiles: sin docente_id, sin foto -->
+                <div data-list-item class="flex flex-col gap-2 rounded-md border border-border p-3 sm:flex-row sm:items-center">
+                  <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">DF</span>
+                  <div class="grid flex-1 grid-cols-1 gap-2 sm:grid-cols-2">
+                    <input type="text" value="Diego Farfán Rojas" placeholder="Nombre completo" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                    <input type="text" value="Representante estudiantil" placeholder="Rol" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  </div>
+                  <button type="button" data-list-remove aria-label="Quitar miembro" class="shrink-0 self-end rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger sm:self-center">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+
+                <div data-list-item class="flex flex-col gap-2 rounded-md border border-border p-3 sm:flex-row sm:items-center">
+                  <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">XC</span>
+                  <div class="grid flex-1 grid-cols-1 gap-2 sm:grid-cols-2">
+                    <input type="text" value="Xiomara Ccorimanya Huillca" placeholder="Nombre completo" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                    <input type="text" value="Representante estudiantil" placeholder="Rol" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  </div>
+                  <button type="button" data-list-remove aria-label="Quitar miembro" class="shrink-0 self-end rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger sm:self-center">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+              </div>
+
+              <template data-list-template>
+                <div data-list-item class="flex flex-col gap-2 rounded-md border border-border p-3 sm:flex-row sm:items-center">
+                  <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">--</span>
+                  <div class="grid flex-1 grid-cols-1 gap-2 sm:grid-cols-2">
+                    <input type="text" placeholder="Nombre completo" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                    <input type="text" placeholder="Rol (Presidente, Miembro...)" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  </div>
+                  <button type="button" data-list-remove aria-label="Quitar miembro" class="shrink-0 self-end rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger sm:self-center">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+              </template>
+
+              <button type="button" data-list-add class="mt-3 inline-flex items-center gap-1.5 rounded-md border border-dashed border-border px-4 py-2 text-sm font-medium text-text-muted transition hover:border-primary hover:text-primary">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                Agregar miembro
+              </button>
+            </div>
+
+            <div class="flex items-center justify-end gap-3">
+              <a href="comites.html" class="rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-text transition hover:bg-surface-2">Cancelar</a>
+              <button type="submit" class="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <admin-toast></admin-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/admin-common.js"></script>
+    <script src="../../components/admin-sidebar.js"></script>
+    <script src="../../components/admin-topbar.js"></script>
+    <script src="../../components/admin-toast.js"></script>
+  </body>
+</html>

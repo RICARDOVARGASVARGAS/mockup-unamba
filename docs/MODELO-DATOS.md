@@ -216,7 +216,7 @@ Obs: "Resoluciones" existe como tipo aquí y también como tipo en `Comunicado`,
 | Campo  | Nota                                                          |
 |--------|-------------------------------------------------------------------|
 | id     |                                                                |
-| nombre | Decano, Directora de Escuela, Director de Departamento Académico |
+| nombre | Ej. Decano, Directora de Escuela, Director de Departamento Académico, Coordinador de Escuela — catálogo abierto, no una lista cerrada: el organigrama puede crecer en profundidad (ver `Autoridad.padre_id`) |
 
 ## Autoridad
 
@@ -227,12 +227,15 @@ Cargo unipersonal con gestión (a diferencia de `Comite`, que es un cuerpo coleg
 | id            |                                                              |
 | cargo_id      | FK → CargoAutoridad                                          |
 | docente_id    | FK → Docente — quien ocupa el cargo (un decano es, por ley, un docente principal) |
+| padre_id      | FK → Autoridad, opcional (self-referencing). De quién depende este cargo en el organigrama; vacío = nodo raíz (ej. Decano) |
 | fecha_inicio  | Inicio de la gestión                                         |
 | fecha_fin     | Fin de la gestión, opcional (vacío = en funciones actualmente) |
 | resolucion_id | FK → Documento, opcional (resolución de designación)         |
-| orden         | Posición de aparición (Decano primero, etc.)                |
+| orden         | Posición entre "hermanos" (autoridades con el mismo `padre_id`), no un orden global |
 
 Obs: no hay campo `estado` — "vigente" se calcula de `fecha_fin IS NULL O fecha_fin >= hoy` (una gestión puede tener fecha de término ya definida, ej. un periodo fijo de 2 años, y seguir vigente hasta que llegue); "concluida" es `fecha_fin < hoy`. No se guarda aparte para evitar que ambos datos queden contradictorios. Así, cuando cambie el decano, no se borra el registro anterior: se le pone `fecha_fin` y se crea una fila nueva — queda el historial de gestiones.
+
+Obs: `padre_id` modela el organigrama como lista de adyacencia (árbol), no como 2 niveles fijos — cualquier autoridad puede depender de cualquier otra, a cualquier profundidad (ej. un "Coordinador de Escuela" podría depender de la Directora de Escuela, que a su vez depende del Decano). El nivel visual (fila del organigrama) no se guarda: se calcula recorriendo la cadena de `padre_id` hacia arriba. `orden` solo desempata el orden horizontal entre autoridades que comparten el mismo `padre_id`, no una posición global.
 
 ## Comite
 
@@ -246,6 +249,10 @@ Cuerpo colegiado (Consejo de Facultad, comités, comisiones) — mismo campo `fu
 | resolucion_id | FK → Documento, opcional (resolución de conformación) |
 | fecha_inicio  | Inicio del periodo                             |
 | fecha_fin     | Fin del periodo, opcional (vacío = vigente)   |
+
+Obs: no hay campo `estado` — mismo criterio que `Autoridad`: "vigente" se
+calcula de `fecha_fin IS NULL O fecha_fin >= hoy`, no se guarda aparte
+para evitar que quede desincronizado de las fechas reales.
 
 ## ComiteMiembro
 
