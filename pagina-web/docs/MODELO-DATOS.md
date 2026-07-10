@@ -376,6 +376,7 @@ Obs: Malla curricular y Plan de estudios **no tienen tabla propia** — se muest
 | id          |      |
 | nombre      |      |
 | descripcion |      |
+| icono       | Opcional — emoji para la tarjeta pública (ej. 📊) |
 | orden       |      |
 
 ## ProyectoInvestigacion
@@ -617,3 +618,28 @@ Buzón de contacto — lo que llega del formulario público.
 | estado      | enum: nuevo / leído / respondido       |
 
 Obs: el formulario del mockup es solo visual — sin backend no hay a dónde enviar el mensaje de verdad. Esta tabla es la referencia de a dónde llegaría en el sistema real.
+
+## FaqItem
+
+| Campo      | Nota                                                    |
+|------------|--------------------------------------------------------------|
+| id         |                                                          |
+| pregunta   |                                                          |
+| respuesta  |                                                          |
+| categoria  | Texto libre (ej. "Admisión", "Matrícula", "Trámites") — catálogo abierto, igual criterio que `CargoAutoridad.nombre` |
+| orden      | Posición dentro de su categoría                          |
+| estado     | enum: borrador / publicado                               |
+
+Obs: no existe todavía una página pública `/faq.html` en este mockup (la especificación la lista en el menú secundario/footer, pero no se maquetó). El panel se construye igual, sembrado con contenido de ejemplo marcado como tal — mismo criterio que ya se usó en Investigación.
+
+## EnlaceInteres
+
+| Campo   | Nota                                                       |
+|---------|------------------------------------------------------------|
+| id      |                                                              |
+| nombre  | Ej. "SUNEDU", "MINEDU"                                      |
+| logo_id | FK → Archivo, opcional (placeholder de texto si no se sube) |
+| url     |                                                              |
+| orden   |                                                              |
+
+Obs: ya existía contenido real de referencia en `index.html` → sección "Enlaces de interés" (4 placeholders de logo: SUNEDU, MINEDU, CONCYTEC, RENIEC, sin `href` real). Esta tabla formaliza esos mismos 4 registros.

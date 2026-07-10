@@ -1,0 +1,185 @@
+<!-- pages/admin/estudiantes-destacados.html -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../../assets/img/facultad/logo_universidad.ico" />
+    <title>Estudiantes destacados — Panel de Administración | Facultad de Administración UNAMBA (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <admin-sidebar></admin-sidebar>
+
+    <div class="admin-canvas flex min-h-screen flex-col lg:pl-72">
+      <admin-topbar page-title="Estudiantes destacados"></admin-topbar>
+
+      <main class="flex-1 space-y-6 p-4 sm:p-6 lg:p-8">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h2 class="font-heading text-xl font-bold text-text">Estudiantes destacados</h2>
+            <p class="text-sm text-text-muted">Logros académicos, deportivos o de representación estudiantil.</p>
+          </div>
+          <a href="estudiantes-destacados-form.html" class="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-onPrimary transition hover:bg-primary-dark">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            Nuevo destacado
+          </a>
+        </div>
+
+        <div class="flex flex-col gap-3 admin-card p-4 sm:flex-row sm:items-center">
+          <div class="relative flex-1">
+            <svg class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+            <input type="search" data-table-search placeholder="Buscar por nombre o logro..." class="h-10 w-full rounded-md border border-border bg-bg pl-9 pr-3 text-sm text-text focus:border-primary focus:outline-none" />
+          </div>
+        </div>
+
+        <div class="overflow-hidden admin-card">
+          <div class="overflow-x-auto">
+            <table data-admin-table class="w-full text-left text-sm">
+              <thead class="border-b border-border bg-surface-2 text-xs uppercase tracking-wide text-text-muted">
+                <tr>
+                  <th class="px-4 py-3 font-semibold">Estudiante</th>
+                  <th class="px-4 py-3 font-semibold">Logro</th>
+                  <th class="px-4 py-3 font-semibold">Fecha</th>
+                  <th class="px-4 py-3 font-semibold">Orden</th>
+                  <th class="px-4 py-3 font-semibold text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-border">
+                <tr data-row data-search="kelly huamaní torres mejor promedio ponderado">
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      <img src="../../assets/img/estudiantes/estudiante-1.jpg" alt="" class="h-10 w-10 shrink-0 rounded-full object-cover" />
+                      <p class="font-medium text-text">Kelly Huamaní Torres</p>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 max-w-xs truncate text-text-muted">Mejor promedio ponderado de la promoción 2025-II.</td>
+                  <td class="px-4 py-3 text-text-muted">15 dic. 2025</td>
+                  <td class="px-4 py-3 text-text-muted">1</td>
+                  <td class="px-4 py-3">
+                    <div class="flex justify-end gap-1">
+                      <a href="estudiantes-destacados-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
+                        </svg>
+                      </a>
+                      <button type="button" data-delete-trigger data-delete-name="Kelly Huamaní Torres" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-row data-search="diego farfán rojas representante estudiantil consejo de facultad">
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      <img src="../../assets/img/estudiantes/estudiante-2.jpg" alt="" class="h-10 w-10 shrink-0 rounded-full object-cover" />
+                      <p class="font-medium text-text">Diego Farfán Rojas</p>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 max-w-xs truncate text-text-muted">Representante estudiantil ante el Consejo de Facultad 2026.</td>
+                  <td class="px-4 py-3 text-text-muted">10 mar. 2026</td>
+                  <td class="px-4 py-3 text-text-muted">2</td>
+                  <td class="px-4 py-3">
+                    <div class="flex justify-end gap-1">
+                      <a href="estudiantes-destacados-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
+                        </svg>
+                      </a>
+                      <button type="button" data-delete-trigger data-delete-name="Diego Farfán Rojas" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-row data-search="equipo de finanzas unamba concurso interuniversitario planes de negocio">
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      <img src="../../assets/img/noticias/noticia-concurso-estudiantes.jpg" alt="" class="h-10 w-10 shrink-0 rounded-full object-cover" />
+                      <p class="font-medium text-text">Equipo de Finanzas UNAMBA</p>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 max-w-xs truncate text-text-muted">Primer puesto en el Concurso Interuniversitario de Planes de Negocio 2026.</td>
+                  <td class="px-4 py-3 text-text-muted">24 jun. 2026</td>
+                  <td class="px-4 py-3 text-text-muted">3</td>
+                  <td class="px-4 py-3">
+                    <div class="flex justify-end gap-1">
+                      <a href="estudiantes-destacados-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
+                        </svg>
+                      </a>
+                      <button type="button" data-delete-trigger data-delete-name="Equipo de Finanzas UNAMBA" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-row data-search="mariana quispe álvarez beca de posgrado internacional">
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      <img src="../../assets/img/noticias/noticia-egresados-experiencia.jpg" alt="" class="h-10 w-10 shrink-0 rounded-full object-cover" />
+                      <p class="font-medium text-text">Mariana Quispe Álvarez</p>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 max-w-xs truncate text-text-muted">Beca de posgrado internacional por mérito académico.</td>
+                  <td class="px-4 py-3 text-text-muted">05 may. 2026</td>
+                  <td class="px-4 py-3 text-text-muted">4</td>
+                  <td class="px-4 py-3">
+                    <div class="flex justify-end gap-1">
+                      <a href="estudiantes-destacados-form.html" aria-label="Editar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
+                        </svg>
+                      </a>
+                      <button type="button" data-delete-trigger data-delete-name="Mariana Quispe Álvarez" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-empty-row class="hidden">
+                  <td colspan="5" class="px-4 py-10 text-center text-sm text-text-muted">No se encontraron resultados.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <admin-modal-confirm></admin-modal-confirm>
+    <admin-toast></admin-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/admin-common.js"></script>
+    <script src="../../components/admin-sidebar.js"></script>
+    <script src="../../components/admin-topbar.js"></script>
+    <script src="../../components/admin-modal-confirm.js"></script>
+    <script src="../../components/admin-toast.js"></script>
+  </body>
+</html>

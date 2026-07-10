@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iniciar sesión — Panel de Administración | DocenTrack (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+    />
+
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <main class="grid min-h-screen w-full lg:grid-cols-2">
+      <!-- Panel de marca -->
+      <section class="relative flex flex-col justify-between overflow-hidden bg-primary px-6 py-10 text-onPrimary sm:px-10 lg:px-14 lg:py-14">
+        <div aria-hidden="true" class="pointer-events-none absolute inset-0 overflow-hidden">
+          <div class="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-accent/20 blur-3xl"></div>
+          <div class="absolute -bottom-32 -left-16 h-80 w-80 rounded-full bg-onPrimary/10 blur-3xl"></div>
+        </div>
+
+        <div class="relative flex items-center gap-3">
+          <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-onPrimary font-heading text-lg font-bold text-primary">DT</span>
+          <span class="flex flex-col leading-tight">
+            <span class="font-heading text-sm font-semibold">DocenTrack</span>
+            <span class="text-xs text-onPrimary/70">Facultad de Administración · UNAMBA</span>
+          </span>
+        </div>
+
+        <div class="relative max-w-md py-10 lg:py-0">
+          <span class="inline-block rounded-full bg-onPrimary/10 px-3 py-1 text-xs font-medium text-onPrimary/80">Acceso restringido</span>
+          <h1 class="mt-4 font-heading text-3xl font-bold sm:text-4xl">Panel de Administración</h1>
+          <p class="mt-3 text-onPrimary/80">
+            Gestiona docentes, cursos, horarios, aulas y los registros de asistencia del kiosko desde un solo lugar.
+          </p>
+        </div>
+
+        <p class="relative hidden text-sm text-onPrimary/60 lg:block">© 2026 DocenTrack — UNAMBA</p>
+      </section>
+
+      <!-- Panel de formulario -->
+      <section class="relative flex items-center justify-center bg-bg px-6 py-10 sm:px-10">
+        <button
+          type="button"
+          data-theme-toggle
+          aria-label="Cambiar tema"
+          class="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text sm:right-8 sm:top-8"
+        >
+          <span data-icon-sun>
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+            </svg>
+          </span>
+          <span data-icon-moon class="hidden">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+            </svg>
+          </span>
+        </button>
+
+        <div class="w-full max-w-sm">
+          <h2 class="font-heading text-2xl font-bold text-text sm:text-3xl">Iniciar sesión</h2>
+          <p class="mt-2 text-sm text-text-muted">Ingresa tus credenciales de administrador.</p>
+
+          <div
+            data-login-error
+            role="alert"
+            class="mt-6 hidden items-start gap-2 rounded-md border border-danger/30 bg-danger-bg px-4 py-3 text-sm text-danger"
+          >
+            <svg class="mt-0.5 h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0 3.75h.008M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+            <span>Correo o contraseña incorrectos. Inténtalo de nuevo.</span>
+          </div>
+
+          <form id="admin-login-form" class="mt-6 space-y-5" novalidate>
+            <div>
+              <label for="login-correo" class="block text-sm font-medium text-text">Correo institucional</label>
+              <input
+                id="login-correo"
+                name="correo"
+                type="email"
+                required
+                autocomplete="username"
+                placeholder="nombre.apellido@unamba.edu.pe"
+                class="mt-1.5 h-11 w-full rounded-md border border-border bg-surface px-3 text-sm text-text placeholder:text-text-muted/60 focus:border-primary focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label for="login-password" class="block text-sm font-medium text-text">Contraseña</label>
+              <div class="relative mt-1.5">
+                <input
+                  id="login-password"
+                  name="password"
+                  type="password"
+                  required
+                  autocomplete="current-password"
+                  placeholder="••••••••"
+                  class="h-11 w-full rounded-md border border-border bg-surface px-3 pr-11 text-sm text-text placeholder:text-text-muted/60 focus:border-primary focus:outline-none"
+                />
+                <button
+                  type="button"
+                  data-password-toggle
+                  aria-label="Mostrar contraseña"
+                  aria-pressed="false"
+                  class="absolute inset-y-0 right-0 flex w-11 items-center justify-center text-text-muted transition hover:text-text"
+                >
+                  <svg data-icon-eye class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                  </svg>
+                  <svg data-icon-eye-off class="hidden h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.243 4.243L9.88 9.88" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <label class="flex items-center gap-2 text-sm text-text-muted">
+                <input type="checkbox" name="recordarme" class="h-4 w-4 rounded border-border text-primary focus:outline-none" />
+                Recordarme
+              </label>
+              <a href="#" class="text-sm font-medium text-primary hover:text-primary-dark">¿Olvidaste tu contraseña?</a>
+            </div>
+
+            <button
+              type="submit"
+              class="flex h-11 w-full items-center justify-center rounded-md bg-accent text-sm font-semibold text-white transition hover:bg-accent-dark"
+            >
+              Ingresar
+            </button>
+          </form>
+
+          <a href="../../index.html" class="mt-8 inline-flex items-center gap-1.5 text-sm font-medium text-text-muted transition hover:text-text">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+            Volver al kiosko
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/admin-login.js"></script>
+  </body>
+</html>

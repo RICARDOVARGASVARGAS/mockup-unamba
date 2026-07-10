@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reportes — Panel de Administración | DocenTrack (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+    />
+
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <admin-sidebar></admin-sidebar>
+
+    <div class="admin-canvas flex min-h-screen flex-col lg:pl-72">
+      <admin-topbar page-title="Reportes"></admin-topbar>
+
+      <main class="flex-1 space-y-6 p-4 sm:p-6 lg:p-8">
+        <div>
+          <h2 class="font-heading text-xl font-bold text-text">Horas dictadas por docente</h2>
+          <p class="text-sm text-text-muted">Reporte por periodo académico, exportable para RR.HH. Alcance mínimo por ahora.</p>
+        </div>
+
+        <div class="flex flex-col gap-3 admin-card p-4 sm:flex-row sm:items-center">
+          <select class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none">
+            <option>Periodo 2026-I</option>
+            <option>Periodo 2025-II</option>
+          </select>
+          <select class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none">
+            <option>Todos los docentes</option>
+            <option>Lucía Mamani Quispe</option>
+            <option>Carlos Ttito Flores</option>
+            <option>Julia Cárdenas Pinto</option>
+          </select>
+          <div class="ml-auto flex gap-2">
+            <button type="button" class="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-sm font-semibold text-text transition hover:bg-surface-2">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+              Exportar Excel
+            </button>
+            <button type="button" class="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-onPrimary transition hover:bg-primary-dark">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+              Exportar PDF
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div class="admin-card p-5">
+            <p class="font-heading text-2xl font-bold text-text">156 h</p>
+            <p class="text-sm text-text-muted">Horas dictadas — periodo 2026-I</p>
+          </div>
+          <div class="admin-card p-5">
+            <p class="font-heading text-2xl font-bold text-text">148 h</p>
+            <p class="text-sm text-text-muted">Horas programadas — periodo 2026-I</p>
+          </div>
+          <div class="admin-card p-5">
+            <p class="font-heading text-2xl font-bold text-warning">5</p>
+            <p class="text-sm text-text-muted">Registros fuera de horario</p>
+          </div>
+        </div>
+
+        <div class="overflow-hidden admin-card">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="border-b border-border bg-surface-2 text-xs uppercase tracking-wide text-text-muted">
+                <tr>
+                  <th class="px-4 py-3 font-semibold">Docente</th>
+                  <th class="px-4 py-3 font-semibold">Cursos dictados</th>
+                  <th class="px-4 py-3 font-semibold">Horas programadas</th>
+                  <th class="px-4 py-3 font-semibold">Horas dictadas</th>
+                  <th class="px-4 py-3 font-semibold">Diferencia</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-border">
+                <tr>
+                  <td class="px-4 py-3 font-medium text-text">Lucía Mamani Quispe</td>
+                  <td class="px-4 py-3 text-text-muted">2</td>
+                  <td class="px-4 py-3 text-text-muted">48 h</td>
+                  <td class="px-4 py-3 text-text-muted">50 h</td>
+                  <td class="px-4 py-3 text-success">+2 h</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-3 font-medium text-text">Carlos Ttito Flores</td>
+                  <td class="px-4 py-3 text-text-muted">3</td>
+                  <td class="px-4 py-3 text-text-muted">60 h</td>
+                  <td class="px-4 py-3 text-text-muted">57 h</td>
+                  <td class="px-4 py-3 text-danger">−3 h</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-3 font-medium text-text">Julia Cárdenas Pinto</td>
+                  <td class="px-4 py-3 text-text-muted">2</td>
+                  <td class="px-4 py-3 text-text-muted">40 h</td>
+                  <td class="px-4 py-3 text-text-muted">49 h</td>
+                  <td class="px-4 py-3 text-warning">+9 h</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../components/admin-sidebar.js"></script>
+    <script src="../../components/admin-topbar.js"></script>
+  </body>
+</html>

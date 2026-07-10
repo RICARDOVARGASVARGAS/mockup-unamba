@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro guardado — DocenTrack</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+    />
+
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="kiosk-shell bg-bg text-text">
+    <kiosko-topbar></kiosko-topbar>
+
+    <!-- ESTADO: Guardado exitoso — confirmación + resumen, vuelve a reposo -->
+    <main class="kiosk-main">
+      <div class="kiosk-card flex flex-col items-center gap-6">
+        <div class="flex h-20 w-20 items-center justify-center rounded-full bg-success-bg text-success">
+          <svg class="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+          </svg>
+        </div>
+
+        <div>
+          <h1 class="font-heading text-2xl font-semibold text-text">Registro guardado</h1>
+          <p class="mt-2 text-base text-text-muted">Gracias, Lucía. Tu clase quedó registrada correctamente.</p>
+        </div>
+
+        <dl class="w-full space-y-2 rounded-lg bg-surface-2 px-4 py-3 text-left text-sm">
+          <div class="flex justify-between gap-3">
+            <dt class="text-text-muted">Curso</dt>
+            <dd class="font-medium text-text">Gestión de Operaciones I</dd>
+          </div>
+          <div class="flex justify-between gap-3">
+            <dt class="text-text-muted">Aula</dt>
+            <dd class="font-medium text-text">204</dd>
+          </div>
+          <div class="flex justify-between gap-3">
+            <dt class="text-text-muted">Horario declarado</dt>
+            <dd class="font-medium text-text">14:05 – 19:58</dd>
+          </div>
+        </dl>
+
+        <span class="badge badge-neutral">Volviendo a inicio…</span>
+        <a href="../../index.html" class="kiosk-btn kiosk-btn-secondary w-full">Volver ahora</a>
+      </div>
+    </main>
+
+    <kiosko-debug-panel></kiosko-debug-panel>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/site-paths.js"></script>
+    <script src="../../js/interaction-mode.js"></script>
+    <script src="../../components/kiosko-topbar.js"></script>
+    <script src="../../components/kiosko-debug-panel.js"></script>
+  </body>
+</html>

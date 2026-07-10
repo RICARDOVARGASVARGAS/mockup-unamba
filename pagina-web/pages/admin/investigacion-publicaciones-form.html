@@ -1,0 +1,128 @@
+<!-- pages/admin/investigacion-publicaciones-form.html -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../../assets/img/facultad/logo_universidad.ico" />
+    <title>Editar publicación — Panel de Administración | Facultad de Administración UNAMBA (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <admin-sidebar></admin-sidebar>
+
+    <div class="admin-canvas flex min-h-screen flex-col lg:pl-72">
+      <admin-topbar page-title="Publicaciones"></admin-topbar>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <div class="mx-auto max-w-3xl">
+          <a href="investigacion-publicaciones.html" class="inline-flex items-center gap-1.5 text-sm font-medium text-text-muted transition hover:text-text">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+            Volver a Publicaciones
+          </a>
+          <h2 class="mt-2 font-heading text-xl font-bold text-text">Editar publicación</h2>
+
+          <form data-admin-form data-redirect="investigacion-publicaciones.html" class="mt-6 space-y-6">
+            <!-- Información general -->
+            <div class="admin-card p-5 sm:p-6">
+              <h3 class="font-heading text-base font-semibold text-text">Información general</h3>
+              <div class="mt-4 grid grid-cols-1 gap-4">
+                <div>
+                  <label for="publicacion-titulo" class="block text-sm font-medium text-text">Título</label>
+                  <input id="publicacion-titulo" type="text" value="Determinantes de la competitividad en la MYPE textil de Abancay" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                </div>
+                <div>
+                  <label for="publicacion-autor" class="block text-sm font-medium text-text">Autor(es)</label>
+                  <input id="publicacion-autor" type="text" value="Rosa Illanes Cárdenas" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <p class="mt-1.5 text-xs text-text-muted">Nombre(s) tal como aparecen en la publicación. Admite coautores externos separados por coma.</p>
+                </div>
+              </div>
+              <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label for="publicacion-autor-docente" class="block text-sm font-medium text-text">Autor de la facultad <span class="text-text-muted">(opcional)</span></label>
+                  <select id="publicacion-autor-docente" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none">
+                    <option value="rosa-illanes" selected>Dra. Rosa Illanes Cárdenas</option>
+                    <option value="carlos-huaman">Mg. Carlos Huamán Quispe</option>
+                    <option value="jorge-ttito">Mg. Jorge Ttito Mamani</option>
+                    <option value="">Ninguno — autor externo</option>
+                  </select>
+                  <p class="mt-1.5 text-xs text-text-muted">Vincula solo si el autor principal es docente de la facultad.</p>
+                </div>
+                <div>
+                  <label for="publicacion-fecha" class="block text-sm font-medium text-text">Fecha de publicación</label>
+                  <input id="publicacion-fecha" type="date" value="2025-08-10" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Recurso -->
+            <div class="admin-card p-5 sm:p-6">
+              <h3 class="font-heading text-base font-semibold text-text">Recurso</h3>
+              <div class="mt-4">
+                <label for="publicacion-tipo" class="block text-sm font-medium text-text">Tipo de recurso</label>
+                <select id="publicacion-tipo" data-condition-source="tipo" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none">
+                  <option value="pendiente">Aún no disponible</option>
+                  <option value="archivo">Archivo PDF</option>
+                  <option value="enlace" selected>Enlace externo</option>
+                </select>
+              </div>
+
+              <div data-condition-show="tipo:enlace" class="mt-4">
+                <label for="publicacion-enlace" class="block text-sm font-medium text-text">Enlace externo</label>
+                <input id="publicacion-enlace" type="url" value="https://revista-ejemplo.org/articulos/mype-textil-abancay" placeholder="https://..." class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                <p class="mt-1.5 text-xs text-text-muted">Ej. revista indexada externa donde se publicó el artículo.</p>
+              </div>
+
+              <div data-condition-show="tipo:archivo" class="mt-4 hidden" data-upload>
+                <div class="flex items-center gap-4">
+                  <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-danger-bg text-danger">
+                    <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                    </svg>
+                  </span>
+                  <div class="min-w-0 flex-1">
+                    <p data-upload-filename class="truncate text-sm font-medium text-text">Sin archivo — sube un PDF</p>
+                    <p class="text-xs text-text-muted">PDF, máx. 10MB.</p>
+                  </div>
+                  <input type="file" accept="application/pdf" data-upload-input class="hidden" />
+                  <button type="button" data-upload-trigger class="shrink-0 rounded-md border border-border px-4 py-2 text-sm font-medium text-text transition hover:bg-surface-2">Subir PDF</button>
+                </div>
+              </div>
+
+              <p data-condition-show="tipo:pendiente" class="mt-4 hidden rounded-md bg-info-bg px-3 py-2 text-xs text-info">
+                Se registra la publicación sin archivo ni enlace. En el listado público aparece como "Próximamente" hasta que se complete.
+              </p>
+            </div>
+
+            <div class="flex items-center justify-end gap-3">
+              <a href="investigacion-publicaciones.html" class="rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-text transition hover:bg-surface-2">Cancelar</a>
+              <button type="submit" class="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <admin-toast></admin-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/admin-common.js"></script>
+    <script src="../../components/admin-sidebar.js"></script>
+    <script src="../../components/admin-topbar.js"></script>
+    <script src="../../components/admin-toast.js"></script>
+  </body>
+</html>

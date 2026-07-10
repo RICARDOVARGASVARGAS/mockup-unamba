@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registros de asistencia — Panel de Administración | DocenTrack (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+    />
+
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <admin-sidebar></admin-sidebar>
+
+    <div class="admin-canvas flex min-h-screen flex-col lg:pl-72">
+      <admin-topbar page-title="Registros de asistencia"></admin-topbar>
+
+      <main class="flex-1 space-y-6 p-4 sm:p-6 lg:p-8">
+        <div>
+          <h2 class="font-heading text-xl font-bold text-text">Registros de asistencia</h2>
+          <p class="text-sm text-text-muted">
+            Todo registro se crea con huella en el kiosko — aquí solo se pueden <strong>corregir</strong> datos ya
+            existentes, con motivo y auditoría. No se puede crear un registro nuevo desde el panel.
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-3 admin-card p-4 sm:flex-row sm:items-center">
+          <div class="relative flex-1">
+            <svg class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+            <input type="search" data-table-search placeholder="Buscar por docente o curso..." class="h-10 w-full rounded-md border border-border bg-bg pl-9 pr-3 text-sm text-text focus:border-primary focus:outline-none" />
+          </div>
+          <select data-table-filter="estado" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none">
+            <option value="">Todo estado</option>
+            <option value="normal">Normal</option>
+            <option value="fuera-horario">Fuera de horario</option>
+            <option value="corregido">Corregido</option>
+          </select>
+        </div>
+
+        <div class="overflow-hidden admin-card">
+          <div class="overflow-x-auto">
+            <table data-admin-table class="w-full text-left text-sm">
+              <thead class="border-b border-border bg-surface-2 text-xs uppercase tracking-wide text-text-muted">
+                <tr>
+                  <th class="px-4 py-3 font-semibold">Docente</th>
+                  <th class="px-4 py-3 font-semibold">Curso</th>
+                  <th class="px-4 py-3 font-semibold">Aula</th>
+                  <th class="px-4 py-3 font-semibold">Horario declarado</th>
+                  <th class="px-4 py-3 font-semibold">Alumnos</th>
+                  <th class="px-4 py-3 font-semibold">Estado</th>
+                  <th class="px-4 py-3 font-semibold text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-border">
+                <tr data-row data-search="lucía mamani gestión de operaciones i" data-estado="normal">
+                  <td class="px-4 py-3 font-medium text-text">Lucía Mamani Quispe</td>
+                  <td class="px-4 py-3 text-text-muted">Gestión de Operaciones I</td>
+                  <td class="px-4 py-3 text-text-muted" data-correct-target>Aula 204</td>
+                  <td class="px-4 py-3 text-text-muted">14:05 – 16:02</td>
+                  <td class="px-4 py-3 text-text-muted">28</td>
+                  <td class="px-4 py-3" data-correct-status><span class="badge badge-success">Normal</span></td>
+                  <td class="px-4 py-3">
+                    <div class="flex justify-end">
+                      <button
+                        type="button"
+                        data-correct-trigger
+                        data-correct-summary="Lucía Mamani Quispe — Gestión de Operaciones I, 14:05–16:02"
+                        data-correct-value="Aula 204"
+                        class="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-text transition hover:bg-surface-2"
+                      >
+                        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" /></svg>
+                        Corregir
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr data-row data-search="julia cárdenas contabilidad general" data-estado="fuera-horario">
+                  <td class="px-4 py-3 font-medium text-text">Julia Cárdenas Pinto</td>
+                  <td class="px-4 py-3 text-text-muted">Contabilidad General</td>
+                  <td class="px-4 py-3 text-text-muted" data-correct-target>Aula 204</td>
+                  <td class="px-4 py-3 text-text-muted">19:40 – 21:15 <span class="block text-xs text-warning">Asignado: 16:00–18:00</span></td>
+                  <td class="px-4 py-3 text-text-muted">31</td>
+                  <td class="px-4 py-3" data-correct-status><span class="badge badge-warning">Fuera de horario</span></td>
+                  <td class="px-4 py-3">
+                    <div class="flex justify-end">
+                      <button
+                        type="button"
+                        data-correct-trigger
+                        data-correct-summary="Julia Cárdenas Pinto — Contabilidad General, 19:40–21:15"
+                        data-correct-value="Aula 204"
+                        class="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-text transition hover:bg-surface-2"
+                      >
+                        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" /></svg>
+                        Corregir
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr data-row data-search="carlos ttito marketing estratégico" data-estado="corregido">
+                  <td class="px-4 py-3 font-medium text-text">Carlos Ttito Flores</td>
+                  <td class="px-4 py-3 text-text-muted">Marketing Estratégico</td>
+                  <td class="px-4 py-3 text-text-muted" data-correct-target>Aula 205</td>
+                  <td class="px-4 py-3 text-text-muted">10:05 – 11:58</td>
+                  <td class="px-4 py-3 text-text-muted">24</td>
+                  <td class="px-4 py-3" data-correct-status>
+                    <span class="badge badge-info">Corregido</span>
+                    <span class="mt-1 block text-xs text-text-muted">Aula equivocada — corregido por Rosa Huamaní, 09/07/2026</span>
+                  </td>
+                  <td class="px-4 py-3">
+                    <div class="flex justify-end">
+                      <button
+                        type="button"
+                        data-correct-trigger
+                        data-correct-summary="Carlos Ttito Flores — Marketing Estratégico, 10:05–11:58"
+                        data-correct-value="Aula 205"
+                        class="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-text transition hover:bg-surface-2"
+                      >
+                        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" /></svg>
+                        Corregir
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr data-empty-row class="hidden">
+                  <td colspan="7" class="px-4 py-10 text-center text-sm text-text-muted">No se encontraron resultados.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <admin-correction-modal></admin-correction-modal>
+    <admin-toast></admin-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/admin-common.js"></script>
+    <script src="../../components/admin-sidebar.js"></script>
+    <script src="../../components/admin-topbar.js"></script>
+    <script src="../../components/admin-correction-modal.js"></script>
+    <script src="../../components/admin-toast.js"></script>
+  </body>
+</html>

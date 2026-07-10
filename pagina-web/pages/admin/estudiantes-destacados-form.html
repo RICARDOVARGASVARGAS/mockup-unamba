@@ -1,0 +1,97 @@
+<!-- pages/admin/estudiantes-destacados-form.html -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../../assets/img/facultad/logo_universidad.ico" />
+    <title>Editar estudiante destacado — Panel de Administración | Facultad de Administración UNAMBA (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <admin-sidebar></admin-sidebar>
+
+    <div class="admin-canvas flex min-h-screen flex-col lg:pl-72">
+      <admin-topbar page-title="Estudiantes destacados"></admin-topbar>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <div class="mx-auto max-w-3xl">
+          <a href="estudiantes-destacados.html" class="inline-flex items-center gap-1.5 text-sm font-medium text-text-muted transition hover:text-text">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+            Volver a Estudiantes destacados
+          </a>
+          <h2 class="mt-2 font-heading text-xl font-bold text-text">Editar estudiante destacado</h2>
+
+          <form data-admin-form data-redirect="estudiantes-destacados.html" class="mt-6 space-y-6">
+            <!-- Información general -->
+            <div class="admin-card p-5 sm:p-6">
+              <h3 class="font-heading text-base font-semibold text-text">Información general</h3>
+              <div class="mt-4">
+                <label for="destacado-nombre" class="block text-sm font-medium text-text">Nombre</label>
+                <input id="destacado-nombre" type="text" value="Kelly Huamaní Torres" placeholder="Nombre del estudiante o del equipo" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                <p class="mt-1.5 text-xs text-text-muted">No está vinculado a una cuenta de usuario — es solo texto, igual que un logro de equipo.</p>
+              </div>
+              <div class="mt-4">
+                <label for="destacado-logro" class="block text-sm font-medium text-text">Logro</label>
+                <textarea id="destacado-logro" rows="2" class="mt-1.5 w-full resize-y rounded-md border border-border bg-bg px-3 py-2 text-sm text-text focus:border-primary focus:outline-none">Mejor promedio ponderado de la promoción 2025-II.</textarea>
+              </div>
+              <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label for="destacado-fecha" class="block text-sm font-medium text-text">Fecha</label>
+                  <input id="destacado-fecha" type="date" value="2025-12-15" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                </div>
+                <div>
+                  <label for="destacado-orden" class="block text-sm font-medium text-text">Orden</label>
+                  <input id="destacado-orden" type="number" min="1" value="1" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Foto -->
+            <div class="admin-card p-5 sm:p-6" data-upload>
+              <h3 class="font-heading text-base font-semibold text-text">Foto</h3>
+              <div class="mt-4 flex items-center gap-4">
+                <div class="relative flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-border bg-surface-2 text-text-muted">
+                  <span data-upload-placeholder class="hidden text-xs">Sin foto</span>
+                  <img data-upload-preview src="../../assets/img/estudiantes/estudiante-1.jpg" class="h-full w-full object-cover" alt="" />
+                </div>
+                <div class="flex-1 space-y-2">
+                  <input type="file" accept="image/*" data-upload-input class="hidden" />
+                  <button type="button" data-upload-trigger class="rounded-md border border-border px-4 py-2 text-sm font-medium text-text transition hover:bg-surface-2">Reemplazar foto</button>
+                  <p class="text-xs text-text-muted">Obligatoria — formato retrato o de equipo, cuadrada de preferencia.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-3">
+              <a href="estudiantes-destacados.html" class="rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-text transition hover:bg-surface-2">Cancelar</a>
+              <button type="submit" class="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <admin-toast></admin-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/admin-common.js"></script>
+    <script src="../../components/admin-sidebar.js"></script>
+    <script src="../../components/admin-topbar.js"></script>
+    <script src="../../components/admin-toast.js"></script>
+  </body>
+</html>

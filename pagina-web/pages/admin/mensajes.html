@@ -1,0 +1,341 @@
+<!-- pages/admin/mensajes.html -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../../assets/img/facultad/logo_universidad.ico" />
+    <title>Mensajes recibidos — Panel de Administración | Facultad de Administración UNAMBA (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <admin-sidebar></admin-sidebar>
+
+    <div class="admin-canvas flex min-h-screen flex-col lg:pl-72">
+      <admin-topbar page-title="Mensajes recibidos"></admin-topbar>
+
+      <main class="flex-1 space-y-6 p-4 sm:p-6 lg:p-8">
+        <div>
+          <h2 class="font-heading text-xl font-bold text-text">Mensajes recibidos</h2>
+          <p class="text-sm text-text-muted">Buzón del formulario de Contacto. No se crean mensajes desde aquí — solo se leen, marcan y responden.</p>
+        </div>
+
+        <div class="flex flex-col gap-3 admin-card p-4 sm:flex-row sm:items-center">
+          <div class="relative flex-1">
+            <svg class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+            <input type="search" data-table-search placeholder="Buscar por nombre o asunto..." class="h-10 w-full rounded-md border border-border bg-bg pl-9 pr-3 text-sm text-text focus:border-primary focus:outline-none" />
+          </div>
+          <select data-table-filter="estado" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none">
+            <option value="">Todos los estados</option>
+            <option value="nuevo">Nuevo</option>
+            <option value="leido">Leído</option>
+            <option value="respondido">Respondido</option>
+          </select>
+        </div>
+
+        <div class="overflow-hidden admin-card">
+          <div class="overflow-x-auto">
+            <table data-admin-table class="w-full text-left text-sm">
+              <thead class="border-b border-border bg-surface-2 text-xs uppercase tracking-wide text-text-muted">
+                <tr>
+                  <th class="px-4 py-3 font-semibold">Remitente</th>
+                  <th class="px-4 py-3 font-semibold">Asunto</th>
+                  <th class="px-4 py-3 font-semibold">Fecha</th>
+                  <th class="px-4 py-3 font-semibold">Estado</th>
+                  <th class="px-4 py-3 font-semibold text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-border">
+                <tr
+                  data-row
+                  data-search="rosa mendoza consulta sobre proceso de admisión 2026-ii"
+                  data-estado="nuevo"
+                  data-nombre="Rosa Mendoza"
+                  data-correo="rosa.mendoza@example.com"
+                  data-asunto="Consulta sobre proceso de admisión 2026-II"
+                  data-fecha="28 jun. 2026"
+                  data-mensaje="Buenos días, quisiera saber si el examen de admisión 2026-II tiene alguna fecha límite de inscripción y si hay vacantes para la sede de Cotabambas-Tambobamba. Gracias de antemano."
+                >
+                  <td class="px-4 py-3">
+                    <p class="font-medium text-text">Rosa Mendoza</p>
+                    <p class="text-xs text-text-muted">rosa.mendoza@example.com</p>
+                  </td>
+                  <td class="px-4 py-3 max-w-xs truncate text-text-muted">Consulta sobre proceso de admisión 2026-II</td>
+                  <td class="px-4 py-3 text-text-muted">28 jun. 2026</td>
+                  <td class="px-4 py-3"><span data-estado-badge class="badge badge-info">Nuevo</span></td>
+                  <td class="px-4 py-3">
+                    <div class="flex justify-end gap-1">
+                      <button type="button" data-view-message aria-label="Ver mensaje" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
+                      </button>
+                      <button type="button" data-delete-trigger data-delete-name="mensaje de Rosa Mendoza" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  data-row
+                  data-search="jhonny quispe solicito información sobre convenios con empresas"
+                  data-estado="leido"
+                  data-nombre="Jhonny Quispe"
+                  data-correo="jhonny.quispe@example.com"
+                  data-asunto="Solicito información sobre convenios con empresas"
+                  data-fecha="20 jun. 2026"
+                  data-mensaje="Hola, soy estudiante del 8vo ciclo y quiero saber qué empresas tienen convenio vigente con la facultad para hacer mis prácticas pre-profesionales este semestre."
+                >
+                  <td class="px-4 py-3">
+                    <p class="font-medium text-text">Jhonny Quispe</p>
+                    <p class="text-xs text-text-muted">jhonny.quispe@example.com</p>
+                  </td>
+                  <td class="px-4 py-3 max-w-xs truncate text-text-muted">Solicito información sobre convenios con empresas</td>
+                  <td class="px-4 py-3 text-text-muted">20 jun. 2026</td>
+                  <td class="px-4 py-3"><span data-estado-badge class="badge badge-neutral">Leído</span></td>
+                  <td class="px-4 py-3">
+                    <div class="flex justify-end gap-1">
+                      <button type="button" data-view-message aria-label="Ver mensaje" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
+                      </button>
+                      <button type="button" data-delete-trigger data-delete-name="mensaje de Jhonny Quispe" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  data-row
+                  data-search="elena vargas consulta sobre posgrado"
+                  data-estado="respondido"
+                  data-nombre="Elena Vargas"
+                  data-correo="elena.vargas@example.com"
+                  data-asunto="Consulta sobre posgrado"
+                  data-fecha="15 jun. 2026"
+                  data-mensaje="Buenas tardes, quisiera información sobre el costo y modalidad de la Maestría en Gestión Pública que ofrece la facultad. ¿Es virtual o presencial?"
+                >
+                  <td class="px-4 py-3">
+                    <p class="font-medium text-text">Elena Vargas</p>
+                    <p class="text-xs text-text-muted">elena.vargas@example.com</p>
+                  </td>
+                  <td class="px-4 py-3 max-w-xs truncate text-text-muted">Consulta sobre posgrado</td>
+                  <td class="px-4 py-3 text-text-muted">15 jun. 2026</td>
+                  <td class="px-4 py-3"><span data-estado-badge class="badge badge-success">Respondido</span></td>
+                  <td class="px-4 py-3">
+                    <div class="flex justify-end gap-1">
+                      <button type="button" data-view-message aria-label="Ver mensaje" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
+                      </button>
+                      <button type="button" data-delete-trigger data-delete-name="mensaje de Elena Vargas" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  data-row
+                  data-search="miguel torres problema con matrícula"
+                  data-estado="nuevo"
+                  data-nombre="Miguel Torres"
+                  data-correo="miguel.torres@example.com"
+                  data-asunto="Problema con matrícula"
+                  data-fecha="10 jun. 2026"
+                  data-mensaje="Hola, intenté matricularme en el sistema en línea pero me sale un error de deuda pendiente que ya pagué la semana pasada. ¿Podrían revisar mi caso? Mi código es 2021-XXXXX."
+                >
+                  <td class="px-4 py-3">
+                    <p class="font-medium text-text">Miguel Torres</p>
+                    <p class="text-xs text-text-muted">miguel.torres@example.com</p>
+                  </td>
+                  <td class="px-4 py-3 max-w-xs truncate text-text-muted">Problema con matrícula</td>
+                  <td class="px-4 py-3 text-text-muted">10 jun. 2026</td>
+                  <td class="px-4 py-3"><span data-estado-badge class="badge badge-info">Nuevo</span></td>
+                  <td class="px-4 py-3">
+                    <div class="flex justify-end gap-1">
+                      <button type="button" data-view-message aria-label="Ver mensaje" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
+                      </button>
+                      <button type="button" data-delete-trigger data-delete-name="mensaje de Miguel Torres" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  data-row
+                  data-search="ana ccama solicitud de constancia"
+                  data-estado="leido"
+                  data-nombre="Ana Ccama"
+                  data-correo="ana.ccama@example.com"
+                  data-asunto="Solicitud de constancia"
+                  data-fecha="30 may. 2026"
+                  data-mensaje="Buenos días, necesito saber cómo tramitar una constancia de tercio superior, no la encuentro en la guía de trámites de la página."
+                >
+                  <td class="px-4 py-3">
+                    <p class="font-medium text-text">Ana Ccama</p>
+                    <p class="text-xs text-text-muted">ana.ccama@example.com</p>
+                  </td>
+                  <td class="px-4 py-3 max-w-xs truncate text-text-muted">Solicitud de constancia</td>
+                  <td class="px-4 py-3 text-text-muted">30 may. 2026</td>
+                  <td class="px-4 py-3"><span data-estado-badge class="badge badge-neutral">Leído</span></td>
+                  <td class="px-4 py-3">
+                    <div class="flex justify-end gap-1">
+                      <button type="button" data-view-message aria-label="Ver mensaje" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
+                      </button>
+                      <button type="button" data-delete-trigger data-delete-name="mensaje de Ana Ccama" aria-label="Eliminar" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-empty-row class="hidden">
+                  <td colspan="5" class="px-4 py-10 text-center text-sm text-text-muted">No se encontraron resultados.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modal de detalle: ver mensaje completo + cambiar estado + responder por correo -->
+    <div data-message-modal class="fixed inset-0 z-50 hidden items-center justify-center bg-gray-900/50 p-4">
+      <div class="w-full max-w-lg rounded-lg bg-surface p-6 shadow-lg">
+        <div class="flex items-start justify-between gap-4">
+          <div class="min-w-0">
+            <p data-modal-asunto class="font-heading text-lg font-semibold text-text"></p>
+            <p class="mt-1 text-sm text-text-muted">
+              <span data-modal-nombre class="font-medium text-text"></span> ·
+              <span data-modal-correo></span> · <span data-modal-fecha></span>
+            </p>
+          </div>
+          <button type="button" data-modal-close aria-label="Cerrar" class="shrink-0 rounded-md p-1.5 text-text-muted transition hover:bg-surface-2 hover:text-text">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+          </button>
+        </div>
+
+        <p data-modal-mensaje class="mt-4 rounded-md bg-surface-2 p-4 text-sm text-text"></p>
+
+        <div class="mt-4" data-message-status-group>
+          <span class="block text-sm font-medium text-text">Estado</span>
+          <div class="mt-2 inline-flex rounded-md border border-border p-1">
+            <button type="button" data-status-option data-status-value="nuevo" data-status-active-class="bg-primary text-onPrimary" class="rounded px-4 py-1.5 text-sm font-medium text-text-muted transition">Nuevo</button>
+            <button type="button" data-status-option data-status-value="leido" data-status-active-class="bg-primary text-onPrimary" class="rounded px-4 py-1.5 text-sm font-medium text-text-muted transition">Leído</button>
+            <button type="button" data-status-option data-status-value="respondido" data-status-active-class="bg-primary text-onPrimary" class="rounded px-4 py-1.5 text-sm font-medium text-text-muted transition">Respondido</button>
+          </div>
+        </div>
+
+        <div class="mt-6 flex items-center justify-end gap-3">
+          <button type="button" data-modal-close class="rounded-md border border-border px-4 py-2 text-sm font-semibold text-text transition hover:bg-surface-2">Cerrar</button>
+          <a data-modal-reply href="#" class="rounded-md bg-accent px-4 py-2 text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">Responder por correo</a>
+        </div>
+      </div>
+    </div>
+
+    <admin-modal-confirm></admin-modal-confirm>
+    <admin-toast></admin-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/admin-common.js"></script>
+    <script src="../../components/admin-sidebar.js"></script>
+    <script src="../../components/admin-topbar.js"></script>
+    <script src="../../components/admin-modal-confirm.js"></script>
+    <script src="../../components/admin-toast.js"></script>
+
+    <script>
+      // Modal de mensajes: page-specific, mismo criterio que el organigrama
+      // de autoridades.html — un solo uso, no amerita un componente aparte.
+      (function () {
+        const modal = document.querySelector("[data-message-modal]");
+        const els = {
+          nombre: modal.querySelector("[data-modal-nombre]"),
+          correo: modal.querySelector("[data-modal-correo]"),
+          asunto: modal.querySelector("[data-modal-asunto]"),
+          fecha: modal.querySelector("[data-modal-fecha]"),
+          mensaje: modal.querySelector("[data-modal-mensaje]"),
+          reply: modal.querySelector("[data-modal-reply]"),
+        };
+        const statusButtons = modal.querySelectorAll("[data-status-option]");
+        let currentRow = null;
+
+        const ESTADO_LABEL = { nuevo: "Nuevo", leido: "Leído", respondido: "Respondido" };
+        const ESTADO_BADGE = { nuevo: "badge-info", leido: "badge-neutral", respondido: "badge-success" };
+
+        function setActiveStatus(value) {
+          statusButtons.forEach((btn) => {
+            const active = btn.dataset.statusValue === value;
+            btn.classList.toggle("bg-primary", active);
+            btn.classList.toggle("text-onPrimary", active);
+            btn.classList.toggle("text-text-muted", !active);
+          });
+        }
+
+        function open(row) {
+          currentRow = row;
+          const d = row.dataset;
+          els.nombre.textContent = d.nombre;
+          els.correo.textContent = d.correo;
+          els.asunto.textContent = d.asunto;
+          els.fecha.textContent = d.fecha;
+          els.mensaje.textContent = d.mensaje;
+          els.reply.href = `mailto:${d.correo}?subject=${encodeURIComponent("Re: " + d.asunto)}`;
+          setActiveStatus(d.estado);
+          modal.classList.remove("hidden");
+          modal.classList.add("flex");
+        }
+
+        function close() {
+          modal.classList.add("hidden");
+          modal.classList.remove("flex");
+          currentRow = null;
+        }
+
+        document.querySelectorAll("[data-view-message]").forEach((btn) => {
+          btn.addEventListener("click", () => open(btn.closest("[data-row]")));
+        });
+
+        modal.querySelectorAll("[data-modal-close]").forEach((btn) => btn.addEventListener("click", close));
+        modal.addEventListener("click", (event) => {
+          if (event.target === modal) close();
+        });
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape" && !modal.classList.contains("hidden")) close();
+        });
+
+        statusButtons.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const value = btn.dataset.statusValue;
+            setActiveStatus(value);
+            if (!currentRow) return;
+            currentRow.dataset.estado = value;
+            currentRow.querySelector("[data-estado-badge]").textContent = ESTADO_LABEL[value];
+            currentRow.querySelector("[data-estado-badge]").className = "badge " + ESTADO_BADGE[value];
+            document.dispatchEvent(new CustomEvent("admin:toast", { detail: { message: "Estado actualizado a «" + ESTADO_LABEL[value] + "»", variant: "success" } }));
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,106 @@
+<!-- pages/admin/tramites-form.html -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../../assets/img/facultad/logo_universidad.ico" />
+    <title>Editar trámite — Panel de Administración | Facultad de Administración UNAMBA (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <admin-sidebar></admin-sidebar>
+
+    <div class="admin-canvas flex min-h-screen flex-col lg:pl-72">
+      <admin-topbar page-title="Trámites"></admin-topbar>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <div class="mx-auto max-w-3xl">
+          <a href="tramites.html" class="inline-flex items-center gap-1.5 text-sm font-medium text-text-muted transition hover:text-text">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+            Volver a Trámites
+          </a>
+          <h2 class="mt-2 font-heading text-xl font-bold text-text">Editar trámite</h2>
+
+          <form data-admin-form data-redirect="tramites.html" class="mt-6 space-y-6">
+            <!-- Información general -->
+            <div class="admin-card p-5 sm:p-6">
+              <h3 class="font-heading text-base font-semibold text-text">Información general</h3>
+              <div class="mt-4">
+                <label for="tramite-nombre" class="block text-sm font-medium text-text">Nombre</label>
+                <input id="tramite-nombre" type="text" value="Solicitud de traslado interno" placeholder='Ej. "Constancia de matrícula"' class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+              </div>
+              <div class="mt-4">
+                <label for="tramite-descripcion" class="block text-sm font-medium text-text">Descripción breve <span class="text-text-muted">(opcional)</span></label>
+                <input id="tramite-descripcion" type="text" value="Cambio de escuela profesional dentro de la misma universidad." class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+              </div>
+              <div class="mt-4 max-w-[160px]">
+                <label for="tramite-orden" class="block text-sm font-medium text-text">Orden</label>
+                <input id="tramite-orden" type="number" min="1" value="3" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+              </div>
+            </div>
+
+            <!-- Requisitos y pasos -->
+            <div class="admin-card p-5 sm:p-6">
+              <h3 class="font-heading text-base font-semibold text-text">Requisitos y pasos</h3>
+              <div class="mt-4">
+                <label for="tramite-requisitos" class="block text-sm font-medium text-text">Requisitos</label>
+                <textarea id="tramite-requisitos" rows="3" class="mt-1.5 w-full resize-y rounded-md border border-border bg-bg px-3 py-2 text-sm text-text focus:border-primary focus:outline-none">Tener como mínimo 2 ciclos aprobados y promedio ponderado no menor a 12.</textarea>
+                <p class="mt-1.5 text-xs text-text-muted">Un requisito por línea.</p>
+              </div>
+              <div class="mt-4">
+                <label for="tramite-pasos" class="block text-sm font-medium text-text">Pasos</label>
+                <textarea id="tramite-pasos" rows="4" class="mt-1.5 w-full resize-y rounded-md border border-border bg-bg px-3 py-2 text-sm text-text focus:border-primary focus:outline-none">Descargar y llenar el formato de solicitud.
+Presentarlo en mesa de partes junto con los requisitos.
+Esperar resolución (10 días hábiles).</textarea>
+                <p class="mt-1.5 text-xs text-text-muted">Un paso por línea, en el orden en que se muestran.</p>
+              </div>
+            </div>
+
+            <!-- Formato asociado -->
+            <div class="admin-card p-5 sm:p-6">
+              <h3 class="font-heading text-base font-semibold text-text">Formato descargable</h3>
+              <div class="mt-4">
+                <label for="tramite-formato" class="block text-sm font-medium text-text">Documento asociado <span class="text-text-muted">(opcional)</span></label>
+                <select id="tramite-formato" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none">
+                  <option value="">Sin formato — trámite 100% en línea</option>
+                  <option value="formato-traslado" selected>Formato de Solicitud de Traslado Interno</option>
+                  <option value="formato-convalidacion">Formato de Convalidación de Cursos</option>
+                  <option value="formato-solicitud-general">Formato de Solicitud General</option>
+                </select>
+                <p class="mt-1.5 text-xs text-text-muted">Se elige de los documentos con tipo "Formatos de Trámite" — ver <a href="documentos.html" class="font-medium text-primary hover:text-primary-dark">Documentos</a>.</p>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-3">
+              <a href="tramites.html" class="rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-text transition hover:bg-surface-2">Cancelar</a>
+              <button type="submit" class="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <admin-toast></admin-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/admin-common.js"></script>
+    <script src="../../components/admin-sidebar.js"></script>
+    <script src="../../components/admin-topbar.js"></script>
+    <script src="../../components/admin-toast.js"></script>
+  </body>
+</html>

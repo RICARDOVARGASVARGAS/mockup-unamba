@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Error al guardar — DocenTrack</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+    />
+
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="kiosk-shell bg-bg text-text">
+    <kiosko-topbar></kiosko-topbar>
+
+    <!-- ESTADO DE ERROR: el formulario se completó pero el guardado falló (ej. sin conexión al servidor) -->
+    <main class="kiosk-main">
+      <div class="kiosk-card flex flex-col items-center gap-6">
+        <div class="flex h-20 w-20 items-center justify-center rounded-full bg-danger-bg text-danger">
+          <svg class="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+          </svg>
+        </div>
+
+        <div>
+          <h1 class="font-heading text-2xl font-semibold text-text">No se pudo guardar el registro</h1>
+          <p class="mt-2 text-base text-text-muted">
+            Hubo un problema de conexión con el servidor. Tus datos no se perdieron — vuelve a intentar guardar.
+          </p>
+        </div>
+
+        <span class="badge badge-danger">Error al guardar</span>
+
+        <div class="flex w-full flex-col gap-3">
+          <a href="formulario.html" class="kiosk-btn kiosk-btn-primary w-full">Reintentar guardado</a>
+          <a href="../../index.html" class="kiosk-btn kiosk-btn-secondary w-full">Cancelar registro</a>
+        </div>
+      </div>
+    </main>
+
+    <kiosko-debug-panel></kiosko-debug-panel>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/site-paths.js"></script>
+    <script src="../../js/interaction-mode.js"></script>
+    <script src="../../components/kiosko-topbar.js"></script>
+    <script src="../../components/kiosko-debug-panel.js"></script>
+  </body>
+</html>

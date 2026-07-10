@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enrolar huella — Panel de Administración | DocenTrack (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+    />
+
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <admin-sidebar></admin-sidebar>
+
+    <div class="admin-canvas flex min-h-screen flex-col lg:pl-72">
+      <admin-topbar page-title="Docentes"></admin-topbar>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <div class="mx-auto max-w-xl">
+          <a href="docentes.html" class="inline-flex items-center gap-1.5 text-sm font-medium text-text-muted transition hover:text-text">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" /></svg>
+            Volver a Docentes
+          </a>
+
+          <div class="admin-card mt-4 p-6 sm:p-8">
+            <div class="flex items-center gap-3 border-b border-border pb-5">
+              <span class="flex h-11 w-11 items-center justify-center rounded-full bg-surface-2 text-sm font-semibold text-text-muted">AB</span>
+              <div>
+                <h2 class="font-heading text-lg font-semibold text-text">Ana Béjar Salas</h2>
+                <p class="text-sm text-text-muted">Código 00501 · Enrolamiento de huella</p>
+              </div>
+            </div>
+
+            <!-- Pasos de captura: se piden 3 muestras de la misma huella para mayor precisión -->
+            <div class="mt-6 flex items-center justify-center gap-2" data-enroll-steps>
+              <span data-step="1" class="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-semibold text-onPrimary">1</span>
+              <span class="h-0.5 w-8 bg-border"></span>
+              <span data-step="2" class="flex h-8 w-8 items-center justify-center rounded-full bg-surface-2 text-sm font-semibold text-text-muted">2</span>
+              <span class="h-0.5 w-8 bg-border"></span>
+              <span data-step="3" class="flex h-8 w-8 items-center justify-center rounded-full bg-surface-2 text-sm font-semibold text-text-muted">3</span>
+            </div>
+
+            <div class="mt-8 flex flex-col items-center gap-5 text-center">
+              <div class="relative flex h-24 w-24 items-center justify-center rounded-full bg-primary/10">
+                <svg class="h-12 w-12 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M7.864 4.243A7.5 7.5 0 0 1 19.5 10.5c0 2.92-.556 5.709-1.568 8.268M5.742 6.364A7.465 7.465 0 0 0 4.5 10.5a7.464 7.464 0 0 1-1.15 3.993m1.989 3.559A11.209 11.209 0 0 0 8.25 10.5a3.75 3.75 0 1 1 7.5 0c0 .527-.021 1.049-.064 1.565M12 10.5a14.94 14.94 0 0 1-3.6 9.75m6.633-4.596a18.666 18.666 0 0 1-2.485 5.33" />
+                </svg>
+              </div>
+              <div>
+                <p data-enroll-title class="font-heading text-lg font-semibold text-text">Coloque el dedo — muestra 1 de 3</p>
+                <p class="mt-1 text-sm text-text-muted">Pida al docente levantar y volver a colocar el mismo dedo entre cada muestra.</p>
+              </div>
+              <button type="button" data-enroll-capture class="kiosk-btn kiosk-btn-primary w-full max-w-xs">Registrar muestra</button>
+            </div>
+
+            <!-- Estado final, oculto hasta completar las 3 muestras -->
+            <div data-enroll-done class="mt-8 hidden flex-col items-center gap-4 text-center">
+              <div class="flex h-16 w-16 items-center justify-center rounded-full bg-success-bg text-success">
+                <svg class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
+              </div>
+              <p class="font-heading text-lg font-semibold text-text">Huella enrolada correctamente</p>
+              <a href="docentes.html?saved=1" class="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-accent-dark">Volver a Docentes</a>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <admin-toast></admin-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/admin-common.js"></script>
+    <script src="../../components/admin-sidebar.js"></script>
+    <script src="../../components/admin-topbar.js"></script>
+    <script src="../../components/admin-toast.js"></script>
+    <script>
+      // Simula la captura de las 3 muestras que pide el enrolamiento real
+      // (no hay lector conectado en el mockup). Solo avanza el indicador
+      // visual y el texto — sin backend detrás.
+      (function () {
+        let step = 1;
+        const total = 3;
+        const title = document.querySelector("[data-enroll-title]");
+        const captureBtn = document.querySelector("[data-enroll-capture]");
+        const stepsWrap = document.querySelector("[data-enroll-steps]");
+        const captureArea = title.closest("div").parentElement;
+        const doneArea = document.querySelector("[data-enroll-done]");
+
+        captureBtn.addEventListener("click", () => {
+          const current = stepsWrap.querySelector(`[data-step="${step}"]`);
+          current.classList.remove("bg-surface-2", "text-text-muted");
+          current.classList.add("bg-success", "text-white");
+
+          if (step === total) {
+            captureArea.classList.add("hidden");
+            doneArea.classList.remove("hidden");
+            doneArea.classList.add("flex");
+            document.dispatchEvent(new CustomEvent("admin:toast", { detail: { message: "Muestra registrada" } }));
+            return;
+          }
+
+          step += 1;
+          title.textContent = `Coloque el dedo — muestra ${step} de ${total}`;
+          document.dispatchEvent(new CustomEvent("admin:toast", { detail: { message: "Muestra registrada" } }));
+        });
+      })();
+    </script>
+  </body>
+</html>

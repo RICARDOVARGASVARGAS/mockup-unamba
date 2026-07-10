@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Auditoría — Panel de Administración | DocenTrack (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+    />
+
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <admin-sidebar></admin-sidebar>
+
+    <div class="admin-canvas flex min-h-screen flex-col lg:pl-72">
+      <admin-topbar page-title="Auditoría"></admin-topbar>
+
+      <main class="flex-1 space-y-6 p-4 sm:p-6 lg:p-8">
+        <div>
+          <h2 class="font-heading text-xl font-bold text-text">Registro de auditoría</h2>
+          <p class="text-sm text-text-muted">Quién cambió qué y cuándo. Solo lectura — no se puede editar ni eliminar desde aquí.</p>
+        </div>
+
+        <div class="flex flex-col gap-3 admin-card p-4 sm:flex-row sm:items-center">
+          <div class="relative flex-1">
+            <svg class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+            <input type="search" data-table-search placeholder="Buscar por usuario o docente afectado..." class="h-10 w-full rounded-md border border-border bg-bg pl-9 pr-3 text-sm text-text focus:border-primary focus:outline-none" />
+          </div>
+          <select data-table-filter="tipo" class="h-10 rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none">
+            <option value="">Toda acción</option>
+            <option value="correccion">Corrección de registro</option>
+            <option value="enrolamiento">Enrolamiento de huella</option>
+            <option value="horario">Cambio de horario</option>
+          </select>
+        </div>
+
+        <div class="overflow-hidden admin-card">
+          <div class="overflow-x-auto">
+            <table data-admin-table class="w-full text-left text-sm">
+              <thead class="border-b border-border bg-surface-2 text-xs uppercase tracking-wide text-text-muted">
+                <tr>
+                  <th class="px-4 py-3 font-semibold">Fecha</th>
+                  <th class="px-4 py-3 font-semibold">Usuario</th>
+                  <th class="px-4 py-3 font-semibold">Acción</th>
+                  <th class="px-4 py-3 font-semibold">Detalle</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-border">
+                <tr data-row data-search="rosa huamaní carlos ttito flores" data-tipo="correccion">
+                  <td class="px-4 py-3 whitespace-nowrap text-text-muted">09/07/2026 16:42</td>
+                  <td class="px-4 py-3 font-medium text-text">Rosa Huamaní</td>
+                  <td class="px-4 py-3"><span class="badge badge-info">Corrección de registro</span></td>
+                  <td class="px-4 py-3 text-text-muted">Carlos Ttito Flores — Aula corregida de "Aula 204" a "Aula 205". Motivo: el docente indicó verbalmente el aula equivocada, se confirmó con el horario asignado.</td>
+                </tr>
+                <tr data-row data-search="rosa huamaní ana béjar salas" data-tipo="enrolamiento">
+                  <td class="px-4 py-3 whitespace-nowrap text-text-muted">08/07/2026 09:15</td>
+                  <td class="px-4 py-3 font-medium text-text">Rosa Huamaní</td>
+                  <td class="px-4 py-3"><span class="badge badge-success">Enrolamiento de huella</span></td>
+                  <td class="px-4 py-3 text-text-muted">Ana Béjar Salas — huella enrolada (3 muestras capturadas).</td>
+                </tr>
+                <tr data-row data-search="rosa huamaní julia cárdenas pinto" data-tipo="horario">
+                  <td class="px-4 py-3 whitespace-nowrap text-text-muted">07/07/2026 11:03</td>
+                  <td class="px-4 py-3 font-medium text-text">Rosa Huamaní</td>
+                  <td class="px-4 py-3"><span class="badge badge-neutral">Cambio de horario</span></td>
+                  <td class="px-4 py-3 text-text-muted">Julia Cárdenas Pinto — Contabilidad General reasignado de Jueves 14:00–16:00 a Jueves 16:00–18:00.</td>
+                </tr>
+                <tr data-empty-row class="hidden">
+                  <td colspan="4" class="px-4 py-10 text-center text-sm text-text-muted">No se encontraron resultados.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/admin-common.js"></script>
+    <script src="../../components/admin-sidebar.js"></script>
+    <script src="../../components/admin-topbar.js"></script>
+  </body>
+</html>

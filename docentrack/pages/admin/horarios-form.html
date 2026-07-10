@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editar asignación — Panel de Administración | DocenTrack (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+    />
+
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <admin-sidebar></admin-sidebar>
+
+    <div class="admin-canvas flex min-h-screen flex-col lg:pl-72">
+      <admin-topbar page-title="Horarios"></admin-topbar>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <div class="mx-auto max-w-3xl">
+          <a href="horarios.html" class="inline-flex items-center gap-1.5 text-sm font-medium text-text-muted transition hover:text-text">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" /></svg>
+            Volver a Horarios
+          </a>
+          <h2 class="mt-2 font-heading text-xl font-bold text-text">Nueva asignación de horario</h2>
+          <p class="mt-1 text-sm text-text-muted">Esta combinación es la que el kiosko usa para prellenar el formulario del docente y para marcar "fuera de horario".</p>
+
+          <form data-admin-form data-redirect="horarios.html" class="mt-6 space-y-6">
+            <div class="admin-card p-5 sm:p-6">
+              <h3 class="font-heading text-base font-semibold text-text">Asignación</h3>
+              <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label for="horario-docente" class="block text-sm font-medium text-text">Docente</label>
+                  <select id="horario-docente" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none">
+                    <option>Lucía Mamani Quispe</option>
+                    <option>Carlos Ttito Flores</option>
+                    <option>Julia Cárdenas Pinto</option>
+                    <option>Ana Béjar Salas</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="horario-curso" class="block text-sm font-medium text-text">Curso</label>
+                  <select id="horario-curso" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none">
+                    <option>Gestión de Operaciones I</option>
+                    <option>Contabilidad General</option>
+                    <option>Marketing Estratégico</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="horario-ciclo" class="block text-sm font-medium text-text">Ciclo</label>
+                  <select id="horario-ciclo" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none">
+                    <option>III</option>
+                    <option>IV</option>
+                    <option selected>V</option>
+                    <option>VI</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="horario-aula" class="block text-sm font-medium text-text">Aula</label>
+                  <select id="horario-aula" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none">
+                    <option>Aula 204</option>
+                    <option>Aula 205</option>
+                    <option>Auditorio Principal</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="horario-periodo" class="block text-sm font-medium text-text">Periodo académico</label>
+                  <select id="horario-periodo" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none">
+                    <option selected>2026-I</option>
+                    <option>2025-II</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="horario-dia" class="block text-sm font-medium text-text">Día</label>
+                  <select id="horario-dia" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none">
+                    <option>Lunes</option>
+                    <option>Martes</option>
+                    <option>Miércoles</option>
+                    <option>Jueves</option>
+                    <option>Viernes</option>
+                    <option>Sábado</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label for="horario-inicio" class="block text-sm font-medium text-text">Hora inicio</label>
+                  <input id="horario-inicio" type="time" value="14:00" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                </div>
+                <div>
+                  <label for="horario-fin" class="block text-sm font-medium text-text">Hora fin</label>
+                  <input id="horario-fin" type="time" value="16:00" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-3">
+              <a href="horarios.html" class="rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-text transition hover:bg-surface-2">Cancelar</a>
+              <button type="submit" class="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-accent-dark">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <admin-toast></admin-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/admin-common.js"></script>
+    <script src="../../components/admin-sidebar.js"></script>
+    <script src="../../components/admin-topbar.js"></script>
+    <script src="../../components/admin-toast.js"></script>
+  </body>
+</html>

@@ -1,0 +1,100 @@
+<!-- pages/admin/faq-form.html -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../../assets/img/facultad/logo_universidad.ico" />
+    <title>Editar pregunta frecuente — Panel de Administración | Facultad de Administración UNAMBA (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <admin-sidebar></admin-sidebar>
+
+    <div class="admin-canvas flex min-h-screen flex-col lg:pl-72">
+      <admin-topbar page-title="FAQ"></admin-topbar>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <div class="mx-auto max-w-3xl">
+          <a href="faq.html" class="inline-flex items-center gap-1.5 text-sm font-medium text-text-muted transition hover:text-text">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+            Volver a FAQ
+          </a>
+          <h2 class="mt-2 font-heading text-xl font-bold text-text">Editar pregunta frecuente</h2>
+
+          <form data-admin-form data-redirect="faq.html" class="mt-6 space-y-6">
+            <!-- Información general -->
+            <div class="admin-card p-5 sm:p-6">
+              <h3 class="font-heading text-base font-semibold text-text">Información general</h3>
+              <div class="mt-4">
+                <label for="faq-pregunta" class="block text-sm font-medium text-text">Pregunta</label>
+                <input id="faq-pregunta" type="text" value="¿Cuáles son los requisitos para postular a la Facultad de Administración?" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+              </div>
+              <div class="mt-4">
+                <label for="faq-respuesta" class="block text-sm font-medium text-text">Respuesta</label>
+                <textarea id="faq-respuesta" rows="4" class="mt-1.5 w-full resize-y rounded-md border border-border bg-bg px-3 py-2 text-sm text-text focus:border-primary focus:outline-none">Debes rendir el examen de admisión de la UNAMBA, presentar tu certificado de estudios de secundaria y cumplir los requisitos generales publicados en el prospecto de admisión de cada proceso.</textarea>
+              </div>
+              <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-[1fr_140px]">
+                <div>
+                  <label for="faq-categoria" class="block text-sm font-medium text-text">Categoría</label>
+                  <input id="faq-categoria" type="text" value="Admisión" list="faq-categorias-existentes" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <datalist id="faq-categorias-existentes">
+                    <option value="Admisión"></option>
+                    <option value="Matrícula"></option>
+                    <option value="Trámites"></option>
+                    <option value="Bolsa de trabajo"></option>
+                  </datalist>
+                  <p class="mt-1.5 text-xs text-text-muted">Escribe una nueva o elige una existente — catálogo abierto.</p>
+                </div>
+                <div>
+                  <label for="faq-orden" class="block text-sm font-medium text-text">Orden</label>
+                  <input id="faq-orden" type="number" min="1" value="1" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <p class="mt-1.5 text-xs text-text-muted">Dentro de su categoría.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Publicación -->
+            <div class="admin-card p-5 sm:p-6">
+              <h3 class="font-heading text-base font-semibold text-text">Publicación</h3>
+              <div class="mt-4" data-status-group>
+                <span class="block text-sm font-medium text-text">Estado</span>
+                <div class="mt-2 inline-flex rounded-md border border-border p-1">
+                  <button type="button" data-status-option data-status-active-class="bg-primary text-onPrimary" class="rounded px-4 py-1.5 text-sm font-medium text-text-muted transition">Borrador</button>
+                  <button type="button" data-status-option data-status-active-class="bg-primary text-onPrimary" class="rounded bg-primary px-4 py-1.5 text-sm font-medium text-onPrimary transition">Publicado</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-3">
+              <a href="faq.html" class="rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-text transition hover:bg-surface-2">Cancelar</a>
+              <button type="submit" class="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <admin-toast></admin-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/admin-common.js"></script>
+    <script src="../../components/admin-sidebar.js"></script>
+    <script src="../../components/admin-topbar.js"></script>
+    <script src="../../components/admin-toast.js"></script>
+  </body>
+</html>

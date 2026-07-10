@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editar curso — Panel de Administración | DocenTrack (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+    />
+
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <admin-sidebar></admin-sidebar>
+
+    <div class="admin-canvas flex min-h-screen flex-col lg:pl-72">
+      <admin-topbar page-title="Cursos"></admin-topbar>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <div class="mx-auto max-w-3xl">
+          <a href="cursos.html" class="inline-flex items-center gap-1.5 text-sm font-medium text-text-muted transition hover:text-text">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" /></svg>
+            Volver a Cursos
+          </a>
+          <h2 class="mt-2 font-heading text-xl font-bold text-text">Editar curso</h2>
+
+          <form data-admin-form data-redirect="cursos.html" class="mt-6 space-y-6">
+            <div class="admin-card p-5 sm:p-6">
+              <h3 class="font-heading text-base font-semibold text-text">Información general</h3>
+              <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-[1fr_140px]">
+                <div>
+                  <label for="curso-nombre" class="block text-sm font-medium text-text">Nombre del curso</label>
+                  <input id="curso-nombre" type="text" value="Gestión de Operaciones I" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                </div>
+                <div>
+                  <label for="curso-codigo" class="block text-sm font-medium text-text">Código</label>
+                  <input id="curso-codigo" type="text" value="GOP-301" class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Temario: catálogo propio del curso, el kiosko lo usa como select -->
+            <div class="admin-card p-5 sm:p-6" data-list-manager>
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="font-heading text-base font-semibold text-text">Temario</h3>
+                  <p class="mt-1 text-sm text-text-muted">Estos temas aparecen como opciones en el kiosko al registrar la clase — nunca como texto libre.</p>
+                </div>
+                <button type="button" data-list-add class="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-sm font-medium text-text transition hover:bg-surface-2">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                  Agregar tema
+                </button>
+              </div>
+
+              <div data-list-items class="mt-4 space-y-2">
+                <div data-list-item class="flex items-center gap-2">
+                  <input type="text" value="Planeamiento agregado de la producción" class="h-10 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar tema" class="shrink-0 rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+                <div data-list-item class="flex items-center gap-2">
+                  <input type="text" value="Gestión de inventarios" class="h-10 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar tema" class="shrink-0 rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+                <div data-list-item class="flex items-center gap-2">
+                  <input type="text" value="Distribución de planta" class="h-10 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar tema" class="shrink-0 rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+              </div>
+
+              <template data-list-template>
+                <div data-list-item class="mt-2 flex items-center gap-2">
+                  <input type="text" placeholder="Nuevo tema" class="h-10 w-full rounded-md border border-border bg-bg px-3 text-sm text-text focus:border-primary focus:outline-none" />
+                  <button type="button" data-list-remove aria-label="Quitar tema" class="shrink-0 rounded-md p-2 text-text-muted transition hover:bg-danger-bg hover:text-danger">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+              </template>
+            </div>
+
+            <div class="admin-card p-5 sm:p-6">
+              <h3 class="font-heading text-base font-semibold text-text">Estado</h3>
+              <div class="mt-4" data-status-group>
+                <div class="inline-flex rounded-md border border-border p-1">
+                  <button type="button" data-status-option class="rounded bg-primary px-4 py-1.5 text-sm font-medium text-onPrimary transition">Activo</button>
+                  <button type="button" data-status-option data-status-active-class="bg-danger text-white" class="rounded px-4 py-1.5 text-sm font-medium text-text-muted transition">Inactivo</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-3">
+              <a href="cursos.html" class="rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-text transition hover:bg-surface-2">Cancelar</a>
+              <button type="submit" class="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-accent-dark">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <admin-toast></admin-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/admin-common.js"></script>
+    <script src="../../components/admin-sidebar.js"></script>
+    <script src="../../components/admin-topbar.js"></script>
+    <script src="../../components/admin-toast.js"></script>
+  </body>
+</html>

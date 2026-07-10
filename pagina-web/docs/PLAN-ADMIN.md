@@ -2015,39 +2015,133 @@ errores de consola, sin 404 dentro del alcance de la fase.
 (`academico.html`) funcionando de forma independiente, filtro de
 Posgrado, sin errores de consola, sin 404.
 
-## Fase 7 — Investigación
+## Fase 7 — Investigación ✅
 
-- [ ] 7.1 **Líneas de investigación** — listado + formulario.
-- [ ] 7.2 **Proyectos de investigación** — listado + formulario.
-- [ ] 7.3 **Publicaciones** — listado + formulario.
+- [x] 7.1 **Líneas de investigación** — `investigacion-lineas.html` +
+      `investigacion-lineas-form.html`. Catálogo pequeño (3 líneas reales,
+      tomadas de `pages/investigacion.html`): ícono emoji, nombre,
+      descripción, orden. Solo búsqueda, sin filtro de estado (no aplica).
+      El campo `icono` no estaba en `LineaInvestigacion` — se agregó como
+      nota nueva en MODELO-DATOS.md porque el listado público ya lo usa.
+- [x] 7.2 **Proyectos de investigación** — `investigacion-proyectos.html` +
+      `investigacion-proyectos-form.html`. Mismo patrón de vigencia
+      computada que `Autoridad`/`Comité`: sin campo `estado`, se calcula
+      "En curso" / "Concluido" según `fecha_fin`. Filtros por línea y por
+      estado. 3 proyectos reales con responsables reutilizados de Docentes
+      (Rosa Illanes, Carlos Huamán, Jorge Ttito).
+- [x] 7.3 **Publicaciones** — `investigacion-publicaciones.html` +
+      `investigacion-publicaciones-form.html`. El formulario usa
+      `data-condition-source`/`data-condition-show` (mismo patrón que
+      Comunicados) para alternar entre "Archivo PDF" (`data-upload`),
+      "Enlace externo" (input URL) y "Aún no disponible" — refleja que
+      `archivo_id` y `enlace_externo` son ambos opcionales y mutuamente
+      excluyentes en la práctica. 3 publicaciones reales: una con enlace,
+      una con PDF, una pendiente (sin archivo ni enlace, badge "Pendiente
+      de cargar").
+- Nota: "Docentes investigadores" (sección del sitio público) sigue sin
+  módulo admin propio — es una vista calculada a partir de
+  `responsable_id`/`autor_docente_id`, no hay nada que administrar ahí.
+- Verificado con Playwright: 6 páginas cargan, filtros (línea/estado en
+  Proyectos, tipo en Publicaciones), delete, y el campo condicional de
+  Publicaciones alternan correctamente. Cero errores de consola, cero 404.
 
-## Fase 8 — Servicios
+## Fase 8 — Servicios ✅
 
-- [ ] 8.1 **Documentos** — listado + formulario. Entidades: `Documento`,
-      `TipoDocumento`.
-- [ ] 8.2 **Bolsa de trabajo** — listado + formulario. Entidades:
-      `Oferta`, `Empresa`, `TipoOferta`.
-- [ ] 8.3 **Trámites** — listado + formulario. Entidad: `Tramite`.
-- [ ] 8.4 **Encuestas** — listado + formulario. Entidades: `Encuesta`,
-      `AudienciaEncuesta`.
-- [ ] 8.5 **Convenios** — listado + formulario. Entidades: `Convenio`,
-      `Institucion`, `TipoConvenio`.
+- [x] 8.1 **Documentos** — `documentos.html` + `documentos-form.html`.
+      Contenido real de `pages/documentos.html`: 6 filas, una por cada
+      `TipoDocumento` (Reglamentos, Sílabos, Planes y Mallas, Resoluciones,
+      Documentos de Gestión, Formatos de Trámite). El campo `semestre` usa
+      `data-condition-source`/`data-condition-show` para mostrarse solo
+      cuando el tipo es "Sílabos" o "Planes y Mallas Curriculares" (mismo
+      patrón que Comunicados), reflejando la nota del modelo de que
+      `semestre` "solo aplica a sílabos y planes".
+- [x] 8.2 **Bolsa de trabajo** — `bolsa-trabajo.html` +
+      `bolsa-trabajo-form.html`. Vigencia computada igual que
+      `Comunicado.fecha_vencimiento`: columna "Vigencia" con fecha +
+      badge "Vencida" si ya pasó, sin campo `estado` de vigencia propio
+      (el `estado` borrador/publicado es aparte, es el flujo editorial).
+      `Empresa` se modela como `<select>` con las 5 empresas reales del
+      sitio público + opción "Registrar nueva empresa…" (mockup: no
+      navega a un submódulo aparte, ver nota de doble catálogo abajo).
+- [x] 8.3 **Trámites** — `tramites.html` + `tramites-form.html`. Catálogo
+      chico (4 trámites), sin filtro de estado (no aplica — `Tramite` no
+      tiene ese campo). `requisitos` y `pasos` son textarea de líneas
+      simples (mismo patrón que `admision` en Posgrado);
+      `formato_documento_id` es un `<select>` opcional apuntando a
+      Documentos con tipo "Formatos de Trámite".
+- [x] 8.4 **Encuestas** — `encuestas.html` + `encuestas-form.html`. Mismo
+      patrón de vigencia computada que Bolsa de trabajo (badge "Cerrada").
+      "Seguimiento al egresado" no tiene módulo propio, como ya
+      documentaba el modelo: es esta misma tabla filtrada por
+      `audiencia_id = Egresados` (se explicita en el subtítulo del
+      listado para que quede claro en el panel, no solo en el código).
+- [x] 8.5 **Convenios** — `convenios.html` + `convenios-form.html`. Vigencia
+      computada con 3 estados (vigente / vencido / indefinida si no hay
+      `fecha_fin`), más el `estado` borrador/publicado propio del modelo.
+      `documento_id` es upload de PDF opcional (columna "Documento":
+      Cargado / Sin documento).
+- Nota (Empresa/Institucion como catálogos "ligeros"): igual que
+  `Empresa` en Bolsa de trabajo, `Institucion` en Convenios se resuelve
+  como `<select>` con las instituciones reales + "Registrar nueva…", no
+  como un submódulo CRUD aparte — mantiene el mockup enfocado en las
+  pantallas que la especificación pide ver, sin inventar gestión de
+  catálogos secundarios que no se pidieron explícitamente.
+- Verificado con Playwright: 10 páginas cargan, filtros (tipo/estado en
+  Documentos y Bolsa de trabajo, audiencia en Encuestas, tipo en
+  Convenios), búsqueda en Trámites, delete en Bolsa de trabajo y
+  Convenios, condicional de semestre en Documentos. Cero errores de
+  consola, cero 404.
 
-## Fase 9 — Vida Estudiantil
+## Fase 9 — Vida Estudiantil ✅
 
-- [ ] 9.1 **Grupos estudiantiles** — listado + formulario. Entidad:
-      `GrupoEstudiantil`.
-- [ ] 9.2 **Estudiantes destacados** — listado + formulario. Entidad:
-      `EstudianteDestacado`.
+- [x] 9.1 **Grupos estudiantiles** — `grupos-estudiantiles.html` +
+      `grupos-estudiantiles-form.html`. Catálogo chico (4 grupos reales de
+      `pages/estudiantes.html`, incluye el Centro Federado). Sin filtro de
+      estado — `GrupoEstudiantil` no tiene ese campo. `logo_id` es upload
+      de imagen opcional (placeholder de iniciales si no se sube nada,
+      igual que en el sitio público).
+- [x] 9.2 **Estudiantes destacados** — `estudiantes-destacados.html` +
+      `estudiantes-destacados-form.html`. 4 destacados reales (3 personas
+      + 1 equipo — el campo `nombre` es texto libre, admite ambos casos
+      tal como ya lo hacía el sitio público con "Equipo de Finanzas
+      UNAMBA"). `foto_id` es upload de imagen obligatorio (sin
+      placeholder "sin foto": siempre parte con una imagen precargada).
+- Verificado con Playwright: 4 páginas cargan, búsqueda en ambos listados,
+  delete en Grupos, estado inicial correcto del placeholder de logo
+  (oculto) en el formulario de Grupos. Cero errores de consola, cero 404.
 
-## Fase 10 — Comunicación
+## Fase 10 — Comunicación ✅
 
-- [ ] 10.1 **Mensajes recibidos** — listado (buzón). Entidad:
-       `MensajeContacto`.
-- [ ] 10.2 **FAQ** — *(requiere anotar entidad nueva: pregunta, respuesta,
-       categoría)*.
-- [ ] 10.3 **Enlaces de interés** — *(requiere anotar entidad nueva: logos
-       externos de Inicio)*.
+- [x] 10.1 **Mensajes recibidos** — `mensajes.html`, sin variante `-form`:
+      es un buzón de solo lectura, no algo que se "crea" desde el panel.
+      Sin botón "Nuevo". Ver mensaje abre un modal page-specific (inline,
+      mismo criterio que el organigrama de `autoridades.html` — un solo
+      uso, no amerita componente aparte) con el mensaje completo, botones
+      de estado (Nuevo/Leído/Respondido) que actualizan la fila y su badge
+      en vivo, y "Responder por correo" (`mailto:` con asunto
+      "Re: ..." precompletado).
+- [x] 10.2 **FAQ** — `faq.html` + `faq-form.html`. Entidad nueva `FaqItem`
+      (pregunta, respuesta, categoria, orden, estado) documentada en
+      MODELO-DATOS.md. No existe todavía `/faq.html` público — se sembró
+      con contenido de ejemplo (Admisión, Matrícula, Trámites, Bolsa de
+      trabajo) marcado explícitamente como tal en el subtítulo del
+      listado, mismo criterio que Investigación. `categoria` es texto
+      libre con `<datalist>` (catálogo abierto, como `Cargo` en
+      Autoridades).
+- [x] 10.3 **Enlaces de interés** — `enlaces-interes.html` +
+      `enlaces-interes-form.html`. Entidad nueva `EnlaceInteres` (nombre,
+      logo_id, url, orden) documentada en MODELO-DATOS.md, formalizando
+      los 4 placeholders que ya existían en `index.html` (SUNEDU, MINEDU,
+      CONCYTEC, RENIEC). El campo `url` se dejó vacío a propósito — no se
+      inventó la URL oficial exacta de cada organismo para no arriesgar
+      un enlace incorrecto; queda como placeholder hasta que la facultad
+      confirme los enlaces reales.
+- Verificado con Playwright: 5 páginas cargan, filtro de estado en
+  Mensajes, el modal abre/cierra (click, botón, Escape), cambiar el
+  estado dentro del modal actualiza la fila y dispara un toast, el
+  `mailto:` se arma con el asunto correcto, filtro de categoría y delete
+  en FAQ, búsqueda en Enlaces de interés. Cero errores de consola, cero
+  404.
 
 ## Fase 11 — Configuración
 
