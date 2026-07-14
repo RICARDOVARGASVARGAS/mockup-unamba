@@ -6,6 +6,13 @@
  * dentro de un contenedor con [data-row] (la fila que se elimina).
  * Sin backend: el cambio es solo en el DOM, se resetea al recargar.
  *
+ * El fondo del modal usa `bg-black/50`, NUNCA `bg-gray-900/50`: nuestro
+ * `gray-900` apunta a una variable CSS (`var(--gray-900)`), y Tailwind
+ * no puede calcular el modificador de opacidad (`/50`) sobre un color
+ * que es una referencia a variable — el fondo queda sin oscurecer.
+ * `black` es un color fijo de Tailwind, sí soporta opacidad. Mismo
+ * criterio en cualquier backdrop nuevo (ver app-sidebar.js).
+ *
  * Reutilizable en cualquier pantalla de catálogo/CRUD — no eliminar
  * directo sin confirmar en ninguna pantalla nueva que se agregue.
  */
@@ -18,7 +25,7 @@
   class AppModalConfirm extends HTMLElement {
     connectedCallback() {
       this.innerHTML = `
-        <div data-backdrop class="fixed inset-0 z-50 hidden items-center justify-center bg-gray-900/50 p-4">
+        <div data-backdrop class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
           <div data-panel role="alertdialog" aria-modal="true" aria-labelledby="modal-confirm-title" class="w-full max-w-sm rounded-lg bg-surface p-6 shadow-lg">
             <span class="flex h-11 w-11 items-center justify-center rounded-full bg-danger-bg text-danger">
               <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">${ICONS.warning}</svg>

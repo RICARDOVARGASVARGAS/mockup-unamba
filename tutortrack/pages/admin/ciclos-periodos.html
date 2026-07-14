@@ -30,41 +30,9 @@
       ></app-topbar>
 
       <main class="flex-1 space-y-6 p-4 sm:p-6 lg:p-8">
-        <!-- Sección Ciclos -->
+        <!-- Sección Periodos académicos (contenedor general, va primero) -->
         <section class="app-card">
           <div class="app-toolbar rounded-t-xl">
-            <div class="flex-1">
-              <h2 class="font-heading text-sm font-semibold text-text">Ciclos</h2>
-              <p class="text-xs text-text-muted">Niveles curriculares (catálogo abierto, no limitado a 10)</p>
-            </div>
-            <button
-              type="button"
-              data-open-ciclo-modal
-              class="inline-flex h-9 items-center gap-1.5 rounded-md bg-primary px-3 text-sm font-semibold text-onPrimary transition hover:bg-primary-dark"
-            >
-              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-              Nuevo ciclo
-            </button>
-          </div>
-          <div class="overflow-x-auto">
-            <table data-app-table class="w-full text-left text-sm">
-              <thead>
-                <tr class="border-b border-border text-xs uppercase tracking-wide text-text-muted">
-                  <th class="px-4 py-3 font-medium">N°</th>
-                  <th class="px-4 py-3 font-medium">Nombre</th>
-                  <th class="px-4 py-3 font-medium text-right">Acciones</th>
-                </tr>
-              </thead>
-              <tbody data-ciclos-body class="divide-y divide-border">
-                <!-- Filas generadas por js/ciclos-periodos.js -->
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <!-- Sección Periodos académicos -->
-        <section class="app-card">
-          <div class="app-toolbar">
             <div class="flex-1">
               <h2 class="font-heading text-sm font-semibold text-text">Periodos académicos</h2>
               <p class="text-xs text-text-muted">Solo un periodo puede estar vigente a la vez</p>
@@ -95,11 +63,43 @@
             </table>
           </div>
         </section>
+
+        <!-- Sección Ciclos (nivel curricular, va después del periodo) -->
+        <section class="app-card">
+          <div class="app-toolbar rounded-t-xl">
+            <div class="flex-1">
+              <h2 class="font-heading text-sm font-semibold text-text">Ciclos</h2>
+              <p class="text-xs text-text-muted">Niveles curriculares (catálogo abierto, no limitado a 10)</p>
+            </div>
+            <button
+              type="button"
+              data-open-ciclo-modal
+              class="inline-flex h-9 items-center gap-1.5 rounded-md bg-primary px-3 text-sm font-semibold text-onPrimary transition hover:bg-primary-dark"
+            >
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+              Nuevo ciclo
+            </button>
+          </div>
+          <div class="overflow-x-auto">
+            <table data-app-table class="w-full text-left text-sm">
+              <thead>
+                <tr class="border-b border-border text-xs uppercase tracking-wide text-text-muted">
+                  <th class="px-4 py-3 font-medium">N°</th>
+                  <th class="px-4 py-3 font-medium">Nombre</th>
+                  <th class="px-4 py-3 font-medium text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody data-ciclos-body class="divide-y divide-border">
+                <!-- Filas generadas por js/ciclos-periodos.js -->
+              </tbody>
+            </table>
+          </div>
+        </section>
       </main>
     </div>
 
     <!-- Modal: Nuevo/Editar Ciclo -->
-    <div data-ciclo-modal-backdrop class="fixed inset-0 z-50 hidden items-center justify-center bg-gray-900/50 p-4">
+    <div data-ciclo-modal-backdrop class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
       <div class="w-full max-w-sm rounded-lg bg-surface p-6 shadow-lg">
         <h2 data-ciclo-modal-title class="font-heading text-lg font-semibold text-text">Nuevo ciclo</h2>
         <form data-ciclo-form class="mt-4 space-y-4" novalidate>
@@ -133,7 +133,7 @@
     </div>
 
     <!-- Modal: Nuevo/Editar Periodo académico -->
-    <div data-periodo-modal-backdrop class="fixed inset-0 z-50 hidden items-center justify-center bg-gray-900/50 p-4">
+    <div data-periodo-modal-backdrop class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
       <div class="w-full max-w-sm rounded-lg bg-surface p-6 shadow-lg">
         <h2 data-periodo-modal-title class="font-heading text-lg font-semibold text-text">Nuevo periodo académico</h2>
         <form data-periodo-form class="mt-4 space-y-4" novalidate>

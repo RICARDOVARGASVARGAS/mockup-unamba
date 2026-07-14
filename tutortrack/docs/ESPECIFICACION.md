@@ -47,17 +47,17 @@ distintas en el modelo (ver `MODELO-DATOS.md` § Convención de nombres:
 `Ciclo` y `PeriodoAcademico` NO se fusionan como entidad, solo
 comparten pantalla por ser ambos catálogos triviales de `id`+`nombre`).
 
-**Sección Ciclos**
-- **Objetivo**: administrar el catálogo de niveles curriculares (1° al 10°, editable).
-- **Entidades**: `Ciclo`.
-- **Elementos clave**: listado ordenado por `numero`; alta/edición de `numero` + `nombre` (modal); sin límite fijo de 10 (el catálogo debe poder crecer, ej. 11°/12° en 2028).
-- **Reglas**: `numero` único; no permitir eliminar un `Ciclo` referenciado por algún `CicloPeriodo`.
-
-**Sección Periodos académicos**
+**Sección Periodos académicos** (va primera — es el contenedor general del que depende todo lo demás)
 - **Objetivo**: administrar los periodos (2026-I, 2026-II...) y marcar cuál está vigente.
 - **Entidades**: `PeriodoAcademico`.
 - **Elementos clave**: listado; alta/edición de `nombre`, `fecha_inicio`, `fecha_fin` (modal); marcar `activo` (un solo periodo vigente a la vez — al activar uno se desactiva el anterior automáticamente).
 - **Reglas**: al crear un periodo nuevo, ofrecer el flujo de "copiar configuración del periodo anterior" (ver Fase 3, `admin/ciclo-periodo.html`) — este catálogo es el punto de entrada de ese flujo.
+
+**Sección Ciclos** (va después)
+- **Objetivo**: administrar el catálogo de niveles curriculares (1° al 10°, editable).
+- **Entidades**: `Ciclo`.
+- **Elementos clave**: listado ordenado por `numero`; alta/edición de `numero` + `nombre` (modal); sin límite fijo de 10 (el catálogo debe poder crecer, ej. 11°/12° en 2028).
+- **Reglas**: `numero` único; no permitir eliminar un `Ciclo` referenciado por algún `CicloPeriodo`.
 
 ### `admin/areas.html` — Áreas
 - **Objetivo**: catálogo temático de preguntas (ej. "Personal y social", "Salud corporal y mental").

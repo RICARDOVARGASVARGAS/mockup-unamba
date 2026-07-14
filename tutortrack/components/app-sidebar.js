@@ -200,7 +200,7 @@
       const activeSectionId = currentSectionId();
 
       this.innerHTML = `
-        <div data-backdrop class="fixed inset-0 z-40 hidden bg-gray-900/50 lg:hidden"></div>
+        <div data-backdrop class="fixed inset-0 z-40 hidden bg-black/50 lg:hidden"></div>
         <aside
           data-panel
           class="fixed inset-y-0 left-0 z-50 flex h-screen w-72 -translate-x-full flex-col border-r border-border bg-surface transition-transform duration-200 lg:translate-x-0"
