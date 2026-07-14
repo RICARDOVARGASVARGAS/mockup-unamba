@@ -1,13 +1,31 @@
 # CLAUDE.md — TutorTrack (Módulo de Tutoría)
 
 ## Rol
-Actúas como diseñador/desarrollador UI/UX senior (HTML, CSS/Tailwind,
-JavaScript) y, de forma complementaria, analista de bases de datos:
-mientras maquetas cada pantalla también identificas qué entidades,
-atributos y reglas necesitará el backend real (ver
-`docs/MODELO-DATOS.md`, cuando se cree). Cuando una decisión tenga
-alternativas, eliges la más usable y mantenible, y explicas brevemente
-por qué.
+Actúas como **diseñador UI/UX senior** y **desarrollador front-end
+senior / arquitecto de front-end** (HTML, CSS/Tailwind, JavaScript), y
+de forma complementaria, analista de datos: cada pantalla que maquetas
+debe ser consistente con lo ya definido en `docs/MODELO-DATOS.md` —
+si una pantalla necesita un dato o relación que el modelo no
+contempla, lo señalas antes de inventarlo. En la práctica:
+- Priorizas jerarquía visual clara y componentes reutilizables por
+  encima de resolver cada pantalla "a mano" — un módulo nuevo se arma
+  copiando un patrón existente, no reinventando estructura.
+- Escribes **código limpio y mantenible**: HTML semántico, separación
+  clara entre estructura (HTML), estilos/tokens (CSS) y comportamiento
+  (JS); nombres consistentes; sin duplicar el mismo bloque en varias
+  pantallas (partials + inyección, igual que el resto del workspace).
+- Diseñas pensando en **arquitectura**, no solo en la pantalla puntual:
+  cómo crece la carpeta de `/pages` y `/components` a medida que se
+  agregan más módulos, sin que el proyecto se vuelva difícil de
+  mantener.
+- Cuidas accesibilidad (contraste, foco visible, navegación por
+  teclado) y consistencia entre pantallas (mismos componentes, mismo
+  estilo) en todo momento, no solo donde se note a simple vista.
+- El panel administrativo/docente/entidad-receptora se diseña para
+  escritorio y tablet (uso de oficina); las pantallas orientadas al
+  estudiante deben responder bien también en móvil.
+Cuando una decisión tenga alternativas, eliges la más usable y
+mantenible, y explicas brevemente por qué.
 
 ## Qué es este proyecto
 Mockup visual (HTML + Tailwind + JS) de **TutorTrack**, sistema para
@@ -40,26 +58,34 @@ la malla curricular / forma en que se dictan las clases — impacto en
 este módulo aún **por definir** (posible relación con qué
 docente-tutor corresponde a qué estudiante por ciclo/carrera).
 
-## Alcance — a definir en partes siguientes
-Esto se irá completando por partes en la conversación. Pendiente de
-precisar:
-- Roles de acceso (docente-tutor, estudiante-tutorado, coordinador de
-  tutoría, psicología/entidad receptora, admin) y qué ve/hace cada uno.
-- Estructura y contenido exacto del formulario (preguntas, frecuencia
-  de llenado, quién lo dispara).
-- Cómo se detecta/marca una "señal de alerta" (¿lectura manual del
-  docente, reglas automáticas sobre respuestas, ambas?).
-- Flujo de derivación: a qué entidades se deriva, qué información viaja,
-  quién hace seguimiento del caso derivado.
-- Relación entre docente-tutor y tutorados (cómo se asignan, si cambia
-  por periodo académico).
-- Relación con la actualización de malla curricular (si aplica a este
-  módulo o es un proyecto aparte).
-- Identidad visual (paleta propia, distinta de `pagina-web/` y
-  `docentrack/`) — propuesta inicial: violeta como color primario,
-  a falta de mejor definición.
-- Stack — se asume el mismo patrón del workspace (HTML + Tailwind +
-  JS, sin backend) salvo que el usuario indique algo distinto.
+## Modelo de datos y alcance — YA CERRADOS
+
+El modelo de datos completo (entidades, relaciones, reglas de
+negocio) está documentado en **`docs/MODELO-DATOS.md`** — léelo antes
+de maquetar cualquier pantalla, ahí está resuelto:
+- Roles de acceso (docente-tutor, estudiante, entidad receptora
+  como psicología/salud — con su propio acceso al sistema —,
+  admin/coordinador) vía RBAC (`Usuario`/`Rol`/`Permiso`).
+- Ciclo académico + Periodo académico + matrícula por periodo
+  (`EstudianteCicloPeriodo`), con mecanismo de "avanzar estudiantes"
+  y de "copiar" configuración entre periodos.
+- Fichas de tutoría configurables (plantilla → clonado por
+  ciclo+periodo), con preguntas de texto abierto / alternativa única /
+  respuesta múltiple.
+- Detección de señales de alerta con IA (plan de dos fases: piloto
+  local, luego GPU dedicada) y flujo de derivación con seguimiento
+  completo (`Derivacion` + `EstadoDerivacion`).
+
+Solo queda pendiente **contenido** de catálogos (qué roles exactos, qué
+preguntas exactas, etc. — ver la sección final de `MODELO-DATOS.md`),
+no estructura. La malla curricular (`Ciclo` como catálogo abierto, no
+fijo en 10) ya quedó resuelta como catálogo editable.
+
+Identidad visual: paleta violeta como color primario (ya en uso en la
+tarjeta de `../index.html`), propia de este proyecto — sin compartir
+tokens con `pagina-web/` ni `docentrack/`.
+
+Stack: mismo patrón del workspace (HTML + Tailwind + JS, sin backend).
 
 ## Modo claro/oscuro (obligatorio, en todo)
 Mismo mecanismo que el resto del workspace (variables CSS, botón
@@ -75,10 +101,23 @@ localStorage).
 
 ## Convenciones de código
 - Archivos en minúscula con guiones.
-- Mismo patrón de inyección de componentes que el resto del workspace
-  (`getBasePath()`, partials en `/components`, sin duplicar HTML).
+- Mismo patrón de inyección de componentes que el resto del workspace:
+  **Web Components nativos (Custom Elements)**, no partials fetched por
+  JS. Un componente es un archivo `.js` en `/components` que define
+  `customElements.define(...)` y construye su propio `innerHTML` en
+  `connectedCallback()`; la página solo escribe la etiqueta
+  (`<app-sidebar></app-sidebar>`, `<app-topbar page-title="...">`).
+  Funciona igual en `file://` que con servidor — sin fetch, sin CORS.
+- `getBasePath()` (`js/site-paths.js`) resuelve el prefijo relativo
+  según la profundidad de la página (`""` en la raíz, `"../../"` bajo
+  `/pages/<sección>/`) para que los mismos enlaces funcionen sin
+  servidor. Todo enlace entre secciones usa este prefijo, nunca rutas
+  absolutas (`/pages/...` rompe en `file://`).
 - Colores solo vía variables CSS de este proyecto — nunca hardcodeados,
   nunca reutilizando los de `pagina-web/` o `docentrack/`.
+- Los `custom elements` son `inline` por defecto: `base.css` los fuerza
+  a `display:block` (`app-sidebar`, `app-topbar`) — si se agrega un
+  componente nuevo, sumarlo ahí también.
 
 ## Qué NO hacer
 - No implementar backend, base de datos ni lógica de servidor real
@@ -93,17 +132,41 @@ localStorage).
   contenido del formulario) sin antes confirmarlo con el usuario — este
   documento se irá completando por partes.
 
-## Estructura del repo (propuesta inicial, ajustar al crecer)
-- `/docs/ESPECIFICACION.md` → pantallas y módulos — por crear
-- `/docs/MODELO-DATOS.md` → entidades/atributos para el futuro backend — por crear
-- `/components` → header/sidebar, tarjetas, formularios reutilizables
-- `/pages` → pantallas del mockup
-- `/assets`
-- `/css` → `tokens.css` (paleta propia), `base.css`
-- `/js` → tema, inyección de componentes
-- `index.html` → punto de entrada
+## Estructura del repo (real, ajustar al crecer)
+- `/docs/ESPECIFICACION.md` → pantallas y módulos — por completar
+- `/docs/MODELO-DATOS.md` → entidades/atributos del futuro backend — cerrado
+- `/components` → `app-sidebar.js`, `app-topbar.js` (Custom Elements,
+  ver "Convenciones de código")
+- `/pages/admin/`, `/pages/docente/`, `/pages/estudiante/`,
+  `/pages/receptor/` → una carpeta por sección/rol, misma profundidad
+  (2 niveles bajo la raíz) para que `getBasePath()` funcione igual en
+  todas
+- `/css` → `tokens.css` (paleta violeta + ámbar), `base.css`
+- `/js` → `theme.js`, `site-paths.js`, `tailwind-config.js`, `login.js`
+- `index.html` → login (punto de entrada único, sin selector de rol)
 
 ## Estado actual
-Proyecto recién creado. Aún no hay pantallas ni especificación —
-esperando que el usuario detalle el alcance por partes (ver sección
-"Alcance — a definir en partes siguientes").
+- ~~Modelo de datos~~ — cerrado en `docs/MODELO-DATOS.md`.
+- ~~Fase 0 — Compartido~~ — hecho: login único (permisos, no roles
+  hardcodeados; recuperar contraseña solo visual), `app-sidebar`
+  (4 secciones — Administrador / Docente-Tutor / Estudiante /
+  Receptor-Psicología — todas visibles a la vez para la demo, con
+  catálogos del admin agrupados en sub-secciones colapsables),
+  `app-topbar` (perfil, carrera fija "Administración", ciclo actual
+  solo en Estudiante, notificaciones), 100% responsive (drawer
+  off-canvas en móvil/tablet para las 4 secciones), un dashboard de
+  ejemplo por sección. Probado en navegador: login → dashboard,
+  navegación entre las 4 secciones, modo oscuro.
+- Pendiente: inventario de pantallas en `docs/ESPECIFICACION.md`.
+- Próximas fases (pantallas reales, siguiendo `app-sidebar.js` como
+  fuente de verdad de la navegación):
+  2. Catálogos independientes (Ciclo, Periodo Académico, Area,
+     TipoFicha, TipoPregunta, EntidadReceptora,
+     TipoEstadoDerivacion, Rol/Permiso).
+  3. Docente y Estudiante (cuelgan de Usuario).
+  4. Configuración por periodo (CicloPeriodo, DocenteCicloPeriodo,
+     Temario, EstudianteCicloPeriodo + "Avanzar estudiantes").
+  5. Fichas (plantilla, preguntas, clonado por CicloPeriodo, y la
+     vista de estudiante llenando una ficha).
+  6. IA / Alertas / Derivación (AlertaIA, Derivacion,
+     EstadoDerivacion).

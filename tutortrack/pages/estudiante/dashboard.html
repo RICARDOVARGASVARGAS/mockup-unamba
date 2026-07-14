@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inicio Estudiante | TutorTrack (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+    />
+
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <app-sidebar></app-sidebar>
+
+    <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
+      <app-topbar
+        page-title="Inicio"
+        user-name="Ana Torres Rojas"
+        user-role="Estudiante"
+        user-initials="AT"
+        user-ciclo="5"
+      ></app-topbar>
+
+      <main class="flex-1 space-y-6 p-4 sm:p-6 lg:p-8">
+        <!-- Llamado a la acción: ficha pendiente -->
+        <section class="app-card flex flex-col gap-4 border-l-4 border-l-accent p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <span class="badge badge-warning">Pendiente</span>
+            <h2 class="mt-2 font-heading text-lg font-semibold text-text">Tienes una ficha de seguimiento por llenar</h2>
+            <p class="mt-1 text-sm text-text-muted">Semana 9 · Te toma unos minutos, tus respuestas son confidenciales.</p>
+          </div>
+          <a href="fichas.html" class="inline-flex h-11 shrink-0 items-center justify-center rounded-md bg-accent px-5 text-sm font-semibold text-white transition hover:bg-accent-dark">
+            Llenar ahora
+          </a>
+        </section>
+
+        <section class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <div class="app-card p-5">
+            <h2 class="font-heading text-base font-semibold text-text">Mi tutor asignado</h2>
+            <div class="mt-4 flex items-center gap-3">
+              <span class="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-base font-semibold text-onPrimary">CQ</span>
+              <div>
+                <p class="text-sm font-medium text-text">Carlos Quispe Mamani</p>
+                <p class="text-sm text-text-muted">Docente-Tutor · Ciclo 5°</p>
+              </div>
+            </div>
+            <a href="tutor.html" class="mt-4 inline-block text-sm font-medium text-primary hover:text-primary-dark">Ver detalle →</a>
+          </div>
+
+          <div class="app-card p-5">
+            <h2 class="font-heading text-base font-semibold text-text">Historial de fichas</h2>
+            <ul class="mt-4 divide-y divide-border">
+              <li class="flex items-start justify-between gap-3 py-3 first:pt-0 last:pb-0">
+                <p class="text-sm text-text">Ficha de seguimiento — semana 8</p>
+                <span class="badge badge-success shrink-0">Enviada</span>
+              </li>
+              <li class="flex items-start justify-between gap-3 py-3 first:pt-0 last:pb-0">
+                <p class="text-sm text-text">Ficha grupal — bienestar universitario</p>
+                <span class="badge badge-success shrink-0">Enviada</span>
+              </li>
+              <li class="flex items-start justify-between gap-3 py-3 first:pt-0 last:pb-0">
+                <p class="text-sm text-text">Ficha de diagnóstico</p>
+                <span class="badge badge-success shrink-0">Enviada</span>
+              </li>
+            </ul>
+            <a href="fichas.html" class="mt-4 inline-block text-sm font-medium text-primary hover:text-primary-dark">Ver todas →</a>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/site-paths.js"></script>
+    <script src="../../components/app-sidebar.js"></script>
+    <script src="../../components/app-topbar.js"></script>
+  </body>
+</html>

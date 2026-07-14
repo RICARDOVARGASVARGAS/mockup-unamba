@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Receptor | TutorTrack (Mockup)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+    />
+
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <app-sidebar></app-sidebar>
+
+    <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
+      <app-topbar
+        page-title="Dashboard"
+        user-name="Lic. Marisol Vega"
+        user-role="Psicóloga"
+        user-initials="MV"
+      ></app-topbar>
+
+      <main class="flex-1 space-y-8 p-4 sm:p-6 lg:p-8">
+        <section aria-label="Resumen">
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div class="app-card p-5">
+              <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-danger-bg text-danger">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0 3.75h.008M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+              </span>
+              <p class="mt-4 font-heading text-2xl font-bold text-text">5</p>
+              <p class="text-sm text-text-muted">Casos nuevos derivados</p>
+              <p class="mt-1 text-xs text-text-muted">Sin primer contacto aún</p>
+            </div>
+
+            <div class="app-card p-5">
+              <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-warning-bg text-warning">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+              </span>
+              <p class="mt-4 font-heading text-2xl font-bold text-text">9</p>
+              <p class="text-sm text-text-muted">Casos en seguimiento</p>
+              <p class="mt-1 text-xs text-text-muted">En proceso</p>
+            </div>
+
+            <div class="app-card p-5">
+              <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-success-bg text-success">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+              </span>
+              <p class="mt-4 font-heading text-2xl font-bold text-text">21</p>
+              <p class="text-sm text-text-muted">Casos resueltos</p>
+              <p class="mt-1 text-xs text-text-muted">Este periodo académico</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="app-card p-5">
+          <div class="flex items-center justify-between">
+            <h2 class="font-heading text-base font-semibold text-text">Casos derivados pendientes</h2>
+            <a href="casos.html" class="text-sm font-medium text-primary hover:text-primary-dark">Ver todos</a>
+          </div>
+          <ul class="mt-4 divide-y divide-border">
+            <li class="flex items-start justify-between gap-3 py-3 first:pt-0 last:pb-0">
+              <div>
+                <p class="text-sm font-medium text-text">Caso derivado por Carlos Quispe Mamani</p>
+                <p class="text-sm text-text-muted">Área: Personal y social · derivado hace 2 días</p>
+              </div>
+              <span class="badge badge-danger shrink-0">Nuevo</span>
+            </li>
+            <li class="flex items-start justify-between gap-3 py-3 first:pt-0 last:pb-0">
+              <div>
+                <p class="text-sm font-medium text-text">Caso derivado por Ana Salas Chura</p>
+                <p class="text-sm text-text-muted">Área: Salud corporal y mental · en seguimiento</p>
+              </div>
+              <span class="badge badge-warning shrink-0">En atención</span>
+            </li>
+          </ul>
+        </section>
+      </main>
+    </div>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/site-paths.js"></script>
+    <script src="../../components/app-sidebar.js"></script>
+    <script src="../../components/app-topbar.js"></script>
+  </body>
+</html>
