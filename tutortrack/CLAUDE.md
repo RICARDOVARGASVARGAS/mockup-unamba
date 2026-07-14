@@ -157,12 +157,23 @@ localStorage).
   off-canvas en móvil/tablet para las 4 secciones), un dashboard de
   ejemplo por sección. Probado en navegador: login → dashboard,
   navegación entre las 4 secciones, modo oscuro.
-- Pendiente: inventario de pantallas en `docs/ESPECIFICACION.md`.
+- ~~Especificación~~ — inventario completo de pantallas cerrado en
+  `docs/ESPECIFICACION.md` (todas las fases, objetivo/entidades/reglas
+  por pantalla) antes de seguir diseñando.
+- **Fase 1 — en curso.** Primera pantalla real:
+  `pages/admin/ciclos-periodos.html` (Ciclos + Periodos Académicos en
+  una sola pantalla — dos tablas, catálogos triviales, ver
+  `ESPECIFICACION.md`). Trae dos componentes nuevos y reutilizables
+  para **todos** los catálogos que faltan: `app-toast.js` (notificación
+  flotante) y `app-modal-confirm.js` (confirmación de eliminación
+  genérica, via `data-delete-trigger`/`data-row`). Probado en
+  navegador: alta, edición, eliminación (con confirmación) y "marcar
+  periodo vigente" (desactiva automáticamente el anterior) — todo
+  funcional en el DOM, sin backend.
 - Próximas fases (pantallas reales, siguiendo `app-sidebar.js` como
   fuente de verdad de la navegación):
-  2. Catálogos independientes (Ciclo, Periodo Académico, Area,
-     TipoFicha, TipoPregunta, EntidadReceptora,
-     TipoEstadoDerivacion, Rol/Permiso).
+  1. Resto de catálogos independientes (Area, TipoFicha, TipoPregunta,
+     EntidadReceptora, TipoEstadoDerivacion, Rol/Permiso).
   3. Docente y Estudiante (cuelgan de Usuario).
   4. Configuración por periodo (CicloPeriodo, DocenteCicloPeriodo,
      Temario, EstudianteCicloPeriodo + "Avanzar estudiantes").

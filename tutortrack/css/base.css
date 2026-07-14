@@ -23,6 +23,8 @@ body {
 /* Custom elements son inline por defecto: sin esto no ocupan el ancho completo */
 app-sidebar,
 app-topbar,
+app-toast,
+app-modal-confirm,
 main {
   display: block;
   width: 100%;

@@ -30,8 +30,7 @@
         {
           label: "Catálogos",
           items: [
-            { label: "Ciclos", path: "admin/ciclos.html" },
-            { label: "Periodos académicos", path: "admin/periodos-academicos.html" },
+            { label: "Ciclos y periodos académicos", path: "admin/ciclos-periodos.html" },
             { label: "Áreas", path: "admin/areas.html" },
             { label: "Tipos de ficha", path: "admin/tipos-ficha.html" },
             { label: "Tipos de pregunta", path: "admin/tipos-pregunta.html" },
