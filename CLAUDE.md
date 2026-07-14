@@ -12,6 +12,7 @@ rol, stack, arquitectura y reglas de diseño.
 |---------|----------|----------------|
 | `pagina-web/` | Mockup de la web institucional de la Facultad de Administración UNAMBA | `pagina-web/CLAUDE.md` |
 | `docentrack/` | DocenTrack — sistema de registro de horas lectivas docentes (kiosko biométrico + panel admin) | `docentrack/CLAUDE.md` |
+| `tutortrack/` | TutorTrack — módulo de tutoría (acompañamiento personal docente-tutor/estudiante, formularios, derivación a psicología/áreas médicas) | `tutortrack/CLAUDE.md` |
 
 ## Regla clave
 
