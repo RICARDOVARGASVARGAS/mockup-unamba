@@ -8,6 +8,7 @@ HTML + Tailwind CDN + JS mínimo. Sin backend.
 | Archivo | Para qué consultarlo |
 |---------|----------------------|
 | `CLAUDE.md` | Guía completa del proyecto (rol, arquitectura, reglas) |
+| `docs/AGENTE-ROL.md` | Mandato del agente (UI/UX + front + dominio) |
 | `docs/ESPECIFICACION.md` | Qué páginas y secciones existen, menú, alcance mockup |
 | `docs/PALETA.md` | Tokens de diseño: colores, tipografía, espaciado, breakpoints |
 

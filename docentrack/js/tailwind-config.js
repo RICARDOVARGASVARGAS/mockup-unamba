@@ -20,8 +20,10 @@ tailwind.config = {
         accent: {
           DEFAULT: "var(--color-accent)",
           dark: "var(--color-accent-dark)",
+          soft: "var(--color-accent-soft)",
         },
         onPrimary: "var(--color-on-primary)",
+        onAccent: "var(--color-on-accent)",
         bg: "var(--color-bg)",
         surface: {
           DEFAULT: "var(--color-surface)",
@@ -32,6 +34,16 @@ tailwind.config = {
           muted: "var(--color-text-muted)",
         },
         border: "var(--color-border)",
+        "border-strong": "var(--color-border-strong)",
+        sidebar: {
+          DEFAULT: "var(--sidebar-bg)",
+          hover: "var(--sidebar-bg-hover)",
+          border: "var(--sidebar-border)",
+          text: "var(--sidebar-text)",
+          muted: "var(--sidebar-text-muted)",
+          active: "var(--sidebar-active-bg)",
+          activeText: "var(--sidebar-active-text)",
+        },
         success: { DEFAULT: "var(--color-success)", bg: "var(--color-success-bg)" },
         danger: { DEFAULT: "var(--color-danger)", bg: "var(--color-danger-bg)" },
         warning: { DEFAULT: "var(--color-warning)", bg: "var(--color-warning-bg)" },

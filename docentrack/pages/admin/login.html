@@ -1,15 +1,16 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Iniciar sesión — Panel de Administración | DocenTrack (Mockup)</title>
+    <link rel="icon" href="../../assets/img/facultad/logo_universidad.ico" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap"
     />
 
     <link rel="stylesheet" href="../../css/tokens.css" />
@@ -20,30 +21,36 @@
   </head>
   <body class="w-full bg-bg text-text font-body antialiased">
     <main class="grid min-h-screen w-full lg:grid-cols-2">
-      <!-- Panel de marca -->
-      <section class="relative flex flex-col justify-between overflow-hidden bg-primary px-6 py-10 text-onPrimary sm:px-10 lg:px-14 lg:py-14">
-        <div aria-hidden="true" class="pointer-events-none absolute inset-0 overflow-hidden">
-          <div class="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-accent/20 blur-3xl"></div>
-          <div class="absolute -bottom-32 -left-16 h-80 w-80 rounded-full bg-onPrimary/10 blur-3xl"></div>
-        </div>
+      <!-- Panel de marca — navy + acento geométrico naranja -->
+      <section class="relative flex flex-col justify-between overflow-hidden bg-sidebar px-6 py-10 text-sidebar-text sm:px-10 lg:px-14 lg:py-14">
+        <div class="brand-geo" aria-hidden="true"></div>
 
         <div class="relative flex items-center gap-3">
-          <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-onPrimary font-heading text-lg font-bold text-primary">DT</span>
+          <img
+            src="../../assets/img/facultad/logo_universidad.jpg"
+            alt="UNAMBA"
+            class="h-12 w-12 shrink-0 rounded-full bg-onPrimary object-contain p-0.5"
+          />
+          <img
+            src="../../assets/img/facultad/logo_facultad.jpg"
+            alt=""
+            class="h-11 w-11 shrink-0 rounded-lg bg-onPrimary object-contain p-0.5"
+          />
           <span class="flex flex-col leading-tight">
-            <span class="font-heading text-sm font-semibold">DocenTrack</span>
-            <span class="text-xs text-onPrimary/70">Facultad de Administración · UNAMBA</span>
+            <span class="font-heading text-sm font-semibold text-sidebar-text">DocenTrack</span>
+            <span class="text-xs text-sidebar-muted">Facultad de Administración · UNAMBA</span>
           </span>
         </div>
 
         <div class="relative max-w-md py-10 lg:py-0">
-          <span class="inline-block rounded-full bg-onPrimary/10 px-3 py-1 text-xs font-medium text-onPrimary/80">Acceso restringido</span>
-          <h1 class="mt-4 font-heading text-3xl font-bold sm:text-4xl">Panel de Administración</h1>
-          <p class="mt-3 text-onPrimary/80">
+          <p class="text-sm font-medium text-accent">Acceso restringido</p>
+          <h1 class="mt-3 font-heading text-3xl font-bold tracking-tight text-sidebar-text sm:text-4xl">Panel de Administración</h1>
+          <p class="mt-4 text-base text-sidebar-muted">
             Gestiona docentes, cursos, horarios, aulas y los registros de asistencia del kiosko desde un solo lugar.
           </p>
         </div>
 
-        <p class="relative hidden text-sm text-onPrimary/60 lg:block">© 2026 DocenTrack — UNAMBA</p>
+        <p class="relative hidden text-sm text-sidebar-muted lg:block">© 2026 DocenTrack — UNAMBA</p>
       </section>
 
       <!-- Panel de formulario -->
@@ -51,8 +58,8 @@
         <button
           type="button"
           data-theme-toggle
-          aria-label="Cambiar tema"
-          class="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text sm:right-8 sm:top-8"
+          aria-label="Cambiar a modo oscuro"
+          class="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-md border border-border text-text-muted transition hover:border-accent hover:bg-accent-soft hover:text-accent sm:right-8 sm:top-8"
         >
           <span data-icon-sun>
             <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
@@ -67,13 +74,13 @@
         </button>
 
         <div class="w-full max-w-sm">
-          <h2 class="font-heading text-2xl font-bold text-text sm:text-3xl">Iniciar sesión</h2>
+          <h2 class="font-heading text-2xl font-bold tracking-tight text-text sm:text-3xl">Iniciar sesión</h2>
           <p class="mt-2 text-sm text-text-muted">Ingresa tus credenciales de administrador.</p>
 
           <div
             data-login-error
             role="alert"
-            class="mt-6 hidden items-start gap-2 rounded-md border border-danger/30 bg-danger-bg px-4 py-3 text-sm text-danger"
+            class="mt-6 hidden items-start gap-2 rounded-md border border-danger/35 bg-danger-bg px-4 py-3 text-sm text-danger"
           >
             <svg class="mt-0.5 h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0 3.75h.008M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -91,7 +98,7 @@
                 required
                 autocomplete="username"
                 placeholder="nombre.apellido@unamba.edu.pe"
-                class="mt-1.5 h-11 w-full rounded-md border border-border bg-surface px-3 text-sm text-text placeholder:text-text-muted/60 focus:border-primary focus:outline-none"
+                class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
               />
             </div>
 
@@ -105,7 +112,7 @@
                   required
                   autocomplete="current-password"
                   placeholder="••••••••"
-                  class="h-11 w-full rounded-md border border-border bg-surface px-3 pr-11 text-sm text-text placeholder:text-text-muted/60 focus:border-primary focus:outline-none"
+                  class="h-11 w-full rounded-md border border-border bg-bg px-3 pr-11 text-sm text-text placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
                 />
                 <button
                   type="button"
@@ -135,7 +142,7 @@
 
             <button
               type="submit"
-              class="flex h-11 w-full items-center justify-center rounded-md bg-accent text-sm font-semibold text-white transition hover:bg-accent-dark"
+              class="flex h-11 w-full items-center justify-center rounded-md bg-accent text-sm font-semibold text-onAccent transition hover:bg-accent-dark"
             >
               Ingresar
             </button>

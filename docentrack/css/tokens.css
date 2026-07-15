@@ -1,70 +1,76 @@
 /*
- * tokens.css — Design tokens del mockup DocenTrack.
+ * tokens.css — Design tokens DocenTrack.
  *
- * Única fuente de verdad para color, tipografía, radios, sombras y
- * espaciado. Nada de valores hardcodeados fuera de este archivo:
- * componentes y páginas solo referencian estas variables por nombre.
- * Paleta propia de este proyecto — NO comparte valores con
- * ../pagina-web/css/tokens.css (ver docentrack/CLAUDE.md § Identidad visual).
+ * Paleta cerrada: NARANJA + AZUL + BLANCO (sin verdes/rojos/cyans externos).
+ * Estados semánticos se derivan de la misma familia:
+ *   éxito / info → azul · aviso / peligro → naranja (intensidades).
  *
- * Punto de partida: naranja oscuro como color de marca (primary), azul
- * como acento (accent) y verde reservado para el estado de éxito
- * (--color-success) — los tres colores institucionales mencionados por
- * la facultad, sobre fondo blanco. Provisional: se ajusta con feedback.
- *
- * Tema claro/oscuro: misma lista de variables, valores distintos según
- * [data-theme].
+ * Escena dark: panel admin de noche + kiosko siempre encendido en pasillo —
+ * navy profundo, bordes naranja, texto claro con contraste ≥ 4.5:1.
  */
 
 :root,
 [data-theme="light"] {
-  /* 1. Colores de marca */
-  --color-primary: #c2410c; /* naranja oscuro (orange-700) */
-  --color-primary-dark: #9a3412;
-  --color-primary-light: #ea580c;
-  --color-accent: #2563eb; /* azul (blue-600) */
-  --color-accent-dark: #1d4ed8;
+  color-scheme: light;
 
-  /* Texto legible sobre --color-primary (topbar, botones primarios) */
+  /* Marca */
+  --color-primary: #0b2c5e;
+  --color-primary-dark: #071f42;
+  --color-primary-light: #1a4a8c;
+  --color-accent: #e8571a;
+  --color-accent-dark: #c2410c;
+  --color-accent-soft: #fff4ed;
+
   --color-on-primary: #ffffff;
+  --color-on-accent: #ffffff;
 
-  /* 2. Tema claro */
+  /* Lienzo: blanco + tinte azul frío (no crema) */
   --color-bg: #ffffff;
-  --color-surface: #f7f5f2;
-  --color-surface-2: #efebe4;
-  --color-text: #241f19;
-  --color-text-muted: #6b6255;
-  --color-border: #e4ded4;
+  --color-surface: #f5f8fc;
+  --color-surface-2: #eaf0f8;
+  --color-text: #0f1c2e;
+  --color-text-muted: #3d526c;
+  --color-border: #c5d4e8;
+  --color-border-strong: #8fa8c9;
 
-  /* 4. Colores de estado — fijos, no los toca el tema.
-     Éxito en verde: el tercer color institucional, reservado para
-     confirmaciones (guardado exitoso, huella enrolada, etc). */
-  --color-success: #16a34a;
-  --color-danger: #dc2626;
-  --color-warning: #ca8a04;
-  --color-info: #0284c7;
+  /* Sidebar admin — panel de marca azul */
+  --sidebar-bg: var(--color-primary);
+  --sidebar-bg-hover: color-mix(in srgb, var(--color-primary-light) 50%, var(--color-primary));
+  --sidebar-border: var(--color-accent);
+  --sidebar-text: #f0f4fa;
+  --sidebar-text-muted: #b4c6de;
+  --sidebar-active-bg: color-mix(in srgb, var(--color-accent) 24%, var(--color-primary));
+  --sidebar-active-text: #ffffff;
 
-  --color-success-bg: color-mix(in srgb, var(--color-success) 12%, var(--color-bg));
-  --color-danger-bg: color-mix(in srgb, var(--color-danger) 12%, var(--color-bg));
-  --color-warning-bg: color-mix(in srgb, var(--color-warning) 12%, var(--color-bg));
-  --color-info-bg: color-mix(in srgb, var(--color-info) 12%, var(--color-bg));
+  /* Semántica dentro de naranja / azul / blanco */
+  --color-success: #0b2c5e;
+  --color-danger: #b83a0b;
+  --color-warning: #c2410c;
+  --color-info: #1a4a8c;
 
-  /* 5. Escala de grises (tinte cálido, coherente con el naranja de marca) */
-  --gray-50: #faf8f5;
-  --gray-100: #f2eee7;
-  --gray-200: #e4ded4;
-  --gray-300: #cfc5b4;
-  --gray-400: #a79c89;
-  --gray-500: #83786a;
-  --gray-600: #635a4e;
-  --gray-700: #473f36;
-  --gray-800: #2e2820;
-  --gray-900: #1c1712;
+  --color-success-bg: color-mix(in srgb, var(--color-success) 10%, var(--color-bg));
+  --color-danger-bg: color-mix(in srgb, var(--color-danger) 10%, var(--color-bg));
+  --color-warning-bg: color-mix(in srgb, var(--color-warning) 10%, var(--color-bg));
+  --color-info-bg: color-mix(in srgb, var(--color-info) 10%, var(--color-bg));
+  --color-accent-bg: color-mix(in srgb, var(--color-accent) 10%, var(--color-bg));
 
-  /* 6. Tipografía */
-  --font-heading: "Poppins", ui-sans-serif, system-ui, sans-serif;
-  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  /* Neutrales teñidos hacia azul */
+  --gray-50: #f5f8fc;
+  --gray-100: #eaf0f8;
+  --gray-200: #d5e0ee;
+  --gray-300: #b4c6de;
+  --gray-400: #7a93b0;
+  --gray-500: #5a7190;
+  --gray-600: #3d526c;
+  --gray-700: #2a3d56;
+  --gray-800: #1a2a40;
+  --gray-900: #0f1c2e;
 
+  /* Tipografía — Outfit (títulos) + Source Sans 3 (UI / datos) */
+  --font-heading: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+
+  /* Escala fija ~1.2 (product UI) */
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
   --text-base: 1rem;
@@ -79,59 +85,107 @@
   --font-semibold: 600;
   --font-bold: 700;
 
-  --leading-heading: 1.2;
-  --leading-body: 1.5;
+  --leading-heading: 1.25;
+  --leading-body: 1.55;
+  --tracking-tight: -0.02em;
 
-  /* 7. Radios */
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
   --radius-full: 9999px;
 
-  /* 8. Sombras */
-  --shadow-sm: 0 1px 2px 0 rgb(28 23 18 / 0.06);
-  --shadow-md: 0 4px 10px -2px rgb(28 23 18 / 0.1);
-  --shadow-lg: 0 12px 24px -4px rgb(28 23 18 / 0.14);
+  --shadow-sm: 0 1px 2px 0 rgb(11 44 94 / 0.07);
+  --shadow-md: 0 4px 10px -2px rgb(11 44 94 / 0.12);
+  --shadow-lg: 0 10px 24px -6px rgb(11 44 94 / 0.16);
 
-  /* 9. Escala de espaciado (coincide 1:1 con la escala de Tailwind) */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
+  --space-5: 20px;
   --space-6: 24px;
   --space-8: 32px;
   --space-12: 48px;
   --space-16: 64px;
 
-  /* 10. Kiosko: tamaños de interacción, ver "Modo de interacción" en
-     docentrack/CLAUDE.md. Densidad por defecto = escritorio (mouse/
-     teclado); [data-density="touch"] en <html> los agranda. */
   --kiosk-tap: 44px;
   --kiosk-gap: var(--space-4);
   --kiosk-text: var(--text-lg);
+
+  /* Escala z semántica */
+  --z-dropdown: 20;
+  --z-sticky: 30;
+  --z-drawer: 40;
+  --z-modal-backdrop: 50;
+  --z-modal: 60;
+  --z-toast: 70;
+  --z-tooltip: 80;
+
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--color-accent) 35%, transparent);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 220ms;
 }
 
-/* 3. Tema oscuro — cálido, coherente con el naranja de marca (no reutiliza
-   el azul frío del mockup de pagina-web). Solo se redefinen los roles
-   que cambian de valor entre temas. */
 [data-theme="dark"] {
-  --color-bg: #1a1512;
-  --color-surface: #24201b;
-  --color-surface-2: #2e2620;
-  --color-text: #f3ede6;
-  --color-text-muted: #b3a79a;
-  --color-border: #3a322a;
+  color-scheme: dark;
 
-  --color-primary: #f97316; /* orange-500, más brillante para contraste en oscuro */
-  --color-accent: #3b82f6; /* blue-500 */
+  --color-bg: #061222;
+  --color-surface: #0a1c33;
+  --color-surface-2: #122a48;
+  --color-text: #f4f7fb;
+  --color-text-muted: #a8bdd4;
+  --color-border: color-mix(in srgb, #e8571a 42%, #1a3355);
+  --color-border-strong: #f97316;
 
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.35);
-  --shadow-md: 0 4px 10px -2px rgb(0 0 0 / 0.45);
-  --shadow-lg: 0 12px 24px -4px rgb(0 0 0 / 0.55);
+  --color-primary: #6b9adb;
+  --color-primary-dark: #4a7ec8;
+  --color-primary-light: #8fb4e8;
+  --color-accent: #f97316;
+  --color-accent-dark: #ea580c;
+  --color-accent-soft: #2a1608;
+
+  --color-on-primary: #061222;
+  --color-on-accent: #ffffff;
+
+  --sidebar-bg: #040e1a;
+  --sidebar-bg-hover: #0a1c33;
+  --sidebar-border: var(--color-accent);
+  --sidebar-text: #f0f4fa;
+  --sidebar-text-muted: #8aa0c0;
+  --sidebar-active-bg: color-mix(in srgb, var(--color-accent) 26%, #040e1a);
+  --sidebar-active-text: #ffffff;
+
+  --color-success: #8fb4e8;
+  --color-danger: #fb923c;
+  --color-warning: #f97316;
+  --color-info: #6b9adb;
+
+  --color-success-bg: color-mix(in srgb, var(--color-success) 16%, var(--color-bg));
+  --color-danger-bg: color-mix(in srgb, var(--color-danger) 16%, var(--color-bg));
+  --color-warning-bg: color-mix(in srgb, var(--color-warning) 16%, var(--color-bg));
+  --color-info-bg: color-mix(in srgb, var(--color-info) 16%, var(--color-bg));
+  --color-accent-bg: color-mix(in srgb, var(--color-accent) 16%, var(--color-bg));
+
+  --gray-50: #0a1c33;
+  --gray-100: #122a48;
+  --gray-200: #1a3355;
+  --gray-300: #2a4568;
+  --gray-400: #5a7190;
+  --gray-500: #8aa0c0;
+  --gray-600: #a8bdd4;
+  --gray-700: #c5d4e8;
+  --gray-800: #eaf0f8;
+  --gray-900: #f4f7fb;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.45);
+  --shadow-md: 0 4px 10px -2px rgb(0 0 0 / 0.55);
+  --shadow-lg: 0 10px 24px -6px rgb(0 0 0 / 0.65);
+
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--color-accent) 45%, transparent);
 }
 
-/* Modo de interacción táctil: targets más grandes en todo el kiosko. */
 :root[data-density="touch"] {
   --kiosk-tap: 64px;
   --kiosk-gap: var(--space-6);

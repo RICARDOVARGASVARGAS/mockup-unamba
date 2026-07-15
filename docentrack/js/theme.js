@@ -1,13 +1,8 @@
 /**
- * theme.js — mecanismo de modo claro/oscuro.
+ * theme.js — modo claro/oscuro DocenTrack.
  *
- * Alterna el atributo [data-theme] en <html>, que es lo que hace que
- * css/tokens.css cambie de valores (mismo nombre de variable, distinto
- * valor). No define nuevos estilos aquí, solo cambia de tema.
- *
- * Estado en memoria (una variable JS), sin localStorage/sessionStorage.
- * Al ser un sitio multi-página (no SPA), el tema vuelve a "claro" al
- * navegar a otra página .html.
+ * Alterna [data-theme] en <html>. Estado en memoria (sin localStorage).
+ * En multi-página el tema vuelve a "claro" al navegar a otro .html.
  */
 
 const THEMES = ["light", "dark"];
@@ -33,10 +28,20 @@ function syncPrimaryContrast() {
 
   const bgLum = relativeLuminance(primary);
   const whiteContrast = contrastRatio(bgLum, 1);
-  const darkContrast = contrastRatio(bgLum, relativeLuminance("#1c1712")); // --gray-900, fijo en ambos temas
-  const onPrimary = whiteContrast >= darkContrast ? "#ffffff" : "#1c1712";
+  const ink = getComputedStyle(document.documentElement).getPropertyValue("--gray-900").trim() || "#0f1c2e";
+  const inkHex = /^#[0-9a-f]{6}$/i.test(ink) ? ink : "#0f1c2e";
+  const darkContrast = contrastRatio(bgLum, relativeLuminance(inkHex));
+  const onPrimary = whiteContrast >= darkContrast ? "#ffffff" : inkHex;
 
   document.documentElement.style.setProperty("--color-on-primary", onPrimary);
+}
+
+function syncThemeControls(theme) {
+  document.querySelectorAll("[data-theme-toggle]").forEach((btn) => {
+    const next = theme === "dark" ? "claro" : "oscuro";
+    btn.setAttribute("aria-label", `Cambiar a modo ${next}`);
+    btn.setAttribute("title", `Cambiar a modo ${next}`);
+  });
 }
 
 function applyTheme(theme) {
@@ -44,6 +49,7 @@ function applyTheme(theme) {
   currentTheme = theme;
   document.documentElement.setAttribute("data-theme", theme);
   syncPrimaryContrast();
+  syncThemeControls(theme);
   document.dispatchEvent(new CustomEvent("themechange", { detail: { theme: currentTheme } }));
 }
 

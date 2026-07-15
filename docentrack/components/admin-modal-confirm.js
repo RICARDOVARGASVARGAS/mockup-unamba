@@ -23,7 +23,7 @@
             <p data-message class="mt-2 text-sm text-text-muted"></p>
             <div class="mt-6 flex justify-end gap-3">
               <button type="button" data-cancel class="rounded-md border border-border px-4 py-2 text-sm font-semibold text-text transition hover:bg-surface-2">Cancelar</button>
-              <button type="button" data-confirm class="rounded-md bg-danger px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90">Eliminar</button>
+              <button type="button" data-confirm class="rounded-md bg-danger px-4 py-2 text-sm font-semibold text-onAccent transition hover:bg-accent-dark">Eliminar</button>
             </div>
           </div>
         </div>

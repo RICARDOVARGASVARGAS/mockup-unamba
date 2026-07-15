@@ -40,7 +40,7 @@
 
               <div class="flex items-center justify-end gap-3 pt-1">
                 <button type="button" data-cancel class="rounded-md border border-border px-4 py-2 text-sm font-semibold text-text transition hover:bg-surface-2">Cancelar</button>
-                <button type="submit" data-submit disabled class="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-onPrimary transition hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-50">Guardar corrección</button>
+                <button type="submit" data-submit disabled class="rounded-md bg-accent px-4 py-2 text-sm font-semibold text-onAccent transition hover:bg-accent-dark disabled:cursor-not-allowed disabled:opacity-50">Guardar corrección</button>
               </div>
             </form>
           </div>

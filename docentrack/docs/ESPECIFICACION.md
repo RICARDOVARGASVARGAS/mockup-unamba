@@ -45,8 +45,9 @@ que vuelve siempre al reposo. Un solo toque de huella por visita (ver
 - Transición automática (1–2 segundos) hacia el formulario
 
 ## 4. Formulario de registro de clase — [BD]
-Header de contexto: foto + nombre del docente ya identificado (no se
-vuelve a pedir). Campos, todos select/input mínimo:
+Layout a dos columnas (escritorio): identidad + evidencia a la izquierda;
+campos a la derecha. Campos con **select/input nativos simples** (una sola
+versión de control, sin componentes custom de lista):
 - Curso/asignatura — select, pre-completado si hay horario cargado — [BD]
 - Ciclo — select — [BD]
 - Aula — select — [BD]
@@ -56,9 +57,14 @@ vuelve a pedir). Campos, todos select/input mínimo:
 - Número de alumnos — input numérico declarado — [BD]
 - Hora de entrada — input hora (declarada, no timestamp real) — [BD]
 - Hora de salida — input hora (declarada) — [BD]
-- Badge "fuera de horario" — visual, no bloqueante, aparece si la hora
-  declarada no calza con el horario asignado — [SIS]
-- Acciones: Guardar / Cancelar (vuelve a reposo sin guardar)
+- Badge "fuera de horario" — visual, no bloqueante — [SIS]
+- **Evidencia de cámara** — 2–3 capturas automáticas por registro
+  (identificar / abrir formulario / confirmar), no un burst de 15.
+  Sirven de auditoría anti-suplantación; visibles en el formulario y
+  en el modal de confirmación — [EXT]/[BD]
+- Acciones: Guardar abre **modal de confirmación** con resumen completo
+  + fotos → Confirmar guarda / Volver a editar — [SIS]
+- Cancelar vuelve a reposo sin guardar
 
 ## 5. Guardado exitoso — [SIS]
 - Confirmación visual + resumen de lo registrado

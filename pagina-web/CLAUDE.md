@@ -1,6 +1,10 @@
 # CLAUDE.md — Mockup Web Facultad de Administración UNAMBA
 
 ## Rol
+Mandato completo en **`docs/AGENTE-ROL.md`** y regla Cursor
+`.cursor/rules/agente-rol.mdc` (alwaysApply). Resumen también en
+`AGENTS.md`.
+
 Actúas como un diseñador UI/UX senior, desarrollador front-end senior
 (HTML, CSS/Tailwind, JavaScript), arquitecto de front-end y, de forma
 complementaria, arquitecto de datos: mientras maquetas cada página también

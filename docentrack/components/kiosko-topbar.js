@@ -1,9 +1,10 @@
 /**
  * kiosko-topbar.js — cabecera del kiosko (<kiosko-topbar>).
  *
- * Muestra marca, reloj en vivo y dos controles: tema claro/oscuro y
- * modo de interacción (Escritorio/Táctil, ver interaction-mode.js).
- * Se define UNA vez aquí y se reutiliza en cada pantalla del flujo.
+ * Muestra marca (logos UNAMBA + DocenTrack), reloj en vivo y dos
+ * controles: tema claro/oscuro y modo de interacción (Escritorio/Táctil,
+ * ver interaction-mode.js). Se define UNA vez aquí y se reutiliza en
+ * cada pantalla del flujo.
  */
 
 const ICONS = {
@@ -30,23 +31,33 @@ class KioskoTopbar extends HTMLElement {
     const base = window.getBasePath ? window.getBasePath() : "";
 
     this.innerHTML = `
-      <header class="w-full border-b border-border bg-surface">
-        <div class="page-container flex h-16 items-center gap-3">
-          <a href="${base}index.html" class="flex shrink-0 items-center gap-2" aria-label="DocenTrack — ir a reposo">
-            <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-onPrimary font-heading text-sm font-bold">DT</span>
+      <header class="w-full border-b border-border bg-bg/95 backdrop-blur-sm">
+        <div class="brand-stripe" aria-hidden="true"></div>
+        <div class="page-container flex h-14 items-center gap-3 sm:h-16">
+          <a href="${base}index.html" class="flex shrink-0 items-center gap-2.5 rounded-md" aria-label="DocenTrack — ir a reposo">
+            <img
+              src="${base}assets/img/facultad/logo_universidad.jpg"
+              alt="UNAMBA"
+              class="h-9 w-9 shrink-0 rounded-full bg-surface object-contain ring-2 ring-accent sm:h-10 sm:w-10"
+            />
+            <img
+              src="${base}assets/img/facultad/logo_facultad.jpg"
+              alt=""
+              class="hidden h-9 w-9 shrink-0 rounded-md bg-surface object-contain ring-1 ring-primary/30 sm:block"
+            />
             <span class="hidden flex-col leading-tight sm:flex">
-              <span class="font-heading text-sm font-semibold text-text">DocenTrack</span>
-              <span class="text-xs text-text-muted">Registro de horas lectivas</span>
+              <span class="font-heading text-sm font-semibold tracking-tight text-text">DocenTrack</span>
+              <span class="text-xs font-medium text-accent">Registro de horas lectivas</span>
             </span>
           </a>
 
-          <div data-clock class="ml-4 hidden flex-col leading-tight text-text-muted md:flex">
-            <span data-clock-time class="font-heading text-lg font-semibold text-text"></span>
+          <div data-clock class="ml-3 hidden flex-col leading-tight text-text-muted md:flex" aria-live="polite">
+            <span data-clock-time class="font-heading text-lg font-semibold tabular-nums text-text"></span>
             <span data-clock-day class="text-xs capitalize"></span>
           </div>
 
           <div class="ml-auto flex shrink-0 items-center gap-2">
-            <div class="flex items-center rounded-full border border-border bg-bg p-1" role="group" aria-label="Modo de interacción">
+            <div class="flex items-center rounded-full border border-border bg-surface p-1" role="group" aria-label="Modo de interacción">
               <button type="button" data-density-set="desktop" data-density-btn="desktop" title="Modo escritorio" aria-label="Modo escritorio" class="inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-xs font-medium text-text-muted transition">
                 ${icon("cursor", "h-4 w-4")}<span class="hidden lg:inline">Escritorio</span>
               </button>
@@ -58,22 +69,22 @@ class KioskoTopbar extends HTMLElement {
             <button
               type="button"
               data-theme-toggle
-              title="Cambiar tema"
+              title="Cambiar a modo oscuro"
               aria-label="Cambiar a modo oscuro"
-              class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-bg text-text transition hover:bg-surface-2"
+              class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-surface text-primary transition hover:border-accent hover:text-accent"
             >
-              <span data-icon-sun>${icon("sun")}</span>
-              <span data-icon-moon class="hidden">${icon("moon")}</span>
+              <span data-icon-sun aria-hidden="true">${icon("sun")}</span>
+              <span data-icon-moon class="hidden" aria-hidden="true">${icon("moon")}</span>
             </button>
 
             <a
               href="${base}pages/admin/login.html"
               title="Panel de administración"
               aria-label="Ir al panel de administración"
-              class="inline-flex h-10 items-center gap-1.5 rounded-full border border-border bg-bg px-3 text-text-muted transition hover:border-primary hover:text-primary"
+              class="inline-flex h-10 items-center gap-1.5 rounded-full border border-accent bg-accent-soft px-3 text-accent transition hover:bg-accent hover:text-onAccent"
             >
               ${icon("shield", "h-4 w-4")}
-              <span class="hidden text-xs font-medium lg:inline">Administrador</span>
+              <span class="hidden text-xs font-semibold lg:inline">Administrador</span>
             </a>
           </div>
         </div>
@@ -103,9 +114,10 @@ class KioskoTopbar extends HTMLElement {
       const current = window.InteractionMode ? window.InteractionMode.getDensity() : "desktop";
       buttons.forEach((btn) => {
         const active = btn.dataset.densityBtn === current;
-        btn.classList.toggle("bg-primary", active);
-        btn.classList.toggle("text-onPrimary", active);
+        btn.classList.toggle("bg-accent", active);
+        btn.classList.toggle("text-onAccent", active);
         btn.classList.toggle("text-text-muted", !active);
+        btn.setAttribute("aria-pressed", active ? "true" : "false");
       });
     };
     sync();

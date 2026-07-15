@@ -1,6 +1,9 @@
 # CLAUDE.md — DocenTrack (Registro de Horas Lectivas Docentes)
 
 ## Rol
+Mandato completo en **`docs/AGENTE-ROL.md`** y regla Cursor
+`.cursor/rules/agente-rol.mdc` (alwaysApply). Resumen:
+
 Actúas como diseñador/desarrollador UI/UX senior (HTML, CSS/Tailwind,
 JavaScript) y, de forma complementaria, analista de bases de datos: mientras
 maquetas cada pantalla también identificas qué entidades, atributos y
@@ -119,18 +122,19 @@ Un solo rol, **Administrador**, con acceso total a todo lo anterior
 (RRHH, Académico, etc.) queda para una fase posterior si se necesita.
 
 ## Identidad visual
-**No definida por la facultad todavía** — se diseña con libertad visual
-(paleta y tipografía propuestas), dejando fácil de reemplazar por marca
-institucional más adelante. Mismo patrón de tokens que el resto del
-workspace pero con **su propia paleta**, sin compartir valores con
-`pagina-web/`:
-- `--color-primary` / `--color-accent` / `--color-bg` / `--color-surface`
-  / `--color-text` / `--color-text-muted` — mismos ROLES de variable,
-  archivo `css/tokens.css` propio de este proyecto.
-- Sugerencia inicial: algo que transmita seguridad/tecnología (ej. un
-  índigo o teal como primario) distinto del azul institucional de
-  `pagina-web/`, para que ambos proyectos no se confundan visualmente
-  durante la presentación. Se afina cuando haya feedback.
+**Facultad de Administración UNAMBA** — azul navy + naranja + blanco,
+alineada a las tarjetas institucionales. Tokens en `css/tokens.css`;
+logos en `assets/img/facultad/`.
+
+| Modo | Fondo | Bordes / estructura | Acentos / CTAs |
+|------|-------|---------------------|----------------|
+| Claro | Blanco (+ tinte naranja suave) | Azul | Naranja |
+| Oscuro | Azul navy profundo | Naranja | Naranja / texto claro |
+
+El **sidebar admin** es panel de marca azul con contorno e ítem activo
+naranja (`--sidebar-*`). CTAs usan `--color-accent` (naranja).
+
+Detalle del mandato: **`docs/AGENTE-ROL.md`** y `.cursor/rules/agente-rol.mdc`.
 
 ## Modo claro/oscuro (obligatorio, en todo)
 Kiosko **y** panel admin alternables entre claro/oscuro, mismo mecanismo
@@ -178,15 +182,17 @@ picker de colores.
 - No inventar datos institucionales reales (nombres de docentes, cursos)
   — usar placeholders claramente marcados.
 
-## Estructura del repo (propuesta, ajustar al crecer)
+## Estructura del repo (real, ajustar al crecer)
 - `/docs/ESPECIFICACION.md` → pantallas, estados y módulos (kiosko + admin)
+- `/docs/AGENTE-ROL.md` → mandato del agente (UI/UX + front + dominio)
+- `/.cursor/rules/agente-rol.mdc` → misma regla, alwaysApply en Cursor
 - `/docs/MODELO-DATOS.md` → entidades/atributos para el futuro backend — por crear
 - `/components` → header/sidebar admin, tarjetas de estado del lector, etc.
 - `/pages/kiosko/` → pantallas del flujo de fichaje
 - `/pages/admin/` → panel administrativo (login, docentes, cursos, ciclos,
   periodos, aulas, horarios, registros, reportes)
-- `/assets`
-- `/css` → `tokens.css` (paleta propia), `base.css`
+- `/assets` → logos UNAMBA/facultad e íconos (`assets/README.md`)
+- `/css` → `tokens.css` (azul + naranja + blanco), `base.css`
 - `/js` → tema, modo de interacción (táctil/escritorio), simulación de
   estados del lector, inyección de componentes
 - `index.html` → pantalla de reposo del kiosko (punto de entrada)
@@ -209,5 +215,5 @@ picker de colores.
    nunca imagen), cursos, temario, ciclos, periodos académicos, aulas,
    horarios/asignaciones, registros de asistencia, correcciones/auditoría,
    usuarios admin.
-2. Afinar paleta con feedback real de la facultad (hoy es provisional:
-   naranja/azul/verde institucionales, ver "Identidad visual" arriba).
+2. Sustituir logos en `assets/img/facultad/` por versiones oficiales
+   (SVG/PNG alta resolución) si la facultad las entrega.

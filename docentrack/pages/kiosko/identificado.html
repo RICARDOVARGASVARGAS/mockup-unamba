@@ -1,15 +1,16 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Docente identificado — DocenTrack</title>
+    <link rel="icon" href="../../assets/img/facultad/logo_universidad.ico" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap"
     />
 
     <link rel="stylesheet" href="../../css/tokens.css" />
@@ -18,17 +19,17 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../../js/tailwind-config.js"></script>
   </head>
-  <body class="kiosk-shell bg-bg text-text">
+  <body class="kiosk-shell text-text">
     <kiosko-topbar></kiosko-topbar>
 
-    <!-- ESTADO: Identificado — confirmación breve antes de pasar al formulario -->
+    <!-- ESTADO: Identificado -->
     <main class="kiosk-main">
       <div class="kiosk-card flex flex-col items-center gap-6">
         <div class="relative">
-          <div class="flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-4 border-success bg-surface-2 font-heading text-2xl font-semibold text-text-muted">
+          <div class="flex h-24 w-24 items-center justify-center rounded-full border-[3px] border-accent bg-primary font-heading text-2xl font-bold text-onPrimary shadow-md">
             LM
           </div>
-          <span class="absolute -bottom-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full bg-success text-white ring-4 ring-surface">
+          <span class="absolute -bottom-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-onPrimary ring-4 ring-bg">
             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
             </svg>
@@ -36,10 +37,12 @@
         </div>
 
         <div>
-          <p class="text-sm font-medium text-success">Huella reconocida</p>
-          <h1 class="mt-1 font-heading text-2xl font-semibold text-text">Lucía Mamani Quispe</h1>
+          <p class="text-sm font-semibold text-primary">Huella reconocida</p>
+          <h1 class="mt-1 font-heading text-2xl font-semibold text-primary">Lucía Mamani Quispe</h1>
           <p class="mt-1 text-sm text-text-muted">Docente · Código 00452</p>
         </div>
+
+        <span class="kiosk-status is-ok">Identificada</span>
 
         <a href="formulario.html" class="kiosk-btn kiosk-btn-primary w-full">
           Continuar al registro

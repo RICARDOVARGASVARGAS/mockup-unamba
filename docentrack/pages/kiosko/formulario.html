@@ -1,15 +1,16 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registrar clase — DocenTrack</title>
+    <link rel="icon" href="../../assets/img/facultad/logo_universidad.ico" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap"
     />
 
     <link rel="stylesheet" href="../../css/tokens.css" />
@@ -18,34 +19,33 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../../js/tailwind-config.js"></script>
   </head>
-  <body class="kiosk-shell bg-bg text-text">
+  <body class="kiosk-shell text-text">
     <kiosko-topbar></kiosko-topbar>
 
-    <!-- ESTADO: Formulario de registro — docente ya identificado, completa/confirma la clase dictada -->
-    <main class="kiosk-main !items-stretch">
-      <form class="kiosk-card kiosk-card-wide mx-auto flex flex-col gap-6" onsubmit="window.location.href='confirmacion.html'; return false;">
-        <!-- Contexto: docente ya identificado, no se vuelve a pedir -->
-        <div class="flex items-center gap-3 border-b border-border pb-5">
-          <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-success bg-surface-2 font-heading text-sm font-semibold text-text-muted">
-            LM
+    <main class="kiosk-main is-form">
+      <form id="kiosk-register-form" class="kiosk-form-sheet" novalidate>
+        <header class="kiosk-form-head">
+          <div class="flex min-w-0 items-center gap-3">
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary font-heading text-sm font-bold text-onPrimary">
+              LM
+            </div>
+            <div class="min-w-0">
+              <h1 class="font-heading text-base font-semibold text-primary sm:text-lg">Lucía Mamani Quispe</h1>
+              <p class="text-xs text-text-muted sm:text-sm">Código 00452 · Huella verificada</p>
+            </div>
           </div>
-          <div>
-            <h1 class="font-heading text-lg font-semibold text-text">Lucía Mamani Quispe</h1>
-            <p class="text-sm text-text-muted">Docente · Código 00452</p>
-          </div>
-          <span class="badge badge-success ml-auto">Identificada</span>
-        </div>
+          <span class="badge badge-success shrink-0">Identificada</span>
+        </header>
 
-        <!-- Curso, ciclo, aula: prellenados desde el horario asignado -->
-        <div>
-          <p class="mb-3 inline-flex items-center gap-1.5 text-xs font-medium text-text-muted">
-            <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
-            Prellenado desde tu horario — puedes corregirlo si no coincide con la clase dictada
+        <div class="kiosk-form-body">
+          <p class="mb-4 text-sm text-text-muted">
+            Datos prellenados desde tu horario. Corrige solo si no coinciden con la clase dictada.
           </p>
-          <div class="grid gap-4 sm:grid-cols-2">
-            <div class="kiosk-field">
+
+          <div class="kiosk-form-grid">
+            <div class="kiosk-field kiosk-span-2">
               <label for="curso">Curso / asignatura</label>
-              <select id="curso" class="kiosk-select">
+              <select id="curso" name="curso" class="kiosk-select">
                 <option selected>Gestión de Operaciones I</option>
                 <option>Contabilidad General</option>
                 <option>Marketing Estratégico</option>
@@ -53,82 +53,136 @@
             </div>
             <div class="kiosk-field">
               <label for="ciclo">Ciclo</label>
-              <select id="ciclo" class="kiosk-select">
+              <select id="ciclo" name="ciclo" class="kiosk-select">
                 <option>III</option>
                 <option>IV</option>
                 <option selected>V</option>
                 <option>VI</option>
               </select>
             </div>
+
+            <div class="kiosk-field kiosk-span-2">
+              <label for="tema">Tema dictado</label>
+              <select id="tema" name="tema" class="kiosk-select">
+                <option selected>Planeamiento agregado de la producción</option>
+                <option>Gestión de inventarios</option>
+                <option>Distribución de planta</option>
+              </select>
+            </div>
             <div class="kiosk-field">
               <label for="aula">Aula</label>
-              <select id="aula" class="kiosk-select">
+              <select id="aula" name="aula" class="kiosk-select">
                 <option selected>Aula 204</option>
                 <option>Aula 205</option>
                 <option>Auditorio Principal</option>
               </select>
             </div>
+
             <div class="kiosk-field">
               <label for="periodo">Periodo académico</label>
-              <select id="periodo" class="kiosk-select">
+              <select id="periodo" name="periodo" class="kiosk-select">
                 <option selected>2026-I</option>
                 <option>2025-II</option>
               </select>
             </div>
+            <div class="kiosk-field">
+              <label for="alumnos">N.º de alumnos</label>
+              <input id="alumnos" name="alumnos" type="number" min="0" value="28" class="kiosk-input" />
+            </div>
+            <div class="kiosk-field">
+              <label for="hora-entrada">Hora de entrada</label>
+              <input id="hora-entrada" name="hora-entrada" type="time" value="14:05" class="kiosk-input" />
+            </div>
+            <div class="kiosk-field">
+              <label for="hora-salida">Hora de salida</label>
+              <input id="hora-salida" name="hora-salida" type="time" value="19:58" class="kiosk-input" />
+            </div>
+          </div>
+
+          <div class="kiosk-alert mt-4">
+            <svg class="mt-0.5 h-4 w-4 shrink-0 text-warning" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-8.25 3.75h.008v.008h-.008v-.008Z" />
+            </svg>
+            <p class="text-sm text-text">
+              <span class="badge badge-warning mr-1.5 align-middle">Fuera de horario</span>
+              Asignado 14:00–16:00. Puedes guardar igual — lo revisará administración.
+            </p>
           </div>
         </div>
 
-        <!-- Tema: catálogo propio del curso elegido, nunca texto libre -->
-        <div class="kiosk-field">
-          <label for="tema">Tema dictado</label>
-          <select id="tema" class="kiosk-select">
-            <option selected>Planeamiento agregado de la producción</option>
-            <option>Gestión de inventarios</option>
-            <option>Distribución de planta</option>
-          </select>
-        </div>
-
-        <!-- Número de alumnos y horas declaradas -->
-        <div class="grid gap-4 sm:grid-cols-3">
-          <div class="kiosk-field">
-            <label for="alumnos">N.º de alumnos</label>
-            <input id="alumnos" type="number" min="0" value="28" class="kiosk-input" />
-          </div>
-          <div class="kiosk-field">
-            <label for="hora-entrada">Hora de entrada</label>
-            <input id="hora-entrada" type="time" value="14:05" class="kiosk-input" />
-          </div>
-          <div class="kiosk-field">
-            <label for="hora-salida">Hora de salida</label>
-            <input id="hora-salida" type="time" value="19:58" class="kiosk-input" />
-          </div>
-        </div>
-
-        <!-- Alerta no bloqueante: la hora declarada no calza con el horario asignado -->
-        <div class="flex items-start gap-2.5 rounded-lg bg-warning-bg px-4 py-3">
-          <svg class="mt-0.5 h-4 w-4 shrink-0 text-warning" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-8.25 3.75h.008v.008h-.008v-.008Z" />
-          </svg>
-          <p class="text-sm text-text">
-            <span class="badge badge-warning mr-1.5 align-middle">Fuera de horario</span>
-            El horario asignado para este curso es 14:00–16:00; lo declarado no coincide. Puedes guardar igual — quedará
-            marcado para revisión del administrador.
-          </p>
-        </div>
-
-        <!-- Acciones -->
-        <div class="mt-2 flex flex-col gap-3 sm:flex-row-reverse">
-          <button type="submit" class="kiosk-btn kiosk-btn-primary flex-1">Guardar registro</button>
-          <a href="../../index.html" class="kiosk-btn kiosk-btn-secondary flex-1 text-center">Cancelar</a>
-        </div>
+        <footer class="kiosk-form-foot">
+          <a href="../../index.html" class="kiosk-btn kiosk-btn-secondary text-center">Cancelar</a>
+          <button type="submit" class="kiosk-btn kiosk-btn-primary">Guardar registro</button>
+        </footer>
       </form>
     </main>
+
+    <!-- Confirmación: detalle + fotos + Confirmar / Cancelar -->
+    <div id="kiosk-confirm-modal" class="kiosk-modal" hidden role="dialog" aria-modal="true" aria-labelledby="kiosk-confirm-title">
+      <div class="kiosk-modal-backdrop" data-confirm-close tabindex="-1"></div>
+      <div class="kiosk-modal-dialog">
+        <div class="kiosk-modal-top">
+          <div>
+            <h2 id="kiosk-confirm-title">Confirmar registro</h2>
+            <p class="mt-1 text-sm text-text-muted">Revisa el detalle antes de guardar</p>
+          </div>
+          <button type="button" class="kiosk-modal-x" data-confirm-close aria-label="Cerrar">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="kiosk-modal-teacher">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-onPrimary">LM</div>
+          <div>
+            <p class="font-semibold text-text">Lucía Mamani Quispe</p>
+            <p class="text-xs text-text-muted">Código 00452</p>
+          </div>
+          <span class="badge badge-warning ml-auto">Fuera de horario</span>
+        </div>
+
+        <dl class="kiosk-modal-grid">
+          <div><dt>Curso</dt><dd id="confirm-curso"></dd></div>
+          <div><dt>Ciclo</dt><dd id="confirm-ciclo"></dd></div>
+          <div><dt>Periodo</dt><dd id="confirm-periodo"></dd></div>
+          <div><dt>Aula</dt><dd id="confirm-aula"></dd></div>
+          <div class="kiosk-modal-grid-full"><dt>Tema</dt><dd id="confirm-tema"></dd></div>
+          <div><dt>Alumnos</dt><dd id="confirm-alumnos"></dd></div>
+          <div><dt>Horario</dt><dd id="confirm-horas"></dd></div>
+        </dl>
+
+        <div class="kiosk-modal-photos-block">
+          <p class="text-xs font-semibold uppercase tracking-wide text-text-muted">Fotos tomadas</p>
+          <div class="kiosk-modal-photos">
+            <figure>
+              <div class="kiosk-shot kiosk-shot-1" aria-hidden="true"></div>
+              <figcaption>Identificación</figcaption>
+            </figure>
+            <figure>
+              <div class="kiosk-shot kiosk-shot-2" aria-hidden="true"></div>
+              <figcaption>Formulario</figcaption>
+            </figure>
+            <figure>
+              <div class="kiosk-shot kiosk-shot-3" aria-hidden="true"></div>
+              <figcaption>Confirmación</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div class="kiosk-modal-actions">
+          <button type="button" class="kiosk-btn kiosk-btn-secondary" data-confirm-close>Cancelar</button>
+          <button type="button" class="kiosk-btn kiosk-btn-primary" data-confirm-ok>Confirmar</button>
+        </div>
+      </div>
+    </div>
 
     <kiosko-debug-panel></kiosko-debug-panel>
 
     <script src="../../js/theme.js"></script>
     <script src="../../js/site-paths.js"></script>
     <script src="../../js/interaction-mode.js"></script>
+    <script src="../../js/kiosko-form.js"></script>
     <script src="../../components/kiosko-topbar.js"></script>
     <script src="../../components/kiosko-debug-panel.js"></script>
   </body>

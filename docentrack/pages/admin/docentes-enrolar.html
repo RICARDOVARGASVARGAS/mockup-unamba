@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap"
     />
 
     <link rel="stylesheet" href="../../css/tokens.css" />
@@ -64,11 +64,11 @@
 
             <!-- Estado final, oculto hasta completar las 3 muestras -->
             <div data-enroll-done class="mt-8 hidden flex-col items-center gap-4 text-center">
-              <div class="flex h-16 w-16 items-center justify-center rounded-full bg-success-bg text-success">
+              <div class="flex h-16 w-16 items-center justify-center rounded-full bg-success-bg text-primary">
                 <svg class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
               </div>
               <p class="font-heading text-lg font-semibold text-text">Huella enrolada correctamente</p>
-              <a href="docentes.html?saved=1" class="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-accent-dark">Volver a Docentes</a>
+              <a href="docentes.html?saved=1" class="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-onAccent transition hover:bg-accent-dark">Volver a Docentes</a>
             </div>
           </div>
         </div>
@@ -98,7 +98,7 @@
         captureBtn.addEventListener("click", () => {
           const current = stepsWrap.querySelector(`[data-step="${step}"]`);
           current.classList.remove("bg-surface-2", "text-text-muted");
-          current.classList.add("bg-success", "text-white");
+          current.classList.add("bg-primary", "text-onPrimary");
 
           if (step === total) {
             captureArea.classList.add("hidden");

@@ -24,43 +24,47 @@
       const title = this.getAttribute("page-title") || "";
 
       this.innerHTML = `
-        <header class="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border bg-bg px-4 sm:px-6">
+        <header class="sticky top-0 z-[30] border-b border-border bg-bg/95 backdrop-blur-sm">
+          <div class="brand-stripe" aria-hidden="true"></div>
+          <div class="flex h-14 items-center gap-3 px-4 sm:h-16 sm:px-6">
           <button
             type="button"
             data-open-sidebar
-            aria-label="Abrir menú"
-            class="inline-flex h-10 w-10 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text lg:hidden"
+            aria-label="Abrir menú de navegación"
+            aria-controls="admin-sidebar"
+            class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-border text-primary transition hover:border-accent hover:bg-accent-soft hover:text-accent lg:hidden"
           >
             ${icon("menu")}
           </button>
 
-          <h1 class="font-heading text-lg font-semibold text-text">${title}</h1>
+          <h1 class="font-heading text-lg font-semibold tracking-tight text-text">${title}</h1>
 
-          <div class="ml-auto flex items-center gap-1">
+          <div class="ml-auto flex items-center gap-1.5">
             <button
               type="button"
               data-theme-toggle
-              aria-label="Cambiar tema"
-              class="inline-flex h-10 w-10 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text"
+              aria-label="Cambiar a modo oscuro"
+              class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-border text-primary transition hover:border-accent hover:bg-accent-soft hover:text-accent"
             >
               <span data-icon-sun>${icon("sun")}</span>
               <span data-icon-moon class="hidden">${icon("moon")}</span>
             </button>
 
-            <details class="group relative ml-1">
-              <summary class="flex cursor-pointer list-none items-center gap-2 rounded-md py-1.5 pl-2 pr-1 transition hover:bg-surface-2 [&::-webkit-details-marker]:hidden">
-                <span class="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-semibold text-onPrimary">RH</span>
+            <details class="group relative ml-0.5">
+              <summary class="flex cursor-pointer list-none items-center gap-2 rounded-md border border-border py-1.5 pl-2 pr-1.5 transition hover:border-accent hover:bg-accent-soft [&::-webkit-details-marker]:hidden">
+                <span class="flex h-8 w-8 items-center justify-center rounded-full bg-accent text-sm font-semibold text-onAccent" aria-hidden="true">RH</span>
                 <span class="hidden flex-col items-start leading-tight sm:flex">
                   <span class="text-sm font-medium text-text">Rosa Huamaní</span>
                   <span class="text-xs text-text-muted">Administradora</span>
                 </span>
-                <span class="hidden text-text-muted sm:block">${icon("chevron")}</span>
+                <span class="hidden text-text-muted sm:block" aria-hidden="true">${icon("chevron")}</span>
               </summary>
-              <ul class="absolute right-0 top-full z-20 mt-2 w-48 rounded-lg border border-border bg-surface p-2 shadow-lg">
-                <li><a href="#" class="block rounded-md px-3 py-2 text-sm text-text hover:bg-surface-2">Mi perfil</a></li>
-                <li><a href="login.html" class="block rounded-md px-3 py-2 text-sm text-danger hover:bg-danger-bg">Cerrar sesión</a></li>
+              <ul class="absolute right-0 top-full z-[20] mt-2 w-48 rounded-lg border border-border bg-bg p-1.5 shadow-md" role="menu">
+                <li role="none"><a href="#" role="menuitem" class="block rounded-md px-3 py-2 text-sm text-text hover:bg-accent-soft hover:text-accent">Mi perfil</a></li>
+                <li role="none"><a href="login.html" role="menuitem" class="block rounded-md px-3 py-2 text-sm text-danger hover:bg-danger-bg">Cerrar sesión</a></li>
               </ul>
             </details>
+          </div>
           </div>
         </header>
       `;

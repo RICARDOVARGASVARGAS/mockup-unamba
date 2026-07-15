@@ -2,13 +2,12 @@
  * admin-sidebar.js — navegación lateral del panel administrativo de
  * DocenTrack (<admin-sidebar>).
  *
- * Mismo criterio que kiosko-topbar.js: el menú se define UNA vez aquí.
- * En móvil/tablet actúa como drawer: <admin-topbar> dispara el evento
- * "admin:toggle-sidebar" en `document`, que este componente escucha.
+ * Panel de marca: azul navy + contorno/acentos naranja (identidad
+ * institucional). Ver tokens --sidebar-* y clases .admin-sidebar-* en
+ * css/base.css.
  *
- * Todo el archivo va dentro de un IIFE: <admin-sidebar> y <admin-topbar>
- * se cargan juntas en la misma página, y sin esto sus helpers internos
- * (`ICONS`, `icon()`) chocarían como redeclaraciones globales.
+ * En móvil/tablet actúa como drawer: <admin-topbar> dispara
+ * "admin:toggle-sidebar" en `document`.
  */
 (function () {
   const ADMIN_NAV_GROUPS = [
@@ -54,19 +53,17 @@
     const hasActive = group.items.some((item) => isActive(item.href));
     return `
       <details class="group/nav" ${hasActive ? "open" : ""}>
-        <summary class="flex cursor-pointer list-none items-center justify-between rounded-md px-3 py-2 text-sm font-semibold text-text-muted transition hover:bg-surface-2 hover:text-text [&::-webkit-details-marker]:hidden">
+        <summary class="admin-sidebar-group-label flex cursor-pointer list-none items-center justify-between rounded-md px-3 py-2 text-sm font-semibold transition [&::-webkit-details-marker]:hidden">
           ${group.label}
           ${icon("chevron", "h-4 w-4 shrink-0 transition-transform duration-200 group-open/nav:rotate-180")}
         </summary>
-        <ul class="mt-1 space-y-0.5 pb-1 pl-2">
+        <ul class="mt-1 space-y-0.5 pb-1 pl-1">
           ${group.items
             .map((item) => {
               const active = isActive(item.href);
               return `
             <li>
-              <a href="${item.href}" class="block rounded-md px-3 py-2 text-sm transition ${
-                active ? "bg-primary/10 font-medium text-primary" : "text-text-muted hover:bg-surface-2 hover:text-text"
-              }">${item.label}</a>
+              <a href="${item.href}" class="admin-sidebar-link ${active ? "is-active" : ""}"${active ? ' aria-current="page"' : ""}>${item.label}</a>
             </li>`;
             })
             .join("")}
@@ -79,24 +76,35 @@
       const dashboardActive = isActive("dashboard.html");
 
       this.innerHTML = `
-        <div data-backdrop class="fixed inset-0 z-40 hidden bg-gray-900/50 lg:hidden"></div>
+        <div data-backdrop class="fixed inset-0 z-[40] hidden bg-primary/70 lg:hidden" aria-hidden="true"></div>
         <aside
           data-panel
-          class="fixed inset-y-0 left-0 z-50 flex h-screen w-72 -translate-x-full flex-col border-r border-border bg-surface transition-transform duration-200 lg:translate-x-0"
+          class="admin-sidebar-panel fixed inset-y-0 left-0 z-[50] flex h-screen w-72 -translate-x-full flex-col transition-transform duration-200 ease-out lg:translate-x-0"
+          aria-label="Navegación del panel"
         >
-          <div class="flex h-16 shrink-0 items-center justify-between gap-2 border-b border-border px-4">
-            <a href="dashboard.html" class="flex items-center gap-2">
-              <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-onPrimary font-heading text-sm font-bold">DT</span>
-              <span class="flex flex-col leading-tight">
-                <span class="font-heading text-sm font-semibold text-text">Panel Admin</span>
-                <span class="text-xs text-text-muted">DocenTrack</span>
+          <div class="brand-stripe shrink-0" aria-hidden="true"></div>
+          <div class="admin-sidebar-brand flex h-16 shrink-0 items-center justify-between gap-2 px-4">
+            <a href="dashboard.html" class="flex min-w-0 items-center gap-2.5 rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
+              <img
+                src="../../assets/img/facultad/logo_universidad.jpg"
+                alt="UNAMBA"
+                class="h-9 w-9 shrink-0 rounded-full bg-onPrimary object-contain p-0.5 ring-2 ring-accent"
+              />
+              <img
+                src="../../assets/img/facultad/logo_facultad.jpg"
+                alt=""
+                class="h-8 w-8 shrink-0 rounded-md bg-onPrimary object-contain p-0.5"
+              />
+              <span class="flex min-w-0 flex-col leading-tight">
+                <span class="font-heading text-sm font-semibold text-sidebar-text">DocenTrack</span>
+                <span class="text-xs text-sidebar-muted">Panel Admin</span>
               </span>
             </a>
             <button
               type="button"
               data-close-sidebar
               aria-label="Cerrar menú"
-              class="inline-flex h-9 w-9 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text lg:hidden"
+              class="inline-flex h-9 w-9 items-center justify-center rounded-md text-sidebar-muted transition hover:bg-sidebar-hover hover:text-sidebar-text lg:hidden"
             >
               ${icon("close")}
             </button>
@@ -105,19 +113,24 @@
           <nav aria-label="Menú del panel" class="flex-1 space-y-1 overflow-y-auto px-3 py-4">
             <a
               href="dashboard.html"
-              class="block rounded-md px-3 py-2 text-sm font-medium transition ${
-                dashboardActive ? "bg-primary/10 text-primary" : "text-text hover:bg-surface-2"
-              }"
+              class="admin-sidebar-link ${dashboardActive ? "is-active" : ""}"
+              ${dashboardActive ? 'aria-current="page"' : ""}
             >
               Dashboard
             </a>
-            <div class="my-2 border-t border-border"></div>
+            <div class="admin-sidebar-divider my-3 border-t" role="separator"></div>
             ${ADMIN_NAV_GROUPS.map(renderGroup).join("")}
-            <div class="my-2 border-t border-border"></div>
-            <a href="../../index.html" class="block rounded-md px-3 py-2 text-sm text-text-muted transition hover:bg-surface-2 hover:text-text">
+            <div class="admin-sidebar-divider my-3 border-t" role="separator"></div>
+            <a href="../../index.html" class="admin-sidebar-link">
               ← Volver al kiosko
             </a>
           </nav>
+
+          <div class="shrink-0 border-t border-accent/25 px-4 py-3">
+            <p class="text-[11px] leading-snug text-sidebar-muted">
+              Facultad de Administración · UNAMBA
+            </p>
+          </div>
         </aside>
       `;
 
