@@ -19,7 +19,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../../js/tailwind-config.js"></script>
   </head>
-  <body class="kiosk-shell text-text">
+  <body data-kiosk-page="identificado" class="kiosk-shell text-text">
     <kiosko-topbar></kiosko-topbar>
 
     <!-- ESTADO: Identificado -->
@@ -44,19 +44,24 @@
 
         <span class="kiosk-status is-ok">Identificada</span>
 
-        <a href="formulario.html" class="kiosk-btn kiosk-btn-primary w-full">
-          Continuar al registro
-        </a>
-        <p class="text-xs text-text-muted">En el kiosko real este paso avanza solo, en 1–2 segundos.</p>
+        <a href="formulario.html" class="kiosk-btn kiosk-btn-primary w-full">Continuar ahora</a>
+        <p class="text-xs text-text-muted">Avanzando al registro automáticamente…</p>
       </div>
     </main>
+    <footer class="kiosk-reader-bar" data-reader-status data-state="online">
+      <div class="kiosk-reader-bar-inner">
+        <span class="kiosk-reader-dot" aria-hidden="true"></span>
+        <span data-reader-label>Lector biométrico listo</span>
+      </div>
+    </footer>
 
-    <kiosko-debug-panel></kiosko-debug-panel>
+    <kiosko-toast></kiosko-toast>
 
     <script src="../../js/theme.js"></script>
     <script src="../../js/site-paths.js"></script>
-    <script src="../../js/interaction-mode.js"></script>
     <script src="../../components/kiosko-topbar.js"></script>
-    <script src="../../components/kiosko-debug-panel.js"></script>
-  </body>
+    <script src="../../components/kiosko-toast.js"></script>
+    <script src="../../js/kiosko-sim.js"></script>
+
+</body>
 </html>

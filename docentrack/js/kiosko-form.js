@@ -1,8 +1,6 @@
 /**
  * kiosko-form.js — formulario de registro + modal de confirmación.
- *
- * Al pulsar "Guardar registro" se muestra el resumen completo y las
- * fotos; el usuario elige Confirmar o Cancelar.
+ * Toast al abrir resumen y al confirmar; validación mínima de horas.
  */
 (function () {
   function val(id) {
@@ -15,9 +13,21 @@
     if (el) el.textContent = text;
   }
 
+  function toast(message, type) {
+    if (window.KioskoToastShow) window.KioskoToastShow(message, type);
+    else document.dispatchEvent(new CustomEvent("kiosko:toast", { detail: { message, type } }));
+  }
+
   function openModal() {
     const modal = document.getElementById("kiosk-confirm-modal");
     if (!modal) return;
+
+    const entrada = val("hora-entrada");
+    const salida = val("hora-salida");
+    if (entrada && salida && entrada >= salida) {
+      toast("La hora de salida debe ser posterior a la de entrada", "warning");
+      return;
+    }
 
     setText("confirm-curso", val("curso"));
     setText("confirm-ciclo", val("ciclo"));
@@ -25,10 +35,11 @@
     setText("confirm-tema", val("tema"));
     setText("confirm-aula", val("aula"));
     setText("confirm-alumnos", val("alumnos"));
-    setText("confirm-horas", `${val("hora-entrada")} – ${val("hora-salida")}`);
+    setText("confirm-horas", `${entrada} – ${salida}`);
 
     modal.hidden = false;
     document.body.classList.add("overflow-hidden");
+    toast("Revise el resumen antes de confirmar", "info");
     modal.querySelector("[data-confirm-ok]")?.focus();
   }
 
@@ -53,7 +64,10 @@
     });
 
     document.querySelector("[data-confirm-ok]")?.addEventListener("click", () => {
-      window.location.href = "confirmacion.html";
+      toast("Guardando registro…", "info");
+      setTimeout(() => {
+        window.location.href = "confirmacion.html";
+      }, 450);
     });
 
     document.addEventListener("keydown", (event) => {

@@ -18,7 +18,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../../js/tailwind-config.js"></script>
   </head>
-  <body class="kiosk-shell bg-bg text-text">
+  <body data-kiosk-page="error-no-identificado" class="kiosk-shell bg-bg text-text">
     <kiosko-topbar></kiosko-topbar>
 
     <!-- ESTADO DE ERROR: huella leída con claridad, pero sin ningún docente enrolado que coincida -->
@@ -44,13 +44,20 @@
         <a href="../../index.html" class="kiosk-btn kiosk-btn-secondary w-full">Volver a inicio</a>
       </div>
     </main>
+    <footer class="kiosk-reader-bar" data-reader-status data-state="online">
+      <div class="kiosk-reader-bar-inner">
+        <span class="kiosk-reader-dot" aria-hidden="true"></span>
+        <span data-reader-label>Lector biométrico listo</span>
+      </div>
+    </footer>
 
-    <kiosko-debug-panel></kiosko-debug-panel>
+    <kiosko-toast></kiosko-toast>
 
     <script src="../../js/theme.js"></script>
     <script src="../../js/site-paths.js"></script>
-    <script src="../../js/interaction-mode.js"></script>
     <script src="../../components/kiosko-topbar.js"></script>
-    <script src="../../components/kiosko-debug-panel.js"></script>
-  </body>
+    <script src="../../components/kiosko-toast.js"></script>
+    <script src="../../js/kiosko-sim.js"></script>
+
+</body>
 </html>

@@ -29,7 +29,7 @@ body {
 
 /* Custom elements son inline por defecto */
 kiosko-topbar,
-kiosko-debug-panel,
+kiosko-toast,
 admin-sidebar,
 admin-topbar,
 admin-toast,
@@ -240,6 +240,7 @@ p {
   border-radius: var(--radius-md);
   padding: 0.55rem 0.85rem;
   font-size: var(--text-sm);
+  font-weight: var(--font-normal);
   color: var(--sidebar-text-muted);
   transition:
     background-color var(--duration-fast) var(--ease-out),
@@ -252,7 +253,7 @@ p {
 .admin-sidebar-link.is-active {
   background: var(--sidebar-active-bg);
   color: var(--sidebar-active-text);
-  font-weight: var(--font-semibold);
+  font-weight: var(--font-medium);
 }
 .admin-sidebar-link.is-active::after {
   content: "";
@@ -1041,4 +1042,118 @@ p {
   .kiosk-btn:active {
     transform: none;
   }
+}
+
+/* ——— Kiosko: simulación (pad + barra lector + dialog escenarios) ——— */
+
+.kiosk-fingerprint-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 9999px;
+}
+.kiosk-fingerprint-btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 6px;
+}
+.kiosk-fingerprint-btn:active .kiosk-fingerprint {
+  transform: scale(0.97);
+}
+.kiosk-fingerprint {
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.kiosk-shell:has(.kiosk-main.is-form) .kiosk-reader-bar {
+  display: none;
+}
+
+.kiosk-reader-bar {
+  flex-shrink: 0;
+  margin-top: auto;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+  padding: 0.65rem var(--space-4);
+}
+.kiosk-reader-bar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  color: var(--color-text-muted);
+}
+.kiosk-reader-dot {
+  height: 0.5rem;
+  width: 0.5rem;
+  border-radius: 9999px;
+  background: var(--color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent);
+}
+.kiosk-reader-bar[data-state="offline"] .kiosk-reader-dot {
+  background: var(--color-danger);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-danger) 22%, transparent);
+}
+.kiosk-reader-hint {
+  display: none;
+  color: var(--color-text-muted);
+  font-weight: var(--font-normal);
+}
+@media (min-width: 640px) {
+  .kiosk-reader-hint {
+    display: inline;
+  }
+}
+
+.kiosk-scenario-dialog {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-bg);
+  color: var(--color-text);
+  padding: 0;
+  max-width: min(22rem, calc(100vw - 2rem));
+  box-shadow: var(--shadow-lg);
+}
+.kiosk-scenario-dialog::backdrop {
+  background: color-mix(in srgb, var(--color-primary-dark) 45%, transparent);
+}
+.kiosk-scenario-sheet {
+  padding: var(--space-5);
+}
+.kiosk-scenario-option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  padding: 0.75rem 0.9rem;
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-text);
+  cursor: pointer;
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
+}
+.kiosk-scenario-option:hover {
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+.kiosk-scenario-cancel {
+  display: block;
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 0.65rem;
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+.kiosk-scenario-cancel:hover {
+  color: var(--color-text);
 }

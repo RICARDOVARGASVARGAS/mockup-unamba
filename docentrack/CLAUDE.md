@@ -141,22 +141,22 @@ Kiosko **y** panel admin alternables entre claro/oscuro, mismo mecanismo
 que `pagina-web/` (variables CSS, un botón alterna `[data-theme]`, estado
 en memoria durante la navegación, sin localStorage).
 
-## Modo de interacción — herramienta de mockup (Escritorio / Táctil)
-Como fase 1 es PC en mesa de registro pero no se ha decidido si el
-monitor será táctil, el kiosko incluye un **toggle "modo de
-interacción"** (igual de espíritu que el color-picker: instrumento del
-mockup, no producto final) que alterna en vivo entre:
-- **Escritorio** — densidad normal, pensado para mouse/teclado.
-- **Táctil** — botones grandes, más espaciado, pensado para dedo.
-Sirve para decidir con la facultad qué variante usar en el despliegue
-real; puede ocultarse para presentar el kiosko limpio, igual que el
-picker de colores.
+## Densidad unificada (kiosko)
+Un solo diseño para mouse y táctil: áreas de toque ~52px (`--kiosk-*` en
+`tokens.css`). No hay toggle Escritorio/Táctil.
+
+## Simulación del lector (mockup)
+Sin panel "Forzar estado". El flujo se comporta como producto:
+- Toque breve en la huella → lectura OK → identificado → formulario →
+  confirmación (con toasts).
+- Mantener pulsado ~1 s en reposo → elegir otro resultado (errores) para
+  la demo.
+Scripts: `js/kiosko-sim.js`, `components/kiosko-toast.js`.
 
 ## Reglas de diseño
-- **Kiosko-first, no mobile-first**: el kiosko se diseña para su
-  dispositivo real (PC de mesa/monitor, con el toggle táctil/escritorio
-  de arriba) — no necesita adaptarse a celular. El panel admin sí debe
-  responder bien en escritorio y tablet (uso de oficina).
+- **Kiosko-first, no mobile-first**: pensado para PC/monitor de mesa;
+  no debe adaptarse a celular. El panel admin sí responde en escritorio
+  y tablet.
 - Nada de texto libre extenso ni firma manuscrita en el kiosko: todo
   select/input mínimo.
 - Contraste accesible y foco visible en ambos temas, kiosko y admin.
@@ -193,16 +193,15 @@ picker de colores.
   periodos, aulas, horarios, registros, reportes)
 - `/assets` → logos UNAMBA/facultad e íconos (`assets/README.md`)
 - `/css` → `tokens.css` (azul + naranja + blanco), `base.css`
-- `/js` → tema, modo de interacción (táctil/escritorio), simulación de
-  estados del lector, inyección de componentes
+- `/js` → tema, simulación del flujo de huella (`kiosko-sim.js`), toasts
 - `index.html` → pantalla de reposo del kiosko (punto de entrada)
 
 ## Estado actual
 - ~~`docs/ESPECIFICACION.md`~~ — hecho.
-- ~~Kiosko~~ — hecho: reposo, procesando, identificado, formulario (con
-  badge "fuera de horario" no bloqueante), confirmación, y los 5 estados
-  de error del lector. Con panel oculto "Forzar estado" para la demo y
-  toggle Escritorio/Táctil.
+- ~~Kiosko~~ — hecho: flujo simulado con toasts (reposo → procesando →
+  identificado → formulario → confirmación), errores via long-press en
+  la huella, densidad unificada, sin panel "Forzar estado" ni toggle
+  táctil/escritorio.
 - ~~Panel administrativo~~ — hecho: login, dashboard, Docentes (+
   enrolamiento de huella en 3 muestras), Cursos (+ temario), Ciclos,
   Periodos académicos, Aulas, Horarios/Asignaciones, Registros de

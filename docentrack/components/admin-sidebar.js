@@ -53,7 +53,7 @@
     const hasActive = group.items.some((item) => isActive(item.href));
     return `
       <details class="group/nav" ${hasActive ? "open" : ""}>
-        <summary class="admin-sidebar-group-label flex cursor-pointer list-none items-center justify-between rounded-md px-3 py-2 text-sm font-semibold transition [&::-webkit-details-marker]:hidden">
+        <summary class="admin-sidebar-group-label flex cursor-pointer list-none items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition [&::-webkit-details-marker]:hidden">
           ${group.label}
           ${icon("chevron", "h-4 w-4 shrink-0 transition-transform duration-200 group-open/nav:rotate-180")}
         </summary>

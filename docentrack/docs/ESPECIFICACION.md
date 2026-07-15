@@ -14,10 +14,9 @@ Es la referencia de **qué construir**. Las decisiones de **cómo trabajar**
 
 > Nota para el mockup: aquí no hay base de datos ni lector real. Las
 > marcas indican qué será dinámico o depende de hardware en el sistema
-> final, para diseñar cada pantalla pensando en cómo se llenará o
-> reaccionará. En el mockup se maquetan con datos de ejemplo y los
-> estados del lector se simulan (botones de "forzar estado X" ocultos,
-> como el picker de colores).
+> final. En el mockup el flujo se simula: toque en la huella avanza el
+> camino feliz; mantener pulsado abre escenarios de error (solo demo).
+> Toasts dan feedback en cada paso.
 
 ---
 
@@ -32,9 +31,10 @@ que vuelve siempre al reposo. Un solo toque de huella por visita (ver
 - Reloj y fecha actual en vivo — [SIS]
 - Ilustración/ícono del lector con estado neutro — [EST]
 - Toggle tema claro/oscuro — [SIS]
-- Toggle modo de interacción (Escritorio/Táctil) — [SIS] — herramienta de
-  mockup, ocultable para presentar limpio
+- Densidad unificada (~52px) para mouse y táctil — sin toggle — [EST]
+- Barra de estado del lector (conectado / desconectado) — [SIS]
 - Logo/nombre del sistema (DocenTrack) — [EST]
+- Toque en el icono de huella simula la lectura — [SIS] (mockup)
 
 ## 2. Leyendo / procesando — [EXT]
 - Animación de "verificando huella…" tras colocar el dedo
@@ -133,20 +133,21 @@ Ruta base `/admin`. Un solo rol, Administrador, acceso total.
 # Funcionalidades Transversales (UX / técnicas)
 
 - Tema claro/oscuro en todo (kiosko y admin)
-- Modo de interacción Escritorio/Táctil (solo kiosko, herramienta de mockup)
+- Toasts de feedback en el flujo del kiosko
+- Densidad unificada (mouse + táctil) en el kiosko; sin toggle de densidades
 - Accesibilidad: contraste, foco visible, navegación por teclado (admin)
 - Panel admin responsive (escritorio + tablet); el kiosko no necesita
   adaptarse a celular, es un dispositivo fijo
-- Estados de error del lector siempre visibles y claros, nunca un error
-  genérico
+- Estados de error del lector claros; en el mockup se alcanzan con
+  long-press en la huella (demo), no con un panel permanente
 
 ---
 
 # Navegación
 
 **Kiosko**: sin menú tradicional. Flujo lineal: Reposo → Identificación →
-Formulario → Confirmación → Reposo. Solo dos controles persistentes:
-tema claro/oscuro y modo de interacción.
+Formulario → Confirmación → Reposo. Control persistente: tema
+claro/oscuro. Feedback: toasts + barra de estado del lector.
 
 **Panel admin** (sidebar):
 Dashboard · Docentes · Cursos · Ciclos · Periodos académicos · Aulas ·

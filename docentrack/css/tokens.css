@@ -7,6 +7,8 @@
  *
  * Escena dark: panel admin de noche + kiosko siempre encendido en pasillo —
  * navy profundo, bordes naranja, texto claro con contraste ≥ 4.5:1.
+ *
+ * Densidad unificada (táctil + escritorio): un solo juego de --kiosk-*.
  */
 
 :root,
@@ -109,8 +111,9 @@
   --space-12: 48px;
   --space-16: 64px;
 
-  --kiosk-tap: 44px;
-  --kiosk-gap: var(--space-4);
+  /* Densidad unificada ~52px (cómoda para dedo y mouse) */
+  --kiosk-tap: 52px;
+  --kiosk-gap: var(--space-5);
   --kiosk-text: var(--text-lg);
 
   /* Escala z semántica */
@@ -184,10 +187,4 @@
   --shadow-lg: 0 10px 24px -6px rgb(0 0 0 / 0.65);
 
   --focus-ring: 0 0 0 3px color-mix(in srgb, var(--color-accent) 45%, transparent);
-}
-
-:root[data-density="touch"] {
-  --kiosk-tap: 64px;
-  --kiosk-gap: var(--space-6);
-  --kiosk-text: var(--text-xl);
 }
