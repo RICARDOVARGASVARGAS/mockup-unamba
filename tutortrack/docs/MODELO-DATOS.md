@@ -12,8 +12,9 @@ Para no confundir dos conceptos distintos que ambos usan la palabra
 "ciclo":
 - **Periodo Académico** → el contenedor temporal general (ej. `2026-I`,
   `2026-II`). Mismo término que ya usa `../docentrack/`.
-- **Ciclo** → el nivel curricular del estudiante (1° al 10°). Catálogo
-  aparte, no se mezcla con Periodo Académico.
+- **Ciclo** → el nivel curricular del estudiante (catálogo con `nombre`,
+  `orden` y `activo`). Catálogo aparte, no se mezcla con Periodo
+  Académico.
 
 ## Entidades confirmadas hasta ahora
 
@@ -40,14 +41,20 @@ adicionales propios de su rol de negocio.
   esta parte de la conversación)
 
 ### Ciclo
-Catálogo de niveles curriculares.
+Catálogo de niveles curriculares (malla abierta: se pueden agregar o
+desactivar ciclos sin tocar código).
 - `id`
-- `numero` (1 al 10)
-- `nombre` (ej. "Primer ciclo")
+- `nombre` (ej. "Primer ciclo", "1° ciclo" — texto libre de visualización)
+- `orden` (entero único: 1, 2, 3… — ordena el listado y permite
+  calcular el "ciclo siguiente" al avanzar estudiantes)
+- `activo` (booleano; default `true`) — si es `false`, el ciclo no se
+  ofrece en nuevas asignaciones/matrículas, pero el historial
+  (`CicloPeriodo` ya creado) se conserva
 
-Por ahora se asume fijo (10 ciclos), aunque el usuario mencionó que la
-malla curricular podría actualizarse — impacto en este catálogo
-**(pendiente de definir)**.
+**Confirmado (2026-07):** se eliminó `numero` como campo de negocio
+separado; era redundante con `nombre`. La progresión usa `orden`.
+Varios ciclos pueden estar `activo = true` a la vez (a diferencia de
+`PeriodoAcademico.activo`, donde solo uno es el vigente).
 
 ### PeriodoAcademico
 Catálogo de periodos (semestre/año).
@@ -165,8 +172,9 @@ Acción manual asistida al abrir un nuevo Periodo Académico, mismo
 espíritu que la copia de `CicloPeriodo` (propone, pero no decide por el
 usuario):
 1. Por cada estudiante matriculado en el periodo anterior, el sistema
-   **propone** matricularlo en el `Ciclo` con el `numero` inmediato
-   superior, dentro del nuevo periodo.
+   **propone** matricularlo en el `Ciclo` con el `orden` inmediato
+   superior (y preferentemente `activo = true`), dentro del nuevo
+   periodo.
 2. El admin revisa la propuesta y corrige lo que no aplique: dejar al
    estudiante en el mismo ciclo (repite), moverlo a un ciclo distinto,
    o excluirlo de la lista (no se matricula ese periodo → egresa o se
@@ -174,10 +182,10 @@ usuario):
 3. Al confirmar, se crean las filas `EstudianteCicloPeriodo` del nuevo
    periodo. El periodo anterior no se modifica.
 
-Como el "ciclo siguiente" se busca por `numero` (no por una cantidad
-fija de 10), si el catálogo `Ciclo` crece en el futuro (ej. 11° y 12°
-en 2028) la propuesta de avance simplemente los encuentra — no
-requiere migrar datos históricos.
+Como el "ciclo siguiente" se busca por `orden` (no por una cantidad
+fija de 10), si el catálogo `Ciclo` crece en el futuro la propuesta de
+avance simplemente encuentra el siguiente — no requiere migrar datos
+históricos.
 
 Beneficios que se derivan gratis de este modelo:
 - **Historial completo de un estudiante**: se obtiene consultando todas
@@ -439,6 +447,8 @@ de verdad para el mismo dato.
 ### TipoEstadoDerivacion (catálogo)
 - `id`
 - `nombre` (contenido exacto pendiente, ver arriba)
+- `orden` (para línea de tiempo coherente en seguimiento — confirmado
+  en especificación de pantallas)
 
 ## Pendiente de definir (próximas partes de la conversación)
 

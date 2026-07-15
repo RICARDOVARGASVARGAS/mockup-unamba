@@ -36,28 +36,44 @@ Ya construido y probado: `index.html` (login), `components/app-sidebar.js`,
 
 ## Fase 1 — Catálogos independientes (Administrador)
 
-Todos siguen el mismo patrón: listado con buscador simple + alta/edición
-por modal (son catálogos de `id` + `nombre`, no ameritan página aparte)
-+ acción "Eliminar" solo si el ítem no está en uso (regla general de
-integridad, no se repite en cada ficha).
+**Estado: hecho.** Todas las pantallas de esta fase usan el patrón
+compartido `js/catalog-table.js` + estilos `catalog-*` / `btn-*` en
+`css/base.css`.
 
-### `admin/ciclos-periodos.html` — Ciclos y Periodos Académicos
-Una sola pantalla con **dos secciones independientes** — son tablas
-distintas en el modelo (ver `MODELO-DATOS.md` § Convención de nombres:
-`Ciclo` y `PeriodoAcademico` NO se fusionan como entidad, solo
-comparten pantalla por ser ambos catálogos triviales de `id`+`nombre`).
+Patrón de listado (obligatorio en catálogos):
+- Cabecera con título + CTA primario "Nuevo…"
+- Barra de consulta: **campo buscar + botón Buscar** + filtros
+  estructurados (select) + Limpiar
+- Meta "Mostrando X–Y de Z"
+- Tabla con thead sticky, columna ancla (nombre), badges de estado
+  cuando aplica, acciones **Editar / Eliminar** (y extras como
+  "Vigente") con etiqueta + ícono
+- Paginación con conteo de página y selector de filas (5/8/10)
+- Alta/edición por modal; eliminar con `app-modal-confirm`
+- Datos solo en memoria (mockup)
 
-**Sección Periodos académicos** (va primera — es el contenedor general del que depende todo lo demás)
+Cada catálogo sigue siendo **una pantalla / un ítem de menú** (Ciclo ≠
+Periodo Académico).
+
+### `admin/ciclos.html` — Ciclos
+Pantalla propia — **no** se mezcla con Periodo Académico (ver
+`MODELO-DATOS.md` § Convención de nombres: son catálogos distintos).
+
+- **Objetivo**: administrar el catálogo de niveles curriculares.
+- **Entidades**: `Ciclo` (`nombre`, `orden`, `activo`).
+- **Elementos clave**: listado ordenado por `orden`; alta/edición de
+  `nombre` + `orden` + `activo` (modal); filtro por estado; sin límite
+  fijo de cantidad de ciclos.
+- **Reglas**: `orden` único; no eliminar un `Ciclo` referenciado por
+  algún `CicloPeriodo` (desactivar con `activo = false` en su lugar).
+  Varios ciclos pueden estar activos a la vez.
+### `admin/periodos-academicos.html` — Periodos académicos
+Pantalla propia — contenedor temporal general, independiente de `Ciclo`.
+
 - **Objetivo**: administrar los periodos (2026-I, 2026-II...) y marcar cuál está vigente.
 - **Entidades**: `PeriodoAcademico`.
 - **Elementos clave**: listado; alta/edición de `nombre`, `fecha_inicio`, `fecha_fin` (modal); marcar `activo` (un solo periodo vigente a la vez — al activar uno se desactiva el anterior automáticamente).
 - **Reglas**: al crear un periodo nuevo, ofrecer el flujo de "copiar configuración del periodo anterior" (ver Fase 3, `admin/ciclo-periodo.html`) — este catálogo es el punto de entrada de ese flujo.
-
-**Sección Ciclos** (va después)
-- **Objetivo**: administrar el catálogo de niveles curriculares (1° al 10°, editable).
-- **Entidades**: `Ciclo`.
-- **Elementos clave**: listado ordenado por `numero`; alta/edición de `numero` + `nombre` (modal); sin límite fijo de 10 (el catálogo debe poder crecer, ej. 11°/12° en 2028).
-- **Reglas**: `numero` único; no permitir eliminar un `Ciclo` referenciado por algún `CicloPeriodo`.
 
 ### `admin/areas.html` — Áreas
 - **Objetivo**: catálogo temático de preguntas (ej. "Personal y social", "Salud corporal y mental").
@@ -133,7 +149,7 @@ comparten pantalla por ser ambos catálogos triviales de `id`+`nombre`).
 - **Elementos clave**:
   - Listado de matrículas del periodo seleccionado (estudiante, ciclo, docente asignado), con conteo de tutorados por docente visible (para detectar desequilibrios de carga).
   - Alta manual de una matrícula puntual (buscar estudiante → elegir Ciclo del periodo → elegir Docente, limitado a los ya asignados a ese `CicloPeriodo` en `DocenteCicloPeriodo`).
-  - Asistente **"Avanzar estudiantes"**: toma las matrículas del periodo anterior, propone el Ciclo siguiente (por `numero`) para cada estudiante en el nuevo periodo, permite corregir individualmente (repite, cambia de ciclo, o se excluye = egresa/retira) antes de confirmar.
+  - Asistente **"Avanzar estudiantes"**: toma las matrículas del periodo anterior, propone el Ciclo siguiente (por `orden`) para cada estudiante en el nuevo periodo, permite corregir individualmente (repite, cambia de ciclo, o se excluye = egresa/retira) antes de confirmar.
 - **Reglas**: un estudiante solo puede tener una matrícula por Periodo Académico; sí puede repetir el mismo Ciclo en periodos distintos.
 
 ---

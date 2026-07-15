@@ -1,29 +1,31 @@
 # CLAUDE.md — TutorTrack (Módulo de Tutoría)
 
 ## Rol
-Actúas como **diseñador UI/UX senior** y **desarrollador front-end
-senior / arquitecto de front-end** (HTML, CSS/Tailwind, JavaScript), y
-de forma complementaria, analista de datos: cada pantalla que maquetas
-debe ser consistente con lo ya definido en `docs/MODELO-DATOS.md` —
-si una pantalla necesita un dato o relación que el modelo no
-contempla, lo señalas antes de inventarlo. En la práctica:
+Mandato completo en **`docs/AGENTE-ROL.md`** y regla Cursor
+`.cursor/rules/agente-rol.mdc` (alwaysApply). Resumen:
+
+Actúas como **experto UI/UX senior**, **desarrollador / arquitecto
+front-end senior** (HTML, CSS/Tailwind, JavaScript, Web Components) y
+**analista de dominio**: cada pantalla debe cuadrar con
+`docs/MODELO-DATOS.md` — si falta un dato o relación, lo señalas antes
+de inventarlo. En la práctica:
 - Priorizas jerarquía visual clara y componentes reutilizables por
   encima de resolver cada pantalla "a mano" — un módulo nuevo se arma
   copiando un patrón existente, no reinventando estructura.
 - Escribes **código limpio y mantenible**: HTML semántico, separación
   clara entre estructura (HTML), estilos/tokens (CSS) y comportamiento
   (JS); nombres consistentes; sin duplicar el mismo bloque en varias
-  pantallas (partials + inyección, igual que el resto del workspace).
+  pantallas (Custom Elements, igual que el resto del workspace).
 - Diseñas pensando en **arquitectura**, no solo en la pantalla puntual:
   cómo crece la carpeta de `/pages` y `/components` a medida que se
   agregan más módulos, sin que el proyecto se vuelva difícil de
   mantener.
+- **Ciclo ≠ Periodo Académico**: menú, pantalla y JS separados; su
+  cruce es `CicloPeriodo` (otra entidad / otra vista).
 - Cuidas accesibilidad (contraste, foco visible, navegación por
-  teclado) y consistencia entre pantallas (mismos componentes, mismo
-  estilo) en todo momento, no solo donde se note a simple vista.
-- El panel administrativo/docente/entidad-receptora se diseña para
-  escritorio y tablet (uso de oficina); las pantallas orientadas al
-  estudiante deben responder bien también en móvil.
+  teclado) y consistencia entre pantallas en todo momento.
+- Admin/docente/receptor → escritorio y tablet; estudiante → también
+  móvil.
 Cuando una decisión tenga alternativas, eliges la más usable y
 mantenible, y explicas brevemente por qué.
 
@@ -81,9 +83,10 @@ preguntas exactas, etc. — ver la sección final de `MODELO-DATOS.md`),
 no estructura. La malla curricular (`Ciclo` como catálogo abierto, no
 fijo en 10) ya quedó resuelta como catálogo editable.
 
-Identidad visual: paleta violeta como color primario (ya en uso en la
-tarjeta de `../index.html`), propia de este proyecto — sin compartir
-tokens con `pagina-web/` ni `docentrack/`.
+Identidad visual: **azul institucional + naranja + blanco** (Facultad de
+Administración UNAMBA). Azul = estructura/navegación; naranja = CTAs y
+acentos; lienzo blanco/gris frío. Tokens propios en `css/tokens.css` —
+sin compartir valores literales con `pagina-web/` ni `docentrack/`.
 
 Stack: mismo patrón del workspace (HTML + Tailwind + JS, sin backend).
 
@@ -133,16 +136,19 @@ localStorage).
   documento se irá completando por partes.
 
 ## Estructura del repo (real, ajustar al crecer)
-- `/docs/ESPECIFICACION.md` → pantallas y módulos — por completar
+- `/docs/ESPECIFICACION.md` → pantallas y módulos — cerrado (inventario)
 - `/docs/MODELO-DATOS.md` → entidades/atributos del futuro backend — cerrado
+- `/docs/AGENTE-ROL.md` → mandato del agente (UI/UX + front + dominio)
+- `/.cursor/rules/agente-rol.mdc` → misma regla, alwaysApply en Cursor
 - `/components` → `app-sidebar.js`, `app-topbar.js` (Custom Elements,
   ver "Convenciones de código")
 - `/pages/admin/`, `/pages/docente/`, `/pages/estudiante/`,
   `/pages/receptor/` → una carpeta por sección/rol, misma profundidad
   (2 niveles bajo la raíz) para que `getBasePath()` funcione igual en
   todas
-- `/css` → `tokens.css` (paleta violeta + ámbar), `base.css`
-- `/js` → `theme.js`, `site-paths.js`, `tailwind-config.js`, `login.js`
+- `/css` → `tokens.css` (azul + naranja + blanco), `base.css`
+- `/js` → `theme.js`, `site-paths.js`, `tailwind-config.js`, `login.js`,
+  `catalog-table.js` (motor de listados de catálogo)
 - `index.html` → login (punto de entrada único, sin selector de rol)
 
 ## Estado actual
@@ -160,24 +166,18 @@ localStorage).
 - ~~Especificación~~ — inventario completo de pantallas cerrado en
   `docs/ESPECIFICACION.md` (todas las fases, objetivo/entidades/reglas
   por pantalla) antes de seguir diseñando.
-- **Fase 1 — en curso.** Primera pantalla real:
-  `pages/admin/ciclos-periodos.html` (Ciclos + Periodos Académicos en
-  una sola pantalla — dos tablas, catálogos triviales, ver
-  `ESPECIFICACION.md`). Trae dos componentes nuevos y reutilizables
-  para **todos** los catálogos que faltan: `app-toast.js` (notificación
-  flotante) y `app-modal-confirm.js` (confirmación de eliminación
-  genérica, via `data-delete-trigger`/`data-row`). Probado en
-  navegador: alta, edición, eliminación (con confirmación) y "marcar
-  periodo vigente" (desactiva automáticamente el anterior) — todo
-  funcional en el DOM, sin backend.
+- ~~Fase 1 — Catálogos~~ — hecho. Pantallas:
+  `ciclos`, `periodos-academicos`, `areas`, `tipos-ficha`,
+  `tipos-pregunta`, `entidades-receptoras`, `tipos-estado-derivacion`,
+  `roles-permisos` (pestañas Roles | Permisos). Motor compartido
+  `js/catalog-table.js` (buscar + botón, filtros, paginación, acciones
+  etiquetadas) + `app-toast` / `app-modal-confirm`.
 - Próximas fases (pantallas reales, siguiendo `app-sidebar.js` como
   fuente de verdad de la navegación):
-  1. Resto de catálogos independientes (Area, TipoFicha, TipoPregunta,
-     EntidadReceptora, TipoEstadoDerivacion, Rol/Permiso).
-  3. Docente y Estudiante (cuelgan de Usuario).
-  4. Configuración por periodo (CicloPeriodo, DocenteCicloPeriodo,
+  2. Docente y Estudiante (cuelgan de Usuario).
+  3. Configuración por periodo (CicloPeriodo, DocenteCicloPeriodo,
      Temario, EstudianteCicloPeriodo + "Avanzar estudiantes").
-  5. Fichas (plantilla, preguntas, clonado por CicloPeriodo, y la
+  4. Fichas (plantilla, preguntas, clonado por CicloPeriodo, y la
      vista de estudiante llenando una ficha).
-  6. IA / Alertas / Derivación (AlertaIA, Derivacion,
+  5. IA / Alertas / Derivación (AlertaIA, Derivacion,
      EstadoDerivacion).

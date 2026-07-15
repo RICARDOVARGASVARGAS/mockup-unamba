@@ -40,6 +40,7 @@
         </div>
       `;
       this.pendingRow = null;
+      this.pendingId = null;
       this.init();
     }
 
@@ -58,11 +59,13 @@
         backdrop.classList.add("hidden");
         backdrop.classList.remove("flex");
         this.pendingRow = null;
+        this.pendingId = null;
       };
 
       document.addEventListener("click", (event) => {
         const trigger = event.target.closest("[data-delete-trigger]");
         if (!trigger) return;
+        this.pendingId = trigger.dataset.rowId || trigger.closest("[data-row]")?.dataset.id || null;
         open(trigger.dataset.deleteName || "este elemento", trigger.closest("[data-row]"));
       });
 
@@ -75,12 +78,18 @@
       });
 
       this.querySelector("[data-confirm]").addEventListener("click", () => {
-        if (this.pendingRow) {
+        const id = this.pendingId;
+        const managed = Boolean(document.querySelector("[data-catalog]"));
+        if (!managed && this.pendingRow) {
           const row = this.pendingRow;
           row.classList.add("opacity-0", "transition", "duration-200");
           setTimeout(() => row.remove(), 200);
         }
+        document.dispatchEvent(
+          new CustomEvent("app:delete-confirmed", { detail: { id, row: this.pendingRow } })
+        );
         close();
+        this.pendingId = null;
         document.dispatchEvent(new CustomEvent("app:toast", { detail: { message: "Elemento eliminado" } }));
       });
     }

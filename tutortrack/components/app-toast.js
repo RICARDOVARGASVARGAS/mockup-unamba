@@ -4,7 +4,7 @@
  * (detail: { message }). Auto-cierra a los 4s o con el botón X.
  *
  * Reutilizable en cualquier pantalla de catálogo/CRUD (ver
- * pages/admin/ciclos-periodos.html para el primer uso).
+ * pages/admin/ciclos.html / periodos-academicos.html para el primer uso).
  */
 (function () {
   const ICONS = {

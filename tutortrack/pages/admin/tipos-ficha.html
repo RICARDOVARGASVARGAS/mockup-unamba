@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tipos de ficha | TutorTrack (Mockup)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" />
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <app-sidebar></app-sidebar>
+    <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
+      <app-topbar page-title="Tipos de ficha" user-name="Rosa Huamaní" user-role="Administradora" user-initials="RH"></app-topbar>
+      <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <section class="app-card catalog-panel" data-catalog>
+          <div class="catalog-head">
+            <div>
+              <h2 class="font-heading">Tipos de ficha</h2>
+              <p>Clasificación de las fichas de tutoría (diagnóstico, seguimiento, grupal, etc.)</p>
+            </div>
+            <button type="button" data-open-create class="btn-primary">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+              Nuevo tipo de ficha
+            </button>
+          </div>
+          <div class="catalog-query">
+            <div class="catalog-field catalog-field-grow">
+              <label for="catalog-search">Buscar</label>
+              <input id="catalog-search" type="search" data-catalog-search class="catalog-input" placeholder="Buscar por nombre…" />
+            </div>
+            <div class="catalog-field">
+              <label for="filter-uso">Estado uso</label>
+              <select id="filter-uso" data-filter="uso" class="catalog-select min-w-[12rem]">
+                <option value="">Todos</option>
+                <option value="frecuente">Frecuente</option>
+                <option value="complementario">Complementario</option>
+              </select>
+            </div>
+            <div class="catalog-query-actions">
+              <button type="button" data-catalog-search-btn class="btn-secondary btn-icon" title="Buscar" aria-label="Buscar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+              </button>
+              <button type="button" data-catalog-clear class="btn-ghost btn-icon" title="Limpiar" aria-label="Limpiar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+              </button>
+            </div>
+          </div>
+          <div class="catalog-meta" data-catalog-meta></div>
+          <div class="catalog-table-wrap" data-catalog-table-wrap>
+            <table class="catalog-table">
+              <thead data-catalog-thead></thead>
+              <tbody data-catalog-body></tbody>
+            </table>
+          </div>
+          <div class="catalog-empty hidden" data-catalog-empty><p>No se encontraron tipos de ficha con esos criterios.</p></div>
+          <div class="catalog-pagination" data-catalog-pagination></div>
+        </section>
+      </main>
+    </div>
+    <div data-form-backdrop class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
+      <div class="modal-panel">
+        <h2 data-form-title class="font-heading">Nuevo tipo de ficha</h2>
+        <form data-form class="mt-4 space-y-4" novalidate>
+          <input type="hidden" data-editing-id />
+          <div>
+            <label for="tipo-ficha-nombre" class="form-label">Nombre</label>
+            <input id="tipo-ficha-nombre" type="text" required class="form-input" placeholder="Ej. Diagnóstico" />
+          </div>
+          <div>
+            <label for="tipo-ficha-uso" class="form-label">Estado uso</label>
+            <select id="tipo-ficha-uso" class="form-input">
+              <option value="frecuente">Frecuente</option>
+              <option value="complementario">Complementario</option>
+            </select>
+          </div>
+          <div class="mt-6 flex justify-end gap-3">
+            <button type="button" data-form-cancel class="btn-secondary">Cancelar</button>
+            <button type="submit" class="btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <app-modal-confirm></app-modal-confirm>
+    <app-toast></app-toast>
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/site-paths.js"></script>
+    <script src="../../components/app-sidebar.js"></script>
+    <script src="../../components/app-topbar.js"></script>
+    <script src="../../components/app-modal-confirm.js"></script>
+    <script src="../../components/app-toast.js"></script>
+    <script src="../../js/catalog-table.js"></script>
+    <script src="../../js/tipos-ficha.js"></script>
+  </body>
+</html>

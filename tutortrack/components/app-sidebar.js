@@ -30,7 +30,8 @@
         {
           label: "Catálogos",
           items: [
-            { label: "Ciclos y periodos académicos", path: "admin/ciclos-periodos.html" },
+            { label: "Ciclos", path: "admin/ciclos.html" },
+            { label: "Periodos académicos", path: "admin/periodos-academicos.html" },
             { label: "Áreas", path: "admin/areas.html" },
             { label: "Tipos de ficha", path: "admin/tipos-ficha.html" },
             { label: "Tipos de pregunta", path: "admin/tipos-pregunta.html" },
@@ -207,7 +208,10 @@
         >
           <div class="flex h-16 shrink-0 items-center justify-between gap-2 border-b border-border px-4">
             <a href="${window.getBasePath()}index.html" class="flex items-center gap-2">
-              <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-onPrimary font-heading text-sm font-bold">TT</span>
+              <span class="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg bg-primary text-onPrimary font-heading text-sm font-bold shadow-sm">
+                <span class="absolute inset-x-0 bottom-0 h-1 bg-accent"></span>
+                TT
+              </span>
               <span class="flex flex-col leading-tight">
                 <span class="font-heading text-sm font-semibold text-text">TutorTrack</span>
                 <span class="text-xs text-text-muted">Módulo de tutoría</span>
