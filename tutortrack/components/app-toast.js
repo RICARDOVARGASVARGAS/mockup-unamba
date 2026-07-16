@@ -16,7 +16,7 @@
     connectedCallback() {
       this.innerHTML = `
         <div class="pointer-events-none fixed inset-x-0 bottom-4 z-[60] flex justify-center px-4 sm:justify-end sm:right-6 sm:px-0">
-          <div data-toast class="pointer-events-auto hidden max-w-sm items-center gap-3 rounded-lg border border-success/30 bg-surface px-4 py-3 shadow-lg">
+          <div data-toast class="pointer-events-auto hidden max-w-sm items-center gap-3 rounded-lg border border-success/30 bg-bg px-4 py-3 shadow-md">
             <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-success-bg text-success">
               <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">${ICONS.check}</svg>
             </span>

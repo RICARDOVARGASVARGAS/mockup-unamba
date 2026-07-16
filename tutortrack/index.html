@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600;700&display=swap"
     />
 
     <link rel="stylesheet" href="css/tokens.css" />
@@ -20,41 +20,64 @@
   </head>
   <body class="w-full bg-bg text-text font-body antialiased">
     <main class="grid min-h-screen w-full lg:grid-cols-2">
-      <!-- Panel de marca -->
-      <section class="relative flex flex-col justify-between overflow-hidden bg-primary px-6 py-10 text-onPrimary sm:px-10 lg:px-14 lg:py-14">
-        <div aria-hidden="true" class="pointer-events-none absolute inset-0 overflow-hidden">
-          <div class="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-accent/20 blur-3xl"></div>
-          <div class="absolute -bottom-32 -left-16 h-80 w-80 rounded-full bg-onPrimary/10 blur-3xl"></div>
-        </div>
+      <!-- Panel de marca con fachada real -->
+      <section class="brand-hero flex flex-col justify-between px-6 py-10 sm:px-10 lg:px-14 lg:py-14">
+        <img
+          class="brand-hero__media"
+          src="assets/img/campus/fachada-facultad.jpg"
+          alt=""
+          width="1200"
+          height="800"
+          decoding="async"
+        />
+        <div class="brand-hero__overlay" aria-hidden="true"></div>
 
-        <div class="relative flex items-center gap-3">
-          <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-onPrimary font-heading text-lg font-bold text-primary">TT</span>
+        <div class="brand-hero__content flex items-center gap-3">
+          <img
+            class="logo-mark logo-mark-lg"
+            src="assets/img/facultad/logo_universidad.jpg"
+            alt="UNAMBA"
+            width="44"
+            height="44"
+          />
           <span class="flex flex-col leading-tight">
-            <span class="font-heading text-sm font-semibold">TutorTrack</span>
-            <span class="text-xs text-onPrimary/70">Facultad de Administración · UNAMBA</span>
+            <span class="font-heading text-sm font-semibold tracking-tight">TutorTrack</span>
+            <span class="text-xs opacity-75">Facultad de Administración · UNAMBA</span>
           </span>
         </div>
 
-        <div class="relative max-w-md py-10 lg:py-0">
-          <span class="inline-block rounded-full bg-onPrimary/10 px-3 py-1 text-xs font-medium text-onPrimary/80">Acceso restringido</span>
-          <h1 class="mt-4 font-heading text-3xl font-bold sm:text-4xl">Módulo de Tutoría</h1>
-          <p class="mt-3 text-onPrimary/80">
-            Acompañamiento personal docente-tutor/estudiante: fichas de tutoría,
-            detección temprana de señales de alerta y derivación a psicología
-            o áreas médicas, todo en un solo lugar.
+        <div class="brand-hero__content max-w-md py-12 lg:py-0">
+          <h1 class="font-display text-3xl font-semibold sm:text-4xl">
+            Tutoría con<br />cuidado y orden
+          </h1>
+          <p class="mt-4 max-w-[38ch] text-base leading-relaxed opacity-85">
+            Fichas de acompañamiento, detección temprana de alertas y
+            derivación a psicología o salud — en un solo flujo confidencial.
           </p>
+          <div class="mt-8 flex items-center gap-3 rounded-md bg-white/10 px-3 py-2.5 backdrop-blur-[2px]">
+            <img
+              class="h-10 w-auto max-w-[9rem] object-contain"
+              src="assets/img/facultad/logo_facultad.jpg"
+              alt="Facultad de Administración"
+              width="140"
+              height="40"
+            />
+            <span class="text-xs leading-snug opacity-80">
+              Identidad institucional de la Facultad de Administración
+            </span>
+          </div>
         </div>
 
-        <p class="relative hidden text-sm text-onPrimary/60 lg:block">© 2026 TutorTrack — UNAMBA</p>
+        <p class="brand-hero__content hidden text-sm opacity-60 lg:block">© 2026 TutorTrack — UNAMBA</p>
       </section>
 
       <!-- Panel de formulario -->
-      <section class="relative flex items-center justify-center bg-bg px-6 py-10 sm:px-10">
+      <section class="relative flex items-center justify-center bg-surface px-6 py-10 sm:px-10">
         <button
           type="button"
           data-theme-toggle
           aria-label="Cambiar tema"
-          class="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text sm:right-8 sm:top-8"
+          class="absolute right-4 top-4 inline-flex h-9 w-9 items-center justify-center rounded-md text-text-muted transition hover:bg-surface-2 hover:text-text sm:right-8 sm:top-8"
         >
           <span data-icon-sun>
             <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
@@ -69,10 +92,10 @@
         </button>
 
         <div class="w-full max-w-sm">
-          <h2 class="font-heading text-2xl font-bold text-text sm:text-3xl">Iniciar sesión</h2>
+          <p class="text-sm font-medium text-accent">Acceso al módulo</p>
+          <h2 class="mt-1 font-heading text-2xl font-bold tracking-tight text-text">Iniciar sesión</h2>
           <p class="mt-2 text-sm text-text-muted">
-            Ingresa tus credenciales. El sistema mostrará los accesos según
-            tus permisos.
+            Usa tu correo institucional. El sistema muestra los accesos según tus permisos.
           </p>
 
           <div
@@ -96,7 +119,7 @@
                 required
                 autocomplete="username"
                 placeholder="nombre.apellido@unamba.edu.pe"
-                class="mt-1.5 h-11 w-full rounded-md border border-border bg-surface px-3 text-sm text-text placeholder:text-text-muted/60 focus:border-primary focus:outline-none"
+                class="mt-1.5 h-11 w-full rounded-md border border-border bg-bg px-3 text-sm text-text placeholder:text-text-muted/55 focus:border-primary focus:outline-none focus:ring-[3px] focus:ring-primary/20"
               />
             </div>
 
@@ -110,7 +133,7 @@
                   required
                   autocomplete="current-password"
                   placeholder="••••••••"
-                  class="h-11 w-full rounded-md border border-border bg-surface px-3 pr-11 text-sm text-text placeholder:text-text-muted/60 focus:border-primary focus:outline-none"
+                  class="h-11 w-full rounded-md border border-border bg-bg px-3 pr-11 text-sm text-text placeholder:text-text-muted/55 focus:border-primary focus:outline-none focus:ring-[3px] focus:ring-primary/20"
                 />
                 <button
                   type="button"
@@ -140,7 +163,7 @@
 
             <button
               type="submit"
-              class="flex h-11 w-full items-center justify-center rounded-md bg-accent text-sm font-semibold text-white transition hover:bg-accent-dark"
+              class="flex h-11 w-full items-center justify-center rounded-md bg-accent text-sm font-semibold text-onAccent transition hover:bg-accent-dark"
             >
               Ingresar
             </button>

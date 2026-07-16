@@ -1,13 +1,13 @@
 /**
  * theme.js — mecanismo de modo claro/oscuro.
  *
- * Alterna el atributo [data-theme] en <html>, que es lo que hace que
- * css/tokens.css cambie de valores (mismo nombre de variable, distinto
- * valor). No define nuevos estilos aquí, solo cambia de tema.
+ * Alterna [data-theme] en <html>. Los valores viven en css/tokens.css.
+ * Estado en memoria (sin localStorage). Al navegar a otra página .html
+ * el tema vuelve a "claro".
  *
- * Estado en memoria (una variable JS), sin localStorage/sessionStorage.
- * Al ser un sitio multi-página (no SPA), el tema vuelve a "claro" al
- * navegar a otra página .html.
+ * syncPrimaryContrast ajusta --color-on-primary / --color-on-accent
+ * según el fill real. Las superficies de marca (fotos, campus-strip)
+ * usan --color-on-brand (siempre claro) y no dependen de este sync.
  */
 
 const THEMES = ["light", "dark"];
@@ -27,22 +27,35 @@ function contrastRatio(lumA, lumB) {
   return (light + 0.05) / (dark + 0.05);
 }
 
-function syncPrimaryContrast() {
-  const primary = getComputedStyle(document.documentElement).getPropertyValue("--color-primary").trim();
-  if (!/^#[0-9a-f]{6}$/i.test(primary)) return;
-
-  const bgLum = relativeLuminance(primary);
+function bestOnColor(bgHex) {
+  if (!/^#[0-9a-f]{6}$/i.test(bgHex)) return null;
+  const bgLum = relativeLuminance(bgHex);
   const whiteContrast = contrastRatio(bgLum, 1);
-  const darkContrast = contrastRatio(bgLum, relativeLuminance("#1a1524")); // --gray-900, fijo en ambos temas
-  const onPrimary = whiteContrast >= darkContrast ? "#ffffff" : "#1a1524";
+  const inkContrast = contrastRatio(bgLum, relativeLuminance("#0a101c"));
+  return whiteContrast >= inkContrast ? "#ffffff" : "#0a101c";
+}
 
-  document.documentElement.style.setProperty("--color-on-primary", onPrimary);
+function syncPrimaryContrast() {
+  const styles = getComputedStyle(document.documentElement);
+  const primary = styles.getPropertyValue("--color-primary").trim();
+  const accent = styles.getPropertyValue("--color-accent").trim();
+
+  const onPrimary = bestOnColor(primary);
+  const onAccent = bestOnColor(accent);
+
+  if (onPrimary) document.documentElement.style.setProperty("--color-on-primary", onPrimary);
+  if (onAccent) document.documentElement.style.setProperty("--color-on-accent", onAccent);
+  /* Marca/foto: siempre blanco legible sobre navy */
+  document.documentElement.style.setProperty("--color-on-brand", "#ffffff");
 }
 
 function applyTheme(theme) {
   if (!THEMES.includes(theme)) return;
   currentTheme = theme;
   document.documentElement.setAttribute("data-theme", theme);
+  /* Limpia overrides inline previos para que tokens.css mande, luego sync */
+  document.documentElement.style.removeProperty("--color-on-primary");
+  document.documentElement.style.removeProperty("--color-on-accent");
   syncPrimaryContrast();
   document.dispatchEvent(new CustomEvent("themechange", { detail: { theme: currentTheme } }));
 }

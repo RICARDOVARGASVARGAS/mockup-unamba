@@ -7,10 +7,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
-    />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600;700&display=swap" />
 
     <link rel="stylesheet" href="../../css/tokens.css" />
     <link rel="stylesheet" href="../../css/base.css" />
@@ -28,36 +25,53 @@
         user-role="Estudiante"
         user-initials="AT"
         user-ciclo="5"
+        user-avatar="assets/img/estudiantes/estudiante-1.jpg"
       ></app-topbar>
 
-      <main class="flex-1 space-y-6 p-4 sm:p-6 lg:p-8">
-        <!-- Llamado a la acción: ficha pendiente -->
-        <section class="app-card flex flex-col gap-4 border-l-4 border-l-accent p-5 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <span class="badge badge-warning">Pendiente</span>
-            <h2 class="mt-2 font-heading text-lg font-semibold text-text">Tienes una ficha de seguimiento por llenar</h2>
-            <p class="mt-1 text-sm text-text-muted">Semana 9 · Te toma unos minutos, tus respuestas son confidenciales.</p>
+      <main class="flex-1 space-y-8 p-4 sm:p-6 lg:p-8">
+        <section class="campus-strip" aria-label="Bienvenida">
+          <img
+            class="campus-strip__media"
+            src="../../assets/img/campus/banner_2.png"
+            alt=""
+            width="1200"
+            height="400"
+            decoding="async"
+          />
+          <div class="campus-strip__overlay" aria-hidden="true"></div>
+          <div class="campus-strip__content">
+            <p>Ciclo 5° · Periodo 2026-I</p>
+            <h2>Hola, Ana</h2>
           </div>
-          <a href="fichas.html" class="inline-flex h-11 shrink-0 items-center justify-center rounded-md bg-accent px-5 text-sm font-semibold text-white transition hover:bg-accent-dark">
-            Llenar ahora
-          </a>
+        </section>
+
+        <section class="priority-band" data-tone="accent" aria-label="Ficha pendiente">
+          <div>
+            <span class="badge badge-accent">Pendiente</span>
+            <h2 class="mt-2">Tienes una ficha de seguimiento por llenar</h2>
+            <p>Semana 9 · Te toma unos minutos. Tus respuestas son confidenciales.</p>
+          </div>
+          <a href="fichas.html" class="btn-primary shrink-0">Llenar ahora</a>
         </section>
 
         <section class="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <div class="app-card p-5">
-            <h2 class="font-heading text-base font-semibold text-text">Mi tutor asignado</h2>
+            <h2 class="section-title">Mi tutor asignado</h2>
             <div class="mt-4 flex items-center gap-3">
-              <span class="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-base font-semibold text-onPrimary">CQ</span>
+              <img class="avatar-photo avatar-photo-lg" src="../../assets/img/docentes/docente-1.jpg" alt="" width="48" height="48" />
               <div>
                 <p class="text-sm font-medium text-text">Carlos Quispe Mamani</p>
                 <p class="text-sm text-text-muted">Docente-Tutor · Ciclo 5°</p>
               </div>
             </div>
-            <a href="tutor.html" class="mt-4 inline-block text-sm font-medium text-primary hover:text-primary-dark">Ver detalle →</a>
+            <a href="tutor.html" class="section-link mt-4 inline-block">Ver detalle</a>
           </div>
 
           <div class="app-card p-5">
-            <h2 class="font-heading text-base font-semibold text-text">Historial de fichas</h2>
+            <div class="flex items-center justify-between gap-2">
+              <h2 class="section-title">Historial de fichas</h2>
+              <a href="fichas.html" class="section-link">Ver todas</a>
+            </div>
             <ul class="mt-4 divide-y divide-border">
               <li class="flex items-start justify-between gap-3 py-3 first:pt-0 last:pb-0">
                 <p class="text-sm text-text">Ficha de seguimiento — semana 8</p>
@@ -72,7 +86,6 @@
                 <span class="badge badge-success shrink-0">Enviada</span>
               </li>
             </ul>
-            <a href="fichas.html" class="mt-4 inline-block text-sm font-medium text-primary hover:text-primary-dark">Ver todas →</a>
           </div>
         </section>
       </main>

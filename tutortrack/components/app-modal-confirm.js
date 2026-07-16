@@ -26,15 +26,15 @@
     connectedCallback() {
       this.innerHTML = `
         <div data-backdrop class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
-          <div data-panel role="alertdialog" aria-modal="true" aria-labelledby="modal-confirm-title" class="w-full max-w-sm rounded-lg bg-surface p-6 shadow-lg">
-            <span class="flex h-11 w-11 items-center justify-center rounded-full bg-danger-bg text-danger">
-              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">${ICONS.warning}</svg>
+          <div data-panel role="alertdialog" aria-modal="true" aria-labelledby="modal-confirm-title" class="w-full max-w-sm rounded-lg border border-border bg-bg p-6 shadow-md">
+            <span class="flex h-10 w-10 items-center justify-center rounded-md bg-danger-bg text-danger">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">${ICONS.warning}</svg>
             </span>
             <h2 id="modal-confirm-title" class="mt-4 font-heading text-lg font-semibold text-text">Eliminar elemento</h2>
             <p data-message class="mt-2 text-sm text-text-muted"></p>
-            <div class="mt-6 flex justify-end gap-3">
-              <button type="button" data-cancel class="rounded-md border border-border px-4 py-2 text-sm font-semibold text-text transition hover:bg-surface-2">Cancelar</button>
-              <button type="button" data-confirm class="rounded-md bg-danger px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90">Eliminar</button>
+            <div class="mt-6 flex justify-end gap-2">
+              <button type="button" data-cancel class="btn-ghost px-4">Cancelar</button>
+              <button type="button" data-confirm class="inline-flex h-10 items-center rounded-md bg-danger px-4 text-sm font-semibold text-white transition hover:opacity-90">Eliminar</button>
             </div>
           </div>
         </div>

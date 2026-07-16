@@ -11,18 +11,31 @@ tailwind.config = {
   darkMode: ["selector", '[data-theme="dark"]'],
   theme: {
     extend: {
+      fontFamily: {
+        display: "var(--font-display)",
+        heading: "var(--font-heading)",
+        body: "var(--font-body)",
+      },
       colors: {
         primary: {
           DEFAULT: "var(--color-primary)",
           dark: "var(--color-primary-dark)",
           light: "var(--color-primary-light)",
+          soft: "var(--color-primary-soft)",
         },
         accent: {
           DEFAULT: "var(--color-accent)",
           dark: "var(--color-accent-dark)",
+          light: "var(--color-accent-light)",
+          soft: "var(--color-accent-soft)",
         },
         onPrimary: "var(--color-on-primary)",
         onAccent: "var(--color-on-accent)",
+        onBrand: "var(--color-on-brand)",
+        brandInk: {
+          DEFAULT: "var(--color-brand-ink)",
+          mid: "var(--color-brand-ink-mid)",
+        },
         bg: "var(--color-bg)",
         surface: {
           DEFAULT: "var(--color-surface)",
@@ -33,6 +46,7 @@ tailwind.config = {
           muted: "var(--color-text-muted)",
         },
         border: "var(--color-border)",
+        primarySoft: "var(--color-primary-soft)",
         success: { DEFAULT: "var(--color-success)", bg: "var(--color-success-bg)" },
         danger: { DEFAULT: "var(--color-danger)", bg: "var(--color-danger-bg)" },
         warning: { DEFAULT: "var(--color-warning)", bg: "var(--color-warning-bg)" },
@@ -49,10 +63,6 @@ tailwind.config = {
           800: "var(--gray-800)",
           900: "var(--gray-900)",
         },
-      },
-      fontFamily: {
-        heading: "var(--font-heading)",
-        body: "var(--font-body)",
       },
       fontSize: {
         xs: "var(--text-xs)",

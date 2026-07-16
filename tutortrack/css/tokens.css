@@ -1,72 +1,87 @@
 /*
  * tokens.css — Design tokens del mockup TutorTrack.
  *
- * Única fuente de verdad para color, tipografía, radios, sombras y
- * espaciado. Nada de valores hardcodeados fuera de este archivo.
- * Paleta propia de este proyecto — NO importa archivos de
- * ../pagina-web/ ni ../docentrack/; sí se alinea conceptualmente con
- * la identidad de la Facultad de Administración UNAMBA:
- * azul institucional + naranja + blanco.
+ * Única fuente de verdad. Paleta propia (NO importa de pagina-web/
+ * ni docentrack/). Identidad Facultad de Administración UNAMBA:
+ * azul institucional + naranja + blanco — calibrada con la fachada
+ * y el logo (azul paneles + naranja atardecer / “Administración”).
  *
- * Jerarquía premium:
- *   — Azul (primary): estructura, navegación activa, acciones de edición
- *   — Naranja (accent): CTAs principales, acentos, énfasis cálido
- *   — Blanco / gris frío: lienzo limpio, legibilidad admin
+ * Estrategia: Full palette (roles claros)
+ *   — Azul (primary): estructura, nav, selección, enlaces
+ *   — Naranja (accent): CTAs, urgencia puntual, activo en nav
+ *   — Blanco / neutros azul-fríos: lienzo
  *
- * Tema claro/oscuro: misma lista de variables, valores distintos según
- * [data-theme].
+ * Tipografía: IBM Plex Sans (UI) + IBM Plex Serif (display/login).
  */
 
 :root,
 [data-theme="light"] {
-  /* 1. Colores de marca — Facultad de Administración */
-  --color-primary: #0b3d91; /* azul institucional */
-  --color-primary-dark: #082c6b;
-  --color-primary-light: #1a56b0;
-  --color-accent: #e8571a; /* naranja facultad */
-  --color-accent-dark: #c2410c;
-  --color-accent-soft: #fff4ee;
+  /* —— Marca —— */
+  --color-primary: #06306e;
+  --color-primary-dark: #041f4a;
+  --color-primary-light: #1a4f9c;
+  --color-primary-soft: #e8f0fa;
 
-  /* Texto legible sobre primary / accent */
+  --color-accent: #e85a12;
+  --color-accent-dark: #c4470a;
+  --color-accent-light: #ff7a3a;
+  --color-accent-soft: #fff3eb;
+
   --color-on-primary: #ffffff;
   --color-on-accent: #ffffff;
+  --color-on-brand: #ffffff;
 
-  /* 2. Tema claro — blanco limpio con tinte azul frío */
+  /* Navy fijo para overlays de foto (no cambia de rol en dark) */
+  --color-brand-ink: #041f4a;
+  --color-brand-ink-mid: #06306e;
+
+  /* Nav — azul committed */
+  --color-nav-bg: #06306e;
+  --color-nav-bg-elevated: #0a3a82;
+  --color-nav-border: color-mix(in srgb, #ffffff 14%, transparent);
+  --color-nav-text: #f7fafc;
+  --color-nav-muted: color-mix(in srgb, #f7fafc 70%, transparent);
+  --color-nav-hover: color-mix(in srgb, #ffffff 11%, transparent);
+  --color-nav-active: #ff7a3a;
+  --color-nav-active-bg: color-mix(in srgb, #e85a12 22%, transparent);
+
+  /* Lienzo: surface = canvas; bg = cards */
   --color-bg: #ffffff;
-  --color-surface: #f5f8fc;
-  --color-surface-2: #e8eef7;
-  --color-text: #142033;
-  --color-text-muted: #5a6a82;
-  --color-border: #d5dee9;
+  --color-surface: #f3f7fc;
+  --color-surface-2: #e4edf7;
+  --color-text: #0c1829;
+  --color-text-muted: #455872;
+  --color-border: #c5d3e5;
 
-  /* 4. Colores de estado */
-  --color-success: #15803d;
-  --color-danger: #dc2626;
-  --color-warning: #d97706;
-  --color-info: #0284c7;
+  --color-photo-overlay: color-mix(in srgb, var(--color-brand-ink) 72%, transparent);
+  --color-photo-overlay-accent: color-mix(in srgb, var(--color-accent) 28%, transparent);
 
-  --color-success-bg: color-mix(in srgb, var(--color-success) 12%, var(--color-bg));
-  --color-danger-bg: color-mix(in srgb, var(--color-danger) 12%, var(--color-bg));
-  --color-warning-bg: color-mix(in srgb, var(--color-warning) 12%, var(--color-bg));
-  --color-info-bg: color-mix(in srgb, var(--color-info) 12%, var(--color-bg));
-  --color-edit-bg: color-mix(in srgb, var(--color-primary) 10%, var(--color-bg));
-  --color-accent-bg: color-mix(in srgb, var(--color-accent) 12%, var(--color-bg));
+  --color-success: #147a3c;
+  --color-danger: #c62828;
+  --color-warning: #c45f00;
+  --color-info: #0b6eaf;
 
-  /* 5. Escala de grises (tinte azul frío) */
-  --gray-50: #f7f9fc;
-  --gray-100: #eef2f8;
-  --gray-200: #d5dee9;
-  --gray-300: #b3c0d1;
-  --gray-400: #8a9bb0;
-  --gray-500: #66788f;
-  --gray-600: #4a5b73;
-  --gray-700: #354458;
-  --gray-800: #222d3d;
-  --gray-900: #121925;
+  --color-success-bg: color-mix(in srgb, var(--color-success) 11%, var(--color-bg));
+  --color-danger-bg: color-mix(in srgb, var(--color-danger) 11%, var(--color-bg));
+  --color-warning-bg: color-mix(in srgb, var(--color-warning) 11%, var(--color-bg));
+  --color-info-bg: color-mix(in srgb, var(--color-info) 11%, var(--color-bg));
+  --color-edit-bg: color-mix(in srgb, var(--color-primary) 8%, var(--color-bg));
+  --color-accent-bg: color-mix(in srgb, var(--color-accent) 10%, var(--color-bg));
 
-  /* 6. Tipografía */
-  --font-heading: "Poppins", ui-sans-serif, system-ui, sans-serif;
-  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --gray-50: #f3f7fc;
+  --gray-100: #e4edf7;
+  --gray-200: #c5d3e5;
+  --gray-300: #9eb0c8;
+  --gray-400: #7589a5;
+  --gray-500: #566b88;
+  --gray-600: #405370;
+  --gray-700: #2d3e56;
+  --gray-800: #1a283c;
+  --gray-900: #0c1829;
+
+  --font-display: "IBM Plex Serif", "Georgia", "Times New Roman", serif;
+  --font-heading: "IBM Plex Sans", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
 
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
@@ -82,22 +97,23 @@
   --font-semibold: 600;
   --font-bold: 700;
 
-  --leading-heading: 1.2;
-  --leading-body: 1.5;
+  --leading-heading: 1.22;
+  --leading-body: 1.55;
+  --leading-display: 1.15;
+  --tracking-tight: -0.02em;
+  --tracking-display: -0.025em;
+  --tracking-label: 0.04em;
 
-  /* 7. Radios */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-xl: 18px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 12px;
   --radius-full: 9999px;
 
-  /* 8. Sombras — más profundas, premium */
-  --shadow-sm: 0 1px 2px rgb(11 61 145 / 0.05), 0 1px 1px rgb(20 32 51 / 0.04);
-  --shadow-md: 0 4px 14px -2px rgb(11 61 145 / 0.1), 0 2px 6px -1px rgb(20 32 51 / 0.06);
-  --shadow-lg: 0 18px 40px -12px rgb(11 61 145 / 0.18), 0 8px 16px -6px rgb(20 32 51 / 0.08);
+  --shadow-sm: 0 1px 2px rgb(12 24 41 / 0.06);
+  --shadow-md: 0 2px 6px rgb(12 24 41 / 0.08);
+  --shadow-lg: 0 4px 8px rgb(12 24 41 / 0.12);
 
-  /* 9. Escala de espaciado */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -106,27 +122,90 @@
   --space-8: 32px;
   --space-12: 48px;
   --space-16: 64px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+
+  --z-dropdown: 20;
+  --z-sticky: 30;
+  --z-drawer-backdrop: 40;
+  --z-drawer: 50;
+  --z-modal-backdrop: 60;
+  --z-modal: 70;
+  --z-toast: 80;
 }
 
 [data-theme="dark"] {
-  --color-bg: #0c121c;
-  --color-surface: #141c2a;
-  --color-surface-2: #1c2638;
-  --color-text: #eef2f8;
-  --color-text-muted: #9aabc2;
-  --color-border: #2a384e;
+  /*
+   * Jerarquía (espejo del light):
+   *   surface = lienzo (más profundo)
+   *   bg      = cards / topbar / paneles (elevados)
+   *   surface-2 = hover / fills
+   */
+  --color-bg: #151e30;
+  --color-surface: #0a101c;
+  --color-surface-2: #1c2840;
+  --color-text: #f0f4fa;
+  --color-text-muted: #a3b4cb;
+  --color-border: #2d3d56;
 
-  --color-primary: #5b8def;
-  --color-primary-dark: #3d72db;
-  --color-primary-light: #7ba5f5;
-  --color-accent: #ff7a3d;
-  --color-accent-dark: #e8571a;
-  --color-accent-soft: color-mix(in srgb, var(--color-accent) 16%, var(--color-surface));
+  /* Primary interactivo (enlaces/iconos) — no fill de fotos */
+  --color-primary: #7aabff;
+  --color-primary-dark: #9bc0ff;
+  --color-primary-light: #a8c8ff;
+  --color-primary-soft: color-mix(in srgb, #7aabff 18%, var(--color-bg));
 
+  --color-accent: #ff8a3d;
+  --color-accent-dark: #ff9f5e;
+  --color-accent-light: #ffb07a;
+  --color-accent-soft: color-mix(in srgb, #ff8a3d 18%, var(--color-bg));
+
+  /* Texto sobre fills claros de primary/accent */
+  --color-on-primary: #0a101c;
+  --color-on-accent: #0a101c;
+  --color-on-brand: #ffffff;
+
+  --color-brand-ink: #041628;
+  --color-brand-ink-mid: #0a2a52;
+
+  /* Nav: navy committed (separado del lienzo) */
+  --color-nav-bg: #071428;
+  --color-nav-bg-elevated: #0c1c38;
+  --color-nav-border: color-mix(in srgb, #ffffff 10%, transparent);
+  --color-nav-text: #f0f4fa;
+  --color-nav-muted: color-mix(in srgb, #f0f4fa 68%, transparent);
+  --color-nav-hover: color-mix(in srgb, #ffffff 8%, transparent);
+  --color-nav-active: #ff8a3d;
+  --color-nav-active-bg: color-mix(in srgb, #ff8a3d 22%, transparent);
+
+  --color-photo-overlay: color-mix(in srgb, var(--color-brand-ink) 82%, transparent);
+  --color-photo-overlay-accent: color-mix(in srgb, var(--color-accent) 26%, transparent);
+
+  --color-success: #3dd68c;
+  --color-danger: #ff6b6b;
+  --color-warning: #ffb020;
+  --color-info: #5eb8ff;
+
+  --color-success-bg: color-mix(in srgb, var(--color-success) 16%, var(--color-bg));
+  --color-danger-bg: color-mix(in srgb, var(--color-danger) 16%, var(--color-bg));
+  --color-warning-bg: color-mix(in srgb, var(--color-warning) 16%, var(--color-bg));
+  --color-info-bg: color-mix(in srgb, var(--color-info) 16%, var(--color-bg));
   --color-edit-bg: color-mix(in srgb, var(--color-primary) 16%, var(--color-bg));
   --color-accent-bg: color-mix(in srgb, var(--color-accent) 16%, var(--color-bg));
 
-  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
-  --shadow-md: 0 4px 14px -2px rgb(0 0 0 / 0.5);
-  --shadow-lg: 0 18px 40px -12px rgb(0 0 0 / 0.6);
+  --gray-50: #1c2840;
+  --gray-100: #243450;
+  --gray-200: #2d3d56;
+  --gray-300: #455872;
+  --gray-400: #6b7f9a;
+  --gray-500: #8a9eb8;
+  --gray-600: #a3b4cb;
+  --gray-700: #c5d0e0;
+  --gray-800: #e0e7f0;
+  --gray-900: #f0f4fa;
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.45);
+  --shadow-md: 0 2px 8px rgb(0 0 0 / 0.5);
+  --shadow-lg: 0 4px 12px rgb(0 0 0 / 0.55);
 }
