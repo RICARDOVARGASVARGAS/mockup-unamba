@@ -12,7 +12,8 @@
     { id: "p-2026-1", nombre: "2026-I", inicio: "2026-03-01", fin: "2026-07-15", activo: true },
   ];
 
-  const toast = (message) => document.dispatchEvent(new CustomEvent("app:toast", { detail: { message } }));
+  const toast = (message, type = "success") =>
+    document.dispatchEvent(new CustomEvent("app:toast", { detail: { message, type } }));
   const ICON_CHECK =
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>';
 
@@ -33,7 +34,7 @@
       table.getAll().forEach((row) => {
         table.update(row.id, { activo: row.id === id });
       });
-      toast("Periodo marcado como vigente");
+      toast("Periodo marcado como vigente", "info");
     }
 
     function openModal(row) {
@@ -87,6 +88,7 @@
         {
           key: "activo",
           label: "Estado",
+          sortable: false,
           render: (row) =>
             row.activo
               ? '<span class="badge badge-success">Vigente</span>'

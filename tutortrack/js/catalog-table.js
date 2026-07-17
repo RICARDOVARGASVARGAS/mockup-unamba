@@ -6,9 +6,10 @@
  *
  * Uso:
  *   const table = CatalogTable.mount(rootEl, {
- *     data, searchKeys, filters, columns, pageSize, onEdit
+ *     data, searchKeys, filters, columns, pageSize, onEdit,
+ *     initialSortKey, initialSortDir  // opcional; columnas sortable por defecto
  *   });
- *   table.add(item); table.update(id, patch); table.remove(id);
+ *   // Clic en encabezado ordena asc/desc. Columna: { sortable: false } para desactivar.
  *
  * El root debe incluir [data-catalog-search], [data-catalog-search-btn],
  * [data-catalog-clear], [data-catalog-meta], [data-catalog-thead],
@@ -24,6 +25,8 @@
     '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" /></svg>';
   const ICON_CHEVRON_R =
     '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>';
+  const ICON_SORT =
+    '<svg class="catalog-sort-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4.5 5.5 8 2l3.5 3.5h-7Zm0 5L8 14l3.5-3.5h-7Z" opacity=".35"/><path data-up d="M4.5 5.5 8 2l3.5 3.5h-7Z"/><path data-down d="M4.5 10.5 8 14l3.5-3.5h-7Z"/></svg>';
 
   function escapeHtml(value) {
     return String(value ?? "")
@@ -31,6 +34,20 @@
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
+  }
+
+  function defaultSortValue(row, key) {
+    const value = row?.[key];
+    if (value == null) return "";
+    if (typeof value === "boolean") return value ? 1 : 0;
+    if (typeof value === "number") return value;
+    if (Array.isArray(value)) return value.length;
+    return String(value).toLowerCase();
+  }
+
+  function compareValues(a, b) {
+    if (typeof a === "number" && typeof b === "number") return a - b;
+    return String(a).localeCompare(String(b), "es", { numeric: true, sensitivity: "base" });
   }
 
   function actionButtons(row, deleteLabel) {
@@ -58,6 +75,10 @@
         this.filterValues[f.id] = "";
       });
 
+      /* Ordenamiento por columna (clic en encabezado) */
+      this.sortKey = options.initialSortKey ?? null;
+      this.sortDir = options.initialSortDir === "desc" ? "desc" : "asc";
+
       this.searchInput = root.querySelector("[data-catalog-search]");
       this.searchBtn = root.querySelector("[data-catalog-search-btn]");
       this.clearBtn = root.querySelector("[data-catalog-clear]");
@@ -69,7 +90,23 @@
       this.pageSizeSelect = root.querySelector("[data-catalog-page-size]");
 
       this.bind();
-      this.renderChrome();
+      this.render();
+    }
+
+    isSortable(col) {
+      if (!col?.key) return false;
+      if (col.sortable === false) return false;
+      return true;
+    }
+
+    toggleSort(key) {
+      if (this.sortKey === key) {
+        this.sortDir = this.sortDir === "asc" ? "desc" : "asc";
+      } else {
+        this.sortKey = key;
+        this.sortDir = "asc";
+      }
+      this.page = 1;
       this.render();
     }
 
@@ -99,6 +136,12 @@
       });
 
       this.root.addEventListener("click", (event) => {
+        const sortBtn = event.target.closest("[data-sort-key]");
+        if (sortBtn) {
+          event.preventDefault();
+          this.toggleSort(sortBtn.dataset.sortKey);
+          return;
+        }
         const editBtn = event.target.closest("[data-row-edit]");
         if (editBtn && this.options.onEdit) {
           const row = this.data.find((r) => r.id === editBtn.dataset.rowId);
@@ -154,7 +197,17 @@
         if (!value) return;
         rows = rows.filter((row) => String(f.getValue(row)) === value);
       });
-      if (this.options.sort) rows.sort(this.options.sort);
+
+      if (this.sortKey) {
+        const col = (this.options.columns || []).find((c) => c.key === this.sortKey);
+        const getValue = col?.sortValue
+          ? (row) => col.sortValue(row)
+          : (row) => defaultSortValue(row, this.sortKey);
+        const dir = this.sortDir === "desc" ? -1 : 1;
+        rows.sort((a, b) => compareValues(getValue(a), getValue(b)) * dir);
+      } else if (this.options.sort) {
+        rows.sort(this.options.sort);
+      }
       return rows;
     }
 
@@ -162,12 +215,46 @@
       const cols = this.options.columns || [];
       this.theadEl.innerHTML = `
         <tr>
-          ${cols.map((c) => `<th scope="col" class="${c.align === "right" ? "text-right" : ""}">${escapeHtml(c.label)}</th>`).join("")}
+          ${cols
+            .map((c) => {
+              const cls = [
+                c.num ? "col-num" : "",
+                c.align === "right" ? "text-right" : "",
+                c.align === "center" ? "text-center" : "",
+              ]
+                .filter(Boolean)
+                .join(" ");
+
+              if (!this.isSortable(c)) {
+                return `<th scope="col" class="${cls}">${escapeHtml(c.label)}</th>`;
+              }
+
+              const active = this.sortKey === c.key;
+              const ariaSort = active ? (this.sortDir === "asc" ? "ascending" : "descending") : "none";
+              const stateClass = active ? `is-sorted is-sorted-${this.sortDir}` : "";
+              const nextHint = active && this.sortDir === "asc" ? "descendente" : "ascendente";
+
+              return `
+                <th scope="col" class="${cls}" aria-sort="${ariaSort}">
+                  <button
+                    type="button"
+                    class="catalog-sort-btn ${stateClass}"
+                    data-sort-key="${escapeHtml(c.key)}"
+                    title="Ordenar por ${escapeHtml(c.label)} (${nextHint})"
+                    aria-label="Ordenar por ${escapeHtml(c.label)}"
+                  >
+                    <span>${escapeHtml(c.label)}</span>
+                    ${ICON_SORT}
+                  </button>
+                </th>`;
+            })
+            .join("")}
           <th scope="col" class="text-right">Acciones</th>
         </tr>`;
     }
 
     render() {
+      this.renderChrome();
       const rows = this.filtered();
       const total = rows.length;
       const totalPages = Math.max(1, Math.ceil(total / this.pageSize));
@@ -203,7 +290,9 @@
             const cls = [
               col.primary ? "col-primary" : "",
               col.muted ? "col-muted" : "",
+              col.num ? "col-num" : "",
               col.align === "right" ? "text-right" : "",
+              col.align === "center" ? "text-center" : "",
             ]
               .filter(Boolean)
               .join(" ");

@@ -35,7 +35,8 @@
     alertas: "Alertas / derivación",
   };
 
-  const toast = (m) => document.dispatchEvent(new CustomEvent("app:toast", { detail: { message: m } }));
+  const toast = (m, type = "success") =>
+    document.dispatchEvent(new CustomEvent("app:toast", { detail: { message: m, type } }));
 
   document.addEventListener("DOMContentLoaded", () => {
     let permisosData = [...PERMISOS_SEED];

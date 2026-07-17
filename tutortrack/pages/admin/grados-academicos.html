@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ciclos | TutorTrack (Mockup)</title>
+    <title>Grados académicos | TutorTrack (Mockup)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" />
@@ -15,17 +15,17 @@
   <body class="w-full bg-bg text-text font-body antialiased">
     <app-sidebar></app-sidebar>
     <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
-      <app-topbar page-title="Ciclos" user-name="Ricardo Vargas Vargas" user-role="Administrador" user-initials="RV" user-avatar="assets/img/admin/ricardo-vargas.jpg"></app-topbar>
+      <app-topbar page-title="Grados académicos" user-name="Ricardo Vargas Vargas" user-role="Administrador" user-initials="RV" user-avatar="assets/img/admin/ricardo-vargas.jpg"></app-topbar>
       <main class="flex-1 p-4 sm:p-6 lg:p-8">
         <section class="app-card catalog-panel" data-catalog>
           <div class="catalog-head">
             <div>
-              <h2 class="font-heading">Ciclos</h2>
-              <p>Niveles curriculares</p>
+              <h2 class="font-heading">Grados académicos</h2>
+              <p>Títulos académicos del perfil docente</p>
             </div>
             <button type="button" data-open-create class="btn-primary">
               <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-              Nuevo ciclo
+              Nuevo grado
             </button>
           </div>
 
@@ -60,7 +60,7 @@
             </table>
           </div>
           <div class="catalog-empty hidden" data-catalog-empty>
-            <p>No se encontraron ciclos con esos criterios.</p>
+            <p>No se encontraron grados académicos con esos criterios.</p>
           </div>
           <div class="catalog-pagination" data-catalog-pagination></div>
         </section>
@@ -69,34 +69,34 @@
 
     <div data-form-backdrop class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
       <div class="modal-panel">
-        <h2 data-form-title class="font-heading">Nuevo ciclo</h2>
+        <h2 data-form-title class="font-heading">Nuevo grado</h2>
         <form data-form class="mt-4 space-y-4" novalidate>
           <input type="hidden" data-editing-id />
           <div>
-            <label for="ciclo-nombre" class="form-label">Nombre</label>
-            <input id="ciclo-nombre" name="nombre" type="text" required placeholder="Ej. Primer ciclo" class="form-input" />
+            <label for="grado-nombre" class="form-label">Nombre</label>
+            <input id="grado-nombre" name="nombre" type="text" required placeholder="Ej. Magíster" class="form-input" />
           </div>
           <div>
-            <label for="ciclo-orden" class="form-label">N° de orden</label>
-            <input id="ciclo-orden" name="orden" type="number" min="1" required class="form-input" />
-            <p class="form-hint">Define la secuencia para listar y avanzar estudiantes (único).</p>
+            <label for="grado-orden" class="form-label">N° de orden</label>
+            <input id="grado-orden" name="orden" type="number" min="1" required class="form-input" />
+            <p class="form-hint">Define la secuencia al listar grados (único).</p>
           </div>
           <div>
             <span class="form-label">Estado</span>
             <button
               type="button"
-              id="ciclo-activo-toggle"
+              id="grado-activo-toggle"
               class="status-toggle status-toggle-lg mt-1.5"
               role="switch"
               aria-checked="true"
-              aria-label="Estado del ciclo"
+              aria-label="Estado del grado"
             >
               <span class="status-toggle-thumb" aria-hidden="true"></span>
               <span class="status-toggle-label" data-on>Activo</span>
               <span class="status-toggle-label" data-off>Inactivo</span>
             </button>
-            <input id="ciclo-activo" type="checkbox" checked class="sr-only" tabindex="-1" aria-hidden="true" />
-            <p class="form-hint">Si está inactivo, no se ofrece en nuevas asignaciones o matrículas.</p>
+            <input id="grado-activo" type="checkbox" checked class="sr-only" tabindex="-1" aria-hidden="true" />
+            <p class="form-hint">Si está inactivo, no se ofrece al registrar docentes.</p>
           </div>
           <div class="mt-6 flex justify-end gap-3">
             <button type="button" data-form-cancel class="btn-ghost">Cancelar</button>
@@ -115,6 +115,6 @@
     <script src="../../components/app-modal-confirm.js"></script>
     <script src="../../components/app-toast.js"></script>
     <script src="../../js/catalog-table.js"></script>
-    <script src="../../js/ciclos.js"></script>
+    <script src="../../js/grados-academicos.js"></script>
   </body>
 </html>

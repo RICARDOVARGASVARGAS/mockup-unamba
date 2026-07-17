@@ -11,8 +11,8 @@
  * oficina; tono de cuidado y claridad (bienestar), no austeridad fría.
  *
  * Estrategia: Restrained (product UI)
- *   — Azul (primary): estructura, nav, selección, enlaces
- *   — Naranja (accent): CTAs y urgencia puntual (≤10% de superficie)
+ *   — Azul (primary): estructura, nav, CTAs principales, selección
+ *   — Naranja (accent): avisos, notificaciones, urgencia (≤8% superficie)
  *   — Neutros azul-fríos: lienzo legible (sin cream/sand)
  *
  * Tipografía: Source Sans 3 (UI) + Source Serif 4 (display/login).
@@ -20,45 +20,47 @@
 
 :root {
   /* —— Marca —— */
-  --color-primary: #0b3d7a;
-  --color-primary-dark: #072a56;
-  --color-primary-light: #1e5aa8;
-  --color-primary-soft: #eaf2fb;
+  --color-primary: #0a4a8a;
+  --color-primary-dark: #073568;
+  --color-primary-light: #1a6bb8;
+  --color-primary-soft: #e8f1fa;
 
-  --color-accent: #ef6c1a;
-  --color-accent-dark: #d45a0e;
-  --color-accent-light: #ff8a3d;
-  --color-accent-soft: #fff4ec;
+  --color-accent: #e05a12;
+  --color-accent-dark: #c44a0c;
+  --color-accent-light: #f07830;
+  --color-accent-soft: #fff1e8;
 
   --color-on-primary: #ffffff;
   --color-on-accent: #ffffff;
   --color-on-brand: #ffffff;
 
-  --color-brand-ink: #072a56;
-  --color-brand-ink-mid: #0b3d7a;
+  --color-brand-ink: #062a4e;
+  --color-brand-ink-mid: #0a4a8a;
 
-  /* Nav — azul committed */
-  --color-nav-bg: #0b3d7a;
-  --color-nav-bg-elevated: #114890;
-  --color-nav-border: color-mix(in srgb, #ffffff 14%, transparent);
-  --color-nav-text: #f7fafc;
-  --color-nav-muted: color-mix(in srgb, #f7fafc 72%, transparent);
-  --color-nav-hover: color-mix(in srgb, #ffffff 12%, transparent);
-  --color-nav-active: #ff8a3d;
-  --color-nav-active-bg: color-mix(in srgb, #ef6c1a 24%, transparent);
+  /* Nav — azul profundo, activo en blanco suave (sin naranja) */
+  --color-nav-bg: #062a4e;
+  --color-nav-bg-elevated: #0a3a68;
+  --color-nav-border: color-mix(in srgb, #ffffff 12%, transparent);
+  --color-nav-text: #f5f8fc;
+  --color-nav-muted: color-mix(in srgb, #f5f8fc 68%, transparent);
+  --color-nav-hover: color-mix(in srgb, #ffffff 10%, transparent);
+  --color-nav-active: #ffffff;
+  --color-nav-active-bg: color-mix(in srgb, #ffffff 16%, transparent);
+  --color-nav-icon-active: #ffffff;
+  --color-nav-icon-active-bg: color-mix(in srgb, #ffffff 22%, transparent);
 
   /* Lienzo: surface = canvas; bg = cards */
   --color-bg: #ffffff;
-  --color-surface: #f4f7fb;
-  --color-surface-2: #e8eef6;
-  --color-text: #122033;
-  --color-text-muted: #3a4f68;
-  --color-border: #c8d4e4;
+  --color-surface: #f3f6fa;
+  --color-surface-2: #e6ecf4;
+  --color-text: #142033;
+  --color-text-muted: #4a5d75;
+  --color-border: #c5d0e0;
 
-  --color-photo-overlay: color-mix(in srgb, var(--color-brand-ink) 70%, transparent);
-  --color-photo-overlay-accent: color-mix(in srgb, var(--color-accent) 26%, transparent);
+  --color-photo-overlay: color-mix(in srgb, var(--color-brand-ink) 72%, transparent);
+  --color-photo-overlay-accent: color-mix(in srgb, var(--color-accent) 22%, transparent);
 
-  --color-success: #0f7a42;
+  --color-success: #0d7a45;
   --color-danger: #c62828;
   --color-warning: #b45309;
   --color-info: #0b6eaf;
@@ -70,16 +72,16 @@
   --color-edit-bg: color-mix(in srgb, var(--color-primary) 9%, var(--color-bg));
   --color-accent-bg: color-mix(in srgb, var(--color-accent) 11%, var(--color-bg));
 
-  --gray-50: #f4f7fb;
-  --gray-100: #e8eef6;
-  --gray-200: #c8d4e4;
-  --gray-300: #9eb0c8;
-  --gray-400: #6f84a0;
+  --gray-50: #f3f6fa;
+  --gray-100: #e6ecf4;
+  --gray-200: #c5d0e0;
+  --gray-300: #9aabbf;
+  --gray-400: #6b8099;
   --gray-500: #516780;
-  --gray-600: #3a4f68;
-  --gray-700: #2a3d54;
+  --gray-600: #4a5d75;
+  --gray-700: #2e4058;
   --gray-800: #1a2b40;
-  --gray-900: #122033;
+  --gray-900: #142033;
 
   --font-display: "Source Serif 4", "Georgia", "Times New Roman", serif;
   --font-heading: "Source Sans 3", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
@@ -113,9 +115,9 @@
   --radius-xl: 12px;
   --radius-full: 9999px;
 
-  --shadow-sm: 0 1px 2px rgb(18 32 51 / 0.06);
-  --shadow-md: 0 2px 6px rgb(18 32 51 / 0.08);
-  --shadow-lg: 0 4px 8px rgb(18 32 51 / 0.12);
+  --shadow-sm: 0 1px 2px rgb(20 32 51 / 0.05);
+  --shadow-md: 0 2px 6px rgb(20 32 51 / 0.07);
+  --shadow-lg: 0 4px 12px rgb(20 32 51 / 0.1);
 
   --space-1: 4px;
   --space-2: 8px;

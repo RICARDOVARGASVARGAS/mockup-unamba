@@ -1,27 +1,15 @@
 /**
- * ciclos.js — catálogo Ciclo (nombre, orden, activo).
- * Ver docs/MODELO-DATOS.md § Ciclo.
+ * especialidades.js — catálogo Especialidad (orden, nombre, activo).
+ * Ver docs/MOCKUP-PANTALLAS.md § Pantalla 2.
  */
 (function () {
-  const NOMBRES = [
-    "Primer ciclo",
-    "Segundo ciclo",
-    "Tercer ciclo",
-    "Cuarto ciclo",
-    "Quinto ciclo",
-    "Sexto ciclo",
-    "Séptimo ciclo",
-    "Octavo ciclo",
-    "Noveno ciclo",
-    "Décimo ciclo",
+  const SEED = [
+    { id: "esp-1", nombre: "Marketing", orden: 1, activo: true },
+    { id: "esp-2", nombre: "Finanzas", orden: 2, activo: true },
+    { id: "esp-3", nombre: "Gestión Pública", orden: 3, activo: true },
+    { id: "esp-4", nombre: "Recursos Humanos", orden: 4, activo: true },
+    { id: "esp-5", nombre: "Contabilidad", orden: 5, activo: false },
   ];
-
-  const SEED = NOMBRES.map((nombre, i) => ({
-    id: `ciclo-${i + 1}`,
-    nombre,
-    orden: i + 1,
-    activo: i < 9, /* último inactivo de ejemplo */
-  }));
 
   const toast = (message, type = "success") =>
     document.dispatchEvent(new CustomEvent("app:toast", { detail: { message, type } }));
@@ -33,8 +21,8 @@
   }
 
   function syncFormToggle(activo) {
-    const toggle = document.getElementById("ciclo-activo-toggle");
-    const checkbox = document.getElementById("ciclo-activo");
+    const toggle = document.getElementById("especialidad-activo-toggle");
+    const checkbox = document.getElementById("especialidad-activo");
     checkbox.checked = !!activo;
     toggle.setAttribute("aria-checked", activo ? "true" : "false");
   }
@@ -45,10 +33,10 @@
     const form = document.querySelector("[data-form]");
     const title = document.querySelector("[data-form-title]");
     const editingId = document.querySelector("[data-editing-id]");
-    const nombreInput = document.getElementById("ciclo-nombre");
-    const ordenInput = document.getElementById("ciclo-orden");
-    const activoInput = document.getElementById("ciclo-activo");
-    const formToggle = document.getElementById("ciclo-activo-toggle");
+    const nombreInput = document.getElementById("especialidad-nombre");
+    const ordenInput = document.getElementById("especialidad-orden");
+    const activoInput = document.getElementById("especialidad-activo");
+    const formToggle = document.getElementById("especialidad-activo-toggle");
 
     let table;
 
@@ -60,13 +48,13 @@
 
     function openModal(row) {
       if (row) {
-        title.textContent = "Editar ciclo";
+        title.textContent = "Editar especialidad";
         editingId.value = row.id;
         nombreInput.value = row.nombre;
         ordenInput.value = row.orden;
         syncFormToggle(row.activo);
       } else {
-        title.textContent = "Nuevo ciclo";
+        title.textContent = "Nueva especialidad";
         editingId.value = "";
         form.reset();
         syncFormToggle(true);
@@ -133,16 +121,16 @@
       const id = editingId.value;
       const clash = table.getAll().find((r) => r.orden === orden && r.id !== id);
       if (clash) {
-        toast("Ya existe un ciclo con ese orden", "error");
+        toast("Ya existe una especialidad con ese orden", "error");
         return;
       }
 
       if (id) {
         table.update(id, { nombre, orden, activo });
-        toast("Ciclo actualizado");
+        toast("Especialidad actualizada");
       } else {
-        table.add({ id: `ciclo-${Date.now()}`, nombre, orden, activo });
-        toast("Ciclo creado");
+        table.add({ id: `esp-${Date.now()}`, nombre, orden, activo });
+        toast("Especialidad creada");
       }
       closeModal();
     });

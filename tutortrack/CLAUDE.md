@@ -84,10 +84,11 @@ no estructura. La malla curricular (`Ciclo` como catálogo abierto, no
 fijo en 10) ya quedó resuelta como catálogo editable.
 
 Identidad visual: **azul institucional + naranja + blanco** (Facultad de
-Administración UNAMBA). Azul = estructura/navegación; naranja = CTAs y
-acentos; lienzo blanco/gris frío. Tipografía: Source Sans 3 + Source
-Serif 4. Tokens propios en `css/tokens.css` — sin compartir valores
-literales con `pagina-web/` ni `docentrack/`.
+Administración UNAMBA). Azul = estructura, navegación y CTAs principales;
+naranja = avisos/urgencia puntual (poca superficie); lienzo blanco/gris
+frío. Tipografía: Source Sans 3 + Source Serif 4. Tokens propios en
+`css/tokens.css` — sin compartir valores literales con `pagina-web/` ni
+`docentrack/`.
 
 Stack: mismo patrón del workspace (HTML + Tailwind + JS, sin backend).
 

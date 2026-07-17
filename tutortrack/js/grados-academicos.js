@@ -1,27 +1,14 @@
 /**
- * ciclos.js — catálogo Ciclo (nombre, orden, activo).
- * Ver docs/MODELO-DATOS.md § Ciclo.
+ * grados-academicos.js — catálogo GradoAcademico (nombre, orden, activo).
+ * Ver docs/MOCKUP-PANTALLAS.md § Pantalla 1.
  */
 (function () {
-  const NOMBRES = [
-    "Primer ciclo",
-    "Segundo ciclo",
-    "Tercer ciclo",
-    "Cuarto ciclo",
-    "Quinto ciclo",
-    "Sexto ciclo",
-    "Séptimo ciclo",
-    "Octavo ciclo",
-    "Noveno ciclo",
-    "Décimo ciclo",
+  const SEED = [
+    { id: "grado-1", nombre: "Bachiller", orden: 1, activo: true },
+    { id: "grado-2", nombre: "Licenciado", orden: 2, activo: true },
+    { id: "grado-3", nombre: "Magíster", orden: 3, activo: true },
+    { id: "grado-4", nombre: "Doctor", orden: 4, activo: true },
   ];
-
-  const SEED = NOMBRES.map((nombre, i) => ({
-    id: `ciclo-${i + 1}`,
-    nombre,
-    orden: i + 1,
-    activo: i < 9, /* último inactivo de ejemplo */
-  }));
 
   const toast = (message, type = "success") =>
     document.dispatchEvent(new CustomEvent("app:toast", { detail: { message, type } }));
@@ -33,8 +20,8 @@
   }
 
   function syncFormToggle(activo) {
-    const toggle = document.getElementById("ciclo-activo-toggle");
-    const checkbox = document.getElementById("ciclo-activo");
+    const toggle = document.getElementById("grado-activo-toggle");
+    const checkbox = document.getElementById("grado-activo");
     checkbox.checked = !!activo;
     toggle.setAttribute("aria-checked", activo ? "true" : "false");
   }
@@ -45,10 +32,10 @@
     const form = document.querySelector("[data-form]");
     const title = document.querySelector("[data-form-title]");
     const editingId = document.querySelector("[data-editing-id]");
-    const nombreInput = document.getElementById("ciclo-nombre");
-    const ordenInput = document.getElementById("ciclo-orden");
-    const activoInput = document.getElementById("ciclo-activo");
-    const formToggle = document.getElementById("ciclo-activo-toggle");
+    const nombreInput = document.getElementById("grado-nombre");
+    const ordenInput = document.getElementById("grado-orden");
+    const activoInput = document.getElementById("grado-activo");
+    const formToggle = document.getElementById("grado-activo-toggle");
 
     let table;
 
@@ -60,13 +47,13 @@
 
     function openModal(row) {
       if (row) {
-        title.textContent = "Editar ciclo";
+        title.textContent = "Editar grado";
         editingId.value = row.id;
         nombreInput.value = row.nombre;
         ordenInput.value = row.orden;
         syncFormToggle(row.activo);
       } else {
-        title.textContent = "Nuevo ciclo";
+        title.textContent = "Nuevo grado";
         editingId.value = "";
         form.reset();
         syncFormToggle(true);
@@ -133,16 +120,16 @@
       const id = editingId.value;
       const clash = table.getAll().find((r) => r.orden === orden && r.id !== id);
       if (clash) {
-        toast("Ya existe un ciclo con ese orden", "error");
+        toast("Ya existe un grado con ese orden", "error");
         return;
       }
 
       if (id) {
         table.update(id, { nombre, orden, activo });
-        toast("Ciclo actualizado");
+        toast("Grado actualizado");
       } else {
-        table.add({ id: `ciclo-${Date.now()}`, nombre, orden, activo });
-        toast("Ciclo creado");
+        table.add({ id: `grado-${Date.now()}`, nombre, orden, activo });
+        toast("Grado creado");
       }
       closeModal();
     });

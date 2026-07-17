@@ -90,7 +90,9 @@
         );
         close();
         this.pendingId = null;
-        document.dispatchEvent(new CustomEvent("app:toast", { detail: { message: "Elemento eliminado" } }));
+        document.dispatchEvent(
+          new CustomEvent("app:toast", { detail: { message: "Elemento eliminado", type: "warning" } })
+        );
       });
     }
   }

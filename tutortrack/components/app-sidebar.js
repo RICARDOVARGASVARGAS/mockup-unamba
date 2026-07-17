@@ -32,12 +32,15 @@
           items: [
             { label: "Ciclos", path: "admin/ciclos.html" },
             { label: "Periodos académicos", path: "admin/periodos-academicos.html" },
+            { label: "Grados académicos", path: "admin/grados-academicos.html" },
+            { label: "Especialidades", path: "admin/especialidades.html" },
             { label: "Áreas", path: "admin/areas.html" },
             { label: "Tipos de ficha", path: "admin/tipos-ficha.html" },
             { label: "Tipos de pregunta", path: "admin/tipos-pregunta.html" },
             { label: "Entidades receptoras", path: "admin/entidades-receptoras.html" },
             { label: "Tipos de estado de derivación", path: "admin/tipos-estado-derivacion.html" },
             { label: "Roles y permisos", path: "admin/roles-permisos.html" },
+
           ],
         },
         {
@@ -154,19 +157,19 @@
     const hasActive = group.items.some((item) => isActive(item.path));
     return `
       <details class="group/nav" ${hasActive ? "open" : ""}>
-        <summary class="flex cursor-pointer list-none items-center justify-between rounded-md px-3 py-1.5 text-[0.6875rem] font-semibold uppercase tracking-[0.07em] text-[color:var(--color-nav-muted)] transition hover:bg-[color:var(--color-nav-hover)] hover:text-[color:var(--color-nav-text)] [&::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer list-none items-center justify-between rounded-md px-3 py-2 text-[0.6875rem] font-semibold uppercase tracking-[0.06em] text-[color:var(--color-nav-muted)] transition hover:bg-[color:var(--color-nav-hover)] hover:text-[color:var(--color-nav-text)] [&::-webkit-details-marker]:hidden">
           ${group.label}
           ${icon("chevron", "h-3.5 w-3.5 shrink-0 opacity-70 transition-transform duration-200 group-open/nav:rotate-180")}
         </summary>
-        <ul class="mt-0.5 space-y-0.5 pb-1 pl-2">
+        <ul class="mt-0.5 space-y-0.5 pb-1.5 pl-1.5">
           ${group.items
             .map((item) => {
               const active = isActive(item.path);
               return `
             <li>
-              <a href="${href(item.path)}" class="block rounded-md px-3 py-1.5 text-sm transition ${
+              <a href="${href(item.path)}" class="block rounded-md px-3 py-2 text-sm transition ${
                 active
-                  ? "bg-[color:var(--color-nav-active-bg)] font-medium text-[color:var(--color-nav-active)]"
+                  ? "bg-[color:var(--color-nav-active-bg)] font-semibold text-[color:var(--color-nav-active)]"
                   : "text-[color:var(--color-nav-muted)] hover:bg-[color:var(--color-nav-hover)] hover:text-[color:var(--color-nav-text)]"
               }">${item.label}</a>
             </li>`;
@@ -182,21 +185,21 @@
 
     return `
       <details class="group/section" ${hasActive ? "open" : ""}>
-        <summary class="flex cursor-pointer list-none items-center gap-2 rounded-md px-2.5 py-2 text-sm font-semibold text-[color:var(--color-nav-text)] transition hover:bg-[color:var(--color-nav-hover)] [&::-webkit-details-marker]:hidden">
-          <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-md ${
+        <summary class="flex cursor-pointer list-none items-center gap-2.5 rounded-md px-2.5 py-2.5 text-sm font-semibold text-[color:var(--color-nav-text)] transition hover:bg-[color:var(--color-nav-hover)] [&::-webkit-details-marker]:hidden">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md ${
             isCurrentSection
-              ? "bg-[color:var(--color-nav-active)] text-white"
+              ? "bg-[color:var(--color-nav-icon-active-bg)] text-[color:var(--color-nav-icon-active)]"
               : "bg-[color:var(--color-nav-hover)] text-[color:var(--color-nav-muted)]"
           }">
             ${icon(section.icon, "h-4 w-4")}
           </span>
-          <span class="flex-1">${section.label}</span>
+          <span class="flex-1 truncate">${section.label}</span>
           ${icon("chevron", "h-4 w-4 shrink-0 text-[color:var(--color-nav-muted)] transition-transform duration-200 group-open/section:rotate-180")}
         </summary>
-        <div class="mt-0.5 space-y-0.5 pb-2 pl-2">
-          <a href="${href(section.dashboard.path)}" class="block rounded-md px-3 py-1.5 text-sm font-medium transition ${
+        <div class="mt-0.5 space-y-0.5 pb-2 pl-1.5">
+          <a href="${href(section.dashboard.path)}" class="block rounded-md px-3 py-2 text-sm font-medium transition ${
             isActive(section.dashboard.path)
-              ? "bg-[color:var(--color-nav-active-bg)] text-[color:var(--color-nav-active)]"
+              ? "bg-[color:var(--color-nav-active-bg)] font-semibold text-[color:var(--color-nav-active)]"
               : "text-[color:var(--color-nav-text)] hover:bg-[color:var(--color-nav-hover)]"
           }">${section.dashboard.label}</a>
           ${section.groups.map(renderGroup).join("")}
@@ -214,7 +217,7 @@
           data-panel
           class="fixed inset-y-0 left-0 z-50 flex h-screen w-72 -translate-x-full flex-col bg-[color:var(--color-nav-bg)] transition-transform duration-200 lg:translate-x-0"
         >
-          <div class="flex h-14 shrink-0 items-center justify-between gap-2 border-b border-[color:var(--color-nav-border)] px-4">
+          <div class="flex h-14 shrink-0 items-center justify-between gap-2 border-b border-[color:var(--color-nav-border)] bg-[color:var(--color-nav-bg-elevated)] px-4">
             <a href="${window.getBasePath()}index.html" class="flex min-w-0 items-center gap-2.5">
               <img
                 class="logo-mark shrink-0"
@@ -232,14 +235,14 @@
               type="button"
               data-close-sidebar
               aria-label="Cerrar menú"
-              class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-[color:var(--color-nav-muted)] transition hover:bg-[color:var(--color-nav-hover)] hover:text-[color:var(--color-nav-text)] lg:hidden"
+              class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-[color:var(--color-nav-border)] text-[color:var(--color-nav-muted)] transition hover:bg-[color:var(--color-nav-hover)] hover:text-[color:var(--color-nav-text)] lg:hidden"
             >
               ${icon("close")}
             </button>
           </div>
 
-          <nav aria-label="Menú de TutorTrack" class="flex-1 space-y-1 overflow-y-auto px-2.5 py-3">
-            ${NAV_SECTIONS.map((section) => renderSection(section, activeSectionId)).join('<div class="my-2 border-t border-[color:var(--color-nav-border)]"></div>')}
+          <nav aria-label="Menú de TutorTrack" class="flex-1 space-y-1 overflow-y-auto px-2.5 py-3.5">
+            ${NAV_SECTIONS.map((section) => renderSection(section, activeSectionId)).join('<div class="my-2.5 border-t border-[color:var(--color-nav-border)]"></div>')}
           </nav>
         </aside>
       `;

@@ -20,7 +20,8 @@
     final: "Final",
   };
 
-  const toast = (m) => document.dispatchEvent(new CustomEvent("app:toast", { detail: { message: m } }));
+  const toast = (m, type = "success") =>
+    document.dispatchEvent(new CustomEvent("app:toast", { detail: { message: m, type } }));
 
   document.addEventListener("DOMContentLoaded", () => {
     const root = document.querySelector("[data-catalog]");
@@ -60,7 +61,7 @@
       filters: [{ id: "fase", getValue: (r) => r.fase }],
       sort: (a, b) => a.orden - b.orden,
       columns: [
-        { key: "orden", label: "Orden", align: "right", muted: true },
+        { key: "orden", label: "N°", num: true, align: "center" },
         { key: "nombre", label: "Nombre", primary: true },
         {
           key: "fase",

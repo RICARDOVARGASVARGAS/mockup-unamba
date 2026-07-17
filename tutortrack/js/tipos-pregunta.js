@@ -13,7 +13,8 @@
     { id: "tp7", nombre: "Numérico", requiere_opciones: false },
   ];
 
-  const toast = (m) => document.dispatchEvent(new CustomEvent("app:toast", { detail: { message: m } }));
+  const toast = (m, type = "success") =>
+    document.dispatchEvent(new CustomEvent("app:toast", { detail: { message: m, type } }));
 
   document.addEventListener("DOMContentLoaded", () => {
     const root = document.querySelector("[data-catalog]");
