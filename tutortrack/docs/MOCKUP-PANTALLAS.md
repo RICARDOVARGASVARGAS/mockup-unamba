@@ -26,29 +26,37 @@ Los campos y su significado salen del modelo ya cerrado en
   user-initials="RV" user-avatar="assets/img/admin/ricardo-vargas.jpg"`.
 - **Datos de ejemplo:** placeholders claramente ficticios; **no** inventar
   personas reales. Fotos solo desde `assets/img/`.
+- **Seguimiento:** al terminar una pantalla, marca su casilla en «Estado y
+  orden» (`- [ ]` → `- [x]`) y cambia el estado de su encabezado a **✅ Hecho**.
 
-## Orden de construcción
-1. ~~Grados académicos (catálogo)~~ — **hecho**
-2. ~~Especialidades (catálogo)~~ — **hecho**
-3. Docentes (listado + formulario)
-4. Estudiantes (listado + formulario)
-5. Usuarios + ajustes de Roles y permisos
+## Estado y orden de construcción
+
+Marca la casilla al terminar cada pantalla:
+
+- [x] **Pantalla 1** · Grados académicos (catálogo)
+- [x] **Pantalla 2** · Especialidades (catálogo)
+- [x] **Pantalla 3** · Tipos de documento (catálogo)
+- [x] **Pantalla 4** · Docentes (listado + formulario)
+- [ ] **Pantalla 5** · Estudiantes (listado + formulario)
+- [ ] **Pantalla 6** · Usuarios + ajustes de Roles y permisos
 
 ---
 
-## Pantalla 1 · Grados académicos (catálogo) ✅ HECHO
+## Pantalla 1 · Grados académicos (catálogo) — ✅ Hecho
 
 - **Copiar de:** `pages/admin/ciclos.html` + `js/ciclos.js` (catálogo con
   nombre + orden + activo — el mismo caso).
-- **Archivos nuevos:** `pages/admin/grados-academicos.html`,
+- **Archivos:** `pages/admin/grados-academicos.html`,
   `js/grados-academicos.js`.
-- **Columnas de la tabla:** N° · Nombre · Estado (badge visual) · Acciones.
-- **Formulario (modal):** Nombre (texto), N° de orden (número), Estado (toggle activo — único lugar para editarlo).
-- **Sidebar:** agregar ítem **"Grados académicos"** al grupo *Catálogos* de
-  Administrador en `components/app-sidebar.js`.
-- **Datos placeholder:** Bachiller, Licenciado, Magíster, Doctor.
+- **Columnas de la tabla:** N° · Nombre · Abreviatura · Estado (badge) · Acciones.
+- **Formulario (modal):** Nombre, Abreviatura (texto corto, ej. `Bach.`),
+  N° de orden, Estado (toggle activo).
+- **Sidebar:** ítem **"Grados académicos"** en *Catálogos*.
+- **Datos placeholder:** Bachiller (`Bach.`), Licenciado (`Lic.`), Magíster
+  (`Mg.`), Doctor (`Dr.`).
+- **Uso:** la abreviatura se muestra en listados densos (ej. docentes).
 
-## Pantalla 2 · Especialidades (catálogo) ✅ HECHO
+## Pantalla 2 · Especialidades (catálogo) — ✅ Hecho
 
 - **Copiar de:** `pages/admin/areas.html` + `js/areas.js` (catálogo simple
   nombre + activo).
@@ -59,33 +67,53 @@ Los campos y su significado salen del modelo ya cerrado en
 - **Datos placeholder:** Marketing, Finanzas, Gestión Pública, Recursos
   Humanos, Contabilidad.
 
-## Pantalla 3 · Docentes (listado + formulario)
+## Pantalla 3 · Tipos de documento (catálogo) — ✅ Hecho ✅ HECHO
+
+- **Copiar de:** `pages/admin/especialidades.html` + `js/especialidades.js`
+  (catálogo simple nombre + activo).
+- **Archivos:** `pages/admin/tipos-documento.html`, `js/tipos-documento.js`,
+  `js/tipos-documento-data.js` (seed compartido con formularios).
+- **Columnas:** N° · Clave · Nombre · Estado (badge) · Acciones.
+- **Formulario (modal):** Clave, Nombre, Estado (toggle activo).
+- **Sidebar:** ítem **"Tipos de documento"** en *Catálogos*.
+- **Datos placeholder:** DNI, Carné de Extranjería, Pasaporte.
+- **Nota:** el `select` de tipo de documento ya está en el formulario de
+  docentes; pendiente en estudiantes/usuarios.
+
+## Pantalla 4 · Docentes (listado + formulario) ✅ HECHO
 
 Entidad rica → **lista** + **página de formulario aparte** (demasiados campos
 para un modal). El ítem "Docentes" ya existe en el sidebar (grupo *Gestión por
 periodo*) apuntando a `docentes.html`.
 
-- **Archivos nuevos:**
-  - `pages/admin/docentes.html` — lista (usar `js/catalog-table.js`). El botón
-    "Nuevo docente" y la acción Editar llevan a `docentes-form.html`.
-  - `pages/admin/docentes-form.html` — formulario crear/editar (shell
-    `app-sidebar` + `app-topbar`, estilos `.form-*` de `base.css`).
-  - `js/docentes.js` (lista).
-- **Columnas de la lista:** Foto + Nombre completo · Documento · Correo ·
-  Grado · Especialidad · Estado · Acciones.
-- **Formulario, agrupado:**
-  - *Datos personales:* Foto (subida placeholder), Documento, Nombres,
-    Apellido paterno, Apellido materno, Sexo, Fecha de nacimiento.
-  - *Contacto:* Correo de acceso, Correo personal, Celular principal,
-    Celular secundario.
-  - *Perfil académico:* Grado académico (select del catálogo), Especialidad
-    (select del catálogo), ORCID, URL del CV, Biografía (textarea).
-  - *Acceso:* Estado (toggle activo). *(El rol Docente-Tutor se asume; en el
-    mockup se puede mostrar como etiqueta fija.)*
-- **Datos placeholder:** usar las fotos de `assets/img/docentes/` y nombres
-  ficticios.
+- **Archivos:**
+  - `pages/admin/docentes.html` — lista (`js/catalog-table.js`).
+  - `pages/admin/docentes-ver.html` — ficha de solo lectura (ver).
+  - `pages/admin/docentes-form.html` — formulario crear/editar.
+  - `js/docentes.js`, `js/docentes-ver.js`, `js/docentes-form.js`,
+    `js/docentes-data.js` (seed embebido; sin `docentes.json`).
+- **Listado:** nombres largos se envuelven tras un ancho máximo; sin foto se
+  usa avatar predeterminado según sexo (`usuario-m.svg` / `usuario-f.svg`).
+  Algunos registros sin celular para contrastar el contacto.
+- **Columnas de la lista:** N° · Docente (foto + abreviatura de grado +
+  nombres y apellidos) · Documento (tipo + número) · Contacto (correo +
+  celular) · Acciones.
+- **Acciones:** Ver (ficha profesional: nombre en mayúsculas, grado completo,
+  bloques Identidad / Contacto / Académico / Biografía) · Editar · Eliminar.
+- **Formulario, agrupado (alineado a BD):**
+  - *Datos personales:* Foto, Tipo de documento + Número (+ buscar RENIEC
+    simulado), Nombres, Apellido paterno, Apellido materno, Sexo, Fecha de
+    nacimiento.
+  - *Contacto y acceso:* Correo de acceso (`email`, login), Correo personal,
+    Celular principal, Celular secundario, Estado (`activo`). La contraseña
+    inicial **no se captura** en el form: se genera en backend a partir del
+    documento (o auto).
+  - *Perfil académico (`docente`):* Grado académico, Especialidad, ORCID,
+    URL del CV, Biografía.
+  - *Roles:* multi-check `usuario_rol`.
+- **Datos placeholder:** fotos de `assets/img/docentes/` y nombres ficticios.
 
-## Pantalla 4 · Estudiantes (listado + formulario)
+## Pantalla 5 · Estudiantes (listado + formulario) — ⬜ Pendiente
 
 Mismo patrón que Docentes. El ítem "Estudiantes" ya existe en el sidebar.
 
@@ -94,8 +122,8 @@ Mismo patrón que Docentes. El ítem "Estudiantes" ya existe en el sidebar.
 - **Columnas de la lista:** Foto + Nombre completo · Código universitario ·
   Documento · Correo · Estado · Acciones.
 - **Formulario, agrupado:**
-  - *Datos personales:* Foto, Documento, Nombres, Apellido paterno, Apellido
-    materno, Sexo, Fecha de nacimiento.
+  - *Datos personales:* Foto, Tipo de documento (select) + Número de documento,
+    Nombres, Apellido paterno, Apellido materno, Sexo, Fecha de nacimiento.
   - *Contacto:* Correo de acceso, Correo personal, Celular principal,
     Celular secundario.
   - *Datos de estudiante:* Código universitario, ORCID (opcional).
@@ -103,7 +131,7 @@ Mismo patrón que Docentes. El ítem "Estudiantes" ya existe en el sidebar.
 - **Datos placeholder:** fotos de `assets/img/estudiantes/`, códigos ficticios
   (ej. `2021-1234`).
 
-## Pantalla 5 · Usuarios + Roles y permisos
+## Pantalla 6 · Usuarios + Roles y permisos — ⬜ Pendiente
 
 - **Usuarios** (para identidades que **no** son docente ni estudiante, ej.
   Administrador, Receptor/Psicología):

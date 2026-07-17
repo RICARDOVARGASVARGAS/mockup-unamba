@@ -34,6 +34,7 @@
             { label: "Periodos académicos", path: "admin/periodos-academicos.html" },
             { label: "Grados académicos", path: "admin/grados-academicos.html" },
             { label: "Especialidades", path: "admin/especialidades.html" },
+            { label: "Tipos de documento", path: "admin/tipos-documento.html" },
             { label: "Áreas", path: "admin/areas.html" },
             { label: "Tipos de ficha", path: "admin/tipos-ficha.html" },
             { label: "Tipos de pregunta", path: "admin/tipos-pregunta.html" },

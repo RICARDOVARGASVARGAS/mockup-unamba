@@ -32,9 +32,9 @@ El **porqué** (razonamiento, decisiones de dominio) vive en
 
 ## Índice de módulos
 
-1. **Identidad y acceso** — `usuario`, `rol`, `permiso`, `usuario_rol`,
-   `rol_permiso`, `grado_academico`, `especialidad`, `docente`,
-   `estudiante`. _(✔ completo — 9 tablas)_
+1. **Identidad y acceso** — `tipo_documento`, `usuario`, `rol`, `permiso`,
+   `usuario_rol`, `rol_permiso`, `grado_academico`, `especialidad`,
+   `docente`, `estudiante`. _(✔ completo — 10 tablas)_
 2. **Estructura académica** — `ciclo`, `periodo_academico`, `ciclo_periodo`,
    `docente_ciclo_periodo`, `temario`, `estudiante_ciclo_periodo`. _(pendiente)_
 3. **Fichas** — `tipo_ficha`, `tipo_pregunta`, `area`, `ficha`, `pregunta`,
@@ -47,6 +47,35 @@ El **porqué** (razonamiento, decisiones de dominio) vive en
 
 ## Módulo 1 — Identidad y acceso
 
+### `tipo_documento` (catálogo)
+
+Tipo de documento de identidad. Se crea **antes** de `usuario`, que lo
+referencia. La `clave` es el código estable que el backend usa para validar
+por tipo (ej. `DNI` = 8 dígitos).
+
+| Campo | Tipo | Nulo | Notas |
+|-------|------|:----:|-------|
+| `id` | `BIGINT UNSIGNED` | NO | PK, AUTO_INCREMENT |
+| `clave` | `VARCHAR(10)` | NO | **UNIQUE** — `DNI`, `CE`, `PAS` |
+| `nombre` | `VARCHAR(60)` | NO | **UNIQUE** — "DNI", "Carné de Extranjería", "Pasaporte" |
+| `activo` | `TINYINT(1)` | NO | DEFAULT `1` |
+| `created_at` | `TIMESTAMP` | SÍ | |
+| `updated_at` | `TIMESTAMP` | SÍ | |
+
+```sql
+CREATE TABLE tipo_documento (
+  id          BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT,
+  clave       VARCHAR(10)      NOT NULL,
+  nombre      VARCHAR(60)      NOT NULL,
+  activo      TINYINT(1)       NOT NULL DEFAULT 1,
+  created_at  TIMESTAMP        NULL,
+  updated_at  TIMESTAMP        NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_tipo_documento_clave (clave),
+  UNIQUE KEY uq_tipo_documento_nombre (nombre)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
 ### Tabla 1 · `usuario`
 
 Identidad de login, **compartida** por todos los perfiles (docente,
@@ -57,7 +86,8 @@ de la identidad (todo usuario puede tener foto, incluido el admin).
 | Campo | Tipo | Nulo | Notas |
 |-------|------|:----:|-------|
 | `id` | `BIGINT UNSIGNED` | NO | PK, AUTO_INCREMENT |
-| `documento` | `VARCHAR(12)` | NO | **UNIQUE** — genérico (DNI / CE) |
+| `tipo_documento_id` | `BIGINT UNSIGNED` | NO | FK → `tipo_documento(id)` (default DNI) |
+| `documento` | `VARCHAR(15)` | NO | número; único **en combinación con** `tipo_documento_id` |
 | `nombres` | `VARCHAR(100)` | NO | uno o varios nombres de pila (ej. "Juan Carlos") |
 | `apellido_paterno` | `VARCHAR(60)` | NO | |
 | `apellido_materno` | `VARCHAR(60)` | NO | |
@@ -75,24 +105,26 @@ de la identidad (todo usuario puede tener foto, incluido el admin).
 | `updated_at` | `TIMESTAMP` | SÍ | auditoría |
 | `deleted_at` | `TIMESTAMP` | SÍ | soft delete (nunca hard-delete: tiene FKs históricas) |
 
-**Índices:** PK (`id`) · UNIQUE (`documento`) · UNIQUE (`email`).
+**Índices:** PK (`id`) · **UNIQUE (`tipo_documento_id`, `documento`)** · UNIQUE (`email`) · índice en `tipo_documento_id`.
 
 **Notas de negocio:**
-- `documento` y `email` son los únicos campos con valor único. `nombres`,
-  `apellidos` y `foto` pueden repetirse entre personas.
+- El `email` es único, y el `documento` es único **por tipo** (UNIQUE de
+  `tipo_documento_id` + `documento`): el mismo número puede existir como DNI
+  y como pasaporte de personas distintas. `nombres`, `apellidos` y `foto`
+  pueden repetirse.
 - `email` = correo de **acceso** (login, institucional, único). `email_personal`
   = solo contacto, **no** único. El usuario puede tener hasta dos celulares
   (`celular_principal`, `celular_secundario`), ambos opcionales.
-- Como `email`/`documento` son UNIQUE, el valor de un usuario con
-  `deleted_at` queda **reservado** (no se reusa) — correcto para correos
-  institucionales.
+- Como `email` y (`tipo_documento_id`, `documento`) son UNIQUE, el valor de
+  un usuario con `deleted_at` queda **reservado** (no se reusa).
 - `contrasena` se guarda hasheada por la capa de aplicación; la BD solo
   almacena el hash.
 
 ```sql
 CREATE TABLE usuario (
   id                BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT,
-  documento         VARCHAR(12)      NOT NULL,
+  tipo_documento_id BIGINT UNSIGNED  NOT NULL,
+  documento         VARCHAR(15)      NOT NULL,
   nombres           VARCHAR(100)     NOT NULL,
   apellido_paterno  VARCHAR(60)      NOT NULL,
   apellido_materno  VARCHAR(60)      NOT NULL,
@@ -110,8 +142,10 @@ CREATE TABLE usuario (
   updated_at        TIMESTAMP        NULL,
   deleted_at        TIMESTAMP        NULL,
   PRIMARY KEY (id),
-  UNIQUE KEY uq_usuario_documento (documento),
-  UNIQUE KEY uq_usuario_email (email)
+  UNIQUE KEY uq_usuario_documento (tipo_documento_id, documento),
+  UNIQUE KEY uq_usuario_email (email),
+  KEY idx_usuario_tipo_documento (tipo_documento_id),
+  CONSTRAINT fk_usuario_tipo_documento FOREIGN KEY (tipo_documento_id) REFERENCES tipo_documento (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
@@ -262,6 +296,7 @@ cerrado y estándar → catálogo (evita typos, permite orden jerárquico).
 |-------|------|:----:|-------|
 | `id` | `BIGINT UNSIGNED` | NO | PK, AUTO_INCREMENT |
 | `nombre` | `VARCHAR(60)` | NO | **UNIQUE** (Bachiller, Magíster, Doctor…) |
+| `abreviatura` | `VARCHAR(10)` | NO | **UNIQUE** — para listados densos (`Bach.`, `Lic.`, `Mg.`, `Dr.`) |
 | `orden` | `SMALLINT` | SÍ | jerarquía / orden de listado |
 | `activo` | `TINYINT(1)` | NO | DEFAULT `1` |
 | `created_at` | `TIMESTAMP` | SÍ | |
@@ -269,14 +304,16 @@ cerrado y estándar → catálogo (evita typos, permite orden jerárquico).
 
 ```sql
 CREATE TABLE grado_academico (
-  id          BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT,
-  nombre      VARCHAR(60)      NOT NULL,
-  orden       SMALLINT         NULL,
-  activo      TINYINT(1)       NOT NULL DEFAULT 1,
-  created_at  TIMESTAMP        NULL,
-  updated_at  TIMESTAMP        NULL,
+  id           BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT,
+  nombre       VARCHAR(60)      NOT NULL,
+  abreviatura  VARCHAR(10)      NOT NULL,
+  orden        SMALLINT         NULL,
+  activo       TINYINT(1)       NOT NULL DEFAULT 1,
+  created_at   TIMESTAMP        NULL,
+  updated_at   TIMESTAMP        NULL,
   PRIMARY KEY (id),
-  UNIQUE KEY uq_grado_academico_nombre (nombre)
+  UNIQUE KEY uq_grado_academico_nombre (nombre),
+  UNIQUE KEY uq_grado_academico_abreviatura (abreviatura)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
@@ -439,6 +476,7 @@ aceptan `?buscar=`, `?page=`, filtros y orden; respuesta JSON con `data` +
 
 | Método | Ruta | Propósito | Permiso |
 |--------|------|-----------|---------|
+| **[CRUD]** | `/tipos-documento` | catálogo de tipos de documento (DNI, CE, Pasaporte) | `catalogos.gestionar` |
 | **[CRUD]** | `/grados-academicos` | catálogo de grados académicos | `catalogos.gestionar` |
 | **[CRUD]** | `/especialidades` | catálogo de especialidades | `catalogos.gestionar` |
 
@@ -447,9 +485,9 @@ aceptan `?buscar=`, `?page=`, filtros y orden; respuesta JSON con `data` +
 
 ---
 
-**Módulo 1 — Identidad y acceso: ✔ completo** (9 tablas: `usuario`, `rol`,
-`permiso`, `usuario_rol`, `rol_permiso`, `grado_academico`, `especialidad`,
-`docente`, `estudiante`).
+**Módulo 1 — Identidad y acceso: ✔ completo** (10 tablas: `tipo_documento`,
+`usuario`, `rol`, `permiso`, `usuario_rol`, `rol_permiso`, `grado_academico`,
+`especialidad`, `docente`, `estudiante`).
 
 <!-- Próximo: Módulo 2 — Estructura académica -->
 

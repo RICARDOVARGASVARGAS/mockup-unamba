@@ -1,8 +1,8 @@
 /**
- * app-toast.js — notificación flotante (<app-toast>).
+ * app-toast.js — notificación superior centrada (<app-toast>).
  * Una sola instancia por página. Escucha "app:toast" en `document`:
  *   detail: { message: string, type?: "success"|"error"|"warning"|"info" }
- * Por defecto: success. Auto-cierra a los 4.5s o con el botón X.
+ * Por defecto: success. Baja desde arriba; auto-cierra a los 4.5s o con X.
  */
 (function () {
   const ICONS = {

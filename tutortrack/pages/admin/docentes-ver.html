@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ficha docente | TutorTrack (Mockup)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap"
+    />
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <app-sidebar></app-sidebar>
+    <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
+      <app-topbar
+        page-title="Docentes"
+        user-name="Ricardo Vargas Vargas"
+        user-role="Administrador"
+        user-initials="RV"
+        user-avatar="assets/img/admin/ricardo-vargas.jpg"
+      ></app-topbar>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <div class="ficha-page" data-ficha>
+          <div class="ficha-toolbar">
+            <div>
+              <a href="docentes.html" class="ficha-back">← Volver al listado</a>
+              <h1 class="ficha-page-title">Ficha del docente</h1>
+            </div>
+            <div class="ficha-toolbar-actions">
+              <a data-ficha-editar href="#" class="btn-primary inline-flex">Editar</a>
+            </div>
+          </div>
+
+          <header class="ficha-hero">
+            <div data-ficha-avatar class="ficha-avatar"></div>
+            <div class="ficha-hero-body">
+              <div class="ficha-hero-meta">
+                <span data-ficha-estado></span>
+              </div>
+              <h2 data-ficha-nombre class="ficha-nombre"></h2>
+              <p data-ficha-grado class="ficha-grado"></p>
+              <p data-ficha-especialidad class="ficha-especialidad"></p>
+            </div>
+          </header>
+
+          <div class="ficha-panels">
+            <section class="ficha-panel" aria-labelledby="ficha-identidad">
+              <h3 id="ficha-identidad" class="ficha-panel-title">Identidad</h3>
+              <dl class="ficha-fields">
+                <div class="ficha-field">
+                  <dt>Documento</dt>
+                  <dd data-ficha-documento></dd>
+                </div>
+                <div class="ficha-field">
+                  <dt>Sexo</dt>
+                  <dd data-ficha-sexo></dd>
+                </div>
+                <div class="ficha-field">
+                  <dt>Fecha de nacimiento</dt>
+                  <dd data-ficha-fnac></dd>
+                </div>
+              </dl>
+            </section>
+
+            <section class="ficha-panel" aria-labelledby="ficha-contacto">
+              <h3 id="ficha-contacto" class="ficha-panel-title">Contacto y acceso</h3>
+              <dl class="ficha-fields">
+                <div class="ficha-field">
+                  <dt>Correo de acceso</dt>
+                  <dd data-ficha-email></dd>
+                </div>
+                <div class="ficha-field">
+                  <dt>Correo personal</dt>
+                  <dd data-ficha-email-personal></dd>
+                </div>
+                <div class="ficha-field">
+                  <dt>Celular principal</dt>
+                  <dd data-ficha-cel1></dd>
+                </div>
+                <div class="ficha-field">
+                  <dt>Celular secundario</dt>
+                  <dd data-ficha-cel2></dd>
+                </div>
+              </dl>
+            </section>
+
+            <section class="ficha-panel" aria-labelledby="ficha-academico">
+              <h3 id="ficha-academico" class="ficha-panel-title">Perfil académico</h3>
+              <dl class="ficha-fields">
+                <div class="ficha-field">
+                  <dt>Grado académico</dt>
+                  <dd data-ficha-grado-full></dd>
+                </div>
+                <div class="ficha-field">
+                  <dt>Especialidad</dt>
+                  <dd data-ficha-esp-full></dd>
+                </div>
+                <div class="ficha-field">
+                  <dt>ORCID</dt>
+                  <dd data-ficha-orcid></dd>
+                </div>
+                <div class="ficha-field">
+                  <dt>CV</dt>
+                  <dd data-ficha-cv></dd>
+                </div>
+              </dl>
+            </section>
+          </div>
+
+          <section class="ficha-panel ficha-panel-wide" aria-labelledby="ficha-bio-title">
+            <h3 id="ficha-bio-title" class="ficha-panel-title">Biografía</h3>
+            <p data-ficha-bio class="ficha-bio-text"></p>
+          </section>
+
+          <section class="ficha-panel ficha-panel-wide ficha-panel-roles" aria-labelledby="ficha-roles-title">
+            <h3 id="ficha-roles-title" class="ficha-panel-title">Roles asignados</h3>
+            <div data-ficha-roles></div>
+          </section>
+        </div>
+
+        <div data-ficha-empty class="ficha-empty-wrap hidden">
+          <p class="ficha-empty-text">No se encontró el docente solicitado.</p>
+          <a href="docentes.html" class="btn-secondary mt-4 inline-flex">Volver al listado</a>
+        </div>
+      </main>
+    </div>
+
+    <app-toast></app-toast>
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/site-paths.js"></script>
+    <script src="../../components/app-sidebar.js"></script>
+    <script src="../../components/app-topbar.js"></script>
+    <script src="../../components/app-toast.js"></script>
+    <script src="../../js/tipos-documento-data.js"></script>
+    <script src="../../js/docentes-data.js"></script>
+    <script src="../../js/docentes-ver.js"></script>
+  </body>
+</html>

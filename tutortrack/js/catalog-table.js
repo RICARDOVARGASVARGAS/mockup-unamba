@@ -21,6 +21,8 @@
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" /></svg>';
   const ICON_DELETE =
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>';
+  const ICON_VIEW =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>';
   const ICON_CHEVRON_L =
     '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" /></svg>';
   const ICON_CHEVRON_R =
@@ -50,13 +52,20 @@
     return String(a).localeCompare(String(b), "es", { numeric: true, sensitivity: "base" });
   }
 
-  function actionButtons(row, deleteLabel) {
+  function actionButtons(row, deleteLabel, options) {
     const name = escapeHtml(deleteLabel(row));
+    const id = escapeHtml(row.id);
+    const viewBtn = options.onView
+      ? `<button type="button" class="btn-action btn-action-view" data-row-view data-row-id="${id}" title="Ver ficha" aria-label="Ver ficha">
+        ${ICON_VIEW}
+      </button>`
+      : "";
     return `
-      <button type="button" class="btn-action btn-action-edit" data-row-edit data-row-id="${escapeHtml(row.id)}" title="Editar" aria-label="Editar">
+      ${viewBtn}
+      <button type="button" class="btn-action btn-action-edit" data-row-edit data-row-id="${id}" title="Editar" aria-label="Editar">
         ${ICON_EDIT}
       </button>
-      <button type="button" class="btn-action btn-action-danger" data-delete-trigger data-delete-name="${name}" data-row-id="${escapeHtml(row.id)}" title="Eliminar" aria-label="Eliminar">
+      <button type="button" class="btn-action btn-action-danger" data-delete-trigger data-delete-name="${name}" data-row-id="${id}" title="Eliminar" aria-label="Eliminar">
         ${ICON_DELETE}
       </button>`;
   }
@@ -142,6 +151,12 @@
           this.toggleSort(sortBtn.dataset.sortKey);
           return;
         }
+        const viewBtn = event.target.closest("[data-row-view]");
+        if (viewBtn && this.options.onView) {
+          const row = this.data.find((r) => r.id === viewBtn.dataset.rowId);
+          if (row) this.options.onView(row);
+          return;
+        }
         const editBtn = event.target.closest("[data-row-edit]");
         if (editBtn && this.options.onEdit) {
           const row = this.data.find((r) => r.id === editBtn.dataset.rowId);
@@ -195,7 +210,11 @@
       (this.options.filters || []).forEach((f) => {
         const value = this.filterValues[f.id];
         if (!value) return;
-        rows = rows.filter((row) => String(f.getValue(row)) === value);
+        if (typeof f.match === "function") {
+          rows = rows.filter((row) => f.match(row, value));
+        } else {
+          rows = rows.filter((row) => String(f.getValue(row)) === value);
+        }
       });
 
       if (this.sortKey) {
@@ -280,13 +299,15 @@
       const deleteLabel = this.options.deleteLabel || ((r) => r.nombre || r.id);
       const extraActions = this.options.extraActions || (() => "");
 
-      pageRows.forEach((row) => {
+      pageRows.forEach((row, i) => {
         const tr = document.createElement("tr");
         tr.dataset.row = "true";
         tr.dataset.id = row.id;
         const cells = (this.options.columns || [])
           .map((col) => {
-            const content = col.render ? col.render(row, escapeHtml) : escapeHtml(row[col.key]);
+            const content = col.render
+              ? col.render(row, escapeHtml, start + i + 1)
+              : escapeHtml(row[col.key]);
             const cls = [
               col.primary ? "col-primary" : "",
               col.muted ? "col-muted" : "",
@@ -304,7 +325,7 @@
           <td class="col-actions">
             <div class="catalog-actions">
               ${extraActions(row, escapeHtml)}
-              ${actionButtons(row, deleteLabel)}
+              ${actionButtons(row, deleteLabel, this.options)}
             </div>
           </td>`;
         this.tbodyEl.appendChild(tr);
@@ -383,7 +404,7 @@
     mount(root, options) {
       return new CatalogTable(root, options);
     },
-    icons: { edit: ICON_EDIT, delete: ICON_DELETE },
+    icons: { edit: ICON_EDIT, delete: ICON_DELETE, view: ICON_VIEW },
     escapeHtml,
   };
 })();

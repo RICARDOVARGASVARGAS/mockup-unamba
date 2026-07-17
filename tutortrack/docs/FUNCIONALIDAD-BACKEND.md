@@ -57,8 +57,9 @@ correcta + `contrasena_nueva`.
 `apellidos` / `documento` / `email`; filtrar por rol y por `activo`.
 
 **`POST /usuarios`** — crea una identidad.
-- Valida `documento` único, `email` único y con formato válido; `email_personal`
-  opcional (no único).
+- Valida `tipo_documento_id` + `documento` **único por tipo**, `email` único
+  y con formato válido; `email_personal` opcional (no único). Opcional:
+  validar el largo del `documento` según la `clave` del tipo (DNI = 8 dígitos).
 - Hashea la contraseña.
 - Puede recibir la lista de `roles` a asignar (crea las filas `usuario_rol`).
 
@@ -125,9 +126,10 @@ estudiante no sea su propio tutor pertenece al Módulo 2 — matrícula.)*
 pantalla de asignación de permisos a roles). No hay crear/editar/borrar: los
 permisos los define el desarrollador y se **siembran**.
 
-### Catálogos (grado_academico / especialidad)
+### Catálogos (tipo_documento / grado_academico / especialidad)
 
-**`/grados-academicos` [CRUD]** y **`/especialidades` [CRUD]**
+**`/tipos-documento` [CRUD]**, **`/grados-academicos` [CRUD]** y
+**`/especialidades` [CRUD]**
 - `store`/`update`: `nombre` único.
 - `destroy`: **no** se borra un ítem **en uso** por algún docente (la FK lo
   impide). Para retirarlo se usa `activo = 0`.

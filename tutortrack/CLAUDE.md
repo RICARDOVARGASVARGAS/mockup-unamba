@@ -170,14 +170,19 @@ Contraste y foco visibles sobre el lienzo claro; tokens en `css/tokens.css`.
   `docs/ESPECIFICACION.md` (todas las fases, objetivo/entidades/reglas
   por pantalla) antes de seguir diseñando.
 - ~~Fase 1 — Catálogos~~ — hecho. Pantallas:
-  `ciclos`, `periodos-academicos`, `areas`, `tipos-ficha`,
+  `ciclos`, `periodos-academicos`, `grados-academicos`, `especialidades`,
+  `tipos-documento`, `areas`, `tipos-ficha`,
   `tipos-pregunta`, `entidades-receptoras`, `tipos-estado-derivacion`,
   `roles-permisos` (pestañas Roles | Permisos). Motor compartido
   `js/catalog-table.js` (buscar + botón, filtros, paginación, acciones
   etiquetadas) + `app-toast` / `app-modal-confirm`.
+- ~~Fase 2 (parcial) — Docentes~~ — hecho: `admin/docentes.html` +
+  `admin/docentes-form.html` (usuario completo: documento, contacto,
+  `activo`; perfil docente: grado, especialidad, ORCID, CV, bio; roles;
+  store en sessionStorage). Pendiente: Estudiantes.
 - Próximas fases (pantallas reales, siguiendo `app-sidebar.js` como
   fuente de verdad de la navegación):
-  2. Docente y Estudiante (cuelgan de Usuario).
+  2b. Estudiantes (cuelga de Usuario).
   3. Configuración por periodo (CicloPeriodo, DocenteCicloPeriodo,
      Temario, EstudianteCicloPeriodo + "Avanzar estudiantes").
   4. Fichas (plantilla, preguntas, clonado por CicloPeriodo, y la

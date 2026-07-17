@@ -1,14 +1,13 @@
 /**
- * grados-academicos.js — catálogo GradoAcademico (nombre, abreviatura, orden, activo).
- * Ver docs/MOCKUP-PANTALLAS.md § Pantalla 1.
+ * tipos-documento.js — UI catálogo tipo_documento (clave, nombre, activo).
+ * Ver docs/BD-BACKEND.md § tipo_documento y MOCKUP-PANTALLAS.md § Pantalla 3.
  */
 (function () {
-  const SEED = [
-    { id: "grado-1", nombre: "Bachiller", abreviatura: "Bach.", orden: 1, activo: true },
-    { id: "grado-2", nombre: "Licenciado", abreviatura: "Lic.", orden: 2, activo: true },
-    { id: "grado-3", nombre: "Magíster", abreviatura: "Mg.", orden: 3, activo: true },
-    { id: "grado-4", nombre: "Doctor", abreviatura: "Dr.", orden: 4, activo: true },
-  ];
+  const Data = window.TiposDocumentoData;
+  if (!Data) {
+    console.error("TiposDocumentoData no cargado. Incluí tipos-documento-data.js antes.");
+    return;
+  }
 
   const toast = (message, type = "success") =>
     document.dispatchEvent(new CustomEvent("app:toast", { detail: { message, type } }));
@@ -20,23 +19,24 @@
   }
 
   function syncFormToggle(activo) {
-    const toggle = document.getElementById("grado-activo-toggle");
-    const checkbox = document.getElementById("grado-activo");
+    const toggle = document.getElementById("td-activo-toggle");
+    const checkbox = document.getElementById("td-activo");
     checkbox.checked = !!activo;
     toggle.setAttribute("aria-checked", activo ? "true" : "false");
   }
 
   document.addEventListener("DOMContentLoaded", () => {
     const root = document.querySelector("[data-catalog]");
+    if (!root) return;
+
     const backdrop = document.querySelector("[data-form-backdrop]");
     const form = document.querySelector("[data-form]");
     const title = document.querySelector("[data-form-title]");
     const editingId = document.querySelector("[data-editing-id]");
-    const nombreInput = document.getElementById("grado-nombre");
-    const abrevInput = document.getElementById("grado-abreviatura");
-    const ordenInput = document.getElementById("grado-orden");
-    const activoInput = document.getElementById("grado-activo");
-    const formToggle = document.getElementById("grado-activo-toggle");
+    const claveInput = document.getElementById("td-clave");
+    const nombreInput = document.getElementById("td-nombre");
+    const activoInput = document.getElementById("td-activo");
+    const formToggle = document.getElementById("td-activo-toggle");
 
     let table;
 
@@ -48,22 +48,20 @@
 
     function openModal(row) {
       if (row) {
-        title.textContent = "Editar grado";
+        title.textContent = "Editar tipo de documento";
         editingId.value = row.id;
+        claveInput.value = row.clave;
         nombreInput.value = row.nombre;
-        abrevInput.value = row.abreviatura || "";
-        ordenInput.value = row.orden;
         syncFormToggle(row.activo);
       } else {
-        title.textContent = "Nuevo grado";
+        title.textContent = "Nuevo tipo de documento";
         editingId.value = "";
         form.reset();
         syncFormToggle(true);
-        ordenInput.value = nextOrden();
       }
       backdrop.classList.remove("hidden");
       backdrop.classList.add("flex");
-      nombreInput.focus();
+      claveInput.focus();
     }
 
     function closeModal() {
@@ -72,9 +70,9 @@
     }
 
     table = CatalogTable.mount(root, {
-      data: SEED,
+      data: Data.load(),
       pageSize: 5,
-      searchKeys: ["nombre", "abreviatura"],
+      searchKeys: ["clave", "nombre"],
       initialSortKey: "orden",
       filters: [
         {
@@ -91,13 +89,8 @@
           align: "center",
           render: (row, esc) => esc(row.orden),
         },
+        { key: "clave", label: "Clave", muted: true },
         { key: "nombre", label: "Nombre", primary: true },
-        {
-          key: "abreviatura",
-          label: "Abrev.",
-          muted: true,
-          render: (row, esc) => esc(row.abreviatura || "—"),
-        },
         {
           key: "activo",
           label: "Estado",
@@ -106,6 +99,7 @@
         },
       ],
       onEdit: openModal,
+      onDelete: () => Data.persist(table.getAll()),
     });
 
     formToggle.addEventListener("click", () => {
@@ -120,36 +114,35 @@
 
     form.addEventListener("submit", (e) => {
       e.preventDefault();
+      const clave = claveInput.value.trim().toUpperCase();
       const nombre = nombreInput.value.trim();
-      const abreviatura = abrevInput.value.trim();
-      const orden = Number(ordenInput.value);
       const activo = activoInput.checked;
-      if (!nombre || !abreviatura || !orden) return;
+      if (!clave || !nombre) return;
 
       const id = editingId.value;
       const all = table.getAll();
-      const clashOrden = all.find((r) => r.orden === orden && r.id !== id);
-      if (clashOrden) {
-        toast("Ya existe un grado con ese orden", "error");
+      if (all.some((r) => r.clave === clave && r.id !== id)) {
+        toast("Ya existe un tipo con esa clave", "warning");
         return;
       }
-      const clashAbrev = all.find(
-        (r) =>
-          String(r.abreviatura || "").toLowerCase() === abreviatura.toLowerCase() && r.id !== id
-      );
-      if (clashAbrev) {
-        toast("Ya existe un grado con esa abreviatura", "error");
+      if (all.some((r) => r.nombre.toLowerCase() === nombre.toLowerCase() && r.id !== id)) {
+        toast("Ya existe un tipo con ese nombre", "warning");
         return;
       }
 
       if (id) {
-        table.update(id, { nombre, abreviatura, orden, activo });
-        toast("Grado actualizado");
+        table.update(id, { clave, nombre, activo });
+        toast("Tipo de documento actualizado");
       } else {
-        table.add({ id: `grado-${Date.now()}`, nombre, abreviatura, orden, activo });
-        toast("Grado creado");
+        table.add({ id: `td-${Date.now()}`, clave, nombre, activo, orden: nextOrden() });
+        toast("Tipo de documento creado");
       }
+      Data.persist(table.getAll());
       closeModal();
+    });
+
+    document.addEventListener("app:delete-confirmed", () => {
+      Data.persist(table.getAll());
     });
   });
 })();
