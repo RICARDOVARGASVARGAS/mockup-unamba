@@ -1,6 +1,6 @@
 /**
- * docentes.js — listado admin Docentes.
- * N° · Docente · Documento · Contacto · Ver / Editar / Eliminar.
+ * estudiantes.js — listado admin Estudiantes.
+ * Estudiante · Código · Documento · Correo · Estado · Acciones.
  */
 (function () {
   const toast = (message, type = "success") =>
@@ -9,30 +9,19 @@
   function mapRows(rows) {
     return rows.map((r) => ({
       ...r,
-      nombre_completo: DocentesData.nombreCompleto(r),
+      nombre_completo: EstudiantesData.nombreCompleto(r),
       email: r.email || r.correo_electronico || "",
     }));
   }
 
-  function docenteHtml(row, esc) {
-    const name = DocentesData.nombreCompleto(row);
-    const abrev = DocentesData.gradoAbrev(row.grado_academico_id);
-    const gradoNombre = DocentesData.gradoNombre(row.grado_academico_id);
-    const src = DocentesData.resolveFotoUrl(DocentesData.fotoSrc(row));
-
+  function estudianteHtml(row, esc) {
+    const name = EstudiantesData.nombreCompleto(row);
+    const src = EstudiantesData.resolveFotoUrl(EstudiantesData.fotoSrc(row));
     const avatar = `<img src="${esc(src)}" alt="" class="h-10 w-10 shrink-0 rounded-full object-cover ring-1 ring-border" width="40" height="40" />`;
-
-    const gradoLine = abrev
-      ? `<span class="text-xs font-medium text-text-muted" title="${esc(gradoNombre || abrev)}">${esc(abrev)}</span>`
-      : "";
-
     return `
       <div class="flex min-w-0 items-center gap-3">
         ${avatar}
-        <div class="min-w-0">
-          ${gradoLine ? `<div class="leading-tight">${gradoLine}</div>` : ""}
-          <div class="docente-nombre font-medium text-text leading-snug">${esc(name)}</div>
-        </div>
+        <div class="docente-nombre font-medium text-text leading-snug">${esc(name)}</div>
       </div>`;
   }
 
@@ -48,15 +37,10 @@
       </div>`;
   }
 
-  function contactoHtml(row, esc) {
-    const email = row.email || row.correo_electronico || "";
-    const tel = row.celular_principal || "";
-    if (!email && !tel) return `<span class="text-text-muted">—</span>`;
-    return `
-      <div class="min-w-0 leading-snug">
-        ${email ? `<div class="truncate text-text">${esc(email)}</div>` : ""}
-        ${tel ? `<div class="text-xs text-text-muted">${esc(tel)}</div>` : `<div class="text-xs text-text-muted">Sin celular</div>`}
-      </div>`;
+  function estadoHtml(row) {
+    return row.activo !== false
+      ? '<span class="badge badge-success">Activo</span>'
+      : '<span class="badge badge-neutral">Inactivo</span>';
   }
 
   function mountTable(rows) {
@@ -73,7 +57,7 @@
         "nombre_completo",
         "documento",
         "email",
-        "celular_principal",
+        "codigo_universitario",
       ],
       filters: [
         {
@@ -82,22 +66,24 @@
         },
       ],
       initialSortKey: "apellido_paterno",
-      deleteLabel: (r) => DocentesData.nombreCompleto(r),
+      deleteLabel: (r) => EstudiantesData.nombreCompleto(r),
       columns: [
         {
-          key: "_n",
-          label: "N°",
-          num: true,
-          align: "center",
-          sortable: false,
-          render: (_row, esc, n) => esc(n),
+          key: "nombres",
+          label: "Estudiante",
+          primary: true,
+          sortValue: (r) => EstudiantesData.nombreCompleto(r).toLowerCase(),
+          render: estudianteHtml,
         },
         {
-          key: "nombres",
-          label: "Docente",
-          primary: true,
-          sortValue: (r) => DocentesData.nombreCompleto(r).toLowerCase(),
-          render: docenteHtml,
+          key: "codigo_universitario",
+          label: "Código",
+          muted: true,
+          sortValue: (r) => (r.codigo_universitario || "").toLowerCase(),
+          render: (row, esc) =>
+            row.codigo_universitario
+              ? `<span class="font-medium text-text">${esc(row.codigo_universitario)}</span>`
+              : `<span class="text-text-muted">—</span>`,
         },
         {
           key: "documento",
@@ -109,32 +95,39 @@
         },
         {
           key: "email",
-          label: "Contacto",
+          label: "Correo",
           muted: true,
           sortValue: (r) => (r.email || "").toLowerCase(),
-          render: contactoHtml,
+          render: (row, esc) =>
+            row.email
+              ? `<span class="truncate text-text">${esc(row.email)}</span>`
+              : `<span class="text-text-muted">—</span>`,
+        },
+        {
+          key: "activo",
+          label: "Estado",
+          align: "center",
+          sortValue: (r) => (r.activo !== false ? 1 : 0),
+          render: estadoHtml,
         },
       ],
-      onView: (row) => {
-        window.location.href = `docentes-ver.html?id=${encodeURIComponent(row.id)}`;
-      },
       onEdit: (row) => {
-        window.location.href = `docentes-form.html?id=${encodeURIComponent(row.id)}`;
+        window.location.href = `estudiantes-form.html?id=${encodeURIComponent(row.id)}`;
       },
       onResetPassword: () => {
         toast("Contraseña restablecida");
       },
       onDelete: (id) => {
-        DocentesData.remove(id);
+        EstudiantesData.remove(id);
       },
     });
 
     document.querySelector("[data-open-create]")?.addEventListener("click", () => {
-      window.location.href = "docentes-form.html";
+      window.location.href = "estudiantes-form.html";
     });
 
     document.querySelector("[data-catalog-refresh]")?.addEventListener("click", () => {
-      table.setData(mapRows(DocentesData.load()));
+      table.setData(mapRows(EstudiantesData.load()));
       toast("Lista actualizada");
     });
 
@@ -142,14 +135,14 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    if (!window.DocentesData || !window.CatalogTable) return;
+    if (!window.EstudiantesData || !window.CatalogTable) return;
 
     const params = new URLSearchParams(window.location.search);
     const saved = params.get("saved");
     if (saved === "created" || saved === "1") {
-      toast("Docente registrado");
+      toast("Estudiante registrado");
     } else if (saved === "updated") {
-      toast("Docente actualizado");
+      toast("Estudiante actualizado");
     }
     if (saved) {
       params.delete("saved");
@@ -159,16 +152,16 @@
 
     const empty = document.querySelector("[data-catalog-empty] p");
 
-    DocentesData.ready()
+    EstudiantesData.ready()
       .then((rows) => mountTable(rows))
       .catch((err) => {
         console.error(err);
         if (empty) {
-          empty.textContent = "No se pudieron cargar los docentes de prueba.";
+          empty.textContent = "No se pudieron cargar los estudiantes de prueba.";
         }
         document.querySelector("[data-catalog-empty]")?.classList.remove("hidden");
         document.querySelector("[data-catalog-table-wrap]")?.classList.add("hidden");
-        toast("Error al cargar docentes", "danger");
+        toast("Error al cargar estudiantes", "danger");
       });
   });
 })();

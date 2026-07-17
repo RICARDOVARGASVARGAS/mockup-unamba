@@ -36,12 +36,15 @@ El **porqué** (razonamiento, decisiones de dominio) vive en
    `usuario_rol`, `rol_permiso`, `grado_academico`, `especialidad`,
    `docente`, `estudiante`. _(✔ completo — 10 tablas)_
 2. **Estructura académica** — `ciclo`, `periodo_academico`, `ciclo_periodo`,
-   `docente_ciclo_periodo`, `temario`, `estudiante_ciclo_periodo`. _(pendiente)_
+   `docente_ciclo_periodo`, `temario`, `estudiante_ciclo_periodo`.
+   _(en progreso — `ciclo`, `periodo_academico` ✔)_
 3. **Fichas** — `tipo_ficha`, `tipo_pregunta`, `area`, `ficha`, `pregunta`,
    `opcion_pregunta`, `ficha_ciclo_periodo`, `ficha_llenada`, `respuesta`,
    `respuesta_opcion`. _(pendiente)_
 4. **IA / Alertas / Derivación** — `alerta_ia`, `entidad_receptora`,
    `derivacion`, `estado_derivacion`, `tipo_estado_derivacion`. _(pendiente)_
+
+**Transversales** — `auditoria` (bitácora de cambios).
 
 ---
 
@@ -489,6 +492,135 @@ aceptan `?buscar=`, `?page=`, filtros y orden; respuesta JSON con `data` +
 `usuario`, `rol`, `permiso`, `usuario_rol`, `rol_permiso`, `grado_academico`,
 `especialidad`, `docente`, `estudiante`).
 
-<!-- Próximo: Módulo 2 — Estructura académica -->
+## Módulo 2 — Estructura académica
+
+### `ciclo` (catálogo)
+
+Nivel curricular. Malla abierta: se agregan o desactivan sin tocar código.
+**Varios** pueden estar `activo = 1` a la vez.
+
+| Campo | Tipo | Nulo | Notas |
+|-------|------|:----:|-------|
+| `id` | `BIGINT UNSIGNED` | NO | PK, AUTO_INCREMENT |
+| `nombre` | `VARCHAR(60)` | NO | **UNIQUE** — "Primer ciclo", "1° ciclo" |
+| `orden` | `SMALLINT` | NO | **UNIQUE** — progresión (calcula el "ciclo siguiente") |
+| `activo` | `TINYINT(1)` | NO | DEFAULT `1` — retirar sin ocultar |
+| `created_at` | `TIMESTAMP` | SÍ | |
+| `updated_at` | `TIMESTAMP` | SÍ | |
+
+**Índices:** PK (`id`) · UNIQUE (`nombre`) · UNIQUE (`orden`).
+
+Sin `deleted_at`: es catálogo → un soft-delete ocultaría valores que el
+historial (`ciclo_periodo`) necesita mostrar. Se retira con `activo = 0`;
+si nunca se usó, se puede borrar (la FK impide borrar uno referenciado).
+Al reordenar, el intercambio de `orden` (UNIQUE) se resuelve en la lógica.
+
+```sql
+CREATE TABLE ciclo (
+  id          BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT,
+  nombre      VARCHAR(60)      NOT NULL,
+  orden       SMALLINT         NOT NULL,
+  activo      TINYINT(1)       NOT NULL DEFAULT 1,
+  created_at  TIMESTAMP        NULL,
+  updated_at  TIMESTAMP        NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_ciclo_nombre (nombre),
+  UNIQUE KEY uq_ciclo_orden (orden)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+### `periodo_academico` (catálogo)
+
+Semestre/año contenedor. **Solo uno vigente** a la vez.
+
+| Campo | Tipo | Nulo | Notas |
+|-------|------|:----:|-------|
+| `id` | `BIGINT UNSIGNED` | NO | PK, AUTO_INCREMENT |
+| `nombre` | `VARCHAR(20)` | NO | **UNIQUE** — "2026-I", "2026-II" |
+| `fecha_inicio` | `DATE` | SÍ | opcional |
+| `fecha_fin` | `DATE` | SÍ | opcional |
+| `activo` | `TINYINT(1)` | NO | DEFAULT `0` — el vigente |
+| `created_at` | `TIMESTAMP` | SÍ | |
+| `updated_at` | `TIMESTAMP` | SÍ | |
+
+**Índices:** PK (`id`) · UNIQUE (`nombre`). Sin `deleted_at` (catálogo → `activo`).
+
+**Reglas (aplicación, no BD):**
+- Solo un `periodo_academico` con `activo = 1`; al activar uno, los demás pasan a `0`.
+- Si ambas fechas están presentes, `fecha_inicio <= fecha_fin`.
+
+```sql
+CREATE TABLE periodo_academico (
+  id            BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT,
+  nombre        VARCHAR(20)      NOT NULL,
+  fecha_inicio  DATE             NULL,
+  fecha_fin     DATE             NULL,
+  activo        TINYINT(1)       NOT NULL DEFAULT 0,
+  created_at    TIMESTAMP        NULL,
+  updated_at    TIMESTAMP        NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_periodo_academico_nombre (nombre)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+<!-- Próximas: ciclo_periodo, docente_ciclo_periodo, temario, estudiante_ciclo_periodo -->
+
+---
+
+## Tablas transversales
+
+### `auditoria`
+
+Bitácora **append-only e inmutable**: quién hizo qué, con valores
+antes/después. Distinta de `created_at`/`updated_at` (que solo dicen *cuándo*
+cambió la fila). Se implementa con **`owen-it/laravel-auditing`** (crea una
+tabla equivalente y captura old/new automáticamente); esta es la
+especificación. Expone solo lectura para el admin (`GET /auditoria`,
+permiso `auditoria.ver`).
+
+| Campo | Tipo | Nulo | Notas |
+|-------|------|:----:|-------|
+| `id` | `BIGINT UNSIGNED` | NO | PK |
+| `usuario_id` | `BIGINT UNSIGNED` | SÍ | quién actuó (null = sistema) — FK → `usuario`, ON DELETE SET NULL |
+| `accion` | `VARCHAR(30)` | NO | `crear`, `editar`, `eliminar`, `login`… |
+| `tabla_afectada` | `VARCHAR(100)` | NO | modelo/tabla tocada |
+| `registro_id` | `BIGINT UNSIGNED` | SÍ | id del registro afectado |
+| `valores_anteriores` | `JSON` | SÍ | estado previo |
+| `valores_nuevos` | `JSON` | SÍ | estado nuevo |
+| `ip` | `VARCHAR(45)` | SÍ | IPv4 / IPv6 |
+| `user_agent` | `VARCHAR(255)` | SÍ | navegador |
+| `url` | `VARCHAR(255)` | SÍ | endpoint |
+| `created_at` | `TIMESTAMP` | SÍ | cuándo (única marca temporal) |
+
+**Índices:** PK (`id`) · (`tabla_afectada`, `registro_id`) · (`usuario_id`) · (`created_at`).
+
+**Notas:**
+- **Inmutable:** solo se inserta; nunca `UPDATE` ni `DELETE`. Por eso no lleva
+  `updated_at` ni `deleted_at`.
+- **Crece rápido** (una fila por cambio): prever retención/archivado a futuro.
+- `usuario_id` con `ON DELETE SET NULL` para que la bitácora sobreviva aunque
+  se elimine al usuario.
+- `JSON` es correcto aquí (payloads sueltos, no entidades relacionadas).
+
+```sql
+CREATE TABLE auditoria (
+  id                  BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT,
+  usuario_id          BIGINT UNSIGNED  NULL,
+  accion              VARCHAR(30)      NOT NULL,
+  tabla_afectada      VARCHAR(100)     NOT NULL,
+  registro_id         BIGINT UNSIGNED  NULL,
+  valores_anteriores  JSON             NULL,
+  valores_nuevos      JSON             NULL,
+  ip                  VARCHAR(45)      NULL,
+  user_agent          VARCHAR(255)     NULL,
+  url                 VARCHAR(255)     NULL,
+  created_at          TIMESTAMP        NULL,
+  PRIMARY KEY (id),
+  KEY idx_auditoria_registro (tabla_afectada, registro_id),
+  KEY idx_auditoria_usuario (usuario_id),
+  KEY idx_auditoria_fecha (created_at),
+  CONSTRAINT fk_auditoria_usuario FOREIGN KEY (usuario_id) REFERENCES usuario (id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
 
 

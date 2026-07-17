@@ -37,7 +37,7 @@ Marca la casilla al terminar cada pantalla:
 - [x] **Pantalla 2** · Especialidades (catálogo)
 - [x] **Pantalla 3** · Tipos de documento (catálogo)
 - [x] **Pantalla 4** · Docentes (listado + formulario + ficha)
-- [ ] **Pantalla 5** · Estudiantes (listado + formulario)
+- [x] **Pantalla 5** · Estudiantes (listado + formulario)
 - [ ] **Pantalla 6** · Usuarios + ajustes de Roles y permisos
 
 ---
@@ -98,10 +98,9 @@ periodo*) apuntando a `docentes.html`.
 - **Columnas de la lista:** N° · Docente (foto + abreviatura de grado +
   nombres y apellidos) · Documento (tipo + número) · Contacto (correo +
   celular) · Acciones.
-- **Acciones:** Ver (ficha profesional: nombre en mayúsculas, grado completo,
-  bloques Identidad / Contacto / Académico / Biografía / Roles) · Editar ·
-  Eliminar. Toasts: «Docente registrado / actualizado / eliminado». Botón
-  **Actualizar lista** en el encabezado del listado.
+- **Acciones:** Ver · Editar · Restablecer contraseña · Eliminar.
+  Toasts: «Docente registrado / actualizado / eliminado» y
+  «Contraseña restablecida». Botón **Actualizar lista** en el encabezado.
 - **Formulario, agrupado (alineado a BD):**
   - *Datos personales:* Foto, Tipo de documento + Número (+ buscar RENIEC
     simulado), Nombres, Apellido paterno, Apellido materno, Sexo, Fecha de
@@ -115,23 +114,29 @@ periodo*) apuntando a `docentes.html`.
   - *Roles:* multi-check `usuario_rol`.
 - **Datos placeholder:** fotos de `assets/img/docentes/` y nombres ficticios.
 
-## Pantalla 5 · Estudiantes (listado + formulario) — ⬜ Pendiente
+## Pantalla 5 · Estudiantes (listado + formulario) — ✅ Hecho
 
 Mismo patrón que Docentes. El ítem "Estudiantes" ya existe en el sidebar.
 
-- **Archivos nuevos:** `pages/admin/estudiantes.html`,
-  `pages/admin/estudiantes-form.html`, `js/estudiantes.js`.
-- **Columnas de la lista:** Foto + Nombre completo · Código universitario ·
-  Documento · Correo · Estado · Acciones.
+- **Archivos:** `pages/admin/estudiantes.html`,
+  `pages/admin/estudiantes-form.html`, `js/estudiantes.js`,
+  `js/estudiantes-form.js`, `js/estudiantes-data.js` (seed embebido).
+- **Columnas de la lista:** Estudiante (foto + nombre) · Código universitario ·
+  Documento · Correo · Estado · Acciones (Editar · Restablecer contraseña ·
+  Eliminar).
+- **Extras de listado:** Actualizar lista; toasts «Estudiante registrado /
+  actualizado / eliminado».
 - **Formulario, agrupado:**
-  - *Datos personales:* Foto, Tipo de documento (select) + Número de documento,
-    Nombres, Apellido paterno, Apellido materno, Sexo, Fecha de nacimiento.
+  - *Datos personales:* Foto, Tipo de documento (select) + Número (+ RENIEC
+    simulado), Nombres, Apellido paterno, Apellido materno, Sexo, Fecha de
+    nacimiento.
   - *Contacto:* Correo de acceso, Correo personal, Celular principal,
     Celular secundario.
   - *Datos de estudiante:* Código universitario, ORCID (opcional).
-  - *Acceso:* Estado (toggle activo).
+  - *Acceso:* Estado (toggle activo). Contraseña inicial no se captura
+    (se genera desde el documento).
 - **Datos placeholder:** fotos de `assets/img/estudiantes/`, códigos ficticios
-  (ej. `2021-1234`).
+  (ej. `2021-1001`).
 
 ## Pantalla 6 · Usuarios + Roles y permisos — ⬜ Pendiente
 

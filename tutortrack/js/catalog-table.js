@@ -23,6 +23,10 @@
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>';
   const ICON_VIEW =
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>';
+  const ICON_RESET_PASSWORD =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" /></svg>';
+  const ICON_HISTORY =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>';
   const ICON_CHEVRON_L =
     '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" /></svg>';
   const ICON_CHEVRON_R =
@@ -60,11 +64,23 @@
         ${ICON_VIEW}
       </button>`
       : "";
+    const resetBtn = options.onResetPassword
+      ? `<button type="button" class="btn-action btn-action-accent" data-row-reset-password data-row-id="${id}" title="Restablecer contraseña" aria-label="Restablecer contraseña">
+        ${ICON_RESET_PASSWORD}
+      </button>`
+      : "";
+    const historyBtn = options.auditTable
+      ? `<button type="button" class="btn-action btn-action-history" data-row-history data-row-id="${id}" title="Historial" aria-label="Historial">
+        ${ICON_HISTORY}
+      </button>`
+      : "";
     return `
       ${viewBtn}
       <button type="button" class="btn-action btn-action-edit" data-row-edit data-row-id="${id}" title="Editar" aria-label="Editar">
         ${ICON_EDIT}
       </button>
+      ${resetBtn}
+      ${historyBtn}
       <button type="button" class="btn-action btn-action-danger" data-delete-trigger data-delete-name="${name}" data-row-id="${id}" title="Eliminar" aria-label="Eliminar">
         ${ICON_DELETE}
       </button>`;
@@ -88,6 +104,9 @@
       this.sortKey = options.initialSortKey ?? null;
       this.sortDir = options.initialSortDir === "desc" ? "desc" : "asc";
 
+      this.options.auditTable =
+        options.auditTable || root.getAttribute("data-audit-table") || "";
+
       this.searchInput = root.querySelector("[data-catalog-search]");
       this.searchBtn = root.querySelector("[data-catalog-search-btn]");
       this.clearBtn = root.querySelector("[data-catalog-clear]");
@@ -100,6 +119,27 @@
 
       this.bind();
       this.render();
+    }
+
+    historyLabel(row) {
+      if (typeof this.options.historyLabel === "function") {
+        return this.options.historyLabel(row);
+      }
+      const del = this.options.deleteLabel;
+      if (typeof del === "function") return del(row);
+      return row.nombre || row.id;
+    }
+
+    logAudit(accion, registroId, anteriores, nuevos) {
+      const tabla = this.options.auditTable;
+      if (!tabla || !window.AuditoriaData) return;
+      AuditoriaData.log({
+        accion,
+        tabla_afectada: tabla,
+        registro_id: registroId,
+        valores_anteriores: anteriores,
+        valores_nuevos: nuevos,
+      });
     }
 
     isSortable(col) {
@@ -163,6 +203,42 @@
           if (row) this.options.onEdit(row);
           return;
         }
+        const resetBtn = event.target.closest("[data-row-reset-password]");
+        if (resetBtn && this.options.onResetPassword) {
+          const row = this.data.find((r) => r.id === resetBtn.dataset.rowId);
+          if (!row) return;
+          const name = this.historyLabel(row);
+          const ask = window.AppConfirm
+            ? AppConfirm.request({
+                title: "Restablecer contraseña",
+                message: `¿Restablecer la contraseña de "${name}"? Se regenerará a partir del número de documento.`,
+                confirmLabel: "Restablecer",
+                cancelLabel: "Cancelar",
+                variant: "warning",
+              })
+            : Promise.resolve(window.confirm(`¿Restablecer la contraseña de "${name}"?`));
+          ask.then((ok) => {
+            if (!ok) return;
+            this.options.onResetPassword(row);
+            this.logAudit("restablecer_contraseña", row.id, null, {
+              documento: row.documento || null,
+            });
+          });
+          return;
+        }
+        const historyBtn = event.target.closest("[data-row-history]");
+        if (historyBtn && this.options.auditTable) {
+          const row = this.data.find((r) => r.id === historyBtn.dataset.rowId);
+          if (!row) return;
+          const detail = {
+            tabla: this.options.auditTable,
+            registroId: row.id,
+            titulo: this.historyLabel(row),
+          };
+          if (window.AppHistorial) AppHistorial.open(detail);
+          else document.dispatchEvent(new CustomEvent("app:historial-open", { detail }));
+          return;
+        }
         const pageBtn = event.target.closest("[data-page]");
         if (pageBtn && !pageBtn.disabled) {
           this.page = Number(pageBtn.dataset.page);
@@ -173,7 +249,9 @@
       document.addEventListener("app:delete-confirmed", (event) => {
         const id = event.detail?.id;
         if (!id || !this.data.some((r) => r.id === id)) return;
-        this.remove(id);
+        const before = this.data.find((r) => r.id === id);
+        this.remove(id, { skipAudit: true });
+        this.logAudit("eliminar", id, before || null, null);
         if (this.options.onDelete) this.options.onDelete(id);
       });
     }
@@ -377,18 +455,31 @@
       this.data.unshift(item);
       this.page = 1;
       this.render();
+      this.logAudit("crear", item?.id, null, item);
     }
 
     update(id, patch) {
       const idx = this.data.findIndex((r) => r.id === id);
       if (idx === -1) return;
+      const beforeFull = { ...this.data[idx] };
       this.data[idx] = { ...this.data[idx], ...patch };
+      const afterFull = this.data[idx];
       this.render();
+      const keys = Object.keys(patch || {});
+      const anteriores = {};
+      const nuevos = {};
+      keys.forEach((k) => {
+        anteriores[k] = beforeFull[k];
+        nuevos[k] = afterFull[k];
+      });
+      this.logAudit("editar", id, keys.length ? anteriores : beforeFull, keys.length ? nuevos : afterFull);
     }
 
-    remove(id) {
+    remove(id, opts = {}) {
+      const before = this.data.find((r) => r.id === id);
       this.data = this.data.filter((r) => r.id !== id);
       this.render();
+      if (!opts.skipAudit) this.logAudit("eliminar", id, before || null, null);
     }
 
     setData(rows) {
@@ -410,7 +501,13 @@
     mount(root, options) {
       return new CatalogTable(root, options);
     },
-    icons: { edit: ICON_EDIT, delete: ICON_DELETE, view: ICON_VIEW },
+    icons: {
+      edit: ICON_EDIT,
+      delete: ICON_DELETE,
+      view: ICON_VIEW,
+      resetPassword: ICON_RESET_PASSWORD,
+      history: ICON_HISTORY,
+    },
     escapeHtml,
   };
 })();

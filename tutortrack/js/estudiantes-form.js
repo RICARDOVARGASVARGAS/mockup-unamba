@@ -1,27 +1,12 @@
 /**
- * docentes-form.js — alta/edición Docente (usuario + docente + roles).
- * Campos según docs/BD-BACKEND.md y docs/MOCKUP-PANTALLAS.md § Pantalla 4.
+ * estudiantes-form.js — alta/edición Estudiante (usuario + perfil).
+ * Campos según docs/BD-BACKEND.md y docs/MOCKUP-PANTALLAS.md § Pantalla 5.
  */
 (function () {
   const toast = (message, type = "success") =>
     document.dispatchEvent(new CustomEvent("app:toast", { detail: { message, type } }));
 
   const MAX_FOTO_BYTES = 2 * 1024 * 1024;
-
-  function selectedRoles(form) {
-    return [...form.querySelectorAll('[name="roles"]:checked')].map((el) => el.value);
-  }
-
-  function fillRoles(container, selectedIds) {
-    const selected = new Set(selectedIds || []);
-    container.innerHTML = DocentesData.ROLES.map(
-      (rol) => `
-      <label class="flex items-center gap-2 rounded-md border border-border bg-bg px-3 py-2.5 text-sm text-text">
-        <input type="checkbox" name="roles" value="${rol.id}" ${selected.has(rol.id) ? "checked" : ""} class="h-4 w-4 rounded border-border text-primary" />
-        <span>${CatalogTable.escapeHtml(rol.nombre)}</span>
-      </label>`
-    ).join("");
-  }
 
   function fillSelect(select, options, current, emptyLabel) {
     select.innerHTML = `<option value="">${CatalogTable.escapeHtml(emptyLabel)}</option>${options
@@ -40,8 +25,8 @@
   }
 
   function syncActivoToggle(activo) {
-    const toggle = document.getElementById("doc-activo-toggle");
-    const checkbox = document.getElementById("doc-activo");
+    const toggle = document.getElementById("est-activo-toggle");
+    const checkbox = document.getElementById("est-activo");
     if (!toggle || !checkbox) return;
     checkbox.checked = !!activo;
     toggle.setAttribute("aria-checked", activo ? "true" : "false");
@@ -54,8 +39,8 @@
   }
 
   function bindFotoUpload(initialUrl) {
-    const fileInput = document.getElementById("doc-foto-file");
-    const hidden = document.getElementById("doc-foto");
+    const fileInput = document.getElementById("est-foto-file");
+    const hidden = document.getElementById("est-foto");
     const trigger = document.querySelector("[data-foto-trigger]");
     const preview = document.querySelector("[data-foto-preview]");
     const empty = document.querySelector("[data-foto-empty]");
@@ -106,9 +91,7 @@
         return;
       }
       const reader = new FileReader();
-      reader.onload = () => {
-        setFoto(String(reader.result || ""));
-      };
+      reader.onload = () => setFoto(String(reader.result || ""));
       reader.onerror = () => toast("No se pudo leer la imagen", "danger");
       reader.readAsDataURL(file);
     });
@@ -117,19 +100,19 @@
   }
 
   const RENIEC_EXTRA = {
-    "70000001": {
-      nombres: "Lucía",
-      apellido_paterno: "Ramos",
-      apellido_materno: "Chávez",
+    "78000001": {
+      nombres: "Patricia",
+      apellido_paterno: "López",
+      apellido_materno: "Quispe",
       sexo: "F",
-      fecha_nacimiento: "1992-06-11",
+      fecha_nacimiento: "2003-08-15",
     },
-    "70000002": {
-      nombres: "Miguel Ángel",
-      apellido_paterno: "Soto",
-      apellido_materno: "Vega",
+    "78000002": {
+      nombres: "Andrés",
+      apellido_paterno: "Medina",
+      apellido_materno: "Castro",
       sexo: "M",
-      fecha_nacimiento: "1987-12-03",
+      fecha_nacimiento: "2002-03-22",
     },
   };
 
@@ -146,7 +129,7 @@
     const doc = String(documento || "").trim();
     if (!doc) return null;
     if (RENIEC_EXTRA[doc]) return { ...RENIEC_EXTRA[doc] };
-    const row = DocentesData.load().find((r) => String(r.documento).trim() === doc);
+    const row = EstudiantesData.load().find((r) => String(r.documento).trim() === doc);
     if (!row) return null;
     return {
       nombres: row.nombres || "",
@@ -158,16 +141,16 @@
   }
 
   function applyReniecResult(person) {
-    document.getElementById("doc-nombres").value = person.nombres || "";
-    document.getElementById("doc-apaterno").value = person.apellido_paterno || "";
-    document.getElementById("doc-amaterno").value = person.apellido_materno || "";
-    document.getElementById("doc-fnac").value = person.fecha_nacimiento || "";
-    if (person.sexo) document.getElementById("doc-sexo").value = person.sexo;
+    document.getElementById("est-nombres").value = person.nombres || "";
+    document.getElementById("est-apaterno").value = person.apellido_paterno || "";
+    document.getElementById("est-amaterno").value = person.apellido_materno || "";
+    document.getElementById("est-fnac").value = person.fecha_nacimiento || "";
+    if (person.sexo) document.getElementById("est-sexo").value = person.sexo;
   }
 
   function bindReniecSearch(tipoSelect) {
     const btn = document.querySelector("[data-reniec-buscar]");
-    const docInput = document.getElementById("doc-documento");
+    const docInput = document.getElementById("est-documento");
     if (!btn || !docInput) return;
 
     const run = async () => {
@@ -217,57 +200,50 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    const form = document.querySelector("[data-docente-form]");
-    if (!form || !window.DocentesData) return;
+    const form = document.querySelector("[data-estudiante-form]");
+    if (!form || !window.EstudiantesData) return;
 
-    DocentesData.ready()
+    EstudiantesData.ready()
       .then(() => initForm(form))
       .catch((err) => {
         console.error(err);
-        toast("No se pudieron cargar los docentes de prueba.", "danger");
+        toast("No se pudieron cargar los estudiantes de prueba.", "danger");
       });
   });
 
   function initForm(form) {
     const params = new URLSearchParams(window.location.search);
     const editId = params.get("id");
-    const existing = editId ? DocentesData.findById(editId) : null;
+    const existing = editId ? EstudiantesData.findById(editId) : null;
     const isEdit = Boolean(existing);
 
     const title = document.querySelector("[data-form-page-title]");
-    const rolesBox = document.querySelector("[data-roles-checklist]");
-    const tipoSelect = document.getElementById("doc-tipo-documento");
-    const gradoSelect = document.getElementById("doc-grado");
-    const espSelect = document.getElementById("doc-especialidad");
-    const activoToggle = document.getElementById("doc-activo-toggle");
+    const tipoSelect = document.getElementById("est-tipo-documento");
+    const activoToggle = document.getElementById("est-activo-toggle");
 
-    if (title) title.textContent = isEdit ? "Editar docente" : "Nuevo docente";
+    if (title) title.textContent = isEdit ? "Editar estudiante" : "Nuevo estudiante";
 
-    fillRoles(rolesBox, isEdit ? existing.roles : ["rol-2"]);
     fillTiposDocumento(tipoSelect, isEdit ? existing.tipo_documento_id : "td-1");
-    fillSelect(gradoSelect, DocentesData.GRADOS, isEdit ? existing.grado_academico_id : "", "Seleccionar…");
-    fillSelect(espSelect, DocentesData.ESPECIALIDADES, isEdit ? existing.especialidad_id : "", "Seleccionar…");
     bindReniecSearch(tipoSelect);
     bindFotoUpload(isEdit ? existing.foto_perfil_url : "");
 
     activoToggle.addEventListener("click", () => {
-      syncActivoToggle(!document.getElementById("doc-activo").checked);
+      syncActivoToggle(!document.getElementById("est-activo").checked);
     });
 
     if (isEdit) {
-      document.getElementById("doc-documento").value = existing.documento || "";
-      document.getElementById("doc-nombres").value = existing.nombres || "";
-      document.getElementById("doc-apaterno").value = existing.apellido_paterno || "";
-      document.getElementById("doc-amaterno").value = existing.apellido_materno || "";
-      document.getElementById("doc-sexo").value = existing.sexo || "";
-      document.getElementById("doc-fnac").value = existing.fecha_nacimiento || "";
-      document.getElementById("doc-email").value = existing.email || "";
-      document.getElementById("doc-email-personal").value = existing.email_personal || "";
-      document.getElementById("doc-cel-principal").value = existing.celular_principal || "";
-      document.getElementById("doc-cel-secundario").value = existing.celular_secundario || "";
-      document.getElementById("doc-orcid").value = existing.codigo_orcid || "";
-      document.getElementById("doc-cv").value = existing.cv_url || "";
-      document.getElementById("doc-bio").value = existing.biografia || "";
+      document.getElementById("est-documento").value = existing.documento || "";
+      document.getElementById("est-nombres").value = existing.nombres || "";
+      document.getElementById("est-apaterno").value = existing.apellido_paterno || "";
+      document.getElementById("est-amaterno").value = existing.apellido_materno || "";
+      document.getElementById("est-sexo").value = existing.sexo || "";
+      document.getElementById("est-fnac").value = existing.fecha_nacimiento || "";
+      document.getElementById("est-email").value = existing.email || "";
+      document.getElementById("est-email-personal").value = existing.email_personal || "";
+      document.getElementById("est-cel-principal").value = existing.celular_principal || "";
+      document.getElementById("est-cel-secundario").value = existing.celular_secundario || "";
+      document.getElementById("est-codigo").value = existing.codigo_universitario || "";
+      document.getElementById("est-orcid").value = existing.codigo_orcid || "";
       syncActivoToggle(existing.activo !== false);
     } else {
       syncActivoToggle(true);
@@ -275,33 +251,24 @@
 
     form.addEventListener("submit", (event) => {
       event.preventDefault();
-      const roles = selectedRoles(form);
-      if (!roles.length) {
-        toast("Asigna al menos un rol", "warning");
-        return;
-      }
 
       const row = {
-        id: isEdit ? existing.id : `doc-${Date.now()}`,
+        id: isEdit ? existing.id : `est-${Date.now()}`,
         tipo_documento_id: tipoSelect.value,
-        documento: document.getElementById("doc-documento").value.trim(),
-        nombres: document.getElementById("doc-nombres").value.trim(),
-        apellido_paterno: document.getElementById("doc-apaterno").value.trim(),
-        apellido_materno: document.getElementById("doc-amaterno").value.trim(),
-        sexo: document.getElementById("doc-sexo").value,
-        fecha_nacimiento: document.getElementById("doc-fnac").value,
-        email: document.getElementById("doc-email").value.trim(),
-        email_personal: document.getElementById("doc-email-personal").value.trim(),
-        celular_principal: document.getElementById("doc-cel-principal").value.trim(),
-        celular_secundario: document.getElementById("doc-cel-secundario").value.trim(),
-        foto_perfil_url: document.getElementById("doc-foto").value,
-        activo: document.getElementById("doc-activo").checked,
-        grado_academico_id: gradoSelect.value,
-        especialidad_id: espSelect.value,
-        codigo_orcid: document.getElementById("doc-orcid").value.trim(),
-        cv_url: document.getElementById("doc-cv").value.trim(),
-        biografia: document.getElementById("doc-bio").value.trim(),
-        roles,
+        documento: document.getElementById("est-documento").value.trim(),
+        nombres: document.getElementById("est-nombres").value.trim(),
+        apellido_paterno: document.getElementById("est-apaterno").value.trim(),
+        apellido_materno: document.getElementById("est-amaterno").value.trim(),
+        sexo: document.getElementById("est-sexo").value,
+        fecha_nacimiento: document.getElementById("est-fnac").value,
+        email: document.getElementById("est-email").value.trim(),
+        email_personal: document.getElementById("est-email-personal").value.trim(),
+        celular_principal: document.getElementById("est-cel-principal").value.trim(),
+        celular_secundario: document.getElementById("est-cel-secundario").value.trim(),
+        foto_perfil_url: document.getElementById("est-foto").value,
+        activo: document.getElementById("est-activo").checked,
+        codigo_universitario: document.getElementById("est-codigo").value.trim(),
+        codigo_orcid: document.getElementById("est-orcid").value.trim(),
       };
 
       if (
@@ -310,13 +277,14 @@
         !row.nombres ||
         !row.apellido_paterno ||
         !row.apellido_materno ||
-        !row.email
+        !row.email ||
+        !row.codigo_universitario
       ) {
         toast("Completa los campos obligatorios", "warning");
         return;
       }
 
-      const others = DocentesData.load().filter((r) => r.id !== row.id);
+      const others = EstudiantesData.load().filter((r) => r.id !== row.id);
       if (
         others.some(
           (r) =>
@@ -331,18 +299,29 @@
         toast("Ya existe un usuario con ese correo de acceso", "warning");
         return;
       }
+      if (
+        others.some(
+          (r) =>
+            String(r.codigo_universitario).toLowerCase() === row.codigo_universitario.toLowerCase()
+        )
+      ) {
+        toast("Ya existe un estudiante con ese código universitario", "warning");
+        return;
+      }
 
-      DocentesData.upsert(row);
+      EstudiantesData.upsert(row);
       if (window.AuditoriaData) {
         AuditoriaData.log({
           accion: isEdit ? "editar" : "crear",
-          tabla_afectada: "docente",
+          tabla_afectada: "estudiante",
           registro_id: row.id,
           valores_anteriores: isEdit ? existing : null,
           valores_nuevos: row,
         });
       }
-      window.location.href = isEdit ? "docentes.html?saved=updated" : "docentes.html?saved=created";
+      window.location.href = isEdit
+        ? "estudiantes.html?saved=updated"
+        : "estudiantes.html?saved=created";
     });
   }
 })();

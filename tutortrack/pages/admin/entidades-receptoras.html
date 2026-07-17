@@ -17,7 +17,7 @@
     <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
       <app-topbar page-title="Entidades receptoras" user-name="Ricardo Vargas Vargas" user-role="Administrador" user-initials="RV" user-avatar="assets/img/admin/ricardo-vargas.jpg"></app-topbar>
       <main class="flex-1 p-4 sm:p-6 lg:p-8">
-        <section class="app-card catalog-panel" data-catalog>
+        <section class="app-card catalog-panel" data-catalog data-audit-table="entidad_receptora">
           <div class="catalog-head">
             <div>
               <h2 class="font-heading">Entidades receptoras</h2>
@@ -88,12 +88,15 @@
       </div>
     </div>
     <app-modal-confirm></app-modal-confirm>
+    <app-modal-historial></app-modal-historial>
     <app-toast></app-toast>
     <script src="../../js/theme.js"></script>
     <script src="../../js/site-paths.js"></script>
     <script src="../../components/app-sidebar.js"></script>
     <script src="../../components/app-topbar.js"></script>
     <script src="../../components/app-modal-confirm.js"></script>
+    <script src="../../js/auditoria-data.js"></script>
+    <script src="../../components/app-modal-historial.js"></script>
     <script src="../../components/app-toast.js"></script>
     <script src="../../js/catalog-table.js"></script>
     <script src="../../js/entidades-receptoras.js"></script>

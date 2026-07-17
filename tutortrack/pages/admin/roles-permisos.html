@@ -35,7 +35,7 @@
           </div>
 
           <!-- Panel Roles -->
-          <div data-panel="roles" data-catalog="roles">
+          <div data-panel="roles" data-catalog="roles" data-audit-table="rol">
             <div class="catalog-query">
               <div class="catalog-field catalog-field-grow">
                 <label for="search-roles">Buscar</label>
@@ -70,7 +70,7 @@
           </div>
 
           <!-- Panel Permisos -->
-          <div data-panel="permisos" data-catalog="permisos" class="hidden">
+          <div data-panel="permisos" data-catalog="permisos" data-audit-table="permiso" class="hidden">
             <div class="catalog-query">
               <div class="catalog-field catalog-field-grow">
                 <label for="search-permisos">Buscar</label>
@@ -167,12 +167,15 @@
     </div>
 
     <app-modal-confirm></app-modal-confirm>
+    <app-modal-historial></app-modal-historial>
     <app-toast></app-toast>
     <script src="../../js/theme.js"></script>
     <script src="../../js/site-paths.js"></script>
     <script src="../../components/app-sidebar.js"></script>
     <script src="../../components/app-topbar.js"></script>
     <script src="../../components/app-modal-confirm.js"></script>
+    <script src="../../js/auditoria-data.js"></script>
+    <script src="../../components/app-modal-historial.js"></script>
     <script src="../../components/app-toast.js"></script>
     <script src="../../js/catalog-table.js"></script>
     <script src="../../js/roles-permisos.js"></script>
