@@ -333,8 +333,7 @@
       }
 
       DocentesData.upsert(row);
-      toast(isEdit ? "Docente actualizado" : "Docente creado");
-      window.location.href = "docentes.html?saved=1";
+      window.location.href = isEdit ? "docentes.html?saved=updated" : "docentes.html?saved=created";
     });
   }
 })();

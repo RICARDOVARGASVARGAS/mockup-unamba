@@ -391,6 +391,12 @@
       this.render();
     }
 
+    setData(rows) {
+      this.data = [...(rows || [])];
+      this.page = 1;
+      this.render();
+    }
+
     getAll() {
       return [...this.data];
     }

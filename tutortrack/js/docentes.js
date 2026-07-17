@@ -6,6 +6,14 @@
   const toast = (message, type = "success") =>
     document.dispatchEvent(new CustomEvent("app:toast", { detail: { message, type } }));
 
+  function mapRows(rows) {
+    return rows.map((r) => ({
+      ...r,
+      nombre_completo: DocentesData.nombreCompleto(r),
+      email: r.email || r.correo_electronico || "",
+    }));
+  }
+
   function docenteHtml(row, esc) {
     const name = DocentesData.nombreCompleto(row);
     const abrev = DocentesData.gradoAbrev(row.grado_academico_id);
@@ -53,16 +61,10 @@
 
   function mountTable(rows) {
     const root = document.querySelector("[data-catalog]");
-    if (!root || !window.CatalogTable) return;
+    if (!root || !window.CatalogTable) return null;
 
-    const data = rows.map((r) => ({
-      ...r,
-      nombre_completo: DocentesData.nombreCompleto(r),
-      email: r.email || r.correo_electronico || "",
-    }));
-
-    CatalogTable.mount(root, {
-      data,
+    const table = CatalogTable.mount(root, {
+      data: mapRows(rows),
       pageSize: 8,
       searchKeys: [
         "nombres",
@@ -127,14 +129,26 @@
     document.querySelector("[data-open-create]")?.addEventListener("click", () => {
       window.location.href = "docentes-form.html";
     });
+
+    document.querySelector("[data-catalog-refresh]")?.addEventListener("click", () => {
+      table.setData(mapRows(DocentesData.load()));
+      toast("Lista actualizada");
+    });
+
+    return table;
   }
 
   document.addEventListener("DOMContentLoaded", () => {
     if (!window.DocentesData || !window.CatalogTable) return;
 
     const params = new URLSearchParams(window.location.search);
-    if (params.get("saved") === "1") {
-      toast("Docente guardado");
+    const saved = params.get("saved");
+    if (saved === "created" || saved === "1") {
+      toast("Docente registrado");
+    } else if (saved === "updated") {
+      toast("Docente actualizado");
+    }
+    if (saved) {
       params.delete("saved");
       const clean = `${window.location.pathname}${params.toString() ? `?${params}` : ""}${window.location.hash}`;
       window.history.replaceState({}, "", clean);

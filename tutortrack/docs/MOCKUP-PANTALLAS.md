@@ -36,7 +36,7 @@ Marca la casilla al terminar cada pantalla:
 - [x] **Pantalla 1** · Grados académicos (catálogo)
 - [x] **Pantalla 2** · Especialidades (catálogo)
 - [x] **Pantalla 3** · Tipos de documento (catálogo)
-- [x] **Pantalla 4** · Docentes (listado + formulario)
+- [x] **Pantalla 4** · Docentes (listado + formulario + ficha)
 - [ ] **Pantalla 5** · Estudiantes (listado + formulario)
 - [ ] **Pantalla 6** · Usuarios + ajustes de Roles y permisos
 
@@ -80,7 +80,7 @@ Marca la casilla al terminar cada pantalla:
 - **Nota:** el `select` de tipo de documento ya está en el formulario de
   docentes; pendiente en estudiantes/usuarios.
 
-## Pantalla 4 · Docentes (listado + formulario) ✅ HECHO
+## Pantalla 4 · Docentes (listado + formulario + ficha) ✅ HECHO
 
 Entidad rica → **lista** + **página de formulario aparte** (demasiados campos
 para un modal). El ítem "Docentes" ya existe en el sidebar (grupo *Gestión por
@@ -99,7 +99,9 @@ periodo*) apuntando a `docentes.html`.
   nombres y apellidos) · Documento (tipo + número) · Contacto (correo +
   celular) · Acciones.
 - **Acciones:** Ver (ficha profesional: nombre en mayúsculas, grado completo,
-  bloques Identidad / Contacto / Académico / Biografía) · Editar · Eliminar.
+  bloques Identidad / Contacto / Académico / Biografía / Roles) · Editar ·
+  Eliminar. Toasts: «Docente registrado / actualizado / eliminado». Botón
+  **Actualizar lista** en el encabezado del listado.
 - **Formulario, agrupado (alineado a BD):**
   - *Datos personales:* Foto, Tipo de documento + Número (+ buscar RENIEC
     simulado), Nombres, Apellido paterno, Apellido materno, Sexo, Fecha de

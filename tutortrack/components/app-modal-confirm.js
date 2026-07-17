@@ -90,8 +90,12 @@
         );
         close();
         this.pendingId = null;
+        const deleteToast =
+          this.getAttribute("delete-toast") ||
+          document.querySelector("[data-catalog]")?.getAttribute("data-delete-toast") ||
+          "Elemento eliminado";
         document.dispatchEvent(
-          new CustomEvent("app:toast", { detail: { message: "Elemento eliminado", type: "warning" } })
+          new CustomEvent("app:toast", { detail: { message: deleteToast, type: "warning" } })
         );
       });
     }
