@@ -18,7 +18,7 @@
   let index = 0;
   let timer = null;
 
-  function show(newIndex) {
+  function show(newIndex, { animate = true } = {}) {
     index = (newIndex + slides.length) % slides.length;
 
     slides.forEach((slide, i) => {
@@ -27,12 +27,21 @@
       slide.classList.toggle("pointer-events-auto", active);
       slide.classList.toggle("opacity-0", !active);
       slide.classList.toggle("pointer-events-none", !active);
+      slide.classList.remove("is-entering");
+
+      if (active && animate && !prefersReducedMotion) {
+        // Reinicia la entrada tipográfica en cada cambio de diapositiva
+        void slide.offsetWidth;
+        slide.classList.add("is-entering");
+      }
     });
 
     dots.forEach((dot, i) => {
       const active = i === index;
-      dot.classList.toggle("bg-accent", active);
-      dot.classList.toggle("bg-white/40", !active);
+      const widthClass = active ? "w-8" : "w-2.5";
+      dot.className = `h-2 rounded-full transition-all duration-300 ${widthClass} ${
+        active ? "bg-accent" : "bg-white/40"
+      }`;
       dot.setAttribute("aria-current", String(active));
     });
   }
@@ -48,7 +57,7 @@
   function startAutoplay() {
     stopAutoplay();
     if (prefersReducedMotion || slides.length < 2) return;
-    timer = setInterval(next, 6000);
+    timer = setInterval(next, 7000);
   }
 
   function stopAutoplay() {
@@ -75,6 +84,10 @@
   hero.addEventListener("focusin", stopAutoplay);
   hero.addEventListener("focusout", startAutoplay);
 
-  show(0);
-  startAutoplay();
+  // Primera pintura: marca listo y anima la entrada una sola vez
+  requestAnimationFrame(() => {
+    hero.classList.add("is-ready");
+    show(0, { animate: true });
+    startAutoplay();
+  });
 })();

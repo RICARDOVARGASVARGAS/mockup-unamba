@@ -124,13 +124,13 @@ class SiteHeader extends HTMLElement {
       <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:text-primary-dark">
         Saltar al contenido
       </a>
-      <header data-site-header class="sticky top-0 z-30 w-full bg-primary text-onPrimary transition-shadow duration-200">
-        <div class="page-container flex h-16 items-center gap-3">
-          <a href="${base}index.html" class="flex shrink-0 items-center gap-2" aria-label="Ir a inicio">
-            <img src="${base}assets/img/facultad/logo_facultad.jpg" alt="" class="h-10 w-10 shrink-0 rounded-lg bg-onPrimary object-contain p-0.5" />
+      <header data-site-header class="sticky top-0 z-30 w-full bg-primary text-onPrimary shadow-sm transition-shadow duration-200">
+        <div class="page-container flex h-[4.25rem] items-center gap-3 sm:h-[4.75rem]">
+          <a href="${base}index.html" class="flex shrink-0 items-center gap-3" aria-label="Ir a inicio">
+            <img src="${base}assets/img/facultad/logo_facultad.jpg" alt="" class="h-11 w-11 shrink-0 rounded-md bg-onPrimary object-contain p-0.5 sm:h-12 sm:w-12" />
             <span class="hidden flex-col leading-tight sm:flex">
-              <span class="font-heading text-sm font-semibold text-onPrimary">Facultad de Administración</span>
-              <span class="text-xs text-onPrimary/70">UNAMBA</span>
+              <span class="font-heading text-base font-semibold tracking-tight text-onPrimary">Facultad de Administración</span>
+              <span class="text-xs font-medium text-accent">UNAMBA</span>
             </span>
           </a>
 

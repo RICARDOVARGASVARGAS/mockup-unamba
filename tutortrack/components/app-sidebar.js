@@ -154,7 +154,7 @@
     const hasActive = group.items.some((item) => isActive(item.path));
     return `
       <details class="group/nav" ${hasActive ? "open" : ""}>
-        <summary class="flex cursor-pointer list-none items-center justify-between rounded-md px-3 py-1.5 text-xs font-medium text-[color:var(--color-nav-muted)] transition hover:bg-[color:var(--color-nav-hover)] hover:text-[color:var(--color-nav-text)] [&::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer list-none items-center justify-between rounded-md px-3 py-1.5 text-[0.6875rem] font-semibold uppercase tracking-[0.07em] text-[color:var(--color-nav-muted)] transition hover:bg-[color:var(--color-nav-hover)] hover:text-[color:var(--color-nav-text)] [&::-webkit-details-marker]:hidden">
           ${group.label}
           ${icon("chevron", "h-3.5 w-3.5 shrink-0 opacity-70 transition-transform duration-200 group-open/nav:rotate-180")}
         </summary>

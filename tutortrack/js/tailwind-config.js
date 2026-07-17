@@ -8,7 +8,6 @@
  * diseño se hace ahí, nunca aquí.
  */
 tailwind.config = {
-  darkMode: ["selector", '[data-theme="dark"]'],
   theme: {
     extend: {
       fontFamily: {

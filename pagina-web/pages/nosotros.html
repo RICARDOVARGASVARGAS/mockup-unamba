@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap"
       rel="stylesheet"
     />
 
@@ -24,8 +24,8 @@
 
     <main id="main-content" class="w-full">
       <!-- Encabezado de sección -->
-      <section class="bg-primary text-onPrimary">
-        <div class="page-container py-10 sm:py-12">
+      <section class="page-banner">
+        <div class="page-container">
           <nav aria-label="Ruta de navegación" class="flex flex-wrap items-center gap-2 text-sm text-onPrimary/70">
             <a href="../index.html" class="transition hover:text-accent">Inicio</a>
             <span aria-hidden="true">/</span>
@@ -33,8 +33,8 @@
             <span aria-hidden="true">/</span>
             <span aria-current="page" class="text-onPrimary">La Facultad</span>
           </nav>
-          <h1 class="mt-3 font-heading text-3xl font-bold sm:text-4xl">La Facultad</h1>
-          <p class="mt-2 max-w-2xl text-onPrimary/80">Historia, misión, valores y fortalezas de la Facultad de Administración.</p>
+          <h1 class="mt-3">La Facultad</h1>
+          <p class="mt-2">Historia, misión, valores y fortalezas de la Facultad de Administración.</p>
         </div>
       </section>
 
@@ -58,14 +58,14 @@
           class="absolute inset-0 h-full w-full object-cover"
           loading="lazy"
         />
-        <figcaption class="absolute bottom-2 right-3 rounded-full bg-black/40 px-2.5 py-1 text-xs text-white">Imagen ilustrativa — reemplazar por foto real del campus</figcaption>
+        <figcaption class="absolute bottom-2 right-3 rounded-md bg-primary/80 px-2.5 py-1 text-xs text-onPrimary">Imagen ilustrativa — reemplazar por foto real del campus</figcaption>
       </figure>
 
       <!-- Reseña histórica: LaFacultad.resena_historica -->
-      <section id="resena" class="page-container py-12 sm:py-16">
+      <section id="resena" class="page-container section-y">
         <div class="grid gap-8 lg:grid-cols-3 lg:gap-12">
           <div class="lg:col-span-2">
-            <h2 class="font-heading text-xl font-semibold text-text">Reseña histórica</h2>
+            <h2 class="font-heading text-2xl font-bold text-text sm:text-3xl">Reseña histórica</h2>
             <div class="prose prose-lg mt-4 max-w-none">
               <p>
                 La Universidad Nacional Micaela Bastidas de Apurímac (UNAMBA) fue creada el 26 de setiembre
@@ -87,7 +87,7 @@
           </div>
 
           <aside class="h-fit rounded-xl border border-border bg-surface p-6 lg:sticky lg:top-32">
-            <h3 class="font-heading text-sm font-semibold uppercase tracking-wide text-text-muted">Línea de tiempo</h3>
+            <h3 class="heading-card text-text">Línea de tiempo</h3>
             <ol class="relative mt-5 flex flex-col gap-5 border-l-2 border-border pl-5 text-sm">
               <li class="relative">
                 <span class="absolute -left-[calc(1.25rem+5px)] top-1 h-3 w-3 rounded-full bg-primary ring-4 ring-surface" aria-hidden="true"></span>
@@ -111,27 +111,27 @@
       </section>
 
       <!-- Misión y Visión: LaFacultad.mision / LaFacultad.vision -->
-      <section id="mision-vision" class="border-t border-border bg-surface py-12 sm:py-16">
+      <section id="mision-vision" class="border-t border-border bg-surface section-y">
         <div class="page-container">
-          <p class="text-xs font-medium uppercase tracking-wide text-text-muted">Contenido de ejemplo — pendiente de validar con la redacción oficial de la facultad</p>
+          <p class="note-example">Contenido de ejemplo — pendiente de validar con la redacción oficial de la facultad</p>
           <div class="mt-4 grid gap-6 sm:grid-cols-2">
-            <div class="rounded-xl border-y border-r border-l-4 border-border bg-bg p-6 shadow-sm transition hover:shadow-md" style="border-left-color:#0B3D91">
+            <div class="rounded-xl border border-border bg-bg p-6 shadow-sm transition hover:shadow-md">
               <span class="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
                 <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0-13.5v4.5l3 3" /></svg>
               </span>
-              <h2 class="mt-3 font-heading text-lg font-semibold text-text">Misión</h2>
-              <p class="mt-2 text-sm leading-relaxed text-text-muted">
+              <h2 class="mt-3 heading-card text-text">Misión</h2>
+              <p class="mt-2 text-base leading-relaxed text-text-muted">
                 Formar profesionales en Administración con solidez humanística, científica y tecnológica,
                 con valores, identidad cultural y responsabilidad social, orientados al desarrollo
                 sostenible de la región y el país.
               </p>
             </div>
-            <div class="rounded-xl border-y border-r border-l-4 border-border bg-bg p-6 shadow-sm transition hover:shadow-md" style="border-left-color:#1B873F">
+            <div class="rounded-xl border border-border bg-bg p-6 shadow-sm transition hover:shadow-md">
               <span class="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
                 <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
               </span>
-              <h2 class="mt-3 font-heading text-lg font-semibold text-text">Visión</h2>
-              <p class="mt-2 text-sm leading-relaxed text-text-muted">
+              <h2 class="mt-3 heading-card text-text">Visión</h2>
+              <p class="mt-2 text-base leading-relaxed text-text-muted">
                 Ser una facultad referente en la formación de administradores en la macrorregión sur,
                 reconocida por la calidad de sus egresados, su vínculo con el sector productivo y su aporte
                 a la competitividad regional.
@@ -142,42 +142,42 @@
       </section>
 
       <!-- Valores / Principios: ValorInstitucional (lista) -->
-      <section id="valores" class="page-container py-12 sm:py-16">
-        <h2 class="font-heading text-xl font-semibold text-text">Valores y principios</h2>
-        <p class="mt-1 text-xs font-medium uppercase tracking-wide text-text-muted">Contenido de ejemplo — pendiente de validar con la redacción oficial</p>
+      <section id="valores" class="page-container section-y">
+        <h2 class="heading-block text-text">Valores y principios</h2>
+        <p class="mt-1 note-example">Contenido de ejemplo — pendiente de validar con la redacción oficial</p>
         <div class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
           <div class="rounded-lg border border-border bg-surface p-5 text-center shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
             <span class="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary" aria-hidden="true">⚖️</span>
-            <p class="mt-3 font-heading text-sm font-semibold text-text">Ética</p>
+            <p class="mt-3 heading-card-sm text-text">Ética</p>
             <p class="mt-1 text-xs text-text-muted">Coherencia entre lo que se enseña y lo que se practica.</p>
           </div>
           <div class="rounded-lg border border-border bg-surface p-5 text-center shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
             <span class="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary" aria-hidden="true">🧭</span>
-            <p class="mt-3 font-heading text-sm font-semibold text-text">Liderazgo</p>
+            <p class="mt-3 heading-card-sm text-text">Liderazgo</p>
             <p class="mt-1 text-xs text-text-muted">Capacidad de guiar equipos y tomar decisiones con criterio.</p>
           </div>
           <div class="rounded-lg border border-border bg-surface p-5 text-center shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
             <span class="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary" aria-hidden="true">🤝</span>
-            <p class="mt-3 font-heading text-sm font-semibold text-text">Responsabilidad social</p>
+            <p class="mt-3 heading-card-sm text-text">Responsabilidad social</p>
             <p class="mt-1 text-xs text-text-muted">Compromiso con el desarrollo de la región y su gente.</p>
           </div>
           <div class="rounded-lg border border-border bg-surface p-5 text-center shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
             <span class="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary" aria-hidden="true">💡</span>
-            <p class="mt-3 font-heading text-sm font-semibold text-text">Innovación</p>
+            <p class="mt-3 heading-card-sm text-text">Innovación</p>
             <p class="mt-1 text-xs text-text-muted">Búsqueda constante de mejores formas de enseñar y gestionar.</p>
           </div>
           <div class="rounded-lg border border-border bg-surface p-5 text-center shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
             <span class="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary" aria-hidden="true">🎯</span>
-            <p class="mt-3 font-heading text-sm font-semibold text-text">Compromiso</p>
+            <p class="mt-3 heading-card-sm text-text">Compromiso</p>
             <p class="mt-1 text-xs text-text-muted">Vocación de servicio con estudiantes y comunidad.</p>
           </div>
         </div>
       </section>
 
       <!-- Organigrama: LaFacultad.organigrama_id, versión interactiva leyendo Autoridad -->
-      <section id="organigrama" class="border-t border-border bg-surface py-12 sm:py-16">
+      <section id="organigrama" class="border-t border-border bg-surface section-y">
         <div class="page-container">
-          <h2 class="font-heading text-xl font-semibold text-text">Organigrama</h2>
+          <h2 class="heading-block text-text">Organigrama</h2>
           <p class="mt-1 max-w-2xl text-sm text-text-muted">Estructura de autoridades vigente — los mismos datos ya registrados en <a href="autoridades.html" class="font-semibold text-primary hover:text-primary-dark">Autoridades</a>, aquí en forma de organigrama.</p>
 
           <div class="mt-10 flex flex-col items-center">
@@ -221,9 +221,9 @@
       </section>
 
       <!-- Objetivos educacionales: ObjetivoEducacional (lista) -->
-      <section id="objetivos" class="page-container py-12 sm:py-16">
-        <h2 class="font-heading text-xl font-semibold text-text">Objetivos educacionales</h2>
-        <p class="mt-1 text-xs font-medium uppercase tracking-wide text-text-muted">Contenido de ejemplo — pendiente de validar con la redacción oficial</p>
+      <section id="objetivos" class="page-container section-y">
+        <h2 class="heading-block text-text">Objetivos educacionales</h2>
+        <p class="mt-1 note-example">Contenido de ejemplo — pendiente de validar con la redacción oficial</p>
         <ol class="mt-6 grid gap-4 sm:grid-cols-2">
           <li class="flex gap-4 rounded-lg border border-border bg-surface p-4 shadow-sm transition hover:shadow-md">
             <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary font-heading text-sm font-bold text-onPrimary">1</span>
@@ -245,37 +245,37 @@
       </section>
 
       <!-- Oferta / Fortalezas: Fortaleza (lista) -->
-      <section id="fortalezas" class="border-t border-border bg-surface py-12 sm:py-16">
+      <section id="fortalezas" class="border-t border-border bg-surface section-y">
         <div class="page-container">
-          <h2 class="font-heading text-xl font-semibold text-text">Nuestra oferta y fortalezas</h2>
+          <h2 class="heading-block text-text">Nuestra oferta y fortalezas</h2>
           <div class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             <div class="rounded-lg border border-border bg-bg p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
               <span class="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary" aria-hidden="true">
                 <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" /></svg>
               </span>
-              <h3 class="mt-3 font-heading text-sm font-semibold text-text">Biblioteca especializada</h3>
-              <p class="mt-1 text-sm text-text-muted">Fondo bibliográfico físico y digital en gestión, finanzas y administración pública.</p>
+              <h3 class="mt-3 heading-card-sm text-text">Biblioteca especializada</h3>
+              <p class="mt-2 text-meta">Fondo bibliográfico físico y digital en gestión, finanzas y administración pública.</p>
             </div>
             <div class="rounded-lg border border-border bg-bg p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
               <span class="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary" aria-hidden="true">
                 <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25" /></svg>
               </span>
-              <h3 class="mt-3 font-heading text-sm font-semibold text-text">Laboratorio de cómputo</h3>
-              <p class="mt-1 text-sm text-text-muted">Equipos y software actualizados para prácticas de ofimática, estadística y sistemas de gestión.</p>
+              <h3 class="mt-3 heading-card-sm text-text">Laboratorio de cómputo</h3>
+              <p class="mt-2 text-meta">Equipos y software actualizados para prácticas de ofimática, estadística y sistemas de gestión.</p>
             </div>
             <div class="rounded-lg border border-border bg-bg p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
               <span class="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary" aria-hidden="true">
                 <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" /></svg>
               </span>
-              <h3 class="mt-3 font-heading text-sm font-semibold text-text">Convenios e intercambio</h3>
-              <p class="mt-1 text-sm text-text-muted">Movilidad estudiantil y convenios con universidades e instituciones aliadas.</p>
+              <h3 class="mt-3 heading-card-sm text-text">Convenios e intercambio</h3>
+              <p class="mt-2 text-meta">Movilidad estudiantil y convenios con universidades e instituciones aliadas.</p>
             </div>
             <div class="rounded-lg border border-border bg-bg p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
               <span class="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary" aria-hidden="true">
                 <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0V11.25A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" /></svg>
               </span>
-              <h3 class="mt-3 font-heading text-sm font-semibold text-text">Eventos y actividades</h3>
-              <p class="mt-1 text-sm text-text-muted">Talleres, semanas de administración y actividades de vínculo con la comunidad, todo el año.</p>
+              <h3 class="mt-3 heading-card-sm text-text">Eventos y actividades</h3>
+              <p class="mt-2 text-meta">Talleres, semanas de administración y actividades de vínculo con la comunidad, todo el año.</p>
             </div>
           </div>
         </div>

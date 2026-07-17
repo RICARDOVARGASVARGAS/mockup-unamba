@@ -96,31 +96,46 @@ Base del orden visual. Útil para textos, bordes, fondos y estados deshabilitado
 ## 6. Tipografía
 
 Dos fuentes, definidas como variables para cambiarlas desde un solo lugar.
-Ambas gratuitas (Google Fonts). Marcadas como cambiables.
+Ambas gratuitas (Google Fonts). Voz de marca: **solemne, clara, anclada**
+(institución pública andina — no tipografía SaaS genérica).
 
-| Variable | Fuente propuesta | Uso |
-|----------|------------------|-----|
-| `--font-heading` | **Poppins** | Títulos y encabezados. Da carácter moderno. |
-| `--font-body` | **Inter** | Cuerpo de texto. Muy legible en pantalla. |
+| Variable | Fuente | Uso |
+|----------|--------|-----|
+| `--font-heading` | **Source Serif 4** | Títulos y display. Gravitas académica. |
+| `--font-body` | **Source Sans 3** | Cuerpo y UI. Legible, neutra, institucional. |
 
 > Cambiables: si se prefiere otra combinación, reemplazar solo estas dos
-> variables. No usar más de 2–3 fuentes en total.
+> variables. No usar más de 2–3 fuentes en total. Evitar Inter, Poppins,
+> Plus Jakarta Sans y otras caras saturadas de plantillas.
 
-**Escala de tamaños (referencia):**
+**Escala de tamaños (modular ~1.25; body fijo, títulos fluidos):**
 
 | Token | Tamaño | Uso |
 |-------|--------|-----|
 | `--text-xs` | 0.75rem | Etiquetas, badges. |
-| `--text-sm` | 0.875rem | Texto secundario. |
+| `--text-sm` | 0.875rem | Texto secundario, metadata. |
 | `--text-base` | 1rem | Cuerpo. |
-| `--text-lg` | 1.125rem | Destacados. |
-| `--text-xl` | 1.25rem | Subtítulos. |
-| `--text-2xl` | 1.5rem | Títulos de sección. |
-| `--text-3xl` | 1.875rem | Títulos de página. |
-| `--text-4xl` | 2.25rem | Hero. |
+| `--text-lg` | 1.25rem | Lead / destacados. |
+| `--text-xl` | 1.375rem | Subtítulos compactos. |
+| `--text-2xl` | `clamp(1.375rem … 1.75rem)` | Títulos de sección. |
+| `--text-3xl` | `clamp(1.75rem … 2.375rem)` | Títulos de página. |
+| `--text-4xl` | `clamp(2rem … 2.875rem)` | Banner / hero. |
+| `--text-5xl` | `clamp(2.25rem … 3.5rem)` | Display hero. |
 
 Pesos: 400 (normal), 500 (medio), 600 (semibold), 700 (bold para títulos).
-Interlineado cómodo (1.5 para cuerpo, 1.2 para títulos).
+Interlineado: 1.6 cuerpo, 1.15 títulos, 1.05 display.
+Tracking display: `-0.025em` (piso ≥ `-0.04em`). Medida de prosa: `65ch`.
+
+**Roles tipográficos** (clases en `base.css`):
+| Clase | Uso |
+|-------|-----|
+| `.text-display` / `.brand-mark` | Hero |
+| `.heading-section` | Título de sección mayor |
+| `.heading-block` | Título de bloque / grupo |
+| `.heading-card` / `.heading-card-sm` | Títulos de tarjeta / ítem |
+| `.text-lead` / `.text-meta` / `.note-example` | Lead, metadata, avisos de maqueta |
+| `.label-kicker` | Label corto en mayúsculas (uso puntual) |
+| `.page-banner h1` | Título de página interna (fluido) |
 
 ---
 
@@ -168,9 +183,15 @@ Espaciado consistente para que todo respire igual. Base de 4px.
 | `--space-8` | 32px |
 | `--space-12` | 48px |
 | `--space-16` | 64px |
+| `--space-20` | 80px |
+| `--space-24` | 96px |
+| `--space-section` | `clamp(3rem … 5.5rem)` | Padding vertical de sección |
+| `--space-section-sm` | `clamp(2.25rem … 3.5rem)` | Banner / secciones compactas |
+| `--space-section-lg` | `clamp(4rem … 7rem)` | Momentos de marca con más aire |
 
-Usar múltiplos de la escala, no valores arbitrarios. Secciones grandes con
-espaciado generoso (`--space-12`/`--space-16`) para dar aire.
+Usar múltiplos de la escala, no valores arbitrarios. Preferir clases
+`.section-y` / `.section-y-sm` / `.section-y-lg` de `base.css` frente a
+`py-14`/`py-16` idénticos en todas las secciones.
 
 ---
 

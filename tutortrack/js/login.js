@@ -15,16 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const iconEye = document.querySelector("[data-icon-eye]");
   const iconEyeOff = document.querySelector("[data-icon-eye-off]");
 
-  const themeIconSun = document.querySelector("[data-icon-sun]");
-  const themeIconMoon = document.querySelector("[data-icon-moon]");
-  const syncThemeIcon = (theme) => {
-    const isDark = theme === "dark";
-    themeIconSun.classList.toggle("hidden", isDark);
-    themeIconMoon.classList.toggle("hidden", !isDark);
-  };
-  syncThemeIcon(window.Theme ? window.Theme.getTheme() : "light");
-  document.addEventListener("themechange", (event) => syncThemeIcon(event.detail.theme));
-
   passwordToggle.addEventListener("click", () => {
     const isVisible = passwordInput.type === "text";
     passwordInput.type = isVisible ? "password" : "text";

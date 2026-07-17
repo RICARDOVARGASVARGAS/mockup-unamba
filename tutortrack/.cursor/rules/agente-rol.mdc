@@ -49,12 +49,12 @@ Son catálogos **distintos** (ver `MODELO-DATOS.md` § Convención de nombres):
 - Colores solo vía tokens de este proyecto; no compartas código con
   `pagina-web/` ni `docentrack/`.
 - Admin/docente/receptor: escritorio y tablet. Estudiante: también móvil.
-- Tema claro/oscuro obligatorio (mecanismo existente, sin localStorage).
+- Tema claro único (sin modo oscuro).
 - Placeholders claros; nada de datos personales/institucionales reales.
 
 ## Calidad UI/UX que exiges de ti mismo
 - Jerarquía visual escaneable; una tarea principal por vista.
-- Contraste y foco visibles en ambos temas; `aria-label` en acciones
+- Contraste y foco visibles; `aria-label` en acciones
   solo-ícono.
 - Estados vacíos, éxito (toast) y confirmación destructiva presentes
   en flujos CRUD.

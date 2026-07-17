@@ -85,22 +85,24 @@ fijo en 10) ya quedó resuelta como catálogo editable.
 
 Identidad visual: **azul institucional + naranja + blanco** (Facultad de
 Administración UNAMBA). Azul = estructura/navegación; naranja = CTAs y
-acentos; lienzo blanco/gris frío. Tokens propios en `css/tokens.css` —
-sin compartir valores literales con `pagina-web/` ni `docentrack/`.
+acentos; lienzo blanco/gris frío. Tipografía: Source Sans 3 + Source
+Serif 4. Tokens propios en `css/tokens.css` — sin compartir valores
+literales con `pagina-web/` ni `docentrack/`.
 
 Stack: mismo patrón del workspace (HTML + Tailwind + JS, sin backend).
 
-## Modo claro/oscuro (obligatorio, en todo)
-Mismo mecanismo que el resto del workspace (variables CSS, botón
-alterna `[data-theme]`, estado en memoria durante la navegación, sin
-localStorage).
+## Tema visual (único)
+Tema **claro únicamente** — sin modo oscuro ni botón de alternancia.
+Contraste y foco visibles sobre el lienzo claro; tokens en `css/tokens.css`.
 
 ## Reglas de diseño
-- Contraste accesible y foco visible en ambos temas.
+- Contraste accesible y foco visible.
 - Componentes reutilizables y consistentes entre pantallas.
 - Cuidado especial con el tono: este módulo trata temas sensibles
   (salud mental, consumo de sustancias, riesgo de abandono) — la UI
   debe transmitir confidencialidad y cuidado, no burocracia fría.
+- Fotos e identidad solo desde `tutortrack/assets/` (copiadas del
+  repositorio `assets/` del workspace cuando haga falta).
 
 ## Convenciones de código
 - Archivos en minúscula con guiones.
@@ -147,7 +149,7 @@ localStorage).
   (2 niveles bajo la raíz) para que `getBasePath()` funcione igual en
   todas
 - `/css` → `tokens.css` (azul + naranja + blanco), `base.css`
-- `/js` → `theme.js`, `site-paths.js`, `tailwind-config.js`, `login.js`,
+- `/js` → `theme.js` (contraste on-primary), `site-paths.js`, `tailwind-config.js`, `login.js`,
   `catalog-table.js` (motor de listados de catálogo)
 - `index.html` → login (punto de entrada único, sin selector de rol)
 
@@ -162,7 +164,7 @@ localStorage).
   solo en Estudiante, notificaciones), 100% responsive (drawer
   off-canvas en móvil/tablet para las 4 secciones), un dashboard de
   ejemplo por sección. Probado en navegador: login → dashboard,
-  navegación entre las 4 secciones, modo oscuro.
+  navegación entre las 4 secciones. Tema claro único.
 - ~~Especificación~~ — inventario completo de pantallas cerrado en
   `docs/ESPECIFICACION.md` (todas las fases, objetivo/entidades/reglas
   por pantalla) antes de seguir diseñando.

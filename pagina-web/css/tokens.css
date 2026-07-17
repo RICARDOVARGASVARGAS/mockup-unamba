@@ -57,26 +57,36 @@
   --gray-800: #252c38;
   --gray-900: #151a22;
 
-  /* 6. Tipografía (PALETA.md §6) */
-  --font-heading: "Poppins", ui-sans-serif, system-ui, sans-serif;
-  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  /* 6. Tipografía (PALETA.md §6)
+     Voz: solemne, clara, anclada (institución pública andina).
+     Pareja académica Source Serif 4 + Source Sans 3 — no Inter/Poppins. */
+  --font-heading: "Source Serif 4", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --font-body: "Source Sans 3", "Segoe UI", system-ui, ui-sans-serif, sans-serif;
 
-  --text-xs: 0.75rem; /* 12px */
-  --text-sm: 0.875rem; /* 14px */
-  --text-base: 1rem; /* 16px */
-  --text-lg: 1.125rem; /* 18px */
-  --text-xl: 1.25rem; /* 20px */
-  --text-2xl: 1.5rem; /* 24px */
-  --text-3xl: 1.875rem; /* 30px */
-  --text-4xl: 2.25rem; /* 36px */
+  /* Escala modular ~1.25. Body fijo; display/títulos fluidos con clamp(). */
+  --text-xs: 0.75rem; /* 12px — captions, badges */
+  --text-sm: 0.875rem; /* 14px — metadata, UI secundaria */
+  --text-base: 1rem; /* 16px — cuerpo */
+  --text-lg: 1.25rem; /* 20px — lead / destacados */
+  --text-xl: 1.375rem; /* 22px — subtítulos compactos */
+  --text-2xl: clamp(1.375rem, 1.2rem + 0.7vw, 1.75rem); /* sección */
+  --text-3xl: clamp(1.75rem, 1.35rem + 1.35vw, 2.375rem); /* página */
+  --text-4xl: clamp(2rem, 1.45rem + 2vw, 2.875rem); /* hero / banner */
+  --text-5xl: clamp(2.5rem, 1.55rem + 3.2vw, 4rem); /* display hero — techo < 6rem */
 
   --font-normal: 400;
   --font-medium: 500;
   --font-semibold: 600;
   --font-bold: 700;
 
-  --leading-heading: 1.2;
-  --leading-body: 1.5;
+  --leading-heading: 1.15;
+  --leading-body: 1.6;
+  --leading-display: 1.05;
+
+  --tracking-display: -0.025em; /* piso ≥ -0.04em */
+  --tracking-label: 0.06em; /* labels cortos en mayúsculas */
+
+  --measure: 65ch; /* prosa larga */
 
   /* 7. Radios (PALETA.md §7) */
   --radius-sm: 4px;
@@ -91,8 +101,7 @@
   --shadow-lg: 0 12px 24px -4px rgb(15 20 28 / 0.14);
 
   /* 9. Escala de espaciado (PALETA.md §9)
-     Coincide 1:1 con la escala por defecto de Tailwind (space-4 = p-4, etc.),
-     se listan igual para poder usarlas fuera de clases de Tailwind. */
+     Base 4px. Secciones usan tokens fluidos --space-section-* . */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -101,6 +110,20 @@
   --space-8: 32px;
   --space-12: 48px;
   --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* Ritmo de sección: aire marketing que respira con el viewport */
+  --space-section: clamp(3rem, 2.4rem + 2.5vw, 5.5rem);
+  --space-section-sm: clamp(2.25rem, 1.9rem + 1.5vw, 3.5rem);
+  --space-section-lg: clamp(4rem, 3rem + 4vw, 7rem);
+
+  /* Easing institucional */
+  --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-enter: 700ms;
 }
 
 /* 3. Tema oscuro (PALETA.md §3)
@@ -118,6 +141,10 @@
 
   --color-primary: #4c7be0;
   --color-accent: #ffc933;
+
+  /* Texto claro sobre oscuro: más aire y un poco más de tracking */
+  --leading-body: 1.68;
+  --leading-heading: 1.2;
 
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
   --shadow-md: 0 4px 10px -2px rgb(0 0 0 / 0.4);

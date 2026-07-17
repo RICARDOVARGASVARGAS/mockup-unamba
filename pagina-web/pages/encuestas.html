@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap"
       rel="stylesheet"
     />
 
@@ -24,8 +24,8 @@
 
     <main id="main-content" class="w-full">
       <!-- Encabezado de sección -->
-      <section class="bg-primary text-onPrimary">
-        <div class="page-container py-10 sm:py-12">
+      <section class="page-banner">
+        <div class="page-container">
           <nav aria-label="Ruta de navegación" class="flex flex-wrap items-center gap-2 text-sm text-onPrimary/70">
             <a href="../index.html" class="transition hover:text-accent">Inicio</a>
             <span aria-hidden="true">/</span>
@@ -33,12 +33,12 @@
             <span aria-hidden="true">/</span>
             <span aria-current="page" class="text-onPrimary">Encuestas</span>
           </nav>
-          <h1 class="mt-3 font-heading text-3xl font-bold sm:text-4xl">Encuestas</h1>
-          <p class="mt-2 max-w-2xl text-onPrimary/80">Encuestas activas dirigidas a estudiantes, egresados, docentes y empleadores.</p>
+          <h1 class="mt-3">Encuestas</h1>
+          <p class="mt-2">Encuestas activas dirigidas a estudiantes, egresados, docentes y empleadores.</p>
         </div>
       </section>
 
-      <section class="page-container py-12 sm:py-16">
+      <section class="page-container section-y">
         <!-- Filtro por audiencia -->
         <div class="flex flex-wrap gap-2" role="group" aria-label="Filtrar por audiencia">
           <button type="button" data-encuesta-filter="todos" aria-pressed="true" class="h-9 rounded-full border border-primary bg-primary px-4 text-sm font-medium text-onPrimary transition">Todas</button>
@@ -60,7 +60,7 @@
                 <span class="inline-flex items-center rounded-full border border-border px-2.5 py-1 text-xs font-medium text-text-muted">Estudiantes</span>
                 <span data-encuesta-vigencia class="text-xs font-semibold"></span>
               </div>
-              <h2 class="mt-2 font-heading text-base font-semibold text-text">Encuesta de satisfacción estudiantil 2026-I</h2>
+              <h2 class="mt-2 heading-card text-text">Encuesta de satisfacción estudiantil 2026-I</h2>
               <p class="mt-0.5 text-sm text-text-muted">Evalúa tu experiencia con los servicios académicos y administrativos del semestre.</p>
             </div>
             <a href="#" target="_blank" rel="noopener" class="shrink-0 rounded-md bg-accent px-5 py-2.5 text-center text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">Responder ↗</a>
@@ -75,7 +75,7 @@
                 <span class="inline-flex items-center rounded-full border border-border px-2.5 py-1 text-xs font-medium text-text-muted">Docentes</span>
                 <span data-encuesta-vigencia class="text-xs font-semibold"></span>
               </div>
-              <h2 class="mt-2 font-heading text-base font-semibold text-text">Evaluación docente 2026-I</h2>
+              <h2 class="mt-2 heading-card text-text">Evaluación docente 2026-I</h2>
               <p class="mt-0.5 text-sm text-text-muted">Autoevaluación de desempeño docente del semestre en curso.</p>
             </div>
             <a href="#" target="_blank" rel="noopener" class="shrink-0 rounded-md bg-accent px-5 py-2.5 text-center text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">Responder ↗</a>
@@ -91,7 +91,7 @@
                 <!-- Sin fecha_vigencia -->
                 <span class="text-xs font-medium text-text-muted">Sin fecha límite</span>
               </div>
-              <h2 class="mt-2 font-heading text-base font-semibold text-text">Encuesta a empleadores sobre desempeño de egresados</h2>
+              <h2 class="mt-2 heading-card text-text">Encuesta a empleadores sobre desempeño de egresados</h2>
               <p class="mt-0.5 text-sm text-text-muted">Percepción de empresas e instituciones sobre el desempeño de nuestros egresados.</p>
             </div>
             <a href="#" target="_blank" rel="noopener" class="shrink-0 rounded-md bg-accent px-5 py-2.5 text-center text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">Responder ↗</a>
@@ -106,7 +106,7 @@
                 <span class="inline-flex items-center rounded-full border border-border px-2.5 py-1 text-xs font-medium text-text-muted">Docentes</span>
                 <span data-encuesta-vigencia class="text-xs font-semibold"></span>
               </div>
-              <h2 class="mt-2 font-heading text-base font-semibold text-text-muted line-through">Encuesta de clima institucional 2026</h2>
+              <h2 class="mt-2 heading-card text-text-muted line-through">Encuesta de clima institucional 2026</h2>
               <p class="mt-0.5 text-sm text-text-muted">Percepción del ambiente laboral y organizacional en la facultad.</p>
             </div>
             <span class="shrink-0 text-sm font-medium text-text-muted">Encuesta cerrada</span>
@@ -115,9 +115,9 @@
       </section>
 
       <!-- Seguimiento al egresado: misma tabla Encuesta filtrada por audiencia = Egresados, no un módulo aparte -->
-      <section class="border-t border-border bg-surface py-12 sm:py-16">
+      <section class="border-t border-border bg-surface section-y">
         <div class="page-container">
-          <h2 class="font-heading text-xl font-semibold text-text">Seguimiento al egresado</h2>
+          <h2 class="heading-block text-text">Seguimiento al egresado</h2>
           <p class="mt-2 max-w-2xl text-sm text-text-muted">
             La facultad da seguimiento a sus egresados mediante encuestas periódicas sobre inserción laboral,
             desarrollo profesional y vínculo con la institución. Es la misma sección de encuestas de arriba,
@@ -132,7 +132,7 @@
                 <span class="inline-flex items-center rounded-full border border-border px-2.5 py-1 text-xs font-medium text-text-muted">Egresados</span>
                 <span class="text-xs font-medium text-text-muted">Vigente hasta: 31 dic. 2026</span>
               </div>
-              <h3 class="mt-2 font-heading text-base font-semibold text-text">Seguimiento al egresado 2026</h3>
+              <h3 class="mt-2 heading-card text-text">Seguimiento al egresado 2026</h3>
               <p class="mt-0.5 text-sm text-text-muted">Situación laboral, sector de trabajo y valoración de la formación recibida.</p>
             </div>
             <a href="#" target="_blank" rel="noopener" class="shrink-0 rounded-md bg-accent px-5 py-2.5 text-center text-sm font-semibold text-primary-dark transition hover:bg-accent-dark">Responder ↗</a>

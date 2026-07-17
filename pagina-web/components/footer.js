@@ -48,7 +48,7 @@ class SiteFooter extends HTMLElement {
 
     this.innerHTML = `
       <footer class="w-full bg-primary text-onPrimary">
-        <div class="page-container grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="page-container grid gap-10 section-y-sm sm:grid-cols-2 lg:grid-cols-4">
           <div class="flex flex-col gap-3">
             <a href="${base}index.html" class="flex items-center gap-2" aria-label="Ir a inicio">
               <img src="${base}assets/img/facultad/logo_facultad.jpg" alt="" class="h-9 w-9 shrink-0 rounded-lg bg-onPrimary object-contain p-0.5" />
@@ -62,7 +62,7 @@ class SiteFooter extends HTMLElement {
           </div>
 
           <div>
-            <h2 class="text-xs font-semibold uppercase tracking-wider text-onPrimary/60">Enlaces</h2>
+            <h2 class="font-heading text-sm font-semibold text-onPrimary">Enlaces</h2>
             <ul class="mt-4 space-y-2">
               ${LEGAL_LINKS.map(
                 (link) => `
@@ -72,7 +72,7 @@ class SiteFooter extends HTMLElement {
           </div>
 
           <div>
-            <h2 class="text-xs font-semibold uppercase tracking-wider text-onPrimary/60">Accesos a sistemas</h2>
+            <h2 class="font-heading text-sm font-semibold text-onPrimary">Accesos a sistemas</h2>
             <ul class="mt-4 space-y-2">
               ${EXTERNAL_LINKS.map(
                 (link) => `
@@ -82,7 +82,7 @@ class SiteFooter extends HTMLElement {
           </div>
 
           <div>
-            <h2 class="text-xs font-semibold uppercase tracking-wider text-onPrimary/60">Contacto</h2>
+            <h2 class="font-heading text-sm font-semibold text-onPrimary">Contacto</h2>
             <address class="mt-4 flex flex-col gap-2 text-sm not-italic text-onPrimary/90">
               <span>Av. Universitaria s/n, Abancay – Apurímac <em class="text-onPrimary/60">(dirección de ejemplo)</em></span>
               <a href="mailto:contacto@ejemplo-unamba.edu.pe" class="transition hover:text-accent">contacto@ejemplo-unamba.edu.pe</a>
@@ -109,7 +109,7 @@ class SiteFooter extends HTMLElement {
             <p>© ${year} Facultad de Administración — UNAMBA. Todos los derechos reservados.</p>
             <p class="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 sm:justify-end">
               <span>Mockup de diseño, contenido de ejemplo.</span>
-              <a href="${base}pages/admin/login.html" class="text-onPrimary/40 transition hover:text-onPrimary/80">Acceso administrativo</a>
+              <a href="${base}pages/admin/login.html" class="text-onPrimary/75 transition hover:text-accent">Acceso administrativo</a>
             </p>
           </div>
         </div>

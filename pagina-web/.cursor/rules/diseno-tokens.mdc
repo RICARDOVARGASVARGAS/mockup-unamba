@@ -38,5 +38,8 @@ Botón amarillo → texto oscuro (`text-text`), nunca blanco. Preferir botones p
 Solo modifica `--color-primary` y `--color-accent` en vivo. Estados, grises, radios y sombras no se tocan.
 
 ## Tipografía y espaciado
-Fuentes: `--font-heading` (Poppins), `--font-body` (Inter).
+Fuentes: `--font-heading` (Source Serif 4), `--font-body` (Source Sans 3).
+Escala: body fijo; títulos fluidos (`clamp`) vía tokens `--text-2xl`…`--text-5xl`.
+Roles: `.heading-section` / `.heading-block` / `.heading-card` / `.heading-card-sm` / `.label-kicker` / `.note-example`.
+Secciones: preferir `.section-y` / `.section-y-sm` / `.section-y-lg` y `.page-banner`.
 Espaciado: múltiplos de `--space-*`. Radios: `--radius-md` por defecto en tarjetas.

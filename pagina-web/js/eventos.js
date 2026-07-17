@@ -50,7 +50,7 @@
         const divider = document.createElement("li");
         divider.dataset.monthDivider = "";
         divider.className = "pt-1 first:pt-0";
-        divider.innerHTML = `<p class="font-heading text-xs font-semibold uppercase tracking-wider text-text-muted">${monthLabel(item.dataset.date)}</p>`;
+        divider.innerHTML = `<p class="label-kicker text-text-muted">${monthLabel(item.dataset.date)}</p>`;
         timeline.insertBefore(divider, item);
         lastMonthKey = monthKey;
       }

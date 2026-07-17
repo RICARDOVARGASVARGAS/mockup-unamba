@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap"
       rel="stylesheet"
     />
 
@@ -24,8 +24,8 @@
 
     <main id="main-content" class="w-full">
       <!-- Encabezado de sección -->
-      <section class="bg-primary text-onPrimary">
-        <div class="page-container py-10 sm:py-12">
+      <section class="page-banner">
+        <div class="page-container">
           <nav aria-label="Ruta de navegación" class="flex flex-wrap items-center gap-2 text-sm text-onPrimary/70">
             <a href="../index.html" class="transition hover:text-accent">Inicio</a>
             <span aria-hidden="true">/</span>
@@ -33,8 +33,8 @@
             <span aria-hidden="true">/</span>
             <span aria-current="page" class="text-onPrimary">Información Académica</span>
           </nav>
-          <h1 class="mt-3 font-heading text-3xl font-bold sm:text-4xl">Información Académica</h1>
-          <p class="mt-2 max-w-2xl text-onPrimary/80">Perfiles, competencias, malla curricular y plan de estudios de la Escuela Profesional de Administración.</p>
+          <h1 class="mt-3">Información Académica</h1>
+          <p class="mt-2">Perfiles, competencias, malla curricular y plan de estudios de la Escuela Profesional de Administración.</p>
         </div>
       </section>
 
@@ -45,11 +45,11 @@
         cualquier página, no solo estando parado en esta. Duplicar esa
         navegación adentro de la página no sumaba, competía.
       -->
-      <p class="page-container pt-8 text-xs font-medium uppercase tracking-wide text-text-muted">Contenido de ejemplo en esta página — pendiente de validar con la redacción oficial de la escuela</p>
+      <p class="page-container pt-8 note-example">Contenido de ejemplo en esta página — pendiente de validar con la redacción oficial de la escuela</p>
 
       <!-- Perfil del ingresante: PerfilIngresante (lista) -->
-      <section id="ingresante" class="page-container py-12 sm:py-16">
-        <h2 class="font-heading text-xl font-semibold text-text">Perfil del ingresante</h2>
+      <section id="ingresante" class="page-container section-y">
+        <h2 class="heading-block text-text">Perfil del ingresante</h2>
         <p class="mt-1 max-w-2xl text-sm text-text-muted">Características deseables en quien postula a la carrera.</p>
         <ul class="mt-6 grid gap-3 sm:grid-cols-2">
           <li class="flex items-start gap-3 rounded-lg border border-border bg-surface p-4">
@@ -72,9 +72,9 @@
       </section>
 
       <!-- Perfil del egresado: PerfilEgresado (lista) -->
-      <section id="egresado" class="border-t border-border bg-surface py-12 sm:py-16">
+      <section id="egresado" class="border-t border-border bg-surface section-y">
         <div class="page-container">
-          <h2 class="font-heading text-xl font-semibold text-text">Perfil del egresado</h2>
+          <h2 class="heading-block text-text">Perfil del egresado</h2>
           <p class="mt-1 max-w-2xl text-sm text-text-muted">Al concluir la carrera, el egresado de Administración:</p>
           <ul class="mt-6 grid gap-3 sm:grid-cols-2">
             <li class="flex items-start gap-3 rounded-lg border border-border bg-bg p-4">
@@ -98,8 +98,8 @@
       </section>
 
       <!-- Campo ocupacional: CampoOcupacional (lista) -->
-      <section id="campo-ocupacional" class="page-container py-12 sm:py-16">
-        <h2 class="font-heading text-xl font-semibold text-text">Campo ocupacional</h2>
+      <section id="campo-ocupacional" class="page-container section-y">
+        <h2 class="heading-block text-text">Campo ocupacional</h2>
         <p class="mt-1 max-w-2xl text-sm text-text-muted">El egresado de Administración se desempeña en:</p>
         <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <div class="rounded-lg border border-border bg-surface p-4 text-center shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
@@ -118,30 +118,30 @@
       </section>
 
       <!-- Competencias: TipoCompetencia + Competencia -->
-      <section id="competencias" class="border-t border-border bg-surface py-12 sm:py-16">
+      <section id="competencias" class="border-t border-border bg-surface section-y">
         <div class="page-container">
-          <h2 class="font-heading text-xl font-semibold text-text">Competencias</h2>
+          <h2 class="heading-block text-text">Competencias</h2>
           <p class="mt-1 max-w-2xl text-sm text-text-muted">Organizadas por tipo, según el diseño curricular por competencias.</p>
 
           <div class="mt-6 grid gap-5 lg:grid-cols-3">
-            <div class="rounded-xl border-y border-r border-l-4 border-border bg-bg p-5" style="border-left-color:#0B3D91">
-              <h3 class="font-heading text-base font-semibold text-text">Genéricas</h3>
+            <div class="rounded-xl border border-border bg-bg p-5">
+              <h3 class="heading-card text-text">Genéricas</h3>
               <ul class="mt-3 flex flex-col gap-2 text-sm text-text-muted">
                 <li>Comunicación efectiva</li>
                 <li>Trabajo en equipo</li>
                 <li>Pensamiento crítico</li>
               </ul>
             </div>
-            <div class="rounded-xl border-y border-r border-l-4 border-border bg-bg p-5" style="border-left-color:#1B873F">
-              <h3 class="font-heading text-base font-semibold text-text">Específicas</h3>
+            <div class="rounded-xl border border-border bg-bg p-5">
+              <h3 class="heading-card text-text">Específicas</h3>
               <ul class="mt-3 flex flex-col gap-2 text-sm text-text-muted">
                 <li>Gestión financiera</li>
                 <li>Marketing y ventas</li>
                 <li>Gestión del talento humano</li>
               </ul>
             </div>
-            <div class="rounded-xl border-y border-r border-l-4 border-border bg-bg p-5" style="border-left-color:#7C3AED">
-              <h3 class="font-heading text-base font-semibold text-text">Técnicas</h3>
+            <div class="rounded-xl border border-border bg-bg p-5">
+              <h3 class="heading-card text-text">Técnicas</h3>
               <ul class="mt-3 flex flex-col gap-2 text-sm text-text-muted">
                 <li>Manejo de hojas de cálculo y ERP</li>
                 <li>Elaboración de planes de negocio</li>
@@ -153,16 +153,16 @@
       </section>
 
       <!-- Malla curricular: Documento destacado, TipoDocumento = "Planes y Mallas Curriculares" -->
-      <section id="malla" class="page-container py-12 sm:py-16">
-        <h2 class="font-heading text-xl font-semibold text-text">Malla curricular</h2>
+      <section id="malla" class="page-container section-y">
+        <h2 class="heading-block text-text">Malla curricular</h2>
         <p class="mt-1 max-w-2xl text-sm text-text-muted">Mismo documento ya publicado en el <a href="documentos.html" class="font-semibold text-primary hover:text-primary-dark">Repositorio de Documentos</a>, mostrado aquí en su sección natural.</p>
         <a href="documentos.html" class="mt-5 flex flex-col items-start gap-4 rounded-xl border border-border bg-surface p-6 shadow-sm transition hover:border-primary hover:shadow-md sm:flex-row sm:items-center">
           <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
             <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>
           </span>
           <div class="min-w-0 flex-1">
-            <p class="font-heading text-base font-semibold text-text">Malla Curricular 2020</p>
-            <p class="mt-1 text-sm text-text-muted">Distribución de cursos por ciclo, con sus créditos académicos.</p>
+            <p class="heading-card text-text">Malla Curricular 2020</p>
+            <p class="mt-2 text-meta">Distribución de cursos por ciclo, con sus créditos académicos.</p>
             <p class="mt-1 text-xs text-text-muted">2020 · Todas las sedes · 1.8 MB</p>
           </div>
           <span class="shrink-0 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-onPrimary transition group-hover:bg-primary-dark sm:self-center">Descargar ↓</span>
@@ -170,17 +170,17 @@
       </section>
 
       <!-- Plan de estudios: Documento destacado, mismo TipoDocumento -->
-      <section id="plan" class="border-t border-border bg-surface py-12 sm:py-16">
+      <section id="plan" class="border-t border-border bg-surface section-y">
         <div class="page-container">
-          <h2 class="font-heading text-xl font-semibold text-text">Plan de estudios</h2>
+          <h2 class="heading-block text-text">Plan de estudios</h2>
           <p class="mt-1 max-w-2xl text-sm text-text-muted">Currículo por competencias vigente, con la descripción completa de cada curso por ciclo.</p>
           <a href="documentos.html" class="mt-5 flex flex-col items-start gap-4 rounded-xl border border-border bg-bg p-6 shadow-sm transition hover:border-primary hover:shadow-md sm:flex-row sm:items-center">
             <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>
             </span>
             <div class="min-w-0 flex-1">
-              <p class="font-heading text-base font-semibold text-text">Plan de Estudios 2026</p>
-              <p class="mt-1 text-sm text-text-muted">Sumillas de cursos, competencias y metodología de enseñanza por ciclo.</p>
+              <p class="heading-card text-text">Plan de Estudios 2026</p>
+              <p class="mt-2 text-meta">Sumillas de cursos, competencias y metodología de enseñanza por ciclo.</p>
               <p class="mt-1 text-xs text-text-muted">2026 · Todas las sedes · 2.1 MB</p>
             </div>
             <span class="shrink-0 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-onPrimary sm:self-center">Descargar ↓</span>
@@ -189,8 +189,8 @@
       </section>
 
       <!-- Grado y título: InformacionAcademica.grado_titulo (singleton) -->
-      <section id="grado-titulo" class="page-container py-12 sm:py-16">
-        <h2 class="font-heading text-xl font-semibold text-text">Grado y título</h2>
+      <section id="grado-titulo" class="page-container section-y">
+        <h2 class="heading-block text-text">Grado y título</h2>
         <div class="prose prose-lg mt-4 max-w-none">
           <p>
             Al concluir el plan de estudios, el egresado obtiene el <strong>Grado Académico de Bachiller en
