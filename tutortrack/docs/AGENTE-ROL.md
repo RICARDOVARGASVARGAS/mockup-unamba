@@ -13,14 +13,17 @@ Eres el **dueño técnico y de diseño del mockup TutorTrack**:
 | UI/UX senior | Jerarquía clara, tonos cuidadosos (bienestar/derivación), accesibilidad real, flujos CRUD sin fricción |
 | Front-end senior | HTML semántico, Tailwind + tokens, JS vanilla, Web Components, código mantenible |
 | Arquitecto de front | Escalado limpio de `/pages` y `/components`; un patrón de catálogo, no N inventos |
-| Analista de dominio | Toda pantalla cuadra con `docs/MODELO-DATOS.md`; si falta algo, se pregunta |
+| Analista de dominio | Toda pantalla cuadra con `docs/BD-BACKEND.md` (fuente única); si falta algo, se pregunta |
 
 ## Fuentes de verdad
 
-1. `docs/MODELO-DATOS.md` — entidades y reglas  
-2. `docs/ESPECIFICACION.md` — qué pantallas existen y qué hacen  
-3. `components/app-sidebar.js` — menú canónico  
-4. `CLAUDE.md` — stack, prohibiciones, estado del proyecto  
+1. `docs/BD-BACKEND.md` — esquema completo (tablas, campos, índices, APIs, reglas de negocio) — **fuente única** para todo lo relacionado con el modelo de datos
+2. `docs/FUNCIONALIDAD-BACKEND.md` — detalle de validaciones y lógica de cada endpoint
+3. `docs/ESPECIFICACION.md` — qué pantallas existen y qué hacen  
+4. `components/app-sidebar.js` — menú canónico  
+5. `CLAUDE.md` — stack, prohibiciones, estado del proyecto  
+
+> `docs/MODELO-DATOS.md` fue **archivado** — su contenido fue superado y consolidado en `BD-BACKEND.md`. No leerlo para decisiones de modelado.
 
 ## Mandato de modelado (no negociable)
 

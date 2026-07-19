@@ -7,8 +7,8 @@ Mandato completo en **`docs/AGENTE-ROL.md`** y regla Cursor
 Actúas como **experto UI/UX senior**, **desarrollador / arquitecto
 front-end senior** (HTML, CSS/Tailwind, JavaScript, Web Components) y
 **analista de dominio**: cada pantalla debe cuadrar con
-`docs/MODELO-DATOS.md` — si falta un dato o relación, lo señalas antes
-de inventarlo. En la práctica:
+`docs/BD-BACKEND.md` (fuente única de verdad) — si falta un dato o relación,
+lo señalas antes de inventarlo. En la práctica:
 - Priorizas jerarquía visual clara y componentes reutilizables por
   encima de resolver cada pantalla "a mano" — un módulo nuevo se arma
   copiando un patrón existente, no reinventando estructura.
@@ -62,26 +62,27 @@ docente-tutor corresponde a qué estudiante por ciclo/carrera).
 
 ## Modelo de datos y alcance — YA CERRADOS
 
-El modelo de datos completo (entidades, relaciones, reglas de
-negocio) está documentado en **`docs/MODELO-DATOS.md`** — léelo antes
-de maquetar cualquier pantalla, ahí está resuelto:
-- Roles de acceso (docente-tutor, estudiante, entidad receptora
-  como psicología/salud — con su propio acceso al sistema —,
-  admin/coordinador) vía RBAC (`Usuario`/`Rol`/`Permiso`).
+El modelo de datos completo (entidades, relaciones, reglas de negocio,
+APIs y decisiones de dominio) está en **`docs/BD-BACKEND.md`** —
+**fuente única de verdad**. Léelo antes de maquetar cualquier pantalla.
+Resumen de lo que está cerrado:
+- Roles de acceso (docente-tutor, estudiante, receptor — psicología/salud
+  con su propio perfil `receptor` vinculado a `entidad_receptora` —,
+  admin/coordinador) vía RBAC (`usuario`/`rol`/`permiso`).
 - Ciclo académico + Periodo académico + matrícula por periodo
-  (`EstudianteCicloPeriodo`), con mecanismo de "avanzar estudiantes"
-  y de "copiar" configuración entre periodos.
-- Fichas de tutoría configurables (plantilla → clonado por
-  ciclo+periodo), con preguntas de texto abierto / alternativa única /
-  respuesta múltiple.
-- Detección de señales de alerta con IA (plan de dos fases: piloto
-  local, luego GPU dedicada) y flujo de derivación con seguimiento
-  completo (`Derivacion` + `EstadoDerivacion`).
+  (`estudiante_ciclo_periodo`), con mecanismo de "avanzar estudiantes"
+  y de "clonar" configuración entre periodos.
+- Fichas configurables (plantilla → clonado por ciclo+periodo), con
+  5 tipos de pregunta fijos en código (sin tabla `tipo_pregunta`).
+- Detección de señales de alerta con IA + flujo de derivación
+  (`alerta_ia` → `derivacion` — sin `estado_derivacion`, trazabilidad
+  cubierta por `auditoria`).
 
-Solo queda pendiente **contenido** de catálogos (qué roles exactos, qué
-preguntas exactas, etc. — ver la sección final de `MODELO-DATOS.md`),
-no estructura. La malla curricular (`Ciclo` como catálogo abierto, no
-fijo en 10) ya quedó resuelta como catálogo editable.
+> `docs/MODELO-DATOS.md` fue **archivado** — contenido consolidado en
+> `BD-BACKEND.md`. No usarlo como referencia.
+
+La malla curricular (`ciclo` como catálogo abierto, no fijo en 10)
+ya quedó resuelta como catálogo editable.
 
 Identidad visual: **azul institucional + naranja + blanco** (Facultad de
 Administración UNAMBA). Azul = estructura, navegación y CTAs principales;
@@ -127,7 +128,7 @@ Contraste y foco visibles sobre el lienzo claro; tokens en `css/tokens.css`.
 
 ## Qué NO hacer
 - No implementar backend, base de datos ni lógica de servidor real
-  (documentar el modelo de datos en `docs/MODELO-DATOS.md` sí;
+  (documentar el modelo de datos en `docs/BD-BACKEND.md` sí;
   ejecutarlo aquí, no).
 - No compartir componentes, tokens de color ni JS con `pagina-web/` ni
   `docentrack/`.
@@ -140,7 +141,7 @@ Contraste y foco visibles sobre el lienzo claro; tokens en `css/tokens.css`.
 
 ## Estructura del repo (real, ajustar al crecer)
 - `/docs/ESPECIFICACION.md` → pantallas y módulos — cerrado (inventario)
-- `/docs/MODELO-DATOS.md` → entidades/atributos del futuro backend — cerrado
+- `/docs/BD-BACKEND.md` → esquema completo (tablas, APIs, reglas, decisiones) — fuente única
 - `/docs/AGENTE-ROL.md` → mandato del agente (UI/UX + front + dominio)
 - `/.cursor/rules/agente-rol.mdc` → misma regla, alwaysApply en Cursor
 - `/components` → `app-sidebar.js`, `app-topbar.js` (Custom Elements,
@@ -155,37 +156,22 @@ Contraste y foco visibles sobre el lienzo claro; tokens en `css/tokens.css`.
 - `index.html` → login (punto de entrada único, sin selector de rol)
 
 ## Estado actual
-- ~~Modelo de datos~~ — cerrado en `docs/MODELO-DATOS.md`.
-- ~~Fase 0 — Compartido~~ — hecho: login único (permisos, no roles
-  hardcodeados; recuperar contraseña solo visual), `app-sidebar`
-  (4 secciones — Administrador / Docente-Tutor / Estudiante /
-  Receptor-Psicología — todas visibles a la vez para la demo, con
-  catálogos del admin agrupados en sub-secciones colapsables),
-  `app-topbar` (perfil, carrera fija "Administración", ciclo actual
-  solo en Estudiante, notificaciones), 100% responsive (drawer
-  off-canvas en móvil/tablet para las 4 secciones), un dashboard de
-  ejemplo por sección. Probado en navegador: login → dashboard,
-  navegación entre las 4 secciones. Tema claro único.
-- ~~Especificación~~ — inventario completo de pantallas cerrado en
-  `docs/ESPECIFICACION.md` (todas las fases, objetivo/entidades/reglas
-  por pantalla) antes de seguir diseñando.
-- ~~Fase 1 — Catálogos~~ — hecho. Pantallas:
-  `ciclos`, `periodos-academicos`, `grados-academicos`, `especialidades`,
-  `tipos-documento`, `areas`, `tipos-ficha`,
-  `tipos-pregunta`, `entidades-receptoras`, `tipos-estado-derivacion`,
-  `roles-permisos` (pestañas Roles | Permisos). Motor compartido
-  `js/catalog-table.js` (buscar + botón, filtros, paginación, acciones
-  etiquetadas) + `app-toast` / `app-modal-confirm`.
-- ~~Fase 2 (parcial) — Docentes~~ — hecho: `admin/docentes.html` +
-  `admin/docentes-form.html` (usuario completo: documento, contacto,
-  `activo`; perfil docente: grado, especialidad, ORCID, CV, bio; roles;
-  store en sessionStorage). Pendiente: Estudiantes.
-- Próximas fases (pantallas reales, siguiendo `app-sidebar.js` como
-  fuente de verdad de la navegación):
-  2b. Estudiantes (cuelga de Usuario).
-  3. Configuración por periodo (CicloPeriodo, DocenteCicloPeriodo,
-     Temario, EstudianteCicloPeriodo + "Avanzar estudiantes").
-  4. Fichas (plantilla, preguntas, clonado por CicloPeriodo, y la
-     vista de estudiante llenando una ficha).
-  5. IA / Alertas / Derivación (AlertaIA, Derivacion,
-     EstadoDerivacion).
+- ~~Modelo de datos~~ — cerrado en `docs/BD-BACKEND.md` (fuente única;
+  `docs/MODELO-DATOS.md` archivado). 30 tablas + APIs M1-M3 completas;
+  M4 tablas completas, APIs pendientes.
+- ~~Fase 0 — Compartido~~ — hecho: login único, `app-sidebar`
+  (4 secciones visibles en demo), `app-topbar`, responsive, tema claro.
+- ~~Especificación~~ — cerrado en `docs/ESPECIFICACION.md`.
+- ~~Fase 1 — Catálogos~~ — hecho: `ciclos`, `periodos-academicos`,
+  `grados-academicos`, `especialidades`, `tipos-documento`, `areas`,
+  `tipos-ficha`, `tipos-pregunta`, `entidades-receptoras`,
+  `tipos-estado-derivacion`, `roles-permisos`. Motor `catalog-table.js`.
+- ~~Fase 2 — Usuarios / Docentes~~ — hecho: `usuarios.html`,
+  `usuarios-form.html`, `docentes.html`, `docentes-form.html`.
+- ~~Fase 3 — Configuración por período~~ — hecho: `gestion-periodo.html`,
+  `temario.html`, `matriculas.html`, `avanzar-estudiantes.html`.
+- ~~Fase 4 — Fichas~~ — hecho: `fichas.html`, `fichas-form.html`,
+  `fichas-ciclo-periodo.html` (admin); `fichas-tutorados.html`,
+  `ficha-respuestas.html` (docente); `mis-fichas.html`,
+  `llenar-ficha.html` (estudiante).
+- **Pendiente:** Fase 5 — IA / Alertas / Derivación + APIs M4.

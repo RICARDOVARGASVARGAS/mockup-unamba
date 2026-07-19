@@ -1,7 +1,7 @@
 # Especificación de pantallas — TutorTrack
 
 Inventario completo de pantallas antes de diseñar. Cada entrada dice
-**para qué sirve**, **qué entidades de `MODELO-DATOS.md` lee/escribe**,
+**para qué sirve**, **qué entidades de `BD-BACKEND.md` lee/escribe**,
 **qué elementos clave debe tener** y **qué reglas de negocio ya
 definidas debe respetar** — el detalle visual (layout, componentes
 exactos) se resuelve recién en la etapa de diseño, pantalla por
@@ -15,7 +15,7 @@ especificación nunca se desalineen.
 
 - **Sección**: a qué una de las 4 secciones del sidebar pertenece.
 - **Objetivo**: qué problema resuelve esta pantalla, en una línea.
-- **Entidades**: qué tablas de `MODELO-DATOS.md` lee y/o escribe.
+- **Entidades**: qué tablas de `BD-BACKEND.md` lee y/o escribe.
 - **Elementos clave**: qué debe poder verse/hacerse (sin diseñar el
   layout todavía).
 - **Reglas**: validaciones o comportamientos ya acordados que la
@@ -57,7 +57,7 @@ Periodo Académico).
 
 ### `admin/ciclos.html` — Ciclos
 Pantalla propia — **no** se mezcla con Periodo Académico (ver
-`MODELO-DATOS.md` § Convención de nombres: son catálogos distintos).
+`BD-BACKEND.md` § Convención de nombres: son catálogos distintos).
 
 - **Objetivo**: administrar el catálogo de niveles curriculares.
 - **Entidades**: `Ciclo` (`nombre`, `orden`, `activo`).
@@ -109,7 +109,7 @@ Pantalla propia — contenedor temporal general, independiente de `Ciclo`.
 - **Objetivo**: administrar el RBAC completo (`Rol`, `Permiso`, y sus asignaciones).
 - **Entidades**: `Rol`, `Permiso`, `RolPermiso`, y de forma indirecta `UsuarioRol` (la asignación de rol a un usuario puntual se hace desde `admin/docentes.html` / `admin/estudiantes.html`, no aquí).
 - **Elementos clave**: dos listados o dos pestañas — Roles (con sus permisos asignados, checklist de `Permiso` por `Rol`) y Permisos (catálogo simple). Alta/edición de ambos.
-- **Reglas**: un permiso nunca se asigna directo a un `Usuario` — siempre pasa por un `Rol` (ver `MODELO-DATOS.md`).
+- **Reglas**: un permiso nunca se asigna directo a un `Usuario` — siempre pasa por un `Rol` (ver `BD-BACKEND.md`).
 - **Formulario**: página aparte (no modal) por la complejidad de la matriz Rol×Permiso.
 
 ---
@@ -140,7 +140,7 @@ Pantalla propia — contenedor temporal general, independiente de `Ciclo`.
 - **Elementos clave**:
   - Selector de Periodo Académico arriba (por defecto el vigente).
   - Listado de `CicloPeriodo` de ese periodo (uno por Ciclo), cada uno expandible para ver/editar sus Docentes asignados (n:n) y su Temario (lista de temas, editable).
-  - Botón destacado **"Copiar configuración de un periodo anterior"** al abrir un Periodo Académico nuevo sin configurar todavía — selecciona el periodo de origen, clona `CicloPeriodo` + `Temario` + `DocenteCicloPeriodo`, y a partir de ahí todo es editable de forma independiente (ver regla de copia en `MODELO-DATOS.md`).
+  - Botón destacado **"Copiar configuración de un periodo anterior"** al abrir un Periodo Académico nuevo sin configurar todavía — selecciona el periodo de origen, clona `CicloPeriodo` + `Temario` + `DocenteCicloPeriodo`, y a partir de ahí todo es editable de forma independiente (ver regla de copia en `BD-BACKEND.md`).
 - **Reglas**: la asignación Docente↔Ciclo es n:n y propia de cada periodo; unicidad (mismo docente no se repite en el mismo `CicloPeriodo`).
 
 ### `admin/matriculas.html` — Matrículas
@@ -239,7 +239,7 @@ Pantalla propia — contenedor temporal general, independiente de `Ciclo`.
 | Receptor/Psicología | Casos derivados, Historial de seguimiento |
 
 ## Pendiente de definir (antes de diseñar cada pantalla)
-- Contenido real de los catálogos (ver `MODELO-DATOS.md` § Pendiente).
+- Contenido real de los catálogos (ver `BD-BACKEND.md` § Pendiente).
 - Si el editor de `admin/fichas.html` pide una pregunta a la vez o todas en una sola vista.
 - Si `estudiante/fichas.html` presenta el formulario "una pregunta a la vez" (más cuidadoso para temas sensibles) o todo en una sola página.
 - Confirmar con el usuario si faltó alguna pantalla antes de pasar a diseño.

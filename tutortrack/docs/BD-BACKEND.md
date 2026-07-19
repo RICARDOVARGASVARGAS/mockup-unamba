@@ -2,8 +2,9 @@
 
 Este documento es el **qué ejecutable**: esquema de base de datos (MySQL),
 reglas de funcionalidad y APIs probables del backend, módulo por módulo.
-El **porqué** (razonamiento, decisiones de dominio) vive en
-[`MODELO-DATOS.md`](./MODELO-DATOS.md) y no se duplica aquí.
+El razonamiento y las decisiones de dominio están **integradas en este mismo
+documento** junto al esquema — es la **fuente única de verdad**.
+`MODELO-DATOS.md` fue archivado; no usarlo.
 
 > Frontend: fuera de alcance de este doc — el diseño ya está en la maqueta.
 
@@ -34,16 +35,17 @@ El **porqué** (razonamiento, decisiones de dominio) vive en
 
 1. **Identidad y acceso** — `tipo_documento`, `usuario`, `rol`, `permiso`,
    `usuario_rol`, `rol_permiso`, `grado_academico`, `especialidad`,
-   `docente`, `estudiante`. _(✔ completo — 10 tablas)_
+   `docente`, `estudiante`, `receptor`. _(✔ completo — 11 tablas)_
 2. **Estructura académica** — `ciclo`, `periodo_academico`, `ciclo_periodo`,
    `docente_ciclo_periodo`, `temario`, `estudiante_ciclo_periodo`.
-   _(en progreso — `ciclo`, `periodo_academico` ✔)_
+   _(✔ completo — 6 tablas)_
 3. **Fichas** — `tipo_ficha`, `area`, `ficha`, `pregunta`,
    `opcion_pregunta`, `ficha_ciclo_periodo`, `ficha_llenada`, `respuesta`,
    `respuesta_opcion`. _(✔ completo — 9 tablas)_
    > `tipo_pregunta` **eliminado como tabla** — reemplazado por 5 constantes en código.
-4. **IA / Alertas / Derivación** — `alerta_ia`, `entidad_receptora`,
-   `derivacion`, `estado_derivacion`, `tipo_estado_derivacion`. _(pendiente)_
+4. **IA / Alertas / Derivación** — `entidad_receptora`, `tipo_estado_derivacion`,
+   `alerta_ia`, `derivacion`. _(✔ completo — 4 tablas)_
+   > `estado_derivacion` **eliminado como tabla** — la trazabilidad la cubre `auditoria`; ver decisión de diseño en la sección M4.
 
 **Transversales** — `auditoria` (bitácora de cambios).
 
@@ -99,7 +101,7 @@ de la identidad (todo usuario puede tener foto, incluido el admin).
 | `email_personal` | `VARCHAR(150)` | SÍ | correo personal, solo data — **no** único, no es login |
 | `contrasena` | `VARCHAR(255)` | NO | hash bcrypt, nunca texto plano |
 | `foto_perfil_url` | `VARCHAR(255)` | SÍ | no todos tienen foto |
-| `sexo` | `CHAR(1)` | SÍ | 'M' / 'F' |
+| `sexo` | `CHAR(1)` | SÍ | `'M'` / `'F'` / `'N'` (No especificado) — CHECK constraint en BD |
 | `fecha_nacimiento` | `DATE` | SÍ | |
 | `celular_principal` | `VARCHAR(20)` | SÍ | contacto principal |
 | `celular_secundario` | `VARCHAR(20)` | SÍ | contacto alterno |
@@ -137,6 +139,7 @@ CREATE TABLE usuario (
   contrasena         VARCHAR(255)    NOT NULL,
   foto_perfil_url    VARCHAR(255)    NULL,
   sexo               CHAR(1)         NULL,
+  -- Valores válidos: 'M' = Masculino, 'F' = Femenino, 'N' = No especificado
   fecha_nacimiento   DATE            NULL,
   celular_principal  VARCHAR(20)     NULL,
   celular_secundario VARCHAR(20)     NULL,
@@ -149,7 +152,8 @@ CREATE TABLE usuario (
   UNIQUE KEY uq_usuario_documento (tipo_documento_id, documento),
   UNIQUE KEY uq_usuario_email (email),
   KEY idx_usuario_tipo_documento (tipo_documento_id),
-  CONSTRAINT fk_usuario_tipo_documento FOREIGN KEY (tipo_documento_id) REFERENCES tipo_documento (id)
+  CONSTRAINT fk_usuario_tipo_documento FOREIGN KEY (tipo_documento_id) REFERENCES tipo_documento (id),
+  CONSTRAINT chk_usuario_sexo CHECK (sexo IN ('M', 'F', 'N'))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
@@ -428,6 +432,52 @@ CREATE TABLE estudiante (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
+### Tabla 10 · `receptor`
+
+Perfil 1:1 de `usuario` para los miembros de las entidades receptoras (psicólogos,
+coordinadores de bienestar, médicos, etc.). Sin esta tabla el backend no puede
+determinar a qué `entidad_receptora` pertenece el usuario autenticado —
+información necesaria para filtrar sus derivaciones al consultar `GET /mis-derivaciones`.
+
+Sigue exactamente el mismo patrón 1:1 que `docente` y `estudiante`.
+
+> **¿Por qué no basta con el rol?** El `rol` indica *qué puede hacer* el usuario
+> (permisos RBAC). La `entidad_receptora` indica *a qué departamento pertenece*.
+> Dos psicólogos en dos entidades distintas tendrían el mismo rol pero distintas
+> entidades — esa diferencia solo la captura este perfil.
+
+| Campo | Tipo | Nulo | Notas |
+|-------|------|:----:|-------|
+| `id` | `BIGINT UNSIGNED` | NO | PK, AUTO_INCREMENT |
+| `usuario_id` | `BIGINT UNSIGNED` | NO | FK → `usuario(id)`, **UNIQUE** (1:1) |
+| `entidad_receptora_id` | `BIGINT UNSIGNED` | NO | FK → `entidad_receptora(id)` — a qué entidad pertenece este receptor |
+| `created_at` | `TIMESTAMP` | SÍ | |
+| `updated_at` | `TIMESTAMP` | SÍ | |
+| `deleted_at` | `TIMESTAMP` | SÍ | soft delete (desvincula el perfil sin borrar historial) |
+
+**Índices:** PK (`id`) · **UNIQUE (`usuario_id`)** · índice en `entidad_receptora_id`
+(todos los receptores de una entidad).
+
+**Nota:** un receptor no puede pertenecer a más de una entidad a la vez (UNIQUE en
+`usuario_id`). Si fuera necesario en el futuro, esta restricción se relaja con un
+pivote `receptor_entidad`.
+
+```sql
+CREATE TABLE receptor (
+  id                    BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT,
+  usuario_id            BIGINT UNSIGNED  NOT NULL,
+  entidad_receptora_id  BIGINT UNSIGNED  NOT NULL,
+  created_at            TIMESTAMP        NULL,
+  updated_at            TIMESTAMP        NULL,
+  deleted_at            TIMESTAMP        NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_receptor_usuario (usuario_id),
+  KEY idx_receptor_entidad (entidad_receptora_id),
+  CONSTRAINT fk_receptor_usuario  FOREIGN KEY (usuario_id)           REFERENCES usuario (id),
+  CONSTRAINT fk_receptor_entidad  FOREIGN KEY (entidad_receptora_id) REFERENCES entidad_receptora (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
 ### APIs — Módulo 1
 
 **Convenciones (todas las rutas):** prefijo `/api/v1`; auth por token
@@ -467,6 +517,7 @@ aceptan `?buscar=`, `?page=`, filtros y orden; respuesta JSON con `data` +
 |--------|------|-----------|---------|
 | **[CRUD]** | `/docentes` | perfil docente (store crea usuario + docente + rol, en transacción) | `docentes.ver/crear/editar/eliminar` |
 | **[CRUD]** | `/estudiantes` | perfil estudiante (idem) | `estudiantes.ver/crear/editar/eliminar` |
+| **[CRUD]** | `/receptores` | perfil receptor (store crea usuario + receptor + rol, en transacción; `entidad_receptora_id` obligatorio) | `receptores.ver/crear/editar/eliminar` |
 
 **RBAC**
 
@@ -489,9 +540,9 @@ aceptan `?buscar=`, `?page=`, filtros y orden; respuesta JSON con `data` +
 
 ---
 
-**Módulo 1 — Identidad y acceso: ✔ completo** (10 tablas: `tipo_documento`,
+**Módulo 1 — Identidad y acceso: ✔ completo** (11 tablas: `tipo_documento`,
 `usuario`, `rol`, `permiso`, `usuario_rol`, `rol_permiso`, `grado_academico`,
-`especialidad`, `docente`, `estudiante`).
+`especialidad`, `docente`, `estudiante`, `receptor`).
 
 ## Módulo 2 — Estructura académica
 
@@ -1063,6 +1114,7 @@ CREATE TABLE ficha (
   created_at    TIMESTAMP        NULL,
   updated_at    TIMESTAMP        NULL,
   PRIMARY KEY (id),
+  UNIQUE KEY uq_ficha_nombre (nombre),
   KEY idx_ficha_tipo (tipo_ficha_id),
   CONSTRAINT fk_ficha_tipo_ficha FOREIGN KEY (tipo_ficha_id) REFERENCES tipo_ficha (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1169,7 +1221,11 @@ CREATE TABLE pregunta (
   CONSTRAINT fk_pregunta_fcp FOREIGN KEY (ficha_ciclo_periodo_id)
     REFERENCES ficha_ciclo_periodo (id),
   CONSTRAINT fk_pregunta_area FOREIGN KEY (area_id)
-    REFERENCES area (id)
+    REFERENCES area (id),
+  CONSTRAINT chk_pregunta_padre CHECK (
+    (ficha_id IS NOT NULL AND ficha_ciclo_periodo_id IS NULL) OR
+    (ficha_id IS NULL     AND ficha_ciclo_periodo_id IS NOT NULL)
+  )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
@@ -1402,14 +1458,15 @@ Datos limpios (solo completas)        Datos igual de limpios (filtro por estado)
 | `estudiante_id` | `BIGINT UNSIGNED` | NO | FK → `estudiante(id)` — quién está llenando la ficha |
 | `ficha_ciclo_periodo_id` | `BIGINT UNSIGNED` | NO | FK → `ficha_ciclo_periodo(id)` — qué ficha está llenando |
 | `estado` | `VARCHAR(20)` | NO | DEFAULT `'borrador'` — valores válidos: `borrador` (en progreso) · `enviada` (completada y definitiva) — validado en aplicación |
-| `fecha_enviado` | `DATE` | SÍ | NULL mientras es borrador; se llena al momento del envío final |
+| `fecha_enviado` | `TIMESTAMP` | SÍ | NULL mientras es borrador; se llena al momento del envío final — `TIMESTAMP` (no `DATE`) para conservar la hora exacta |
 | `revisada` | `TINYINT(1)` | NO | DEFAULT `0` — el docente-tutor marcó que ya leyó y revisó las respuestas (no cambia el estado del estudiante) |
 | `created_at` | `TIMESTAMP` | SÍ | cuándo el estudiante comenzó a llenar la ficha |
 | `updated_at` | `TIMESTAMP` | SÍ | última vez que guardó progreso |
 
-**Índices:** PK (`id`) · índice en `estudiante_id` · índice en
-`ficha_ciclo_periodo_id` · índice en `estado` (para que la cola de la IA
-filtre eficientemente por `estado = 'enviada'`).
+**Índices:** PK (`id`) · **UNIQUE (`estudiante_id`, `ficha_ciclo_periodo_id`)** —
+un estudiante solo puede tener un registro (borrador o enviado) por ficha asignada;
+el seguimiento mensual usa múltiples `ficha_ciclo_periodo` separadas, no múltiples
+llenados del mismo FCP · índice en `estado` (cola de la IA: `estado = 'enviada'`).
 
 **Ejemplo de filas:**
 
@@ -1425,13 +1482,12 @@ CREATE TABLE ficha_llenada (
   estudiante_id            BIGINT UNSIGNED  NOT NULL,
   ficha_ciclo_periodo_id   BIGINT UNSIGNED  NOT NULL,
   estado                   VARCHAR(20)      NOT NULL DEFAULT 'borrador',
-  fecha_enviado            DATE             NULL,
+  fecha_enviado            TIMESTAMP        NULL,
   revisada                 TINYINT(1)       NOT NULL DEFAULT 0,
   created_at               TIMESTAMP        NULL,
   updated_at               TIMESTAMP        NULL,
   PRIMARY KEY (id),
-  KEY idx_ficha_llenada_estudiante (estudiante_id),
-  KEY idx_ficha_llenada_fcp (ficha_ciclo_periodo_id),
+  UNIQUE KEY uq_ficha_llenada (estudiante_id, ficha_ciclo_periodo_id),
   KEY idx_ficha_llenada_estado (estado),
   CONSTRAINT fk_fl_estudiante FOREIGN KEY (estudiante_id)          REFERENCES estudiante (id),
   CONSTRAINT fk_fl_fcp        FOREIGN KEY (ficha_ciclo_periodo_id) REFERENCES ficha_ciclo_periodo (id)
@@ -1680,18 +1736,16 @@ estudiante ────────► ficha_llenada (borrador → enviada)
 
 ### Observaciones y puntos de mejora
 
-**1. ✅ Agregar CHECK constraint en `pregunta` (MySQL 8.0.16+)**
-El campo dual `ficha_id` / `ficha_ciclo_periodo_id` debe tener exactamente
-uno lleno. La BD puede garantizarlo con:
+**1. ✅ CHECK constraint en `pregunta` — incorporado al SQL**
+El campo dual `ficha_id` / `ficha_ciclo_periodo_id` requiere exactamente
+uno lleno. El `CREATE TABLE pregunta` ya incluye:
 ```sql
-CONSTRAINT chk_pregunta_padre
-  CHECK (
-    (ficha_id IS NOT NULL AND ficha_ciclo_periodo_id IS NULL) OR
-    (ficha_id IS NULL AND ficha_ciclo_periodo_id IS NOT NULL)
-  )
+CONSTRAINT chk_pregunta_padre CHECK (
+  (ficha_id IS NOT NULL AND ficha_ciclo_periodo_id IS NULL) OR
+  (ficha_id IS NULL     AND ficha_ciclo_periodo_id IS NOT NULL)
+)
 ```
-Esto evita que por error de aplicación queden filas con ambos NULL o ambos
-llenos — sin este CHECK solo lo detectaría el código.
+Garantiza integridad a nivel de BD; sin él solo lo detectaría el código.
 
 **2. ✅ `area_id` en `pregunta` es NOT NULL — confirmar si es intencional**
 Toda pregunta debe pertenecer a un área. Si en el futuro hay preguntas
@@ -1723,10 +1777,12 @@ de la plantilla original en lugar de las clonadas.
 
 ### Veredicto
 
-El módulo 3 es sólido y escalable. Con el CHECK constraint del punto 1
-agregado al SQL de `pregunta`, el esquema tiene **integridad garantizada
-a nivel de BD** en los puntos críticos. El resto son reglas de aplicación
-bien documentadas que el backend puede implementar sin ambigüedad.
+El módulo 3 es sólido y escalable. El CHECK constraint del punto 1 ya está
+incorporado al SQL de `pregunta`. El UNIQUE en `ficha_llenada` garantiza que
+un estudiante no pueda duplicar el llenado de la misma ficha asignada. El
+esquema tiene **integridad garantizada a nivel de BD** en todos los puntos
+críticos. Las reglas de aplicación restantes están bien documentadas y el
+backend puede implementarlas sin ambigüedad.
 
 **Módulo 3 — Fichas: ✔ completo** (9 tablas: `tipo_ficha`, `area`, `ficha`,
 `pregunta`, `opcion_pregunta`, `ficha_ciclo_periodo`, `ficha_llenada`,
@@ -1845,7 +1901,7 @@ bien documentadas que el backend puede implementar sin ambigüedad.
     "estudiante": { "id": 7, "nombre_completo": "Ana Lucía Quispe Mamani", "codigo": "2022-AD-0021" },
     "ficha_ciclo_periodo": { "id": 10, "nombre": "Ficha diagnóstica inicial" },
     "estado": "enviada",
-    "fecha_enviado": "2026-03-18",
+    "fecha_enviado": "2026-03-18T14:23:05.000000Z",
     "revisada": false,
     "respuestas": [
       {
@@ -1908,21 +1964,18 @@ vinculante.
 ```
 ficha_llenada ──► alerta_ia ──────────────────────────────► area
 (Módulo 3)            │        nivel: Baja/Media/Alta
-                      │        estado: Pendiente/Revisada/
-                      │                Derivada/Descartada
+                      │        estado: pendiente/revisada/
+                      │                derivada/descartada
                       │        entidad_sugerida (nullable) ──► entidad_receptora
                       │
                       │  docente revisa y decide derivar
                       ▼
                  derivacion ──────────────────────────────► entidad_receptora
-                      │        a dónde va el caso
-                      │        quién lo recibe (usuario_receptor)
+                      ├──────────────────────────────────► tipo_estado_derivacion
+                      │        estado actual del caso
                       │
-                      │  historial de avance del caso
-                      ▼
-              estado_derivacion ─────────────────────────► tipo_estado_derivacion
-                                  una fila por cada
-                                  cambio de estado
+                      └── motivo  (texto del docente al crear la derivación)
+                          nota    (texto del receptor; historial de cambios en auditoria)
 ```
 
 ### `entidad_receptora` (catálogo)
@@ -2197,7 +2250,281 @@ CREATE TABLE alerta_ia (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
-<!-- Próximas: derivacion, estado_derivacion -->
+### `derivacion` — expediente de derivación
+
+Registra la decisión formal del docente-tutor de enviar a un estudiante a una
+entidad receptora (psicología, bienestar universitario, servicios médicos, etc.)
+tras detectar una señal de alerta. Es el **expediente del caso**: quién deriva
+a quién, a dónde, por qué y en qué estado está ahora.
+
+**Dos orígenes posibles:**
+- **Desde una alerta IA:** el docente revisa una `alerta_ia` (estado `pendiente`)
+  y decide actuar — `alerta_ia_id` apunta a esa alerta, que pasa a `derivada`.
+- **Manual:** el docente detecta la situación en una conversación sin que la IA
+  la haya marcado — `alerta_ia_id` es `NULL`.
+
+```
+[Decisión de diseño — eliminación de `estado_derivacion`]
+
+La tabla `estado_derivacion` (historial de transiciones de estado) fue
+ELIMINADA del esquema. La trazabilidad completa de quién cambió el estado,
+cuándo y desde qué valor anterior ya está cubierta por la tabla `auditoria`,
+que captura automáticamente cada UPDATE sobre `derivacion` (campo
+`tipo_estado_derivacion_id`) con usuario, timestamp, valor anterior y nuevo.
+
+Duplicar esa información en una segunda tabla solo añadiría peso sin aportar
+datos que `auditoria` no tenga. La única información adicional que
+`estado_derivacion` hubiera aportado — notas contextuales del receptor por
+cada cambio de estado — se resuelve con la columna `nota TEXT NULL` en la
+propia tabla `derivacion`: el receptor actualiza la nota al mover el estado,
+y `auditoria` conserva el historial de todas las versiones anteriores.
+```
+
+| Campo | Tipo | Nulo | Notas |
+|-------|------|:----:|-------|
+| `id` | `BIGINT UNSIGNED` | NO | PK, AUTO_INCREMENT |
+| `estudiante_id` | `BIGINT UNSIGNED` | NO | FK → `estudiante(id)` — quién es derivado |
+| `docente_id` | `BIGINT UNSIGNED` | NO | FK → `docente(id)` — tutor que crea la derivación |
+| `entidad_receptora_id` | `BIGINT UNSIGNED` | NO | FK → `entidad_receptora(id)` — a dónde se deriva el caso |
+| `alerta_ia_id` | `BIGINT UNSIGNED` | SÍ | FK → `alerta_ia(id)` — alerta que originó la derivación; `NULL` si fue manual |
+| `tipo_estado_derivacion_id` | `BIGINT UNSIGNED` | NO | FK → `tipo_estado_derivacion(id)` — **estado actual** del caso (desnormalizado para consultas eficientes; el historial de cambios está en `auditoria`) |
+| `motivo` | `TEXT` | NO | Texto libre del docente explicando por qué deriva al estudiante |
+| `nota` | `TEXT` | SÍ | Observación actual del receptor sobre el avance del caso; se sobreescribe con cada actualización — `auditoria` conserva el historial de versiones anteriores |
+| `created_at` | `TIMESTAMP` | SÍ | |
+| `updated_at` | `TIMESTAMP` | SÍ | |
+
+**Índices:** PK (`id`) · índice en `estudiante_id` (todas las derivaciones de un estudiante)
+· índice en `docente_id` (todos los casos creados por un tutor) · índice en
+`entidad_receptora_id` (cola de casos por entidad) · índice en
+`tipo_estado_derivacion_id` (filtrar por estado activo) · índice en `alerta_ia_id`.
+
+**Reglas de aplicación (no de FK):**
+- El `tipo_estado_derivacion_id` inicial al crear la derivación debe ser el primer
+  estado activo de la entidad destino (`orden = 1, activo = 1` en
+  `tipo_estado_derivacion` para ese `entidad_receptora_id`). El sistema lo
+  asigna automáticamente — el docente no elige el estado, solo elige a dónde deriva.
+- **Integridad cruzada no garantizable por FK:** la BD no puede verificar con una
+  FK estándar que `tipo_estado_derivacion_id` pertenezca a la misma
+  `entidad_receptora_id` de la derivación. Esta regla **debe validarse en
+  aplicación** al crear y al cambiar de estado: `SELECT id FROM
+  tipo_estado_derivacion WHERE id = ? AND entidad_receptora_id = ?`. El receptor
+  que gestiona su entidad solo ve los estados de su entidad en la UI — nunca
+  debería poder seleccionar un estado de otra.
+- Al crear la derivación desde una alerta IA, el backend actualiza
+  `alerta_ia.estado` a `derivada` en la misma transacción.
+- Un estudiante puede tener múltiples derivaciones activas simultáneas (a distintas
+  entidades) o a lo largo del tiempo — no hay `UNIQUE` sobre `(estudiante_id,
+  entidad_receptora_id)`.
+- **Sin `deleted_at`:** los expedientes de derivación no se eliminan ni borran
+  lógicamente. Son registros de bienestar con trazabilidad obligatoria.
+
+**Ejemplo de filas:**
+
+| estudiante | docente | entidad | alerta_ia_id | estado_actual | motivo |
+|---|---|---|---|---|---|
+| Ana Quispe | Ricardo Vargas | Psicología | 12 | En evaluación | "Respuestas indican aislamiento sostenido en tres períodos" |
+| Luis Mamani | Ricardo Vargas | Bienestar universitario | NULL | En atención | "Comentó en sesión de tutoría dificultades económicas graves" |
+
+```sql
+CREATE TABLE derivacion (
+  id                          BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT,
+  estudiante_id               BIGINT UNSIGNED  NOT NULL,
+  docente_id                  BIGINT UNSIGNED  NOT NULL,
+  entidad_receptora_id        BIGINT UNSIGNED  NOT NULL,
+  alerta_ia_id                BIGINT UNSIGNED  NULL,
+  tipo_estado_derivacion_id   BIGINT UNSIGNED  NOT NULL,
+  motivo                      TEXT             NOT NULL,
+  nota                        TEXT             NULL,
+  created_at                  TIMESTAMP        NULL,
+  updated_at                  TIMESTAMP        NULL,
+  PRIMARY KEY (id),
+  KEY idx_derivacion_estudiante   (estudiante_id),
+  KEY idx_derivacion_docente      (docente_id),
+  KEY idx_derivacion_entidad      (entidad_receptora_id),
+  KEY idx_derivacion_estado       (tipo_estado_derivacion_id),
+  KEY idx_derivacion_alerta       (alerta_ia_id),
+  CONSTRAINT fk_derivacion_estudiante   FOREIGN KEY (estudiante_id)             REFERENCES estudiante (id),
+  CONSTRAINT fk_derivacion_docente      FOREIGN KEY (docente_id)                REFERENCES docente (id),
+  CONSTRAINT fk_derivacion_entidad      FOREIGN KEY (entidad_receptora_id)      REFERENCES entidad_receptora (id),
+  CONSTRAINT fk_derivacion_alerta       FOREIGN KEY (alerta_ia_id)              REFERENCES alerta_ia (id),
+  CONSTRAINT fk_derivacion_estado       FOREIGN KEY (tipo_estado_derivacion_id) REFERENCES tipo_estado_derivacion (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+---
+
+**Módulo 4 — Tablas: ✔ completo** (4 tablas: `entidad_receptora`, `tipo_estado_derivacion`, `alerta_ia`, `derivacion`).
+
+---
+
+## APIs — Módulo 4
+
+> Mismas convenciones que M1/M2/M3: prefijo `/api/v1`, auth Sanctum,
+> respuesta `{ data, meta }`, `[CRUD]` = 5 endpoints estándar.
+>
+> **Roles relevantes en este módulo:**
+> - `docente_tutor` — crea derivaciones, ve sus alertas y casos derivados.
+> - `receptor` — gestiona los casos de su entidad (filtra por `receptor.entidad_receptora_id`).
+> - `admin` — visibilidad total sobre alertas y derivaciones.
+
+### Catálogos de M4
+
+**Entidades receptoras** (`entidad_receptora`)
+
+| Método | Ruta | Propósito | Permiso |
+|--------|------|-----------|---------|
+| `GET` | `/entidades-receptoras` | Listar entidades (`?activo=`, `?buscar=`) | `catalogos.gestionar` |
+| `POST` | `/entidades-receptoras` | Crear entidad — body: `{ clave, nombre, descripcion?, activo? }` | `catalogos.gestionar` |
+| `GET` | `/entidades-receptoras/{id}` | Ver entidad | `catalogos.gestionar` |
+| `PUT` | `/entidades-receptoras/{id}` | Editar (rechaza cambiar `clave` si tiene `tipo_estado_derivacion` o `derivacion` referenciados) | `catalogos.gestionar` |
+| `DELETE` | `/entidades-receptoras/{id}` | Eliminar (rechaza si tiene `derivacion` o `tipo_estado_derivacion` — usar `activo=0`) | `catalogos.gestionar` |
+| `PATCH` | `/entidades-receptoras/{id}/estado` | Activar / desactivar (`activo`) | `catalogos.gestionar` |
+
+**Estados de derivación** (`tipo_estado_derivacion`) — siempre **anidados bajo su entidad**
+
+| Método | Ruta | Propósito | Permiso |
+|--------|------|-----------|---------|
+| `GET` | `/entidades-receptoras/{id}/estados-derivacion` | Listar estados de la entidad, ordenados por `orden` | `catalogos.gestionar` |
+| `POST` | `/entidades-receptoras/{id}/estados-derivacion` | Crear estado — body: `{ clave, nombre, orden, activo? }` | `catalogos.gestionar` |
+| `GET` | `/estados-derivacion/{id}` | Ver estado | `catalogos.gestionar` |
+| `PUT` | `/estados-derivacion/{id}` | Editar estado (rechaza cambiar `clave` si hay `derivacion` en ese estado) | `catalogos.gestionar` |
+| `DELETE` | `/estados-derivacion/{id}` | Eliminar (rechaza si hay `derivacion.tipo_estado_derivacion_id` apuntando a él — usar `activo=0`) | `catalogos.gestionar` |
+| `PATCH` | `/estados-derivacion/{id}/estado` | Activar / desactivar (`activo`) | `catalogos.gestionar` |
+| `PUT` | `/entidades-receptoras/{id}/estados-derivacion/reordenar` | Reordenar estados — body: `[{ id, orden }]` — aplica en transacción | `catalogos.gestionar` |
+
+### Alertas IA (`alerta_ia`)
+
+> Las alertas las **crea únicamente el sistema** (job async tras `POST /fichas-llenadas/{fl_id}/enviar`).
+> El docente y el admin solo las leen y cambian su estado.
+
+**Vista docente — sus tutorados**
+
+| Método | Ruta | Propósito | Permiso |
+|--------|------|-----------|---------|
+| `GET` | `/mis-alertas` | Listar alertas de los tutorados del docente autenticado. Filtros: `?estado=` (`pendiente`/`revisada`/`derivada`/`descartada`), `?nivel_alerta=` (`Baja`/`Media`/`Alta`), `?area_id=`, `?estudiante_id=`, `?page=`. El `meta` incluye conteo por estado | `alertas.ver` |
+| `GET` | `/mis-alertas/{id}` | Ver detalle de una alerta (valida que la alerta pertenezca a un tutorado del docente) | `alertas.ver` |
+| `PATCH` | `/mis-alertas/{id}/revisar` | Marcar como revisada (`estado: pendiente → revisada`). Rechaza si `estado ≠ 'pendiente'` | `alertas.ver` |
+| `PATCH` | `/mis-alertas/{id}/descartar` | Marcar como descartada (`estado → descartada`). Rechaza si ya tiene una `derivacion` asociada (`alerta_ia_id`) | `alertas.ver` |
+
+**Vista admin — todas las alertas**
+
+| Método | Ruta | Propósito | Permiso |
+|--------|------|-----------|---------|
+| `GET` | `/alertas` | Listar todas las alertas del sistema. Filtros: `?docente_id=`, `?estudiante_id=`, `?estado=`, `?nivel_alerta=`, `?area_id=`, `?ciclo_periodo_id=`, `?fecha_desde=`, `?fecha_hasta=` | `alertas.gestionar` |
+| `GET` | `/alertas/{id}` | Ver detalle de cualquier alerta | `alertas.gestionar` |
+
+**Formato de respuesta `GET /mis-alertas` (y `/alertas`):**
+
+```json
+{
+  "data": [
+    {
+      "id": 12,
+      "estudiante": {
+        "id": 5,
+        "nombre_completo": "Juan Pérez López",
+        "codigo": "2024-AD-0012"
+      },
+      "ficha_llenada": {
+        "id": 20,
+        "nombre_ficha": "Ficha diagnóstica · 1° ciclo 2026-I",
+        "fecha_enviado": "2026-03-15T14:22:00"
+      },
+      "area": { "id": 2, "clave": "salud_mental", "nombre": "Salud corporal y mental" },
+      "nivel_alerta": "Alta",
+      "justificacion": "Tendencia de 3 períodos a la baja en bienestar, respuestas indican aislamiento",
+      "entidad_sugerida": { "id": 1, "clave": "psicologia", "nombre": "Psicología" },
+      "estado": "pendiente",
+      "fecha_generada": "2026-03-15T15:01:00",
+      "derivacion_id": null
+    }
+  ],
+  "meta": {
+    "total": 5,
+    "por_estado": { "pendiente": 3, "revisada": 1, "derivada": 1, "descartada": 0 }
+  }
+}
+```
+
+### Derivaciones (`derivacion`)
+
+> El endpoint `GET /derivaciones` devuelve resultados **filtrados por rol**
+> automáticamente (sin cambiar la URL):
+> - **Docente autenticado** → solo las derivaciones que él creó (`docente_id`).
+> - **Receptor autenticado** → solo las de su entidad (`entidad_receptora_id` de su perfil `receptor`).
+> - **Admin** → todas.
+
+| Método | Ruta | Propósito | Permiso |
+|--------|------|-----------|---------|
+| `POST` | `/derivaciones` | Crear derivación — ver body abajo | `derivaciones.crear` |
+| `GET` | `/derivaciones` | Listar derivaciones (filtrado por rol automático). Filtros: `?entidad_receptora_id=`, `?estado_id=`, `?estudiante_id=`, `?docente_id=` (solo admin), `?fecha_desde=`, `?fecha_hasta=`, `?page=` | `derivaciones.ver` |
+| `GET` | `/derivaciones/{id}` | Ver detalle completo — accesible por el docente creador, cualquier receptor de la entidad destino o el admin | `derivaciones.ver` |
+| `PATCH` | `/derivaciones/{id}/estado` | Avanzar estado del caso — solo receptor de la entidad destino o admin — body abajo | `derivaciones.gestionar` |
+
+**Body `POST /derivaciones`:**
+
+```json
+{
+  "estudiante_id": 5,
+  "entidad_receptora_id": 1,
+  "motivo": "Las respuestas de la ficha diagnóstica indican aislamiento sostenido y bajo bienestar emocional en tres períodos consecutivos.",
+  "alerta_ia_id": 12
+}
+```
+
+> `alerta_ia_id` es **opcional** (derivación manual = `null`). Si se envía, el backend valida que la alerta exista, pertenezca a un tutorado del docente y no esté ya `derivada`.
+
+**Body `PATCH /derivaciones/{id}/estado`:**
+
+```json
+{
+  "tipo_estado_derivacion_id": 4,
+  "nota": "Estudiante citado para evaluación inicial el martes 22 a las 10:00."
+}
+```
+
+> `nota` es opcional. El backend valida que `tipo_estado_derivacion_id` pertenezca a la misma `entidad_receptora_id` de la derivación.
+
+**Formato de respuesta `GET /derivaciones` y `GET /derivaciones/{id}`:**
+
+```json
+{
+  "data": {
+    "id": 7,
+    "estudiante": {
+      "id": 5,
+      "nombre_completo": "Juan Pérez López",
+      "codigo": "2024-AD-0012"
+    },
+    "docente": {
+      "id": 2,
+      "nombre_completo": "Ricardo Vargas Vargas"
+    },
+    "entidad_receptora": {
+      "id": 1,
+      "clave": "psicologia",
+      "nombre": "Psicología"
+    },
+    "alerta_ia": {
+      "id": 12,
+      "nivel_alerta": "Alta",
+      "area": "Salud corporal y mental",
+      "justificacion": "Tendencia de 3 períodos a la baja en bienestar..."
+    },
+    "estado_actual": {
+      "id": 3,
+      "clave": "en_evaluacion",
+      "nombre": "En evaluación"
+    },
+    "motivo": "Las respuestas indican aislamiento sostenido...",
+    "nota": "Estudiante citado para evaluación el martes 22.",
+    "created_at": "2026-03-20T10:30:00",
+    "updated_at": "2026-03-22T09:15:00"
+  }
+}
+```
+
+**Módulo 4 — APIs: ✔ completo**
 
 ---
 

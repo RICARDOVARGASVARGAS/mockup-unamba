@@ -5,8 +5,7 @@ negocio, transacciones y permisos. Es la guía de implementación para el
 backend (Laravel + MySQL). **No incluye diseño ni frontend** — eso se
 trabaja aparte.
 
-- Esquema de tablas y contrato de rutas: [`BD-BACKEND.md`](./BD-BACKEND.md).
-- Razonamiento de dominio: [`MODELO-DATOS.md`](./MODELO-DATOS.md).
+- Esquema de tablas, contrato de rutas y decisiones de dominio: [`BD-BACKEND.md`](./BD-BACKEND.md) — **fuente única de verdad**.
 
 **Reglas generales (aplican a todo):**
 - Auth por token (Sanctum). Todo endpoint no público exige estar autenticado
@@ -137,8 +136,6 @@ permisos los define el desarrollador y se **siembran**.
 
 ---
 
----
-
 ## Módulo 2 — Estructura académica
 
 ### Catálogos (`ciclo` y `periodo_academico`)
@@ -173,6 +170,10 @@ permisos los define el desarrollador y se **siembran**.
 - Rechaza si el período destino ya tiene `ciclo_periodo` para alguno de los ciclos del origen (protege contra clonar dos veces).
 
 ### Docentes por ciclo+período (`docente_ciclo_periodo`)
+
+**`GET /ciclos-periodos/{id}/docentes`**
+- Devuelve la lista de docentes asignados al ciclo+período, con conteo de tutorados cada uno (balance de carga).
+- Respuesta: `[ { docente_id, nombre_completo, email, n_tutorados } ]`.
 
 **`POST /ciclos-periodos/{id}/docentes`**
 - Body: `{ docente_id }`. Valida que el docente exista y no esté ya asignado a este `ciclo_periodo` (UNIQUE). Inserta la fila.
@@ -269,7 +270,11 @@ permisos los define el desarrollador y se **siembran**.
 - Edita encabezado. **No** toca preguntas — esas tienen su propio endpoint.
 
 **`DELETE /fichas/{id}`**
-- Rechaza si tiene `ficha_ciclo_periodo` referenciada (ya fue asignada a algún ciclo+período). Ofrecer `PATCH /fichas/{id}/estado` para desactivarla.
+- Rechaza si tiene `ficha_ciclo_periodo` referenciada (ya fue asignada a algún ciclo+período). Usar `PATCH /fichas/{id}/estado` para desactivarla.
+
+**`PATCH /fichas/{id}/estado`**
+- Body: `{ activo: 0 | 1 }`. Activa o desactiva la plantilla.
+- Una ficha inactiva no puede asignarse a nuevos `ciclo_periodo`, pero las asignaciones y llenados existentes no se afectan.
 
 **`POST /fichas/{id}/duplicar`**
 - En transacción:
@@ -303,6 +308,14 @@ permisos los define el desarrollador y se **siembran**.
 
 ### Asignación a ciclo+período (`ficha_ciclo_periodo`)
 
+**`GET /ciclos-periodos/{cp_id}/fichas`**
+- Lista las fichas asignadas al ciclo+período. Incluye: nombre de la ficha, tipo, nº de preguntas y conteo de `ficha_llenada` por estado (`sin_abrir` / `borrador` / `enviada`).
+- Permiso: `periodos.ver`.
+
+**`GET /ciclos-periodos/{cp_id}/fichas/{fcp_id}`**
+- Devuelve la copia clonada (`ficha_ciclo_periodo`) con su árbol de preguntas y opciones propias (las del clon, no las de la plantilla original).
+- Permiso: `periodos.ver`.
+
 **`POST /ciclos-periodos/{cp_id}/fichas`**
 - Body: `{ ficha_id }`. Valida que la `ficha` exista y esté `activo=1`.
 - En transacción (orden crítico para integridad del mapa):
@@ -317,7 +330,7 @@ permisos los define el desarrollador y se **siembran**.
 ### Llenado por el estudiante (`ficha_llenada` + `respuesta`)
 
 **`GET /mis-fichas`**
-- Obtiene el `ciclo_periodo` activo del estudiante autenticado (buscando en `estudiante_ciclo_periodo` el período con `activo=1`).
+- Obtiene el `ciclo_periodo` activo del estudiante autenticado: busca en `estudiante_ciclo_periodo` las filas del estudiante, hace join a `ciclo_periodo → periodo_academico` y filtra por `periodo_academico.activo = 1`.
 - Devuelve todas las `ficha_ciclo_periodo` de ese `ciclo_periodo`, enriquecidas con el estado de la `ficha_llenada` del estudiante:
   ```json
   {
@@ -333,8 +346,10 @@ permisos los define el desarrollador y se **siembran**.
   Si no existe `ficha_llenada`, `estado_llenado = "sin_abrir"` y `ficha_llenada_id = null`.
 
 **`POST /mis-fichas/{fcp_id}/comenzar`**
-- Verifica que no exista ya un `ficha_llenada` con `estado = 'borrador'` para (`estudiante_id`, `fcp_id`). Si ya existe, devuelve `200` con la fila existente (idempotente — el estudiante puede recargar sin crear duplicados).
-- Si no existe, crea `ficha_llenada` con `estado = 'borrador'`.
+- Busca la `ficha_llenada` del estudiante autenticado para esa `fcp_id` (el UNIQUE `(estudiante_id, ficha_ciclo_periodo_id)` garantiza como máximo una fila):
+  - Si `estado = 'enviada'` → `409` "Ya enviaste esta ficha."
+  - Si `estado = 'borrador'` → `200` con la fila existente (idempotente — el estudiante puede recargar sin crear duplicados).
+  - Si no existe → crea `ficha_llenada` con `estado = 'borrador'`.
 - Devuelve `{ ficha_llenada_id, preguntas: [...con opciones...] }`.
 
 **`PUT /fichas-llenadas/{fl_id}/respuestas`**
@@ -347,9 +362,13 @@ permisos los define el desarrollador y se **siembran**.
 - Valida que exista exactamente una `respuesta` por cada `pregunta` del `ficha_ciclo_periodo` (todas respondidas).
 - En transacción: `UPDATE ficha_llenada SET estado='enviada', fecha_enviado=NOW()`.
 - Encola un **job asíncrono** que construye el contexto para la IA y procesa la alerta (Módulo 4). No bloquea la respuesta.
-- Devuelve `{ enviada: true, fecha_enviado: "2026-03-18" }`.
+- Devuelve `{ enviada: true, fecha_enviado: "2026-03-18T14:23:05.000000Z" }`.
 
 ### Vista docente — revisión
+
+**`GET /mis-tutorados/fichas`**
+- Devuelve el resumen de fichas asignadas a los `ciclo_periodo` del docente autenticado (período activo), con conteo de estudiantes por estado de llenado (`sin_abrir` / `borrador` / `enviada`).
+- Permite al docente ver de un vistazo qué fichas tienen pendientes sus tutorados sin entrar a cada una.
 
 **`GET /ciclos-periodos/{cp_id}/fichas/{fcp_id}/tutorados`**
 - Solo accesible si el `docente_id` autenticado está en `docente_ciclo_periodo` para ese `cp_id`.
@@ -359,7 +378,7 @@ permisos los define el desarrollador y se **siembran**.
     {
       "estudiante": { "id": 7, "nombre_completo": "Ana Lucía Quispe Mamani", "codigo": "2022-AD-0021" },
       "estado": "enviada",
-      "fecha_enviado": "2026-03-18",
+      "fecha_enviado": "2026-03-18T14:23:05.000000Z",
       "ficha_llenada_id": 42
     },
     {
@@ -385,8 +404,164 @@ permisos los define el desarrollador y se **siembran**.
 - Body: `{ observaciones_tutor: "texto..." }`. Valida autorización del docente (mismo criterio que el `GET`). Actualiza solo el campo `observaciones_tutor` en la fila `respuesta`.
 
 **`PATCH /fichas-llenadas/{fl_id}/marcar-revisada`**
-- Valida autorización del docente. Requiere que `estado = 'enviada'`. Marca un campo `revisada TINYINT(1)` en `ficha_llenada` (agregar esta columna al esquema si no existe aún). Idempotente: si ya estaba revisada, devuelve `200` sin error.
+- Valida autorización del docente. Requiere que `estado = 'enviada'`. Marca el campo `revisada = 1` en `ficha_llenada`. Idempotente: si ya estaba revisada, devuelve `200` sin error.
 
 ---
 
-<!-- Módulo 4 — IA/Alertas/Derivación se agrega aquí cuando se cierre su diseño -->
+## Módulo 4 — IA / Alertas / Derivación
+
+### Catálogos de M4
+
+**`GET /entidades-receptoras`**
+- Devuelve lista paginada. Filtros: `?buscar=` (sobre `nombre`), `?activo=`.
+- Requiere autenticación. Todos los usuarios que consultan esta lista (docentes, receptores, admin) ya están autenticados. Permiso: `catalogos.gestionar` para admin; cualquier usuario autenticado puede leerla (el docente la necesita al crear una derivación).
+
+**`POST /entidades-receptoras`**
+- Valida `clave` única y `nombre` único.
+- La `clave` es usada por la IA en su respuesta JSON — debe ser estable (`psicologia`, `bienestar`, `salud`). Advertir al admin que cambiarla después rompe el mapeo del modelo de IA.
+
+**`PUT /entidades-receptoras/{id}`**
+- Si `clave` se intenta cambiar y ya existen filas en `alerta_ia` (campo `entidad_receptora_sugerida_id`) o `derivacion` con esta entidad → rechazar `422`: "La clave no puede cambiarse; existen alertas o derivaciones históricas vinculadas a esta entidad."
+  - Nota: `alerta_ia` y `derivacion` almacenan FK (no el texto de la clave), por lo que los registros históricos no se corrompen si la clave cambia. La restricción es un **guard conservador** para evitar que el modelo de IA siga generando la clave antigua sin que el administrador lo sepa. Si la entidad no tiene historial, el cambio es seguro y se permite.
+  - `tipo_estado_derivacion` **no** es una condición de bloqueo: esos registros usan FK y no dependen del texto de la clave.
+- Permite cambiar `nombre` y `descripcion` libremente.
+
+**`DELETE /entidades-receptoras/{id}`**
+- Rechaza `422` si existen filas en `derivacion` o `tipo_estado_derivacion` con `entidad_receptora_id` apuntando a ella.
+- Recomendar `activo = 0` en lugar de eliminar.
+
+**`PATCH /entidades-receptoras/{id}/estado`**
+- Cambia `activo`. Desactivar no afecta derivaciones existentes — solo impide crear nuevas hacia esa entidad.
+
+---
+
+**`GET /entidades-receptoras/{id}/estados-derivacion`**
+- Devuelve los estados de esa entidad, ordenados por `orden ASC`. Incluye `activo` para que la UI muestre cuáles están disponibles.
+
+**`POST /entidades-receptoras/{id}/estados-derivacion`**
+- Valida `clave` única **dentro de la entidad** (`UNIQUE entidad_receptora_id + clave`).
+- Valida `orden` único **dentro de la entidad**.
+- Si `orden` no se envía, asigna el siguiente disponible (`MAX(orden) + 1` para esa entidad).
+
+**`PUT /estados-derivacion/{id}`**
+- Si se intenta cambiar `clave` y existen `derivacion.tipo_estado_derivacion_id` apuntando a esta fila, rechazar `422`.
+- Si se cambia `orden`, verificar unicidad dentro de la misma entidad.
+
+**`DELETE /estados-derivacion/{id}`**
+- Rechaza `422` si hay derivaciones cuyo `tipo_estado_derivacion_id` es este estado.
+- Recomendar `activo = 0`.
+
+**`PUT /entidades-receptoras/{id}/estados-derivacion/reordenar`**
+- Body: `[{ "id": 3, "orden": 1 }, { "id": 4, "orden": 2 }, ...]`
+- Valida que todos los `id` pertenezcan a la misma `entidad_receptora_id`. Rechaza `422` si alguno no corresponde.
+- Aplica en una sola transacción. Primero asigna órdenes temporales para evitar conflictos de UNIQUE (`orden = orden + 1000`), luego aplica los definitivos.
+
+---
+
+### Alertas IA
+
+> Las alertas **no se crean por API pública**: las genera el sistema automáticamente
+> mediante un **job async** que se dispara al recibir `POST /fichas-llenadas/{fl_id}/enviar`.
+> El job reconstruye la ficha (preguntas + respuestas + historial del estudiante),
+> llama al modelo de IA, parsea su respuesta JSON y hace `INSERT` en `alerta_ia`
+> por cada objeto del array `alertas`. El docente y el admin solo leen y gestionan.
+
+**`GET /mis-alertas`** _(docente autenticado)_
+- Filtra automáticamente por `docente_id` (el id del perfil `docente` del usuario autenticado).
+- Parámetros opcionales: `?estado=pendiente|revisada|derivada|descartada`, `?nivel_alerta=Baja|Media|Alta`, `?area_id=`, `?estudiante_id=`, `?page=`.
+- Devuelve el listado con el contexto necesario: nombre del estudiante, nombre de la ficha, área, nivel, justificación resumida, estado y si ya tiene una derivación creada (`derivacion_id`).
+- El `meta` incluye `por_estado: { pendiente, revisada, derivada, descartada }` para pintar los contadores en el dashboard del docente.
+
+**`GET /mis-alertas/{id}`** _(docente autenticado)_
+- Valida que `alerta_ia.docente_id` coincida con el docente autenticado. Si no → `403`.
+- Devuelve el detalle completo: datos del estudiante, ficha llenada (fecha de envío), área, nivel, justificación completa de la IA, entidad sugerida y estado.
+
+**`PATCH /mis-alertas/{id}/revisar`** _(docente autenticado)_
+- Valida autorización (mismo criterio que `GET`).
+- Valida que `estado = 'pendiente'`. Si ya es `revisada`, `derivada` o `descartada` → `422` "La alerta ya fue procesada."
+- Actualiza `estado → 'revisada'`.
+
+**`PATCH /mis-alertas/{id}/descartar`** _(docente autenticado)_
+- Valida autorización (mismo criterio).
+- Rechaza `422` si la alerta ya tiene una `derivacion` asociada (`alerta_ia_id` en alguna fila de `derivacion`): "No se puede descartar una alerta que ya generó una derivación."
+- Actualiza `estado → 'descartada'`.
+
+**`GET /alertas`** _(admin)_
+- Sin filtro automático por docente — el admin ve todo.
+- Filtros: `?docente_id=`, `?estudiante_id=`, `?estado=`, `?nivel_alerta=`, `?area_id=`, `?ciclo_periodo_id=`, `?fecha_desde=`, `?fecha_hasta=`, `?page=`.
+- Mismo formato de respuesta que `/mis-alertas` pero sin restricción de visibilidad.
+
+**`GET /alertas/{id}`** _(admin)_
+- Sin restricción de docente. Mismo detalle que `/mis-alertas/{id}`.
+
+---
+
+### Derivaciones
+
+**`POST /derivaciones`** _(docente autenticado, permiso `derivaciones.crear`)_
+
+Flujo completo en una sola transacción:
+
+1. **Validar estudiante**: `estudiante_id` debe corresponder a un tutorado del docente autenticado en el `ciclo_periodo` activo (verificar en `estudiante_ciclo_periodo` donde `docente_id` = docente autenticado y el `periodo_academico.activo = 1`).
+2. **Validar entidad**: `entidad_receptora_id` debe existir y estar `activo = 1`.
+3. **Validar alerta** (si `alerta_ia_id` viene en el body):
+   - La alerta debe existir y pertenecer a un tutorado del docente.
+   - `estado` debe ser `pendiente` o `revisada` — rechaza `422` si es `derivada` o `descartada`.
+4. **Determinar estado inicial**: buscar el primer estado activo de la entidad destino (`SELECT id FROM tipo_estado_derivacion WHERE entidad_receptora_id = ? AND activo = 1 ORDER BY orden ASC LIMIT 1`). Si la entidad no tiene estados activos → `422` "La entidad receptora no tiene estados configurados."
+5. **Crear la derivación**: `INSERT INTO derivacion (estudiante_id, docente_id, entidad_receptora_id, alerta_ia_id, tipo_estado_derivacion_id, motivo)`.
+6. **Actualizar la alerta** (si `alerta_ia_id` viene): `UPDATE alerta_ia SET estado = 'derivada' WHERE id = ?`.
+
+Responde `201` con el detalle de la derivación creada.
+
+---
+
+**`GET /derivaciones`** _(docente / receptor / admin)_
+
+El filtro aplicado depende del rol del usuario autenticado:
+- Si tiene `docente` profile → `WHERE docente_id = {docente autenticado}`
+- Si tiene `receptor` profile → `WHERE entidad_receptora_id = {receptor.entidad_receptora_id}`
+- Si es admin → sin filtro por defecto
+
+Parámetros opcionales:
+- `?entidad_receptora_id=` (admin puede filtrar por entidad; receptor no necesita pasarlo — ya se filtra solo)
+- `?tipo_estado_derivacion_id=` — filtrar por estado actual
+- `?estudiante_id=`
+- `?docente_id=` (solo admin)
+- `?fecha_desde=`, `?fecha_hasta=` (sobre `derivacion.created_at`)
+- `?page=`
+
+Devuelve lista con: datos del estudiante, docente creador, entidad destino, estado actual, motivo (truncado a 120 chars para el listado), fecha de creación.
+
+---
+
+**`GET /derivaciones/{id}`** _(docente creador / receptor de la entidad / admin)_
+
+Control de acceso:
+- Si el autenticado es docente: verificar que `derivacion.docente_id` sea su perfil.
+- Si el autenticado es receptor: verificar que `derivacion.entidad_receptora_id` sea la entidad de su perfil `receptor`.
+- Si es admin: acceso libre.
+- En cualquier otro caso → `403`.
+
+Devuelve el detalle completo (ver formato JSON en `BD-BACKEND.md`).
+
+---
+
+**`PATCH /derivaciones/{id}/estado`** _(receptor de la entidad / admin)_
+
+1. **Validar acceso**: el receptor autenticado debe pertenecer a `derivacion.entidad_receptora_id`. Si no → `403`.
+2. **Validar el nuevo estado**: el `tipo_estado_derivacion_id` enviado debe:
+   - Existir en la BD.
+   - Pertenecer a la misma `entidad_receptora_id` de la derivación: `SELECT id FROM tipo_estado_derivacion WHERE id = ? AND entidad_receptora_id = ?`. Si no coincide → `422` "El estado seleccionado no pertenece a la entidad de esta derivación."
+   - Estar `activo = 1`. Si está inactivo → `422`.
+3. **Actualizar**: `UPDATE derivacion SET tipo_estado_derivacion_id = ?, nota = ?, updated_at = NOW() WHERE id = ?`.
+   - La `nota` sobreescribe la anterior. El historial de cambios (quién, cuándo, de qué estado a cuál, nota anterior) queda en la tabla `auditoria` automáticamente.
+
+Responde `200` con la derivación actualizada.
+
+---
+
+**Notas de seguridad del módulo:**
+- Un estudiante **nunca ve** sus propias alertas ni derivaciones — la confidencialidad protege el proceso de tutoría.
+- El docente solo ve alertas y derivaciones de sus **propios tutorados** (verificar siempre contra `estudiante_ciclo_periodo`).
+- El receptor solo ve derivaciones para **su entidad** (verificar siempre contra `receptor.entidad_receptora_id`).
+- Ningún endpoint de este módulo expone datos de otros docentes o entidades.
