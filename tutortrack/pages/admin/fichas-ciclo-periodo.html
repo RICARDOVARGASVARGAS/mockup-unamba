@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fichas asignadas | TutorTrack (Mockup)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" />
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <app-sidebar></app-sidebar>
+    <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
+      <app-topbar page-title="Fichas asignadas" user-name="Ricardo Vargas Vargas" user-role="Administrador" user-initials="RV" user-avatar="assets/img/admin/ricardo-vargas.jpg"></app-topbar>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8 space-y-5">
+
+        <!-- Breadcrumb -->
+        <nav class="flex items-center gap-2 text-sm text-text-muted">
+          <a id="link-gestion" href="gestion-periodo.html" class="hover:text-primary">Gestión del período</a>
+          <span>›</span>
+          <span id="bc-ciclo" class="text-text-muted">Ciclo</span>
+          <span>›</span>
+          <span class="text-text font-medium">Fichas asignadas</span>
+        </nav>
+
+        <!-- Encabezado -->
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h2 id="page-title" class="font-heading text-xl font-bold text-text">Fichas — Ciclo · Período</h2>
+            <p id="page-subtitle" class="mt-0.5 text-sm text-text-muted"></p>
+          </div>
+          <button type="button" id="btn-asignar" class="btn-primary shrink-0">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            Asignar ficha
+          </button>
+        </div>
+
+        <!-- Lista de fichas asignadas -->
+        <section class="app-card">
+          <div id="fichas-list" class="divide-y divide-border"></div>
+          <div id="fichas-empty" class="hidden py-12 text-center text-text-muted">
+            <svg class="mx-auto mb-3 h-8 w-8 opacity-40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+            </svg>
+            <p class="text-sm">Aún no hay fichas asignadas a este ciclo+período.</p>
+            <p class="mt-1 text-xs">Usa "Asignar ficha" para comenzar.</p>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- Modal: Asignar ficha -->
+    <div id="modal-asignar-backdrop" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
+      <div class="modal-panel w-full max-w-md">
+        <h2 class="font-heading text-lg font-bold">Asignar ficha</h2>
+        <form id="form-asignar" class="mt-4 space-y-4" novalidate>
+          <div>
+            <label for="sel-ficha" class="form-label">Plantilla de ficha <span class="text-danger">*</span></label>
+            <select id="sel-ficha" required class="form-input">
+              <option value="">Seleccionar…</option>
+            </select>
+          </div>
+          <div class="rounded-lg bg-info-bg border border-border p-3 text-sm text-text-muted">
+            <svg class="inline h-4 w-4 mr-1 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+            </svg>
+            Se clonará la ficha y sus preguntas. Los cambios posteriores a la plantilla no afectarán esta copia.
+          </div>
+          <div class="flex justify-end gap-3 pt-2">
+            <button type="button" id="btn-asignar-cancelar" class="btn-secondary">Cancelar</button>
+            <button type="submit" class="btn-primary">Asignar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal: Confirmar desasignar -->
+    <div id="modal-desasignar-backdrop" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
+      <div class="modal-panel w-full max-w-sm">
+        <h2 class="font-heading text-lg font-bold">Desasignar ficha</h2>
+        <p class="mt-2 text-sm text-text-muted">¿Desasignar <strong id="desasignar-nombre"></strong> de este ciclo+período? Esta acción no puede deshacerse.</p>
+        <div class="mt-4 flex justify-end gap-3">
+          <button type="button" id="btn-desasignar-cancelar" class="btn-secondary">Cancelar</button>
+          <button type="button" id="btn-desasignar-confirm" class="btn-primary" style="background:var(--color-danger);border-color:var(--color-danger)">Desasignar</button>
+        </div>
+      </div>
+    </div>
+
+    <app-toast></app-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/site-paths.js"></script>
+    <script src="../../components/app-sidebar.js"></script>
+    <script src="../../components/app-topbar.js"></script>
+    <script src="../../components/app-toast.js"></script>
+    <script src="../../js/fichas-data.js"></script>
+    <script src="../../js/fichas-ciclo-periodo-data.js"></script>
+    <script src="../../js/fichas-ciclo-periodo.js"></script>
+  </body>
+</html>

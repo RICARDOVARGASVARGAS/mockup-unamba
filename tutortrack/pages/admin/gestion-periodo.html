@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestión del período | TutorTrack (Mockup)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" />
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <app-sidebar></app-sidebar>
+    <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
+      <app-topbar page-title="Gestión del período" user-name="Ricardo Vargas Vargas" user-role="Administrador" user-initials="RV" user-avatar="assets/img/admin/ricardo-vargas.jpg"></app-topbar>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8 space-y-6">
+
+        <!-- Encabezado de período -->
+        <section class="app-card p-5 sm:p-6">
+          <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex flex-wrap items-center gap-3">
+              <h2 class="font-heading text-xl font-bold">Gestión del período</h2>
+              <span id="badge-vigente" class="hidden badge badge-success">Vigente</span>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button type="button" id="btn-nuevo-periodo" class="btn-secondary">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                Nuevo período
+              </button>
+              <button type="button" id="btn-clonar" class="btn-secondary">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75" />
+                </svg>
+                Clonar desde período anterior
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-4 flex flex-wrap items-center gap-3">
+            <label for="select-periodo" class="text-sm font-medium text-text-muted">Período:</label>
+            <select id="select-periodo" class="form-input w-auto min-w-[10rem]"></select>
+          </div>
+        </section>
+
+        <!-- Tarjetas de ciclos -->
+        <div id="cards-ciclos" class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3"></div>
+
+        <div id="sin-datos" class="hidden app-card p-8 text-center text-text-muted">
+          <p>No hay datos configurados para este período.</p>
+          <p class="mt-1 text-sm">Usa "Clonar desde período anterior" o configura manualmente.</p>
+        </div>
+
+      </main>
+    </div>
+
+    <!-- Modal: Gestionar docentes -->
+    <div id="modal-docentes-backdrop" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
+      <div class="modal-panel w-full max-w-lg">
+        <h2 id="modal-docentes-title" class="font-heading text-lg font-bold">Docentes asignados</h2>
+        <p id="modal-docentes-sub" class="mt-0.5 text-sm text-text-muted"></p>
+
+        <div class="mt-5 space-y-4">
+          <div>
+            <p class="text-sm font-semibold text-text mb-2">Asignados actualmente</p>
+            <ul id="docentes-asignados-list" class="space-y-2"></ul>
+            <p id="docentes-asignados-empty" class="hidden text-sm text-text-muted italic">Sin docentes asignados.</p>
+          </div>
+
+          <div class="rounded-lg border border-border bg-bg p-4 space-y-3">
+            <p class="text-sm font-semibold text-text">Agregar docente</p>
+            <div class="flex gap-2">
+              <select id="select-docente-agregar" class="form-input flex-1">
+                <option value="">Seleccionar docente…</option>
+              </select>
+              <button type="button" id="btn-agregar-docente" class="btn-primary shrink-0">Agregar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 flex justify-end gap-3">
+          <button type="button" id="btn-docentes-cancelar" class="btn-secondary">Cancelar</button>
+          <button type="button" id="btn-docentes-guardar" class="btn-primary">Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Clonar período -->
+    <div id="modal-clonar-backdrop" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
+      <div class="modal-panel w-full max-w-md">
+        <h2 class="font-heading text-lg font-bold">Clonar desde período anterior</h2>
+        <div class="mt-4 space-y-4">
+          <div>
+            <label for="select-origen-clonar" class="form-label">Período de origen</label>
+            <select id="select-origen-clonar" class="form-input"></select>
+          </div>
+          <div class="rounded-lg border border-border bg-warning/5 p-4">
+            <p class="text-sm text-text-muted">
+              <strong class="text-text">Se copiarán</strong> los docentes asignados y el temario de cada ciclo.<br />
+              Las matrículas de estudiantes <strong class="text-text">NO se copian</strong>.
+            </p>
+          </div>
+        </div>
+        <div class="mt-6 flex justify-end gap-3">
+          <button type="button" id="btn-clonar-cancelar" class="btn-secondary">Cancelar</button>
+          <button type="button" id="btn-clonar-confirmar" class="btn-primary">Clonar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Nuevo período -->
+    <div id="modal-nuevo-periodo-backdrop" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
+      <div class="modal-panel w-full max-w-md">
+        <h2 class="font-heading text-lg font-bold">Nuevo período académico</h2>
+        <form id="form-nuevo-periodo" class="mt-4 space-y-4" novalidate>
+          <div>
+            <label for="np-nombre" class="form-label">Nombre del período <span class="text-danger">*</span></label>
+            <input id="np-nombre" type="text" required class="form-input" placeholder="Ej. 2026-II" />
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="np-inicio" class="form-label">Fecha de inicio</label>
+              <input id="np-inicio" type="date" class="form-input" />
+            </div>
+            <div>
+              <label for="np-fin" class="form-label">Fecha de fin</label>
+              <input id="np-fin" type="date" class="form-input" />
+            </div>
+          </div>
+          <label class="flex items-center gap-2 text-sm text-text cursor-pointer">
+            <input id="np-clonar" type="checkbox" class="h-4 w-4 rounded border-border text-primary" />
+            Clonar configuración del período actual (docentes y temario)
+          </label>
+          <div class="flex justify-end gap-3 pt-2">
+            <button type="button" id="btn-np-cancelar" class="btn-secondary">Cancelar</button>
+            <button type="submit" class="btn-primary">Crear período</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <app-toast></app-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/site-paths.js"></script>
+    <script src="../../components/app-sidebar.js"></script>
+    <script src="../../components/app-topbar.js"></script>
+    <script src="../../components/app-toast.js"></script>
+    <script src="../../js/gestion-periodo-data.js"></script>
+    <script src="../../js/gestion-periodo.js"></script>
+  </body>
+</html>

@@ -40,8 +40,8 @@
             { label: "Tipos de pregunta", path: "admin/tipos-pregunta.html" },
             { label: "Entidades receptoras", path: "admin/entidades-receptoras.html" },
             { label: "Tipos de estado de derivación", path: "admin/tipos-estado-derivacion.html" },
+            { label: "Usuarios", path: "admin/usuarios.html" },
             { label: "Roles y permisos", path: "admin/roles-permisos.html" },
-
           ],
         },
         {
@@ -49,8 +49,9 @@
           items: [
             { label: "Docentes", path: "admin/docentes.html" },
             { label: "Estudiantes", path: "admin/estudiantes.html" },
-            { label: "Ciclo x Periodo", path: "admin/ciclo-periodo.html" },
+            { label: "Configuración del período", path: "admin/gestion-periodo.html" },
             { label: "Matrículas", path: "admin/matriculas.html" },
+            { label: "Avanzar estudiantes", path: "admin/avanzar-estudiantes.html" },
           ],
         },
         {
@@ -84,7 +85,7 @@
         },
         {
           label: "Fichas",
-          items: [{ label: "Fichas por revisar", path: "docente/fichas.html" }],
+          items: [{ label: "Fichas de mis tutorados", path: "docente/fichas-tutorados.html" }],
         },
         {
           label: "Alertas",
@@ -104,7 +105,7 @@
         {
           label: "Mi tutoría",
           items: [
-            { label: "Mis fichas", path: "estudiante/fichas.html" },
+            { label: "Mis fichas", path: "estudiante/mis-fichas.html" },
             { label: "Mi tutor", path: "estudiante/tutor.html" },
           ],
         },

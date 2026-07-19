@@ -80,6 +80,7 @@
                 <label for="filter-modulo">Módulo</label>
                 <select id="filter-modulo" data-filter="modulo" class="catalog-select min-w-[11rem]">
                   <option value="">Todos</option>
+                  <option value="usuarios">Usuarios y accesos</option>
                   <option value="catalogos">Catálogos</option>
                   <option value="tutoria">Tutoría</option>
                   <option value="fichas">Fichas</option>
@@ -111,13 +112,20 @@
 
     <!-- Modal Rol (+ checklist permisos) -->
     <div data-rol-backdrop class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
-      <div class="modal-panel max-w-lg">
+      <div class="modal-panel max-w-lg w-full">
         <h2 data-rol-title class="font-heading">Nuevo rol</h2>
         <form data-rol-form class="mt-4 space-y-4" novalidate>
           <input type="hidden" data-rol-editing-id />
-          <div>
-            <label for="rol-nombre" class="form-label">Nombre del rol</label>
-            <input id="rol-nombre" type="text" required class="form-input" placeholder="Ej. Docente-Tutor" />
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label for="rol-nombre" class="form-label">Nombre del rol <span class="text-danger">*</span></label>
+              <input id="rol-nombre" type="text" required class="form-input" placeholder="Ej. Docente-Tutor" />
+            </div>
+            <div>
+              <label for="rol-clave" class="form-label">Clave <span class="text-danger">*</span></label>
+              <input id="rol-clave" type="text" required class="form-input font-mono" placeholder="Ej. docente_tutor" />
+              <p class="form-hint">Identificador único en snake_case.</p>
+            </div>
           </div>
           <div>
             <label for="rol-ambito" class="form-label">Ámbito</label>
@@ -128,8 +136,8 @@
           </div>
           <fieldset>
             <legend class="form-label">Permisos asignados</legend>
-            <p class="form-hint mb-2">Marque los permisos de este rol (RolPermiso).</p>
-            <div data-permisos-checklist class="max-h-48 space-y-2 overflow-y-auto rounded-md border border-border bg-bg p-3"></div>
+            <p class="form-hint mb-2">Marque los permisos de este rol (RolPermiso). Agrupados por módulo.</p>
+            <div data-permisos-checklist class="max-h-64 overflow-y-auto rounded-md border border-border bg-bg p-3 space-y-3"></div>
           </fieldset>
           <div class="mt-6 flex justify-end gap-3">
             <button type="button" data-rol-cancel class="btn-secondary">Cancelar</button>
@@ -146,12 +154,18 @@
         <form data-permiso-form class="mt-4 space-y-4" novalidate>
           <input type="hidden" data-permiso-editing-id />
           <div>
-            <label for="permiso-nombre" class="form-label">Nombre</label>
-            <input id="permiso-nombre" type="text" required class="form-input" placeholder="Ej. ver_alertas" />
+            <label for="permiso-nombre" class="form-label">Clave del permiso <span class="text-danger">*</span></label>
+            <input id="permiso-nombre" type="text" required class="form-input font-mono" placeholder="Ej. ver_alertas" />
+            <p class="form-hint">Identificador único en snake_case.</p>
+          </div>
+          <div>
+            <label for="permiso-desc" class="form-label">Descripción</label>
+            <input id="permiso-desc" type="text" class="form-input" placeholder="Ej. Ver alertas generadas por IA" />
           </div>
           <div>
             <label for="permiso-modulo" class="form-label">Módulo</label>
             <select id="permiso-modulo" class="form-input">
+              <option value="usuarios">Usuarios y accesos</option>
               <option value="catalogos">Catálogos</option>
               <option value="tutoria">Tutoría</option>
               <option value="fichas">Fichas</option>

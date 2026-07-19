@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Temario | TutorTrack (Mockup)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" />
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <app-sidebar></app-sidebar>
+    <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
+      <app-topbar page-title="Temario" user-name="Ricardo Vargas Vargas" user-role="Administrador" user-initials="RV" user-avatar="assets/img/admin/ricardo-vargas.jpg"></app-topbar>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8 space-y-5">
+
+        <!-- Breadcrumb + encabezado -->
+        <div>
+          <nav class="text-sm text-text-muted" aria-label="Miga de pan">
+            <a href="gestion-periodo.html" class="hover:text-primary">Gestión del período</a>
+            <span class="mx-1.5">›</span>
+            <span id="bc-ciclo" class="text-text"></span>
+            <span class="mx-1.5">›</span>
+            <span class="text-text">Temario</span>
+          </nav>
+          <div class="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <h2 id="page-title" class="font-heading text-xl font-bold text-text">Temario</h2>
+            <button type="button" id="btn-add-raiz" class="btn-primary self-start">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+              Agregar tema raíz
+            </button>
+          </div>
+        </div>
+
+        <!-- Árbol de temas -->
+        <section class="app-card p-5 sm:p-6">
+          <div id="tree-container" class="space-y-1"></div>
+          <div id="tree-empty" class="hidden py-8 text-center text-text-muted">
+            <p>No hay temas para este ciclo.</p>
+            <p class="mt-1 text-sm">Usa "Agregar tema raíz" para comenzar.</p>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- Modal: Agregar / Editar tema -->
+    <div id="modal-tema-backdrop" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
+      <div class="modal-panel w-full max-w-md">
+        <h2 id="modal-tema-title" class="font-heading text-lg font-bold">Nuevo tema</h2>
+        <form id="form-tema" class="mt-4 space-y-4" novalidate>
+          <input type="hidden" id="tema-editing-id" />
+          <input type="hidden" id="tema-padre-id" />
+          <div>
+            <label for="tema-texto" class="form-label">Texto del tema <span class="text-danger">*</span></label>
+            <textarea id="tema-texto" rows="3" required class="form-textarea" placeholder="Ej. Manejo del tiempo y organización académica"></textarea>
+          </div>
+          <div class="flex justify-end gap-3">
+            <button type="button" id="btn-tema-cancelar" class="btn-secondary">Cancelar</button>
+            <button type="submit" class="btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal: Confirmar eliminar con hijos -->
+    <div id="modal-elim-backdrop" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
+      <div class="modal-panel w-full max-w-sm">
+        <h2 class="font-heading text-lg font-bold text-danger">Eliminar tema</h2>
+        <p id="modal-elim-msg" class="mt-3 text-sm text-text-muted"></p>
+        <div class="mt-6 flex justify-end gap-3">
+          <button type="button" id="btn-elim-cancelar" class="btn-secondary">Cancelar</button>
+          <button type="button" id="btn-elim-confirmar" class="btn-danger">Eliminar todo</button>
+        </div>
+      </div>
+    </div>
+
+    <app-toast></app-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/site-paths.js"></script>
+    <script src="../../components/app-sidebar.js"></script>
+    <script src="../../components/app-topbar.js"></script>
+    <script src="../../components/app-toast.js"></script>
+    <script src="../../js/temario-data.js"></script>
+    <script src="../../js/temario.js"></script>
+  </body>
+</html>

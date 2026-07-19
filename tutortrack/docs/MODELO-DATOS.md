@@ -242,10 +242,15 @@ ya tiene en uso.
 - `nombre` (ej. "Diagnóstico", "Seguimiento", "Grupal", "Encuesta" —
   catálogo abierto, se pueden agregar más tipos sin tocar código)
 
-### TipoPregunta (catálogo)
-- `id`
-- `nombre` (por ahora tres: "Texto abierto", "Alternativa única",
-  "Respuesta múltiple" — catálogo abierto, no un enum fijo)
+### TipoPregunta — **eliminado como tabla (decisión cerrada)**
+
+No se modela como tabla de catálogo. El tipo de pregunta es un contrato de
+comportamiento: cada tipo determina widget, validación y forma de guardar la
+respuesta — agregar uno nuevo siempre requiere cambios en código, así que una
+tabla no aporta flexibilidad real. Se guarda como `VARCHAR` en `pregunta` y
+se valida en la capa de aplicación contra cinco constantes fijas:
+`texto_abierto`, `alternativa_unica`, `respuesta_multiple`, `si_no`, `escala`.
+Ver detalle en `BD-BACKEND.md` Módulo 3.
 
 ### Area (catálogo)
 Clasifica temáticamente cada pregunta (ej. "Personal y social", "Salud
@@ -304,10 +309,14 @@ Una ficha específica, llenada por un estudiante puntual, en una fecha.
 - `ficha_ciclo_periodo_id` → FichaCicloPeriodo
 - `fecha_llenado`
 
-**Confirmado: sin borrador.** La fila `FichaLlenada` se crea **solo
-cuando el estudiante envía la ficha completa** — no existe un estado
-intermedio "en progreso". Decisión explícita del usuario para evitar
-falsos procesos (fichas a medias que nunca se completan).
+**Decisión actualizada: borrador en BD.** Se agrega campo `estado`
+(`borrador` | `enviada`). La fila se crea al abrir la ficha y las respuestas
+se guardan incrementalmente — el estudiante puede retomar desde cualquier
+dispositivo si pierde conexión. Solo pasa a `enviada` al enviar la ficha
+completa, momento en que se registra `fecha_enviado`. La IA y los reportes
+solo consideran fichas con `estado = 'enviada'`. Un estudiante puede tener
+máximo un borrador por `ficha_ciclo_periodo` a la vez (regla de aplicación).
+`fecha_llenado` fue renombrado a `fecha_enviado` (nullable hasta el envío).
 
 ### Respuesta
 La respuesta de un estudiante a una pregunta puntual dentro de una
@@ -364,7 +373,7 @@ Fuentes consultadas (julio 2026):
 
 ### Rol de la IA (confirmado)
 - **Apoyo de detección temprana, nunca reemplazo ni diagnóstico
-  automático.** La IA analiza las respuestas (más historial reciente
+  automático.** La IA analiza las respuestas (más historial completo
   del estudiante) y genera una alerta con nivel/justificación — la
   decisión y la derivación siempre las toma un humano (el
   docente-tutor).
@@ -373,9 +382,25 @@ Fuentes consultadas (julio 2026):
   (JSON), no texto libre, para poder guardarla directo en la tabla de
   alertas.
 - No se necesita RAG (búsqueda documental) para esto — es una tarea de
-  clasificación/análisis de texto. El "historial completo" del
-  estudiante se resuelve pasándole al modelo sus `Respuesta` anteriores
-  como contexto directo, ya que están modeladas en `FichaLlenada`.
+  clasificación/análisis de texto.
+
+**Historial del estudiante como contexto (decisión cerrada):**
+El backend incluye en el prompt de la IA no solo la ficha actual, sino
+también todas las fichas anteriores del estudiante (respuestas + alertas
+previas), ordenadas cronológicamente. Esto permite que la IA detecte
+**tendencias** (mejora, deterioro, estabilidad) en lugar de analizar
+cada ficha de forma aislada. No requiere cambio de esquema — el modelo
+ya tiene toda esa información disponible vía `ficha_llenada` →
+`respuesta`. Es diseño del prompt, no de la BD.
+
+**La IA sugiere a dónde derivar (decisión cerrada):**
+Además de detectar el nivel y área de la alerta, la IA sugiere qué
+`EntidadReceptora` sería la más adecuada para el caso, basándose en el
+área detectada y la severidad. Esta sugerencia se guarda en
+`alerta_ia.entidad_receptora_sugerida_id` (nullable — si la IA no tiene
+certeza suficiente, devuelve null). El docente-tutor siempre puede
+ignorar la sugerencia y elegir otra entidad al derivar. La sugerencia
+es orientativa, nunca vinculante.
 
 ### AlertaIA
 Resultado del análisis de una `FichaLlenada` por el modelo de IA.

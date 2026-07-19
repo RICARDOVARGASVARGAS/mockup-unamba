@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Llenar ficha | TutorTrack (Mockup)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" />
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../js/tailwind-config.js"></script>
+    <style>
+      .escala-btn { transition: background 0.12s, color 0.12s, border-color 0.12s; }
+      .escala-btn.selected { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
+      .si-no-btn { transition: background 0.12s, color 0.12s, border-color 0.12s; }
+      .si-no-btn.selected { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
+    </style>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <app-sidebar></app-sidebar>
+    <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
+      <app-topbar page-title="Llenar ficha" user-name="Ana Lucía Quispe Mamani" user-role="Estudiante" user-initials="AQ" user-avatar=""></app-topbar>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8 space-y-5">
+
+        <!-- Encabezado de la ficha -->
+        <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <a id="link-volver" href="mis-fichas.html" class="text-sm font-medium text-primary hover:text-primary-dark">← Mis fichas</a>
+            <h2 id="ficha-titulo" class="mt-1 font-heading text-xl font-bold text-text"></h2>
+          </div>
+          <div id="progreso-bar" class="text-sm text-text-muted font-medium"></div>
+        </div>
+
+        <!-- Preguntas -->
+        <div id="preguntas-container" class="space-y-4"></div>
+
+        <!-- Footer de envío -->
+        <div class="sticky bottom-0 z-10 -mx-4 border-t border-border bg-bg/95 px-4 py-3 backdrop-blur sm:-mx-0 sm:rounded-lg sm:border sm:px-5">
+          <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+            <a id="link-cancelar" href="mis-fichas.html" class="btn-secondary inline-flex justify-center">Cancelar</a>
+            <button type="button" id="btn-enviar" class="btn-primary" disabled>Enviar ficha</button>
+          </div>
+          <p id="aviso-incompleto" class="mt-2 text-center text-xs text-text-muted hidden">Responde todas las preguntas para poder enviar.</p>
+        </div>
+
+      </main>
+    </div>
+
+    <!-- Modal de confirmación de envío -->
+    <div id="modal-enviar-backdrop" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
+      <div class="modal-panel w-full max-w-sm">
+        <h2 class="font-heading text-lg font-bold">¿Confirmar envío?</h2>
+        <p class="mt-2 text-sm text-text-muted">Una vez enviada, no podrás editar tus respuestas. Tu tutor podrá verlas.</p>
+        <div class="mt-5 flex justify-end gap-3">
+          <button type="button" id="btn-modal-cancelar" class="btn-secondary">Cancelar</button>
+          <button type="button" id="btn-modal-confirmar" class="btn-primary">Confirmar envío</button>
+        </div>
+      </div>
+    </div>
+
+    <app-toast></app-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/site-paths.js"></script>
+    <script src="../../components/app-sidebar.js"></script>
+    <script src="../../components/app-topbar.js"></script>
+    <script src="../../components/app-toast.js"></script>
+    <script src="../../js/mis-fichas-data.js"></script>
+    <script src="../../js/llenar-ficha-data.js"></script>
+    <script src="../../js/llenar-ficha.js"></script>
+  </body>
+</html>

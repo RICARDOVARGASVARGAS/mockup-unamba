@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Matrículas | TutorTrack (Mockup)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" />
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <app-sidebar></app-sidebar>
+    <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
+      <app-topbar page-title="Matrículas" user-name="Ricardo Vargas Vargas" user-role="Administrador" user-initials="RV" user-avatar="assets/img/admin/ricardo-vargas.jpg"></app-topbar>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8 space-y-5">
+
+        <!-- Breadcrumb + encabezado -->
+        <div>
+          <nav class="text-sm text-text-muted" aria-label="Miga de pan">
+            <a href="gestion-periodo.html" class="hover:text-primary">Gestión del período</a>
+            <span class="mx-1.5">›</span>
+            <span id="bc-ciclo" class="text-text"></span>
+            <span class="mx-1.5">›</span>
+            <span class="text-text">Estudiantes</span>
+          </nav>
+          <div class="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <h2 id="page-title" class="font-heading text-xl font-bold text-text">Matrículas</h2>
+            <div class="flex gap-2">
+              <button type="button" id="btn-actualizar" class="btn-secondary">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182" />
+                </svg>
+                Actualizar lista
+              </button>
+              <button type="button" id="btn-matricular" class="btn-primary">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                Matricular estudiante
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Balance de carga -->
+        <section class="app-card p-4 sm:p-5">
+          <p class="text-xs font-semibold uppercase tracking-wider text-text-muted mb-3">Balance de carga</p>
+          <div id="balance-carga" class="flex flex-wrap gap-2"></div>
+        </section>
+
+        <!-- Tabla de estudiantes -->
+        <section class="app-card catalog-panel" data-catalog>
+          <div class="catalog-query">
+            <div class="catalog-field catalog-field-grow">
+              <label for="mat-search">Buscar</label>
+              <input id="mat-search" type="search" data-catalog-search class="catalog-input" placeholder="Buscar por nombre o código…" />
+            </div>
+            <div class="catalog-field">
+              <label for="mat-filter-docente">Tutor</label>
+              <select id="mat-filter-docente" data-filter="docente" class="catalog-select min-w-[13rem]">
+                <option value="">Todos</option>
+              </select>
+            </div>
+            <div class="catalog-query-actions">
+              <button type="button" data-catalog-search-btn class="btn-secondary btn-icon" title="Buscar" aria-label="Buscar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
+              </button>
+              <button type="button" data-catalog-clear class="btn-ghost btn-icon" title="Limpiar" aria-label="Limpiar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="catalog-meta" data-catalog-meta></div>
+          <div class="catalog-table-wrap" data-catalog-table-wrap>
+            <table class="catalog-table">
+              <thead data-catalog-thead></thead>
+              <tbody data-catalog-body></tbody>
+            </table>
+          </div>
+          <div class="catalog-empty hidden" data-catalog-empty><p>No se encontraron estudiantes.</p></div>
+          <div class="catalog-pagination" data-catalog-pagination></div>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- Modal: Matricular estudiante -->
+    <div id="modal-mat-backdrop" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
+      <div class="modal-panel w-full max-w-md">
+        <h2 class="font-heading text-lg font-bold">Matricular estudiante</h2>
+        <form id="form-matricular" class="mt-4 space-y-4" novalidate>
+          <div>
+            <label for="mat-candidato" class="form-label">Estudiante <span class="text-danger">*</span></label>
+            <select id="mat-candidato" required class="form-input">
+              <option value="">Seleccionar estudiante…</option>
+            </select>
+          </div>
+          <div>
+            <label for="mat-docente" class="form-label">Tutor asignado <span class="text-danger">*</span></label>
+            <select id="mat-docente" required class="form-input">
+              <option value="">Seleccionar tutor…</option>
+            </select>
+          </div>
+          <div class="flex justify-end gap-3 pt-2">
+            <button type="button" id="btn-mat-cancelar" class="btn-secondary">Cancelar</button>
+            <button type="submit" class="btn-primary">Matricular</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal: Cambiar tutor -->
+    <div id="modal-tutor-backdrop" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
+      <div class="modal-panel w-full max-w-sm">
+        <h2 class="font-heading text-lg font-bold">Cambiar tutor</h2>
+        <p id="modal-tutor-nombre" class="mt-1 text-sm font-medium text-text-muted"></p>
+        <form id="form-cambiar-tutor" class="mt-4 space-y-4" novalidate>
+          <input type="hidden" id="tutor-mat-id" />
+          <div>
+            <label for="tutor-select" class="form-label">Nuevo tutor <span class="text-danger">*</span></label>
+            <select id="tutor-select" required class="form-input"></select>
+          </div>
+          <div class="flex justify-end gap-3 pt-2">
+            <button type="button" id="btn-tutor-cancelar" class="btn-secondary">Cancelar</button>
+            <button type="submit" class="btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal: Confirmar retirar -->
+    <div id="modal-retirar-backdrop" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
+      <div class="modal-panel w-full max-w-sm">
+        <h2 class="font-heading text-lg font-bold text-danger">Retirar estudiante</h2>
+        <p id="modal-retirar-msg" class="mt-3 text-sm text-text-muted"></p>
+        <div class="mt-6 flex justify-end gap-3">
+          <button type="button" id="btn-retirar-cancelar" class="btn-secondary">Cancelar</button>
+          <button type="button" id="btn-retirar-confirmar" class="btn-danger">Retirar</button>
+        </div>
+        <input type="hidden" id="retirar-mat-id" />
+      </div>
+    </div>
+
+    <app-modal-confirm></app-modal-confirm>
+    <app-toast></app-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/site-paths.js"></script>
+    <script src="../../components/app-sidebar.js"></script>
+    <script src="../../components/app-topbar.js"></script>
+    <script src="../../components/app-modal-confirm.js"></script>
+    <script src="../../components/app-toast.js"></script>
+    <script src="../../js/catalog-table.js"></script>
+    <script src="../../js/matriculas-data.js"></script>
+    <script src="../../js/matriculas.js"></script>
+  </body>
+</html>
