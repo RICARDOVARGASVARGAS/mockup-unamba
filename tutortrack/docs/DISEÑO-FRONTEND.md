@@ -9,6 +9,12 @@ organiza* cada pantalla (menú, layout, columnas, formularios, estados). El
 > Este proyecto es **solo maqueta** (HTML + Tailwind + JS, sin backend).
 > Todo dato es placeholder ficticio. Se construye **una pantalla a la vez**;
 > cada sección de este doc se cierra con visto bueno antes de maquetar.
+>
+> **Datos de prueba (para la demo):** los seeds deben **parecer realistas**
+> (nombres, documentos, fechas coherentes) y, sobre todo, **cubrir todos los
+> estados posibles** de cada pantalla, para poder mostrarlos en la presentación.
+> Ej. en fichas: registros **sin abrir · borrador · enviada · revisada**; en
+> personas: activos/inactivos/egresados; con y sin foto; con y sin historial.
 
 ---
 
@@ -208,6 +214,7 @@ no esté construida en código según este doc, queda **⬜ Pendiente**.
 - [x] Formulario (crear / editar)
 - [x] Ficha (ver, solo lectura)
 - [x] Modales (reusa los genéricos)
+- [x] Apoderados (sección en form + bloque en ficha + `apoderados-data.js`) — nuevo, delta sobre lo ya hecho
 
 **Administrador › Usuarios y acceso › Receptores**
 - [x] Listado (tabla + 3 cards)
@@ -242,6 +249,19 @@ no esté construida en código según este doc, queda **⬜ Pendiente**.
 - [x] Temario (árbol por ciclo+período) — compartido con Docente
 - [x] Matrículas
 - [x] Avanzar estudiantes
+
+**Administrador › Fichas (Módulo 3)**
+- [ ] Plantillas de fichas — Listado (biblioteca: + ciclos que aplica)
+- [ ] Plantillas de fichas — Constructor (preguntas, 5 tipos, ciclos que aplica)
+
+**Docente › Fichas (Módulo 3)**
+- [ ] Fichas de mi ciclo (clonar de plantilla / crear de cero / habilitar)
+- [ ] Fichas de mis tutorados (matriz + 3 vistas)
+- [ ] Ver respuestas (observaciones + marcar revisada)
+
+**Estudiante › Fichas (Módulo 3)**
+- [ ] Mis fichas (lista)
+- [ ] Llenar ficha (borrador → enviar)
 
 ---
 
@@ -684,10 +704,32 @@ N° │ Estudiante          │ Código univ. │ Documento    │ Contacto     
 ```
 - **Sección 3 · Datos de estudiante** (reemplaza a "Perfil académico"):
   Código universitario* (obligatorio, **único**) + ORCID (opcional).
-- **Sección 4 · Roles:** multi-check, solo roles `activo = 1`, default marcado
+- **Sección 4 · Apoderados** (0..N):
+```
+┌─ 4 · Apoderados ──────────────────────────────────────────┐
+│ [ + Agregar apoderado ]                                    │
+│ ┌───────────────────────────────────────────────────────┐ │
+│ │ Juan Pérez Quispe · DNI 12345678      [Principal]  ✏ 🗑│ │
+│ │ Padre · 987 654 321                                    │ │
+│ └───────────────────────────────────────────────────────┘ │
+└───────────────────────────────────────────────────────────┘
+```
+  - **[+ Agregar apoderado]** abre un modal: primero **buscar por documento**.
+    - Si el documento **ya existe** (es apoderado de un hermano) → **reutiliza**:
+      muestra sus datos (identidad **solo lectura**) y solo pides **parentesco**
+      y **principal** para este estudiante.
+    - Si **no existe** → capturas sus datos (nombres, apellidos, celulares,
+      email/ocupación/dirección opcionales) + parentesco + principal.
+  - **Parentesco:** padre / madre / abuelo(a) / tutor legal / otro.
+  - **Principal:** un solo apoderado principal por estudiante (al marcar uno se
+    desmarca el anterior).
+  - **BD:** `apoderado` (único por documento → reutiliza) + `estudiante_apoderado`
+    (`parentesco`, `es_principal`).
+- **Sección 5 · Roles:** multi-check, solo roles `activo = 1`, default marcado
   **Estudiante**.
 - **BD:** `estudiante.codigo_universitario` (UNIQUE, NOT NULL) · `codigo_orcid`
-  (NULL) · resto en `usuario` · roles en `usuario_rol`.
+  (NULL) · resto en `usuario` · roles en `usuario_rol` · apoderados en
+  `apoderado` + `estudiante_apoderado`.
 - Responsive: igual que Docentes.
 
 ### Administrador › Usuarios y acceso › Estudiantes — Ficha (ver, solo lectura) — ✅ Hecho
@@ -718,6 +760,10 @@ N° │ Estudiante          │ Código univ. │ Documento    │ Contacto     
   (identificador clave), badge Estado, acciones (Editar · Contraseña · Auditoría).
 - **Identidad / Contacto y acceso:** igual que Docentes.
 - **Datos de estudiante:** Código universitario, ORCID (enlace ↗).
+- **Apoderados:** tarjetas con nombre, parentesco, contacto y badge **Principal**.
+  *Bonus:* **"Hermanos en el sistema"** — otros estudiantes que comparten un
+  apoderado (enlace a sus fichas), derivado de `estudiante_apoderado` por
+  `apoderado_id`. **BD:** `apoderado` + `estudiante_apoderado`.
 - **Historial de tutoría** (óptica del estudiante): por cada período, **qué
   ciclo cursó y quién fue su tutor**. Acotado a **1 fila por período** (UNIQUE
   `estudiante_id, periodo`), así que nunca crece feo.
@@ -1568,3 +1614,284 @@ Filtros:[ Acción ▾ ] [ Tutor ▾ ]   Buscar:[ … ]
 - **BD:** `estudiante_ciclo_periodo` (insert) · `estudiante.estado` (egresar) ·
   `ciclo.orden` (siguiente).
 - **Toasts:** "318 estudiantes procesados · 8 egresados".
+
+---
+
+## Fichas (Módulo 3)
+
+Plantillas de fichas configurables → asignación a ciclos+período (clonado) →
+llenado por el estudiante → revisión del docente. Empieza por la **plantilla**
+(la estructura que todo lo demás consume).
+
+### Administrador › Fichas › Plantillas de fichas — Listado — ⬜ Pendiente
+
+- **Archivos (al codificar):** `pages/admin/fichas.html` + `js/fichas.js`.
+- **Objetivo:** administrar las plantillas de ficha; entrada al **constructor**.
+```
+Plantillas de fichas                          [ ⟳ Actualizar ]  [ + Nueva plantilla ]
+
+┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐
+│ 📄 TOTAL          │  │ ✔ ACTIVAS         │  │ ⏸ INACTIVAS       │
+│ 6                │  │ 5                │  │ 1                │
+└──────────────────┘  └──────────────────┘  └──────────────────┘
+
+Buscar:[ nombre… ]   Tipo:[ Todos ▾ ]   Estado:[ Todos ▾ ]   [🔍][✕]
+┌────┬───────────────────────────┬──────────────┬───────────┬───────────┬────────────────────────────┐
+│ N° │ Plantilla                 │ Tipo         │ Preguntas │ Estado    │ Acciones                   │
+├────┼───────────────────────────┼──────────────┼───────────┼───────────┼────────────────────────────┤
+│ 1  │ Ficha diagnóstica inicial │ Diagnóstico  │ 12        │ ● Activa  │ ✏ Editar  🗑  ⋯            │
+│    │ Evalúa adaptación…        │              │           │           │                            │
+│ 2  │ Seguimiento mensual       │ Seguimiento  │ 8         │ ● Activa  │ ✏ Editar  🗑  ⋯            │
+│ 3  │ Encuesta de cierre        │ Encuesta     │ 0 ⚠       │ ○ Inactiva│ ✏ Editar  🗑  ⋯            │
+└────┴───────────────────────────┴──────────────┴───────────┴───────────┴────────────────────────────┘
+```
+> **Es la BIBLIOTECA general** (plantillas del admin). **No se asigna aquí** —
+> el **docente** las clona desde su pantalla "Fichas de mi ciclo".
+- **Cards (3):** Total · Activas · Inactivas — inmutables, por `ficha.activo`.
+- **Barra:** Buscar por nombre · filtro **Tipo** · filtro **Ciclo** (agrupa por
+  "para qué ciclos aplica") · filtro **Estado**.
+- **Columnas (7):** N° · **Plantilla** (nombre + descripción muted) · **Tipo**
+  (badge) · **Ciclos** (chips: 1°, 2°… — para qué ciclos aplica, guía) ·
+  **Preguntas** (`0 ⚠` = sin preguntas) · **Estado** (badge) · Acciones.
+- **Acciones de fila:**
+  | Control | Acción | Nota |
+  |---|---|---|
+  | ✏ Editar | abre el **constructor** (`fichas-form.html`) | preguntas + ciclos que aplica |
+  | 🗑 Eliminar | `<app-modal-confirm>`; **bloqueado si está en uso** como origen de clones → **Desactivar** | usar `activo = 0` |
+  | ⋯ | **Duplicar** (clona plantilla + preguntas) · **Auditoría 🕵** · **Activar/Desactivar** | |
+- **[+ Nueva plantilla]** → constructor vacío.
+- **Desactivar** (`activo = 0`) → **no se puede clonar** para nuevas fichas; las
+  copias del docente ya creadas no se afectan.
+- **BD:** `ficha` + `ficha_ciclo` (ciclos que aplica) + count de `pregunta`.
+  **Auditoría** por fila.
+- **Toasts:** "Plantilla creada / actualizada / duplicada / eliminada / desactivada".
+
+### Administrador › Fichas › Plantillas de fichas — Constructor — ⬜ Pendiente
+
+- **Archivos (al codificar):** `pages/admin/fichas-form.html` + `js/fichas-form.js`.
+- **Tipo:** página aparte (rica). Arma la ficha: encabezado + preguntas.
+
+> **`tipo_pregunta` NO es tabla** — son **5 constantes en código** (efecto enum):
+> `texto_abierto`, `alternativa_unica`, `respuesta_multiple`, `si_no`, `escala`.
+> El admin **no** puede agregar/quitar tipos (cada uno tiene su lógica de
+> render propia). Se guarda en `pregunta.tipo_pregunta` (CHECK/enum, no FK).
+```
+← Volver a plantillas       Nueva plantilla              [ 👁 Vista previa ]  [ Guardar ]
+
+┌─ Encabezado ──────────────────────────────────────────────┐
+│ Nombre*        [ Ficha diagnóstica inicial ]              │
+│ Tipo de ficha* [ Diagnóstico ▾ ]        Estado [ ● Activa ]│
+│ Descripción    [ Evalúa la adaptación del estudiante… ]   │
+└───────────────────────────────────────────────────────────┘
+┌─ Preguntas (12) ─────────────────────────  [ + Agregar pregunta ] ┐
+│ ⠿ 1. ¿Cómo describirías tu adaptación?  [Alt. única] [Personal social] ✏ ⧉ 🗑│
+│ ⠿ 2. ¿Has pensado en abandonar?         [Sí/No] [Salud mental]         ✏ ⧉ 🗑│
+│ ⠿ 3. Nivel de estrés este mes           [Escala 1–5] [Salud mental]    ✏ ⧉ 🗑│
+│    ▼ EDITANDO ────────────────────────────────────────────────────────────── │
+│      Enunciado: [ Nivel de estrés este mes ]                                  │
+│      Área: [ Salud mental ▾ ]   Tipo: [ Escala ▾ ]                            │
+│      Min:[1] Max:[5]  Etiqueta min:[ Nunca ]  Etiqueta max:[ Siempre ]        │
+│                                        [ Cancelar ]  [ Guardar pregunta ]     │
+└───────────────────────────────────────────────────────────────────────────────┘
+```
+
+**1 · Encabezado** → `ficha`: Nombre* · Tipo de ficha* (select `tipo_ficha`) ·
+Descripción · **Ciclos que aplica** (multi-select de `ciclo` → `ficha_ciclo`,
+guía) · Estado (toggle).
+
+> **El constructor es compartido:** el **admin** lo usa para las **plantillas**
+> de la biblioteca; el **docente** lo usa para **su** ficha del ciclo (clonada o
+> de cero), donde además aparece el toggle **Habilitar**. Misma pantalla, mismos
+> 5 tipos de pregunta.
+
+**2 · Lista de preguntas:** tarjetas colapsables. Cada una: `⠿` arrastrar · orden
+· enunciado · badge **tipo** · badge **área** · acciones **✏ editar · ⧉ duplicar
+· 🗑 eliminar**. **[+ Agregar pregunta]** añade una tarjeta ya expandida al final.
+Reordenar por `orden` con `⠿`.
+
+**3 · Editor por pregunta (inline / acordeón — cambia según el tipo):**
+- **Siempre:** Enunciado · **Área** (select `area`) · **Tipo** (los 5).
+- **Condicional:**
+  | Tipo | Aparece | Validación |
+  |------|---------|------------|
+  | Alternativa única / Respuesta múltiple | **lista de opciones** (⠿ reordenar · 🗑 · [+ Agregar opción]) | ≥ 2 opciones |
+  | Escala | Min · Max · Etiqueta min · Etiqueta max | 1 ≤ min < max ≤ 10 |
+  | Texto abierto / Sí-No | nada extra (Sí/No autogenera sus 2 opciones al guardar) | — |
+
+**4 · Vista previa 👁:** modo lectura que pinta la ficha **como la ve el
+estudiante** (radios, checkboxes, escala, textarea). No guarda; solo revisa.
+
+**Guardar y reglas:**
+- Persiste encabezado + preguntas + opciones → vuelve a la lista. Toast "Plantilla guardada".
+- **Editar una plantilla ya asignada:** los cambios afectan **solo asignaciones
+  futuras** — las ya asignadas usan su **copia clonada** (`ficha_ciclo_periodo`),
+  así que los llenados existentes **no se tocan**. Aviso informativo.
+- **BD:** `ficha` · `pregunta` (`tipo_pregunta` enum, `area_id`, `enunciado`,
+  `orden`, `escala_min/max`, `etiqueta_min/max`) · `opcion_pregunta`.
+
+**Patrón clave:** un solo editor que **se adapta** al tipo (no pantallas
+separadas por tipo). Editor **inline** (no modal) para armar muchas preguntas sin
+fricción.
+
+### Docente › Fichas › Fichas de mi ciclo — ⬜ Pendiente
+
+Cada docente arma **sus** fichas en su ciclo: **clona** de la biblioteca o
+**crea de cero**, personaliza y **habilita a su ritmo**. (Reemplaza la vieja
+"Asignación a ciclos" del admin — ahora el dueño es el docente.)
+```
+Fichas de mi ciclo   Período:[ 2026-I ▾ ●Vigente ]  Ciclo:[ Quinto ciclo ▾ ]   [ + Nueva ficha ▾ ]
+
+┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐
+│ 📄 MIS FICHAS     │  │ ✔ HABILITADAS     │  │ 🎓 ESTUDIANTES    │
+│ 4                │  │ 2                │  │ 20               │
+└──────────────────┘  └──────────────────┘  └──────────────────┘
+
+┌────┬──────────────────────┬─────────────┬───────────┬──────────────┬─────────────────────────┬──────────────────┐
+│ N° │ Ficha                │ Tipo        │ Preguntas │ Habilitada   │ Llenado                 │ Acciones         │
+├────┼──────────────────────┼─────────────┼───────────┼──────────────┼─────────────────────────┼──────────────────┤
+│ 1  │ Diagnóstica inicial  │ Diagnóstico │ 12        │ [ ● Sí  ⇄ ]  │ ●12 env ·3 borr ·5 sin  │ ✏ Editar  👁  🗑 │
+│ 2  │ Seguimiento mensual  │ Seguimiento │ 8         │ [ ○ No  ⇄ ]  │ 🔒 aún no habilitada    │ ✏ Editar  👁  🗑 │
+└────┴──────────────────────┴─────────────┴───────────┴──────────────┴─────────────────────────┴──────────────────┘
+```
+- **Archivos (al codificar):** `pages/docente/fichas-ciclo.html` + `js/fichas-ciclo.js`.
+- **Selectores** Período + Ciclo (de los que tutora). Muestra **solo SUS** fichas.
+- **Cards:** Mis fichas · Habilitadas · Estudiantes del ciclo.
+- **[+ Nueva ficha ▾]** — menú con dos opciones:
+  - **Clonar de plantilla:** elige de la **biblioteca activa**; se muestra **para
+    qué ciclos se sugiere** cada plantilla (guía, no bloquea). Al elegir → clona
+    y abre el constructor para personalizar.
+  - **Crear de cero:** abre el constructor vacío.
+- **Columna Habilitada:** toggle `⇄` — habilita/inhabilita para sus estudiantes.
+  Inhabilitar una que ya tiene llenados → **aviso** ("N estudiantes ya empezaron"),
+  no bloqueo.
+- **✏ Editar** → constructor (su copia, editable) · **👁 Ver** (vista previa) ·
+  **🗑 Eliminar** (bloqueado si hay `ficha_llenada`).
+- **BD:** `ficha_ciclo_periodo` (`docente_id` = él, `ficha_origen_id`,
+  `habilitada`; preguntas propias clonadas); progreso desde `ficha_llenada`.
+- **Toasts:** "Ficha creada / habilitada / inhabilitada / eliminada".
+
+### Estudiante › Fichas › Mis fichas — ⬜ Pendiente
+
+**Mobile-first** (el estudiante llena desde el celular). Muestra las fichas de
+su **ciclo+período vigente** con su estado de llenado.
+```
+Mis fichas · 2026-I · Quinto ciclo              Tutor: Dr. Quispe
+┌────────────────────────────────────────────┐
+│ Ficha diagnóstica inicial     [Diagnóstico] │
+│ 12 preguntas · ● Enviada · 18/03      [ Ver ]│
+├────────────────────────────────────────────┤
+│ Seguimiento mensual           [Seguimiento] │
+│ 8 preguntas · ◐ Borrador 5/8    [ Continuar ]│
+├────────────────────────────────────────────┤
+│ Encuesta de cierre  · 6 preg · ○ Sin abrir  [ Llenar ]│
+├────────────────────────────────────────────┤
+│ 🔒 Taller de hábitos · aún no disponible            │
+└────────────────────────────────────────────┘
+```
+- **Archivos (al codificar):** `pages/estudiante/mis-fichas.html` + `js/mis-fichas.js`.
+- Muestra las fichas de **su tutor** que estén **habilitadas**; las **no
+  habilitadas** aparecen **🔒 bloqueadas** ("aún no disponible") para que sepa que
+  vienen más.
+- **Estados:** Sin abrir · Borrador (progreso) · Enviada · 🔒 No habilitada.
+  Acción: **Llenar / Continuar / Ver**; las bloqueadas no tienen acción.
+- **Llenado secuencial:** las fichas se llenan **en orden**; una ficha queda
+  **bloqueada hasta que la anterior esté enviada**. Hay **dos bloqueos distintos**
+  (mensajes distintos):
+  - 🔒 **No habilitada** — el docente aún no la suelta.
+  - 🔒 **Completa la anterior** — la ficha previa no está enviada todavía.
+  - La **"activa"** = la primera (en orden) que esté habilitada y con todas las
+    previas enviadas.
+- **No cambia la BD** — es regla de UI/lógica sobre datos existentes (fichas +
+  estado). Orden = de creación; *(si a futuro el docente debe reordenarlas, se
+  agrega un `orden` a `ficha_ciclo_periodo` — cambio pequeño).*
+- **BD:** `ficha_ciclo_periodo` de su `ciclo_periodo` **filtrado por su tutor**
+  (`docente_id`); solo `habilitada = 1` se puede llenar; su `ficha_llenada`.
+
+### Estudiante › Fichas › Llenar ficha — ⬜ Pendiente
+
+```
+← Mis fichas    Seguimiento mensual          Guardado ✓
+Progreso  5 / 8   ▓▓▓▓▓░░░
+
+1. ¿Cómo describirías tu adaptación?          · Alt. única
+   ( ) Muy buena   (•) Buena   ( ) Regular   ( ) Mala
+2. ¿Qué te preocupa? (elige varias)           · Múltiple
+   [x] Economía   [ ] Salud   [x] Estudios
+3. Nivel de estrés este mes                   · Escala
+   Nunca  1( ) 2( ) 3(•) 4( ) 5( )  Siempre
+4. ¿Has pensado en abandonar?                 · Sí/No
+   ( ) Sí   (•) No
+5. Cuéntanos cómo te sientes                   · Texto
+   [ __________________________________ ]
+                      [ Guardar borrador ]   [ Enviar ]
+```
+- **Archivos (al codificar):** `pages/estudiante/llenar-ficha.html` + `js/llenar-ficha.js`.
+- Cada pregunta se **renderiza según su tipo** (radios / checkboxes / escala /
+  sí-no / textarea).
+- **Autoguardado** como borrador al responder (indicador "Guardado ✓").
+- **Enviar** se habilita solo cuando **todas** están respondidas; confirma
+  *"una vez enviada no podrás editarla"* → `estado = enviada`, `fecha_enviado`,
+  y la **bloquea** (solo lectura). Dispara el análisis de IA (Módulo 4, async).
+- **Flujo:** `Sin abrir → [Llenar] → Borrador (autoguarda, idempotente) →
+  [Enviar, todas respondidas] → Enviada (inmutable)`.
+- **BD:** `ficha_llenada` (estado) + `respuesta` + `respuesta_opcion`.
+- **Responsive:** una columna, targets grandes, cómodo en móvil.
+
+### Docente › Fichas › Fichas de mis tutorados — ⬜ Pendiente
+
+El docente ve cómo van sus tutorados en **sus** fichas, y entra a revisar las
+enviadas. Como cada estudiante avanza a su ritmo (6 fichas, uno al día, otro a la
+mitad, otro sin empezar), la vista principal es una **matriz**.
+```
+Fichas de mis tutorados · 2026-I · Quinto ciclo    Ver:[ Matriz ▾ ]   🔴 3 por revisar
+
+                        F1 Diag  F2 Seg  F3 Aut  F4  F5  F6   Progreso
+Ana Quispe Mamani         ✓        ●       ●      ●   ◐   ○     4/6
+Carlos Huanca Flores      ✓        ✓       ●      ○   ○   ○     3/6
+Diana Torres              ●        ◐       ○      ○   ○   ○     1/6
+Luis Vega                 ○        ○       ○      ○   ○   ○     0/6  ⚠
+
+Leyenda:  ✓ revisada · ● enviada (por revisar) · ◐ borrador · ○ sin abrir
+```
+- **Archivos (al codificar):** `pages/docente/fichas-tutorados.html` + `js/fichas-tutorados.js`.
+- **Selector de ciclo** (de los que tutora) + indicador **🔴 N por revisar**.
+- **3 vistas** (toggle):
+  - **Matriz** (default): filas = tutorados, columnas = **las fichas del docente**
+    del ciclo, celda = estado. De un vistazo: quién está al día / a medias / sin
+    empezar (⚠).
+  - **Por ficha:** una ficha a través de todos los tutorados.
+  - **Por estudiante:** todas las fichas de un tutorado.
+- **Interacción:** clic en celda **● enviada** → **Ver respuestas**. Las ◐/○ **no**
+  son clickeables (el docente ve el *estado*, no el contenido del borrador).
+- **BD:** cruce de `ficha_ciclo_periodo` del docente (columnas) × sus tutorados en
+  `estudiante_ciclo_periodo` (filas) × `ficha_llenada` (estado de cada celda).
+
+### Docente › Fichas › Ver respuestas — ⬜ Pendiente
+
+```
+← Mis tutorados    Diagnóstica inicial                    [ ✓ Marcar revisada ]
+Ana Quispe Mamani · 2021-1001 · Quinto ciclo · Enviada 18/03/2026 · ○ Sin revisar
+
+1. ¿Cómo describirías tu adaptación?                     · Personal y social
+   Respuesta:  Regular
+   💬 Observación del tutor:  [ Conversar en la próxima sesión…            ]
+2. ¿Qué te preocupa? (varias)                            · Económico
+   Respuesta:  Economía · Estudios
+   💬 [ + agregar observación ]
+3. Nivel de estrés este mes                              · Salud mental
+   Respuesta:  4 / 5   (alto)
+   💬 [ + agregar observación ]
+```
+- **Archivos (al codificar):** `pages/docente/ficha-respuestas.html` + `js/ficha-respuestas.js`.
+- **Cabecera:** estudiante + código + ciclo + `fecha_enviado` + badge revisada.
+- Cada pregunta: enunciado + área + **respuesta renderizada según su tipo** +
+  **observación del tutor** (`observaciones_tutor`) inline con **autoguardado**
+  (colapsada como "+ agregar observación" si vacía).
+- Respuestas en **solo lectura** (el docente no edita lo que respondió el alumno).
+- **[✓ Marcar revisada]** (sticky): solo si `estado = enviada`; marca
+  `revisada = 1`. Idempotente.
+- **BD:** `ficha_llenada` (`revisada`) + `respuesta` (+ `observaciones_tutor`) +
+  `respuesta_opcion`.
+
+> **Bonus (Módulo 4):** aquí se mostrará la **alerta de IA** de esta ficha (nivel
+> + área) y el botón **Derivar**. Se conecta al diseñar Módulo 4.

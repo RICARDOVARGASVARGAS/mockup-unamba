@@ -490,6 +490,96 @@ CREATE TABLE receptor (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
+### Tabla 11 · `apoderado`
+
+Apoderado/tutor familiar de uno o más estudiantes. **No es un `usuario`** (no
+inicia sesión). Es **único por documento**: cuando se registra un apoderado que
+ya existe (porque es padre de otro hermano ya matriculado), se **reutiliza** la
+fila — no se duplica. Así, actualizar su celular una vez se refleja en todos sus
+hijos.
+
+| Campo | Tipo | Nulo | Notas |
+|-------|------|:----:|-------|
+| `id` | `BIGINT UNSIGNED` | NO | PK, AUTO_INCREMENT |
+| `tipo_documento_id` | `BIGINT UNSIGNED` | NO | FK → `tipo_documento(id)` |
+| `documento` | `VARCHAR(15)` | NO | único **en combinación con** `tipo_documento_id` |
+| `nombres` | `VARCHAR(100)` | NO | |
+| `apellido_paterno` | `VARCHAR(60)` | NO | |
+| `apellido_materno` | `VARCHAR(60)` | NO | |
+| `celular_principal` | `VARCHAR(20)` | SÍ | contacto principal |
+| `celular_secundario` | `VARCHAR(20)` | SÍ | |
+| `email` | `VARCHAR(150)` | SÍ | opcional, no único |
+| `ocupacion` | `VARCHAR(100)` | SÍ | opcional |
+| `direccion` | `VARCHAR(255)` | SÍ | opcional |
+| `created_at` | `TIMESTAMP` | SÍ | |
+| `updated_at` | `TIMESTAMP` | SÍ | |
+| `deleted_at` | `TIMESTAMP` | SÍ | soft delete |
+
+**Índices:** PK (`id`) · **UNIQUE (`tipo_documento_id`, `documento`)** · índice en `tipo_documento_id`.
+
+```sql
+CREATE TABLE apoderado (
+  id                 BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT,
+  tipo_documento_id  BIGINT UNSIGNED  NOT NULL,
+  documento          VARCHAR(15)      NOT NULL,
+  nombres            VARCHAR(100)     NOT NULL,
+  apellido_paterno   VARCHAR(60)      NOT NULL,
+  apellido_materno   VARCHAR(60)      NOT NULL,
+  celular_principal  VARCHAR(20)      NULL,
+  celular_secundario VARCHAR(20)      NULL,
+  email              VARCHAR(150)     NULL,
+  ocupacion          VARCHAR(100)     NULL,
+  direccion          VARCHAR(255)     NULL,
+  created_at         TIMESTAMP        NULL,
+  updated_at         TIMESTAMP        NULL,
+  deleted_at         TIMESTAMP        NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_apoderado_documento (tipo_documento_id, documento),
+  KEY idx_apoderado_tipo_documento (tipo_documento_id),
+  CONSTRAINT fk_apoderado_tipo_documento FOREIGN KEY (tipo_documento_id) REFERENCES tipo_documento (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+### Tabla 12 · `estudiante_apoderado` (puente estudiante ↔ apoderado)
+
+Relación **n:n**: un apoderado tiene varios estudiantes (hermanos); un
+estudiante tiene varios apoderados (padre + madre). El `parentesco` y quién es
+el contacto principal son propios del **vínculo**, por eso viven aquí.
+
+| Campo | Tipo | Nulo | Notas |
+|-------|------|:----:|-------|
+| `id` | `BIGINT UNSIGNED` | NO | PK, AUTO_INCREMENT |
+| `estudiante_id` | `BIGINT UNSIGNED` | NO | FK → `estudiante(id)` |
+| `apoderado_id` | `BIGINT UNSIGNED` | NO | FK → `apoderado(id)` |
+| `parentesco` | `VARCHAR(30)` | NO | `padre` / `madre` / `abuelo` / `tutor_legal` / `otro` (CHECK) |
+| `es_principal` | `TINYINT(1)` | NO | DEFAULT `0` — contacto principal de **ese** estudiante |
+| `created_at` | `TIMESTAMP` | SÍ | |
+| `updated_at` | `TIMESTAMP` | SÍ | |
+
+**Índices:** PK (`id`) · **UNIQUE (`estudiante_id`, `apoderado_id`)** — un
+apoderado no se vincula dos veces al mismo estudiante · índice en `apoderado_id`
+(buscar todos los tutorados/hermanos de un apoderado).
+
+**Regla (aplicación):** a lo sumo **un** `es_principal = 1` por estudiante.
+
+```sql
+CREATE TABLE estudiante_apoderado (
+  id            BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT,
+  estudiante_id BIGINT UNSIGNED  NOT NULL,
+  apoderado_id  BIGINT UNSIGNED  NOT NULL,
+  parentesco    VARCHAR(30)      NOT NULL,
+  es_principal  TINYINT(1)       NOT NULL DEFAULT 0,
+  created_at    TIMESTAMP        NULL,
+  updated_at    TIMESTAMP        NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_estudiante_apoderado (estudiante_id, apoderado_id),
+  KEY idx_ea_apoderado (apoderado_id),
+  CONSTRAINT fk_ea_estudiante FOREIGN KEY (estudiante_id) REFERENCES estudiante (id),
+  CONSTRAINT fk_ea_apoderado  FOREIGN KEY (apoderado_id)  REFERENCES apoderado (id),
+  CONSTRAINT chk_ea_parentesco CHECK (parentesco IN ('padre','madre','abuelo','tutor_legal','otro'))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
 ### APIs — Módulo 1
 
 **Convenciones (todas las rutas):** prefijo `/api/v1`; auth por token
@@ -531,6 +621,16 @@ aceptan `?buscar=`, `?page=`, filtros y orden; respuesta JSON con `data` +
 | **[CRUD]** | `/estudiantes` | perfil estudiante (idem) | `estudiantes.ver/crear/editar/eliminar` |
 | **[CRUD]** | `/receptores` | perfil receptor (store crea usuario + receptor + rol, en transacción; `entidad_receptora_id` obligatorio) | `receptores.ver/crear/editar/eliminar` |
 
+**Apoderados** (sub-recurso del estudiante)
+
+| Método | Ruta | Propósito | Permiso |
+|--------|------|-----------|---------|
+| `GET` | `/estudiantes/{id}/apoderados` | apoderados de un estudiante (con parentesco / principal) | `estudiantes.ver` |
+| `POST` | `/estudiantes/{id}/apoderados` | vincular apoderado: si el `documento` **ya existe**, reutiliza la fila; si no, crea. Luego inserta `estudiante_apoderado` | `estudiantes.editar` |
+| `PUT` | `/estudiantes/{id}/apoderados/{apoderado_id}` | editar el vínculo (`parentesco`, `es_principal`) y/o datos del apoderado | `estudiantes.editar` |
+| `DELETE` | `/estudiantes/{id}/apoderados/{apoderado_id}` | quitar el vínculo. **No borra el apoderado** si tiene otros hijos vinculados | `estudiantes.editar` |
+| `GET` | `/apoderados/{id}/estudiantes` | hermanos: estudiantes que comparten ese apoderado | `estudiantes.ver` |
+
 **RBAC**
 
 | Método | Ruta | Propósito | Permiso |
@@ -552,9 +652,10 @@ aceptan `?buscar=`, `?page=`, filtros y orden; respuesta JSON con `data` +
 
 ---
 
-**Módulo 1 — Identidad y acceso: ✔ completo** (11 tablas: `tipo_documento`,
+**Módulo 1 — Identidad y acceso: ✔ completo** (13 tablas: `tipo_documento`,
 `usuario`, `rol`, `permiso`, `usuario_rol`, `rol_permiso`, `grado_academico`,
-`especialidad`, `docente`, `estudiante`, `receptor`).
+`especialidad`, `docente`, `estudiante`, `receptor`, `apoderado`,
+`estudiante_apoderado`).
 
 ## Módulo 2 — Estructura académica
 
@@ -1074,24 +1175,23 @@ CREATE TABLE area (
 
 ### `ficha` (plantilla)
 
-Es la **plantilla** de una ficha de tutoría — el molde que el admin diseña
-con su nombre, tipo y preguntas. Una `ficha` no se llena directamente: primero
-se **asigna** a uno o más `ciclo_periodo`, momento en el que se **clona** en
-una copia independiente (`ficha_ciclo_periodo`). Así se puede reutilizar la
-misma plantilla en varios ciclos sin que un cambio posterior en la plantilla
-afecte las copias ya en uso.
+Es una **plantilla general** de ficha — la **biblioteca** que el admin diseña
+(nombre, tipo, preguntas). No se llena directamente ni pertenece a un ciclo: es
+un **punto de partida reutilizable**. El **docente**, en su ciclo, la **clona**
+(o crea una de cero) para obtener **su** ficha — ver `ficha_ciclo_periodo` —,
+que personaliza y habilita a su ritmo. Editar la plantilla **no** afecta las
+copias ya creadas.
 
-**Analogía:** `ficha` es el documento Word original guardado en el escritorio;
-`ficha_ciclo_periodo` es la copia ya entregada — editar el original no cambia
-lo que está en las copias, y viceversa.
+Una plantilla puede indicar **para qué ciclos aplica** (1°, 2°…) como **guía,
+no restricción** — ver la puente `ficha_ciclo` — y agruparse por ciclo en la
+biblioteca. El docente ve esa sugerencia al clonar, pero puede usarla igual.
 
-**Flujo de clonado:**
+**Flujo (biblioteca → ficha del docente):**
 ```
-ficha (plantilla)
-    │  "Asignar a ciclo+período" → clona ficha + preguntas + opciones
-    ├──► ficha_ciclo_periodo (1° ciclo — 2026-I)   ← independiente
-    ├──► ficha_ciclo_periodo (2° ciclo — 2026-I)   ← independiente
-    └──► ficha_ciclo_periodo (1° ciclo — 2026-II)  ← independiente
+ficha (plantilla general, admin)
+    │  el DOCENTE clona (o crea de cero) para SU ciclo → copia independiente
+    ├──► ficha_ciclo_periodo (Docente A · 1° ciclo — 2026-I · habilitable)
+    └──► ficha_ciclo_periodo (Docente B · 1° ciclo — 2026-I · sus propias fichas)
 ```
 
 | Campo | Tipo | Nulo | Comentario |
@@ -1100,7 +1200,7 @@ ficha (plantilla)
 | `tipo_ficha_id` | `BIGINT UNSIGNED` | NO | FK → `tipo_ficha(id)` — clasifica la ficha (Diagnóstico, Seguimiento, etc.) |
 | `nombre` | `VARCHAR(150)` | NO | nombre descriptivo de la plantilla (ej. "Ficha diagnóstica — Primer ciclo") |
 | `descripcion` | `TEXT` | SÍ | instrucciones o contexto visible al admin al asignarla a un ciclo+período |
-| `activo` | `TINYINT(1)` | NO | DEFAULT `1` — desactivar impide asignarla a nuevos `ciclo_periodo`, pero no afecta las copias ya clonadas |
+| `activo` | `TINYINT(1)` | NO | DEFAULT `1` — desactivar impide **clonarla** para nuevas fichas; las copias ya creadas no se afectan |
 | `created_at` | `TIMESTAMP` | SÍ | auditoría |
 | `updated_at` | `TIMESTAMP` | SÍ | auditoría |
 
@@ -1129,6 +1229,33 @@ CREATE TABLE ficha (
   UNIQUE KEY uq_ficha_nombre (nombre),
   KEY idx_ficha_tipo (tipo_ficha_id),
   CONSTRAINT fk_ficha_tipo_ficha FOREIGN KEY (tipo_ficha_id) REFERENCES tipo_ficha (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+### `ficha_ciclo` (puente plantilla ↔ ciclo — guía)
+
+Indica **para qué ciclos aplica** una plantilla (1°, 2°…). Es **guía, no
+restricción**: al clonar, el docente ve la sugerencia pero puede usar la
+plantilla en cualquier ciclo. Permite **agrupar/filtrar la biblioteca por ciclo**.
+
+| Campo | Tipo | Nulo | Comentario |
+|-------|------|:----:|------------|
+| `id` | `BIGINT UNSIGNED` | NO | PK, AUTO_INCREMENT |
+| `ficha_id` | `BIGINT UNSIGNED` | NO | FK → `ficha(id)` |
+| `ciclo_id` | `BIGINT UNSIGNED` | NO | FK → `ciclo(id)` |
+
+**Índices:** PK · **UNIQUE (`ficha_id`, `ciclo_id`)** · índice en `ciclo_id`.
+
+```sql
+CREATE TABLE ficha_ciclo (
+  id        BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT,
+  ficha_id  BIGINT UNSIGNED  NOT NULL,
+  ciclo_id  BIGINT UNSIGNED  NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_ficha_ciclo (ficha_id, ciclo_id),
+  KEY idx_ficha_ciclo_ciclo (ciclo_id),
+  CONSTRAINT fk_ficha_ciclo_ficha FOREIGN KEY (ficha_id) REFERENCES ficha (id) ON DELETE CASCADE,
+  CONSTRAINT fk_ficha_ciclo_ciclo FOREIGN KEY (ciclo_id) REFERENCES ciclo (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
@@ -1328,78 +1455,76 @@ CREATE TABLE opcion_pregunta (
 
 ### `ficha_ciclo_periodo`
 
-Es la **copia clonada** de una `ficha` (plantilla) ya asignada a un
-`ciclo_periodo` específico. A partir del clonado, la copia vive de forma
-completamente independiente — sus preguntas y opciones son filas propias,
-no referencias a la plantilla original.
-
-La `ficha_ciclo_periodo` pertenece al `ciclo_periodo` completo, no a un
-docente específico. Todos los tutores asignados a ese ciclo+período la usan
-para entregar a sus propios tutorados — la ficha es una sola, los estudiantes
-que la llenan son muchos.
+Es **la ficha del docente** en un ciclo+período: la que sus estudiantes llenan.
+El docente la obtiene **clonando una plantilla** (`ficha`) o **creándola de
+cero**, y la **personaliza** (sus preguntas son filas propias y editables). Cada
+docente arma **sus** fichas — uno puede tener 8 y otro 6 en el mismo ciclo — y
+las **habilita** a su ritmo. Editar la plantilla original **no** la afecta.
 
 ```
-ficha "Ficha diagnóstica" (plantilla original)
-    │
-    │  admin asigna al 1° ciclo — 2026-I → se CLONA todo
+ficha (biblioteca de plantillas, admin)
+    │  el DOCENTE clona (o crea de cero) para SU ciclo → copia independiente
     ▼
 ficha_ciclo_periodo (id=10)
-    │   ficha_id = 1           ← trazabilidad: de qué plantilla vino
-    │   ciclo_periodo_id = 5   ← a qué ciclo+período pertenece
+    │   docente_id = A          ← dueño
+    │   ficha_origen_id = 1     ← plantilla de origen (NULL si es de cero)
+    │   ciclo_periodo_id = 5    ← a qué ciclo+período
+    │   habilitada = 0/1        ← si los estudiantes ya pueden llenarla
     │
-    │   Todos los docentes del 1° ciclo — 2026-I usan esta misma copia:
-    │
-    ├──► Docente A → sus 16 estudiantes llenan esta ficha
-    └──► Docente B → sus 16 estudiantes llenan esta ficha
-    │
-    ├──► pregunta (fcp_id=10) "¿Cómo te adaptas...?"       (texto_abierto)
-    ├──► pregunta (fcp_id=10) "¿Cuál es tu dificultad?"    (alternativa_unica)
-    │         ├──► opcion_pregunta "Horarios"
-    │         └──► opcion_pregunta "Comprensión de temas"
-    └──► pregunta (fcp_id=10) "Califica tu bienestar 1-5"  (escala)
-
-    ↓ la plantilla original NO se toca nunca más
-    ↓ las respuestas de los estudiantes se guardan en ficha_llenada → respuesta
+    ├──► preguntas propias (fcp_id=10), editables por el docente
+    └──► sus 16 estudiantes la llenan cuando está habilitada
+         (Docente B tiene SUS propias fichas, distintas)
 ```
 
-El campo `ficha_id` queda solo como **trazabilidad** — para saber de qué
-plantilla vino — pero las preguntas y opciones reales son las clonadas.
+- `ficha_origen_id` es **solo trazabilidad** (de qué plantilla vino, o NULL).
+- El estudiante ve las fichas de **su** tutor (`docente_id`) que estén
+  **`habilitada = 1`**; las no habilitadas se muestran 🔒 bloqueadas.
 
 | Campo | Tipo | Nulo | Comentario |
 |-------|------|:----:|------------|
 | `id` | `BIGINT UNSIGNED` | NO | PK, AUTO_INCREMENT |
-| `ficha_id` | `BIGINT UNSIGNED` | NO | FK → `ficha(id)` — plantilla de origen (solo trazabilidad, no se edita) |
-| `ciclo_periodo_id` | `BIGINT UNSIGNED` | NO | FK → `ciclo_periodo(id)` — ciclo+período al que está asignada esta copia |
+| `ciclo_periodo_id` | `BIGINT UNSIGNED` | NO | FK → `ciclo_periodo(id)` — a qué ciclo+período |
+| `docente_id` | `BIGINT UNSIGNED` | NO | FK → `docente(id)` — **dueño** (quién la creó/usa) |
+| `ficha_origen_id` | `BIGINT UNSIGNED` | SÍ | FK → `ficha(id)` — plantilla clonada (**NULL** = de cero); solo trazabilidad |
+| `tipo_ficha_id` | `BIGINT UNSIGNED` | NO | FK → `tipo_ficha(id)` — propio (copiado del origen o elegido) |
+| `nombre` | `VARCHAR(150)` | NO | propio (personalizable tras el clon) |
+| `descripcion` | `TEXT` | SÍ | propia |
+| `habilitada` | `TINYINT(1)` | NO | DEFAULT `0` — si los estudiantes ya pueden llenarla |
 | `created_at` | `TIMESTAMP` | SÍ | auditoría |
 | `updated_at` | `TIMESTAMP` | SÍ | auditoría |
 
-**Índices:** PK (`id`) · índice en `ficha_id` · índice en `ciclo_periodo_id`.
-
-**Sin UNIQUE en (`ficha_id`, `ciclo_periodo_id`):** un mismo `ciclo_periodo`
-puede tener varias fichas asignadas (ej. una diagnóstica y una de seguimiento),
-e incluso la misma plantilla puede clonarse más de una vez si el admin lo
-necesita.
+**Índices:** PK (`id`) · índice en `ciclo_periodo_id` · `docente_id` ·
+`ficha_origen_id`. **Sin UNIQUE:** un docente puede tener **varias** fichas en el
+mismo ciclo+período.
 
 **Ejemplo de filas:**
 
-| id | ficha_id | ciclo_periodo_id | descripción |
-|----|----------|------------------|-------------|
-| 10 | 1 | 5 | Ficha diagnóstica clonada para 1° ciclo — 2026-I |
-| 11 | 1 | 6 | Ficha diagnóstica clonada para 2° ciclo — 2026-I |
-| 12 | 2 | 5 | Ficha de seguimiento clonada para 1° ciclo — 2026-I |
+| id | docente_id | ciclo_periodo_id | ficha_origen_id | nombre | habilitada |
+|----|-----------|------------------|-----------------|--------|:---------:|
+| 10 | A | 5 | 1 | Diagnóstica inicial | 1 |
+| 11 | A | 5 | 2 | Seguimiento mensual | 0 |
+| 12 | B | 5 | NULL | Mi ficha de bienestar (de cero) | 1 |
 
 ```sql
 CREATE TABLE ficha_ciclo_periodo (
   id                BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT,
-  ficha_id          BIGINT UNSIGNED  NOT NULL,
   ciclo_periodo_id  BIGINT UNSIGNED  NOT NULL,
+  docente_id        BIGINT UNSIGNED  NOT NULL,
+  ficha_origen_id   BIGINT UNSIGNED  NULL,
+  tipo_ficha_id     BIGINT UNSIGNED  NOT NULL,
+  nombre            VARCHAR(150)     NOT NULL,
+  descripcion       TEXT             NULL,
+  habilitada        TINYINT(1)       NOT NULL DEFAULT 0,
   created_at        TIMESTAMP        NULL,
   updated_at        TIMESTAMP        NULL,
   PRIMARY KEY (id),
-  KEY idx_fcp_ficha (ficha_id),
   KEY idx_fcp_ciclo_periodo (ciclo_periodo_id),
-  CONSTRAINT fk_fcp_ficha         FOREIGN KEY (ficha_id)         REFERENCES ficha (id),
-  CONSTRAINT fk_fcp_ciclo_periodo FOREIGN KEY (ciclo_periodo_id) REFERENCES ciclo_periodo (id)
+  KEY idx_fcp_docente (docente_id),
+  KEY idx_fcp_origen (ficha_origen_id),
+  CONSTRAINT fk_fcp_ciclo_periodo FOREIGN KEY (ciclo_periodo_id) REFERENCES ciclo_periodo (id),
+  CONSTRAINT fk_fcp_docente       FOREIGN KEY (docente_id)       REFERENCES docente (id),
+  CONSTRAINT fk_fcp_origen        FOREIGN KEY (ficha_origen_id)  REFERENCES ficha (id),
+  CONSTRAINT fk_fcp_tipo_ficha    FOREIGN KEY (tipo_ficha_id)    REFERENCES tipo_ficha (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 

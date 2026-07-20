@@ -223,13 +223,379 @@
     const form = document.querySelector("[data-estudiante-form]");
     if (!form || !window.EstudiantesData) return;
 
-    EstudiantesData.ready()
+    const boot = () =>
+      Promise.all([
+        EstudiantesData.ready(),
+        window.ApoderadosData ? ApoderadosData.ready() : Promise.resolve(),
+      ]);
+
+    boot()
       .then(() => initForm(form))
       .catch((err) => {
         console.error(err);
         toast("No se pudieron cargar los estudiantes de prueba.", "danger");
       });
   });
+
+  function docClave(tipoId) {
+    return (window.TiposDocumentoData && TiposDocumentoData.clave(tipoId)) || "";
+  }
+
+  function formatDoc(tipoId, documento) {
+    const clave = docClave(tipoId);
+    return `${clave ? `${clave} ` : ""}${documento || ""}`.trim() || "—";
+  }
+
+  function fillParentescoSelect(select, current) {
+    const opts = window.ApoderadosData ? ApoderadosData.PARENTESCOS : [];
+    select.innerHTML = opts
+      .map(
+        (p) =>
+          `<option value="${CatalogTable.escapeHtml(p.id)}" ${p.id === current ? "selected" : ""}>${CatalogTable.escapeHtml(p.nombre)}</option>`
+      )
+      .join("");
+  }
+
+  /**
+   * Sección 4 · Apoderados — modal buscar/reutilizar + listado con link/unlink/updateVinculo.
+   * En alta se usa un id provisional para poder vincular antes de guardar el estudiante.
+   */
+  function bindApoderados(estudianteId) {
+    if (!window.ApoderadosData) return { estudianteId };
+
+    const listEl = document.querySelector("[data-apoderados-list]");
+    const emptyEl = document.querySelector("[data-apoderados-empty]");
+    const backdrop = document.getElementById("modal-apoderado-backdrop");
+    const btnAdd = document.querySelector("[data-apoderado-agregar]");
+    const btnBuscar = document.querySelector("[data-apo-buscar]");
+    const btnCancel = document.querySelector("[data-apo-cancelar]");
+    const btnSave = document.querySelector("[data-apo-guardar]");
+    const stepBuscar = document.querySelector("[data-apo-step-buscar]");
+    const stepDatos = document.querySelector("[data-apo-step-datos]");
+    const reusedBanner = document.querySelector("[data-apo-reused-banner]");
+    const titleEl = document.getElementById("modal-apoderado-title");
+    const hintEl = document.querySelector("[data-apo-modal-hint]");
+    const tipoSelect = document.getElementById("apo-tipo-documento");
+    const docInput = document.getElementById("apo-documento");
+    const fields = {
+      nombres: document.getElementById("apo-nombres"),
+      apaterno: document.getElementById("apo-apaterno"),
+      amaterno: document.getElementById("apo-amaterno"),
+      cel1: document.getElementById("apo-cel1"),
+      cel2: document.getElementById("apo-cel2"),
+      email: document.getElementById("apo-email"),
+      ocupacion: document.getElementById("apo-ocupacion"),
+      direccion: document.getElementById("apo-direccion"),
+      parentesco: document.getElementById("apo-parentesco"),
+      principal: document.getElementById("apo-principal"),
+    };
+
+    let mode = "add"; // add | edit
+    let editApoderadoId = null;
+    let reusedApoderado = null;
+    let identityLocked = false;
+
+    const identityInputs = [
+      tipoSelect,
+      docInput,
+      fields.nombres,
+      fields.apaterno,
+      fields.amaterno,
+      fields.cel1,
+      fields.cel2,
+      fields.email,
+      fields.ocupacion,
+      fields.direccion,
+    ];
+
+    function setIdentityLocked(locked) {
+      identityLocked = locked;
+      identityInputs.forEach((el) => {
+        if (!el) return;
+        if (el.tagName === "SELECT") el.disabled = locked;
+        else el.readOnly = locked;
+        el.classList.toggle("opacity-80", locked);
+      });
+      reusedBanner?.classList.toggle("hidden", !locked);
+    }
+
+    function fillIdentity(ap) {
+      if (tipoSelect) fillTiposDocumento(tipoSelect, ap?.tipo_documento_id || "td-1");
+      if (docInput) docInput.value = ap?.documento || "";
+      fields.nombres.value = ap?.nombres || "";
+      fields.apaterno.value = ap?.apellido_paterno || "";
+      fields.amaterno.value = ap?.apellido_materno || "";
+      fields.cel1.value = ap?.celular_principal || "";
+      fields.cel2.value = ap?.celular_secundario || "";
+      fields.email.value = ap?.email || "";
+      fields.ocupacion.value = ap?.ocupacion || "";
+      fields.direccion.value = ap?.direccion || "";
+    }
+
+    function readApoderadoPayload() {
+      return {
+        tipo_documento_id: tipoSelect.value,
+        documento: docInput.value.trim(),
+        nombres: fields.nombres.value.trim(),
+        apellido_paterno: fields.apaterno.value.trim(),
+        apellido_materno: fields.amaterno.value.trim(),
+        celular_principal: fields.cel1.value.trim(),
+        celular_secundario: fields.cel2.value.trim(),
+        email: fields.email.value.trim(),
+        ocupacion: fields.ocupacion.value.trim(),
+        direccion: fields.direccion.value.trim(),
+      };
+    }
+
+    function openModal(opts) {
+      mode = opts.mode || "add";
+      editApoderadoId = opts.apoderadoId || null;
+      reusedApoderado = null;
+      fillParentescoSelect(fields.parentesco, opts.parentesco || "padre");
+      fields.principal.checked = !!opts.es_principal;
+      fillIdentity(opts.apoderado || null);
+      setIdentityLocked(false);
+
+      if (titleEl) {
+        titleEl.textContent = mode === "edit" ? "Editar apoderado" : "Agregar apoderado";
+      }
+      if (hintEl) {
+        hintEl.textContent =
+          mode === "edit"
+            ? "Puedes actualizar el vínculo (parentesco / principal) y los datos de contacto."
+            : "Busca por documento. Si ya existe, se reutiliza.";
+      }
+
+      stepBuscar?.classList.toggle("hidden", mode === "edit");
+      stepDatos?.classList.toggle("hidden", mode !== "edit");
+      btnSave?.classList.toggle("hidden", mode !== "edit");
+      if (mode === "edit") {
+        tipoSelect.disabled = true;
+        docInput.readOnly = true;
+        tipoSelect.classList.add("opacity-80");
+        docInput.classList.add("opacity-80");
+      }
+
+      backdrop?.classList.remove("hidden");
+      backdrop?.classList.add("flex");
+      (mode === "edit" ? fields.parentesco : docInput)?.focus();
+    }
+
+    function closeModal() {
+      backdrop?.classList.add("hidden");
+      backdrop?.classList.remove("flex");
+    }
+
+    function showDatosStep(found) {
+      reusedApoderado = found;
+      setIdentityLocked(!!found);
+      if (found) fillIdentity(found);
+      stepDatos?.classList.remove("hidden");
+      btnSave?.classList.remove("hidden");
+      fields.parentesco?.focus();
+    }
+
+    function renderList() {
+      const rows = ApoderadosData.listByEstudiante(estudianteId);
+      if (!listEl || !emptyEl) return;
+      emptyEl.classList.toggle("hidden", rows.length > 0);
+      listEl.innerHTML = rows
+        .map((ap) => {
+          const nombre = ApoderadosData.nombreCompleto(ap);
+          const parentesco = ApoderadosData.parentescoLabel(ap.parentesco);
+          const contacto = ap.celular_principal || ap.email || "—";
+          const badge = ap.es_principal
+            ? '<span class="badge badge-accent">Principal</span>'
+            : "";
+          return `
+          <article class="rounded-md border border-border bg-bg px-4 py-3" data-apoderado-card data-apoderado-id="${CatalogTable.escapeHtml(ap.id)}">
+            <div class="flex items-start justify-between gap-3">
+              <div class="min-w-0">
+                <div class="flex flex-wrap items-center gap-2">
+                  <p class="font-medium text-text">${CatalogTable.escapeHtml(nombre)}</p>
+                  ${badge}
+                </div>
+                <p class="mt-0.5 text-sm text-text-muted">${CatalogTable.escapeHtml(formatDoc(ap.tipo_documento_id, ap.documento))}</p>
+                <p class="mt-1 text-sm text-text">${CatalogTable.escapeHtml(parentesco)} · ${CatalogTable.escapeHtml(contacto)}</p>
+              </div>
+              <div class="flex shrink-0 gap-1">
+                <button type="button" class="btn-ghost btn-icon-xs" data-apo-edit title="Editar" aria-label="Editar apoderado">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" />
+                  </svg>
+                </button>
+                <button type="button" class="btn-ghost btn-icon-xs text-danger" data-apo-remove title="Quitar" aria-label="Quitar apoderado">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.033-2.164h-2.934c-1.123 0-2.033.983-2.033 2.164v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </article>`;
+        })
+        .join("");
+    }
+
+    function runBuscar() {
+      const tipoId = tipoSelect.value;
+      const documento = docInput.value.trim();
+      if (!tipoId || !documento) {
+        toast("Ingresa tipo y número de documento", "warning");
+        return;
+      }
+      const clave = docClave(tipoId);
+      if (clave === "DNI" && !/^\d{8}$/.test(documento)) {
+        toast("El DNI debe tener 8 dígitos", "warning");
+        return;
+      }
+      const already = ApoderadosData.listByEstudiante(estudianteId).some(
+        (a) => a.tipo_documento_id === tipoId && String(a.documento).trim() === documento
+      );
+      if (already) {
+        toast("Este apoderado ya está vinculado al estudiante", "warning");
+        return;
+      }
+      const found = ApoderadosData.findByDocumento(tipoId, documento);
+      if (!found) {
+        fillIdentity({ tipo_documento_id: tipoId, documento });
+        showDatosStep(null);
+        toast("Documento no registrado — completa los datos", "info");
+        return;
+      }
+      showDatosStep(found);
+      toast("Apoderado reutilizado");
+    }
+
+    function saveVinculo() {
+      const parentesco = fields.parentesco.value;
+      const esPrincipal = fields.principal.checked;
+      if (!parentesco) {
+        toast("Selecciona el parentesco", "warning");
+        return;
+      }
+
+      if (mode === "edit" && editApoderadoId) {
+        const payload = readApoderadoPayload();
+        if (!payload.nombres || !payload.apellido_paterno || !payload.apellido_materno) {
+          toast("Completa nombres y apellidos", "warning");
+          return;
+        }
+        ApoderadosData.updateVinculo(estudianteId, editApoderadoId, {
+          apoderado: {
+            nombres: payload.nombres,
+            apellido_paterno: payload.apellido_paterno,
+            apellido_materno: payload.apellido_materno,
+            celular_principal: payload.celular_principal,
+            celular_secundario: payload.celular_secundario,
+            email: payload.email,
+            ocupacion: payload.ocupacion,
+            direccion: payload.direccion,
+          },
+          parentesco,
+          es_principal: esPrincipal,
+        });
+        toast("Vínculo actualizado");
+        closeModal();
+        renderList();
+        return;
+      }
+
+      const payload = identityLocked && reusedApoderado
+        ? {
+            tipo_documento_id: reusedApoderado.tipo_documento_id,
+            documento: reusedApoderado.documento,
+            nombres: reusedApoderado.nombres,
+            apellido_paterno: reusedApoderado.apellido_paterno,
+            apellido_materno: reusedApoderado.apellido_materno,
+          }
+        : readApoderadoPayload();
+
+      if (!payload.tipo_documento_id || !payload.documento) {
+        toast("Busca primero por documento", "warning");
+        return;
+      }
+      if (!payload.nombres || !payload.apellido_paterno || !payload.apellido_materno) {
+        toast("Completa nombres y apellidos", "warning");
+        return;
+      }
+
+      const result = ApoderadosData.link(estudianteId, payload, parentesco, esPrincipal);
+      const linked = ApoderadosData.listByEstudiante(estudianteId).find(
+        (a) => a.id === result.apoderado.id
+      );
+      if (!linked) {
+        toast("No se pudo vincular (¿ya estaba agregado?)", "warning");
+        return;
+      }
+      toast(identityLocked ? "Apoderado vinculado (reutilizado)" : "Apoderado agregado");
+      closeModal();
+      renderList();
+    }
+
+    btnAdd?.addEventListener("click", () => openModal({ mode: "add" }));
+    btnCancel?.addEventListener("click", closeModal);
+    backdrop?.addEventListener("click", (e) => {
+      if (e.target === backdrop) closeModal();
+    });
+    btnBuscar?.addEventListener("click", runBuscar);
+    docInput?.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        runBuscar();
+      }
+    });
+    btnSave?.addEventListener("click", saveVinculo);
+
+    listEl?.addEventListener("click", (e) => {
+      const card = e.target.closest("[data-apoderado-card]");
+      if (!card) return;
+      const apId = card.getAttribute("data-apoderado-id");
+      const row = ApoderadosData.listByEstudiante(estudianteId).find((a) => a.id === apId);
+      if (!row) return;
+
+      if (e.target.closest("[data-apo-edit]")) {
+        openModal({
+          mode: "edit",
+          apoderadoId: row.id,
+          apoderado: row,
+          parentesco: row.parentesco,
+          es_principal: row.es_principal,
+        });
+        return;
+      }
+
+      if (e.target.closest("[data-apo-remove]")) {
+        const nombre = ApoderadosData.nombreCompleto(row);
+        const ask = window.AppConfirm
+          ? AppConfirm.request({
+              title: "Quitar apoderado",
+              confirmLabel: "Quitar",
+              cancelLabel: "Cancelar",
+              variant: "danger",
+              messageHtml: `<p>¿Quitar el vínculo con <strong class="text-text">${CatalogTable.escapeHtml(nombre)}</strong>?</p>
+                <p>Si no tiene otros hijos vinculados, también se elimina del catálogo de apoderados.</p>`,
+            })
+          : Promise.resolve(window.confirm(`¿Quitar a ${nombre}?`));
+
+        ask.then((ok) => {
+          if (!ok) return;
+          ApoderadosData.unlink(estudianteId, apId);
+          toast("Apoderado desvinculado");
+          renderList();
+        });
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && backdrop && !backdrop.classList.contains("hidden")) closeModal();
+    });
+
+    fillTiposDocumento(tipoSelect, "td-1");
+    fillParentescoSelect(fields.parentesco, "padre");
+    renderList();
+
+    return { estudianteId, renderList };
+  }
 
   function initForm(form) {
     const params = new URLSearchParams(window.location.search);
@@ -241,6 +607,8 @@
         ? UsuariosData.consumeStashForPerfil()
         : null;
     const fromUsuarioId = fromUsuario?.usuario_id || null;
+    /** Id estable para vincular apoderados antes de guardar (alta). */
+    const estudianteId = isEdit ? existing.id : `est-${Date.now()}`;
 
     const title = document.querySelector("[data-form-page-title]");
     const rolesBox = document.querySelector("[data-roles-checklist]");
@@ -281,6 +649,7 @@
     fillTiposDocumento(tipoSelect, isEdit ? existing.tipo_documento_id : fromUsuario?.tipo_documento_id || "td-1");
     bindReniecSearch(tipoSelect);
     bindFotoUpload(isEdit ? existing.foto_perfil_url : fromUsuario?.foto_perfil_url || "");
+    bindApoderados(estudianteId);
 
     activoToggle.addEventListener("click", () => {
       syncActivoToggle(!document.getElementById("est-activo").checked);
@@ -349,7 +718,7 @@
       }
 
       const row = {
-        id: isEdit ? existing.id : `est-${Date.now()}`,
+        id: estudianteId,
         tipo_documento_id: fromUsuario ? fromUsuario.tipo_documento_id : tipoSelect.value,
         documento: document.getElementById("est-documento").value.trim(),
         nombres: document.getElementById("est-nombres").value.trim(),

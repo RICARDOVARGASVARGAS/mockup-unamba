@@ -116,6 +116,27 @@ asociado.
 (que es el acceso/login). Un `egresado`/`retirado` sale del padrón activo y de
 las propuestas de "Avanzar estudiantes"; su historial se conserva.
 
+### Apoderados (sub-recurso del estudiante)
+
+**`POST /estudiantes/{id}/apoderados`** — vincular un apoderado.
+- Recibe datos del apoderado + `parentesco` + `es_principal`.
+- **Reutiliza por documento:** busca `apoderado` por (`tipo_documento_id`,
+  `documento`); si existe (es apoderado de un hermano) → usa esa fila **sin
+  duplicar**; si no, la crea. Luego inserta `estudiante_apoderado`.
+- Si `es_principal = 1`, pone en `0` el principal anterior de ese estudiante
+  (a lo sumo uno).
+
+**`PUT /estudiantes/{id}/apoderados/{apoderado_id}`** — edita el vínculo
+(`parentesco`, `es_principal`) y/o los datos del apoderado. Editar el apoderado
+se refleja en **todos** sus hijos (dato compartido).
+
+**`DELETE /estudiantes/{id}/apoderados/{apoderado_id}`** — quita el vínculo
+`estudiante_apoderado`. **No borra** el `apoderado` si sigue vinculado a otros
+estudiantes; solo se elimina la fila `apoderado` cuando queda sin hijos.
+
+**`GET /apoderados/{id}/estudiantes`** — lista los estudiantes que comparten ese
+apoderado (**hermanos** en el sistema).
+
 **Regla del caso dual (docente + estudiante):** está permitido; el modelo lo
 soporta con dos perfiles sobre el mismo `usuario`. *(La validación de que un
 estudiante no sea su propio tutor pertenece al Módulo 2 — matrícula.)*
@@ -282,8 +303,12 @@ permisos los define el desarrollador y se **siembran**.
 
 ### Plantillas de fichas (`ficha`)
 
-**`POST /fichas`**
-- Body: `{ tipo_ficha_id, nombre, descripcion?, activo? }`. Valida que `tipo_ficha_id` exista y esté activo. Crea la plantilla sin preguntas.
+**`POST /fichas`** — crea una **plantilla** de la biblioteca (general, del admin).
+- Body: `{ tipo_ficha_id, nombre, descripcion?, activo?, ciclos?: [ciclo_id] }`.
+  Valida `tipo_ficha_id`. Crea la plantilla sin preguntas y sus filas `ficha_ciclo`
+  (**para qué ciclos aplica** — guía, no restricción; sirve para agrupar la biblioteca).
+
+**`PUT /fichas/{id}/ciclos`** — sincroniza los ciclos sugeridos (`ficha_ciclo`).
 
 **`PUT /fichas/{id}`**
 - Edita encabezado. **No** toca preguntas — esas tienen su propio endpoint.
@@ -316,41 +341,59 @@ permisos los define el desarrollador y se **siembran**.
 **`PUT /preguntas/{id}`**
 - Edita el enunciado, área, tipo y opciones.
 - Si cambia el tipo (ej. de `alternativa_unica` a `escala`): elimina todas las `opcion_pregunta` previas e inserta las del nuevo tipo, en transacción.
-- Rechaza cambio de tipo si la `ficha` padre ya tiene `ficha_ciclo_periodo` con `ficha_llenada` asociadas (el historial quedaría inconsistente).
+- **Restricción según a quién pertenece la pregunta:**
+  - Si es de una **plantilla** (`ficha_id`): edición **libre** — las copias del
+    docente son independientes, editar la plantilla no las afecta.
+  - Si es de la **ficha del docente** (`ficha_ciclo_periodo_id`) y **esa** ficha
+    ya tiene `ficha_llenada` (estudiantes respondieron): **rechaza** el cambio de
+    tipo/opciones (`422`) — rompería las respuestas existentes.
 
 **`DELETE /preguntas/{id}`**
 - Elimina la pregunta y sus `opcion_pregunta` en cascada.
-- Rechaza si la `ficha` padre ya tiene `ficha_ciclo_periodo` con `ficha_llenada` (respuestas de estudiantes ya existen).
+- **Plantilla** (`ficha_id`): libre. **Ficha del docente** (`ficha_ciclo_periodo_id`)
+  con `ficha_llenada`: **rechaza** (respuestas de estudiantes ya existen).
 
 **`PUT /fichas/{id}/preguntas/reordenar`**
 - Body: `[ { id, orden } ]`. Valida que todos los `id` sean preguntas de esta `ficha`. Aplica en transacción.
 
-### Asignación a ciclo+período (`ficha_ciclo_periodo`)
+### Fichas del docente por ciclo+período (`ficha_ciclo_periodo`)
 
-**`GET /ciclos-periodos/{cp_id}/fichas`**
-- Lista las fichas asignadas al ciclo+período. Incluye: nombre de la ficha, tipo, nº de preguntas y conteo de `ficha_llenada` por estado (`sin_abrir` / `borrador` / `enviada`).
-- Permiso: `periodos.ver`.
+Cada **docente** arma **sus** fichas en su ciclo (clona de la biblioteca o crea
+de cero), las personaliza y las **habilita** a su ritmo. Todos estos endpoints
+exigen que el `docente_id` autenticado sea dueño / esté asignado al `cp_id`.
 
-**`GET /ciclos-periodos/{cp_id}/fichas/{fcp_id}`**
-- Devuelve la copia clonada (`ficha_ciclo_periodo`) con su árbol de preguntas y opciones propias (las del clon, no las de la plantilla original).
-- Permiso: `periodos.ver`.
+**`GET /ciclos-periodos/{cp_id}/mis-fichas`** _(docente)_
+- Devuelve las `ficha_ciclo_periodo` **del docente autenticado** en ese ciclo+período:
+  nombre, tipo, nº de preguntas, `habilitada`, y conteo de `ficha_llenada` por
+  estado (`sin_abrir`/`borrador`/`enviada`).
 
-**`POST /ciclos-periodos/{cp_id}/fichas`**
-- Body: `{ ficha_id }`. Valida que la `ficha` exista y esté `activo=1`.
-- En transacción (orden crítico para integridad del mapa):
-  1. Crea `ficha_ciclo_periodo` (`ficha_id`, `ciclo_periodo_id`).
-  2. Clona cada `pregunta` de la plantilla hacia el clon (mismo campo dual: `ficha_ciclo_periodo_id` lleno, `ficha_id = NULL`). Guarda mapa `{ old_pregunta_id → new_pregunta_id }`.
-  3. Clona cada `opcion_pregunta` usando el mapa del paso 2.
-- Devuelve el `ficha_ciclo_periodo` con sus preguntas clonadas.
+**`POST /ciclos-periodos/{cp_id}/fichas`** _(docente)_ — crea una ficha del docente.
+- **Clonar de plantilla:** body `{ ficha_origen_id }`. Valida que la `ficha`
+  exista y esté `activo=1`. En transacción: crea `ficha_ciclo_periodo`
+  (`docente_id` = auth, `ficha_origen_id`, copia `nombre`/`descripcion`/`tipo_ficha_id`,
+  `habilitada = 0`) y **clona** sus `pregunta` + `opcion_pregunta` (dual FK:
+  `ficha_ciclo_periodo_id` lleno).
+- **Crear de cero:** body `{ desde_cero: true, tipo_ficha_id, nombre, descripcion? }`
+  → `ficha_ciclo_periodo` sin preguntas (`ficha_origen_id = NULL`, `habilitada = 0`).
 
-**`DELETE /ciclos-periodos/{cp_id}/fichas/{fcp_id}`**
-- Rechaza si existen `ficha_llenada` para esta `ficha_ciclo_periodo_id` (hay respuestas de estudiantes — el historial no se puede borrar). Mostrar cuántas.
+**Preguntas de la ficha del docente:** mismos endpoints que la plantilla
+(`POST/PUT/DELETE /preguntas`, reordenar), pero apuntando al `ficha_ciclo_periodo_id`
+del clon. El docente edita libremente **su** copia sin tocar la plantilla.
+
+**`PATCH /ciclos-periodos/{cp_id}/fichas/{fcp_id}/habilitar`** _(docente dueño)_
+- Body: `{ habilitada: 0 | 1 }`. Habilita/inhabilita la ficha para sus estudiantes.
+- Al **inhabilitar** una que ya tiene `ficha_llenada`, responder con **aviso**
+  (no bloqueo): "N estudiantes ya empezaron". Se permite igual.
+
+**`DELETE /ciclos-periodos/{cp_id}/fichas/{fcp_id}`** _(docente dueño)_
+- Rechaza si existen `ficha_llenada` (respuestas de estudiantes — no se borra el
+  historial). Mostrar cuántas.
 
 ### Llenado por el estudiante (`ficha_llenada` + `respuesta`)
 
 **`GET /mis-fichas`**
-- Obtiene el `ciclo_periodo` activo del estudiante autenticado: busca en `estudiante_ciclo_periodo` las filas del estudiante, hace join a `ciclo_periodo → periodo_academico` y filtra por `periodo_academico.activo = 1`.
-- Devuelve todas las `ficha_ciclo_periodo` de ese `ciclo_periodo`, enriquecidas con el estado de la `ficha_llenada` del estudiante:
+- Obtiene el `ciclo_periodo` activo del estudiante autenticado (su `estudiante_ciclo_periodo` con `periodo_academico.activo = 1`) — de ahí sale también **su tutor** (`docente_id`).
+- Devuelve las `ficha_ciclo_periodo` **de su tutor** en ese `ciclo_periodo` (filtra por `docente_id`), enriquecidas con el estado de la `ficha_llenada` del estudiante. Incluye el flag **`habilitada`**: las no habilitadas se devuelven marcadas para pintarlas 🔒 **bloqueadas** (el estudiante no puede abrirlas). Solo las `habilitada = 1` se pueden llenar.
   ```json
   {
     "id": 10,
@@ -365,6 +408,10 @@ permisos los define el desarrollador y se **siembran**.
   Si no existe `ficha_llenada`, `estado_llenado = "sin_abrir"` y `ficha_llenada_id = null`.
 
 **`POST /mis-fichas/{fcp_id}/comenzar`**
+- **Regla de secuencia (sin cambio de esquema):** rechaza con `409` si existe una
+  ficha **anterior** (en orden, habilitada) de ese estudiante que aún **no esté
+  `enviada`** — "completa la ficha anterior primero". Además la `fcp` debe estar
+  `habilitada = 1` y ser de su tutor.
 - Busca la `ficha_llenada` del estudiante autenticado para esa `fcp_id` (el UNIQUE `(estudiante_id, ficha_ciclo_periodo_id)` garantiza como máximo una fila):
   - Si `estado = 'enviada'` → `409` "Ya enviaste esta ficha."
   - Si `estado = 'borrador'` → `200` con la fila existente (idempotente — el estudiante puede recargar sin crear duplicados).

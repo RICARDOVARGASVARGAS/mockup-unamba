@@ -238,7 +238,23 @@
             </section>
 
             <section class="app-card p-5 sm:p-6">
-              <h3 class="section-title">4 · Roles <span class="text-danger">*</span> <span class="font-normal text-text-muted">(al menos uno)</span></h3>
+              <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div class="min-w-0">
+                  <h3 class="section-title">4 · Apoderados</h3>
+                  <p class="mt-1 text-sm text-text-muted">
+                    0..N. Si el documento ya existe (hermano), se reutiliza la identidad.
+                  </p>
+                </div>
+                <button type="button" data-apoderado-agregar class="btn-primary shrink-0 self-start">
+                  + Agregar apoderado
+                </button>
+              </div>
+              <div data-apoderados-list class="mt-5 space-y-3"></div>
+              <p data-apoderados-empty class="mt-5 text-sm text-text-muted">Sin apoderados vinculados.</p>
+            </section>
+
+            <section class="app-card p-5 sm:p-6">
+              <h3 class="section-title">5 · Roles <span class="text-danger">*</span> <span class="font-normal text-text-muted">(al menos uno)</span></h3>
               <p class="mt-1 text-sm text-text-muted">Solo se listan roles activos. Default: Estudiante.</p>
               <div data-roles-checklist class="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-2"></div>
             </section>
@@ -254,12 +270,108 @@
       </main>
     </div>
 
+    <!-- Modal: Agregar / editar apoderado -->
+    <div
+      id="modal-apoderado-backdrop"
+      class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4"
+      role="presentation"
+    >
+      <div
+        class="modal-panel flex max-h-[min(92vh,40rem)] w-full max-w-lg flex-col overflow-hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-apoderado-title"
+      >
+        <div class="shrink-0 border-b border-border pb-3">
+          <h2 id="modal-apoderado-title" class="font-heading text-lg font-bold">Agregar apoderado</h2>
+          <p data-apo-modal-hint class="mt-1 text-sm text-text-muted">Busca por documento. Si ya existe, se reutiliza.</p>
+        </div>
+
+        <div class="min-h-0 flex-1 space-y-4 overflow-y-auto py-4">
+          <div data-apo-step-buscar class="space-y-3">
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div>
+                <label for="apo-tipo-documento" class="form-label">Tipo de documento <span class="text-danger">*</span></label>
+                <select id="apo-tipo-documento" class="form-input"></select>
+              </div>
+              <div>
+                <label for="apo-documento" class="form-label">Número <span class="text-danger">*</span></label>
+                <div class="flex gap-2">
+                  <input id="apo-documento" type="text" class="form-input min-w-0 flex-1" placeholder="Ej. 41111111" autocomplete="off" />
+                  <button type="button" data-apo-buscar class="btn-secondary shrink-0">Buscar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div data-apo-step-datos class="hidden space-y-4">
+            <p data-apo-reused-banner class="hidden rounded-md border border-primary/25 bg-primary-soft px-3 py-2 text-sm text-primary">
+              Apoderado encontrado — identidad en solo lectura. Solo indiques parentesco y principal.
+            </p>
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div class="sm:col-span-2">
+                <label for="apo-nombres" class="form-label">Nombres <span class="text-danger">*</span></label>
+                <input id="apo-nombres" type="text" class="form-input" placeholder="Ej. Juan" />
+              </div>
+              <div>
+                <label for="apo-apaterno" class="form-label">Apellido paterno <span class="text-danger">*</span></label>
+                <input id="apo-apaterno" type="text" class="form-input" placeholder="Ej. Pérez" />
+              </div>
+              <div>
+                <label for="apo-amaterno" class="form-label">Apellido materno <span class="text-danger">*</span></label>
+                <input id="apo-amaterno" type="text" class="form-input" placeholder="Ej. Quispe" />
+              </div>
+              <div>
+                <label for="apo-cel1" class="form-label">Celular principal</label>
+                <input id="apo-cel1" type="tel" class="form-input" placeholder="987 654 321" />
+              </div>
+              <div>
+                <label for="apo-cel2" class="form-label">Celular secundario</label>
+                <input id="apo-cel2" type="tel" class="form-input" placeholder="912 345 678" />
+              </div>
+              <div>
+                <label for="apo-email" class="form-label">Email</label>
+                <input id="apo-email" type="email" class="form-input" placeholder="opcional" />
+              </div>
+              <div>
+                <label for="apo-ocupacion" class="form-label">Ocupación</label>
+                <input id="apo-ocupacion" type="text" class="form-input" placeholder="opcional" />
+              </div>
+              <div class="sm:col-span-2">
+                <label for="apo-direccion" class="form-label">Dirección</label>
+                <input id="apo-direccion" type="text" class="form-input" placeholder="opcional" />
+              </div>
+            </div>
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div>
+                <label for="apo-parentesco" class="form-label">Parentesco <span class="text-danger">*</span></label>
+                <select id="apo-parentesco" class="form-input"></select>
+              </div>
+              <div class="flex items-end">
+                <label class="flex items-center gap-2 rounded-md border border-border bg-bg px-3 py-2.5 text-sm text-text">
+                  <input id="apo-principal" type="checkbox" class="h-4 w-4 rounded border-border text-primary" />
+                  <span>Principal (contacto de este estudiante)</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex shrink-0 justify-end gap-3 border-t border-border pt-3">
+          <button type="button" data-apo-cancelar class="btn-secondary">Cancelar</button>
+          <button type="button" data-apo-guardar class="btn-primary hidden">Guardar vínculo</button>
+        </div>
+      </div>
+    </div>
+
+    <app-modal-confirm></app-modal-confirm>
     <app-toast></app-toast>
 
     <script src="../../js/theme.js"></script>
     <script src="../../js/site-paths.js"></script>
     <script src="../../components/app-sidebar.js"></script>
     <script src="../../components/app-topbar.js"></script>
+    <script src="../../components/app-modal-confirm.js"></script>
     <script src="../../components/app-toast.js"></script>
     <script src="../../js/catalog-table.js"></script>
     <script src="../../js/auditoria-data.js"></script>
@@ -267,6 +379,7 @@
     <script src="../../js/usuarios-data.js"></script>
     <script src="../../js/docentes-data.js"></script>
     <script src="../../js/estudiantes-data.js"></script>
+    <script src="../../js/apoderados-data.js"></script>
     <script src="../../js/estudiantes-form.js"></script>
   </body>
 </html>

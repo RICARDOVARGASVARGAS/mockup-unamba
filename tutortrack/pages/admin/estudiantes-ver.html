@@ -119,6 +119,19 @@
             </dl>
           </section>
 
+          <section class="ficha-panel ficha-panel-wide" aria-labelledby="ficha-apoderados">
+            <h3 id="ficha-apoderados" class="ficha-panel-title">Apoderados</h3>
+            <div data-ficha-apoderados class="space-y-3"></div>
+            <p data-ficha-apoderados-empty class="ficha-roles-empty hidden">Sin apoderados vinculados.</p>
+
+            <div class="mt-6 border-t border-border pt-5">
+              <h4 class="text-sm font-semibold text-text">Hermanos en el sistema</h4>
+              <p class="mt-1 text-sm text-text-muted">Otros estudiantes que comparten un apoderado.</p>
+              <ul data-ficha-hermanos class="mt-3 space-y-2" role="list"></ul>
+              <p data-ficha-hermanos-empty class="mt-3 text-sm text-text-muted hidden">No hay hermanos registrados.</p>
+            </div>
+          </section>
+
           <section class="ficha-panel ficha-panel-wide" aria-labelledby="ficha-historial">
             <h3 id="ficha-historial" class="ficha-panel-title">Historial de tutoría</h3>
             <div class="ficha-actividad-stats" data-ficha-historial-stats></div>
@@ -167,6 +180,7 @@
     <script src="../../js/tipos-documento-data.js"></script>
     <script src="../../js/docentes-data.js"></script>
     <script src="../../js/estudiantes-data.js"></script>
+    <script src="../../js/apoderados-data.js"></script>
     <script src="../../js/estudiantes-ver.js"></script>
   </body>
 </html>

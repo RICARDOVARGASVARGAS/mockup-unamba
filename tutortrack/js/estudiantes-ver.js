@@ -125,6 +125,60 @@
       .join("");
   }
 
+  function renderApoderados(row) {
+    const listEl = document.querySelector("[data-ficha-apoderados]");
+    const emptyEl = document.querySelector("[data-ficha-apoderados-empty]");
+    const hermanosEl = document.querySelector("[data-ficha-hermanos]");
+    const hermanosEmpty = document.querySelector("[data-ficha-hermanos-empty]");
+    if (!listEl || !window.ApoderadosData) return;
+
+    const aps = ApoderadosData.listByEstudiante(row.id);
+    emptyEl?.classList.toggle("hidden", aps.length > 0);
+    listEl.innerHTML = aps
+      .map((ap) => {
+        const nombre = ApoderadosData.nombreCompleto(ap);
+        const parentesco = ApoderadosData.parentescoLabel(ap.parentesco);
+        const contacto = [ap.celular_principal, ap.email].filter(Boolean).join(" · ") || "—";
+        const badge = ap.es_principal
+          ? '<span class="badge badge-accent">Principal</span>'
+          : "";
+        return `
+        <article class="rounded-md border border-border bg-bg px-4 py-3">
+          <div class="flex flex-wrap items-center gap-2">
+            <p class="font-medium text-text">${esc(nombre)}</p>
+            ${badge}
+          </div>
+          <p class="mt-0.5 text-sm text-text-muted">${esc(docLabel(ap))}</p>
+          <p class="mt-1 text-sm text-text">${esc(parentesco)} · ${esc(contacto)}</p>
+        </article>`;
+      })
+      .join("");
+
+    const hermanoIds = ApoderadosData.hermanos(row.id);
+    const hermanos = hermanoIds
+      .map((id) => EstudiantesData.findById(id))
+      .filter(Boolean);
+    hermanosEmpty?.classList.toggle("hidden", hermanos.length > 0);
+    if (hermanosEl) {
+      hermanosEl.innerHTML = hermanos
+        .map((h) => {
+          const name = EstudiantesData.nombreCompleto(h);
+          const cod = h.codigo_universitario || "—";
+          return `
+          <li>
+            <a
+              href="estudiantes-ver.html?id=${encodeURIComponent(h.id)}"
+              class="inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-primary-dark"
+            >
+              ${esc(name)}
+              <span class="font-normal text-text-muted">· ${esc(cod)}</span>
+            </a>
+          </li>`;
+        })
+        .join("");
+    }
+  }
+
   function bindActions(row) {
     const edit = document.querySelector("[data-ficha-editar]");
     if (edit) edit.href = `estudiantes-form.html?id=${encodeURIComponent(row.id)}`;
@@ -223,6 +277,7 @@
     );
 
     renderHistorial(row);
+    renderApoderados(row);
     bindActions(row);
   }
 
@@ -232,7 +287,13 @@
     const empty = document.querySelector("[data-ficha-empty]");
     if (!window.EstudiantesData) return;
 
-    EstudiantesData.ready()
+    const boot = () =>
+      Promise.all([
+        EstudiantesData.ready(),
+        window.ApoderadosData ? ApoderadosData.ready() : Promise.resolve(),
+      ]);
+
+    boot()
       .then(() => {
         const row = id ? EstudiantesData.findById(id) : null;
         if (!row) {
