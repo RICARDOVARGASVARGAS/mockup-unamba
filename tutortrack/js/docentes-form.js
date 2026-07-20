@@ -1,6 +1,6 @@
 /**
  * docentes-form.js — alta/edición Docente (usuario + docente + roles).
- * Campos según docs/BD-BACKEND.md y docs/MOCKUP-PANTALLAS.md § Pantalla 4.
+ * Campos según docs/BD-BACKEND.md y docs/DISEÑO-FRONTEND.md § Docentes.
  */
 (function () {
   const toast = (message, type = "success") =>
