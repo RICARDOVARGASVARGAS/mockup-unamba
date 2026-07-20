@@ -18,12 +18,12 @@
     connectedCallback() {
       this.innerHTML = `
         <div data-backdrop class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
-          <div data-panel role="alertdialog" aria-modal="true" aria-labelledby="modal-confirm-title" class="w-full max-w-sm rounded-lg border border-border bg-bg p-6 shadow-md">
+          <div data-panel role="alertdialog" aria-modal="true" aria-labelledby="modal-confirm-title" class="w-full max-w-md rounded-lg border border-border bg-bg p-6 shadow-md">
             <span data-icon-wrap class="flex h-10 w-10 items-center justify-center rounded-md bg-danger-bg text-danger">
               <svg data-icon class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">${ICONS.warning}</svg>
             </span>
             <h2 id="modal-confirm-title" data-title class="mt-4 font-heading text-lg font-semibold text-text">Eliminar elemento</h2>
-            <p data-message class="mt-2 text-sm text-text-muted"></p>
+            <div data-message class="mt-2 text-sm text-text-muted space-y-2"></div>
             <div class="mt-6 flex justify-end gap-2">
               <button type="button" data-cancel class="btn-ghost px-4">Cancelar</button>
               <button type="button" data-confirm class="inline-flex h-10 items-center rounded-md bg-danger px-4 text-sm font-semibold text-white transition hover:opacity-90">Eliminar</button>
@@ -70,15 +70,22 @@
       return isDanger;
     }
 
-    openUi({ title, message, confirmLabel, cancelLabel, variant }) {
+    openUi({ title, message, messageHtml, confirmLabel, cancelLabel, variant }) {
       const backdrop = this.querySelector("[data-backdrop]");
+      const messageEl = this.querySelector("[data-message]");
       this.querySelector("[data-title]").textContent = title || "Confirmar";
-      this.querySelector("[data-message]").textContent = message || "";
+      if (messageHtml) {
+        messageEl.innerHTML = messageHtml;
+      } else {
+        messageEl.textContent = message || "";
+      }
       this.querySelector("[data-confirm]").textContent = confirmLabel || "Confirmar";
       this.querySelector("[data-cancel]").textContent = cancelLabel || "Cancelar";
       this.applyVariant(variant || "danger");
       backdrop.classList.remove("hidden");
       backdrop.classList.add("flex");
+      // Foco por defecto en Cancelar (acciones destructivas / sensibles)
+      this.querySelector("[data-cancel]")?.focus();
     }
 
     closeUi() {
@@ -97,6 +104,7 @@
         this.openUi({
           title: opts.title || "Confirmar",
           message: opts.message || "",
+          messageHtml: opts.messageHtml || "",
           confirmLabel: opts.confirmLabel || "Aceptar",
           cancelLabel: opts.cancelLabel || "Cancelar",
           variant: opts.variant || "warning",

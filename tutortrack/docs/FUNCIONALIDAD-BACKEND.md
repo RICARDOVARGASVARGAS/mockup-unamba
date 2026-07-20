@@ -108,8 +108,13 @@ asociado.
 
 **`/estudiantes`** — análogo a docentes:
 - `POST`: transacción usuario + `estudiante` + rol `estudiante`. Valida
-  `codigo_universitario` **único** y obligatorio.
-- `GET` lista, `PUT` edita, `DELETE` soft delete del perfil.
+  `codigo_universitario` **único** y obligatorio. `estado` nace `activo`.
+- `GET` lista (filtra por `estado`), `PUT` edita, `DELETE` soft delete del perfil.
+
+**`PATCH /estudiantes/{id}/estado`** — cambia el **estado académico**
+(`activo` / `egresado` / `retirado`). Distinto de `PATCH /usuarios/{id}/estado`
+(que es el acceso/login). Un `egresado`/`retirado` sale del padrón activo y de
+las propuestas de "Avanzar estudiantes"; su historial se conserva.
 
 **Regla del caso dual (docente + estudiante):** está permitido; el modelo lo
 soporta con dos perfiles sobre el mismo `usuario`. *(La validación de que un
@@ -240,19 +245,26 @@ permisos los define el desarrollador y se **siembran**.
 
 **`GET /periodos-academicos/{id}/avanzar-estudiantes/propuesta`**
 - Parámetro requerido: `periodo_origen_id` (del cual se toma la matrícula actual).
-- Para cada estudiante del período origen:
-  1. Obtiene el `ciclo` actual y busca el siguiente por `orden` (siguiente ciclo activo con `orden` = actual + 1).
+- Solo considera estudiantes con `estado = 'activo'` (los `egresado`/`retirado` no entran).
+- Para cada estudiante del período origen, arma una **propuesta editable** con una
+  `accion` sugerida:
+  1. Obtiene el `ciclo` actual y busca el siguiente por `orden` (`orden` actual + 1, ciclo activo).
   2. Obtiene el `ciclo_periodo_id` del ciclo destino en el período destino (el `{id}` de la ruta).
-  3. Propone el mismo `docente_id` si sigue asignado en el ciclo destino; si no, propone el primer docente disponible del ciclo destino.
-  4. Marca `incluir = true` si el ciclo siguiente existe, `incluir = false` si no hay ciclo siguiente (egresado).
-- Respuesta incluye balance de carga propuesto por docente.
+  3. Propone el mismo `docente_id` si sigue asignado en el ciclo destino; si no, marca `sin_tutor` (el admin elige uno del pool).
+  4. **`accion` sugerida:** `avanzar` si hay ciclo siguiente; `egresar` si está en el último ciclo (sin `orden` superior). El admin puede cambiarla a `repetir` (mismo ciclo) o `excluir`.
+- El sistema **propone, no decide** (no hay notas de aprobado/jalado en el modelo). Respuesta incluye balance de carga propuesto por docente.
 
 **`POST /periodos-academicos/{id}/avanzar-estudiantes/confirmar`**
-- Body: `[ { estudiante_id, ciclo_periodo_id, docente_id, incluir } ]`.
-- Filtra solo las filas con `incluir = true`.
-- Valida en bloque que ningún estudiante tenga ya matrícula en el período destino.
-- Valida que cada `docente_id` esté en `docente_ciclo_periodo` para su `ciclo_periodo_id`.
-- Inserta todas las filas en una sola transacción (todo o nada).
+- Body: `[ { estudiante_id, accion, ciclo_periodo_id?, docente_id? } ]` con
+  `accion ∈ { avanzar, repetir, egresar, excluir }`.
+- En una sola **transacción** (todo o nada):
+  - `avanzar` / `repetir` → inserta `estudiante_ciclo_periodo` con el
+    `ciclo_periodo_id` + `docente_id` indicados. Valida: sin matrícula previa en
+    el período destino; `docente_id` presente en `docente_ciclo_periodo` de ese
+    `ciclo_periodo_id`.
+  - `egresar` → **no** crea matrícula; actualiza `estudiante.estado = 'egresado'`.
+  - `excluir` → no hace nada (el estudiante queda como estaba).
+- No modifica el período origen.
 
 ---
 

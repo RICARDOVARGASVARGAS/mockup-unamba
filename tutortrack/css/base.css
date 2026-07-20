@@ -557,6 +557,83 @@ h6 {
   color: var(--color-primary-dark);
 }
 
+/* —— Resumen de personas (Total / Activos / Inactivos) —— */
+
+.people-summary {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+}
+
+@media (min-width: 640px) {
+  .people-summary {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.people-summary-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg);
+  box-shadow: var(--shadow-sm);
+}
+
+.people-summary-icon {
+  display: flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+}
+
+.people-summary-icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.people-summary-total .people-summary-icon {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.people-summary-active .people-summary-icon {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.people-summary-inactive .people-summary-icon {
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+}
+
+.people-summary-label {
+  margin: 0;
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  color: var(--color-text-muted);
+}
+
+.people-summary-value {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  line-height: 1.15;
+  color: var(--color-text);
+}
+
+.people-summary-sub {
+  margin: 0.15rem 0 0;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
 /* —— Catálogos admin —— */
 
 .catalog-panel {
@@ -977,6 +1054,72 @@ h6 {
   gap: 0.35rem;
 }
 
+.catalog-overflow {
+  position: relative;
+}
+
+.catalog-overflow-panel {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  right: 0;
+  z-index: 30;
+  min-width: 13.5rem;
+  padding: 0.35rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  box-shadow: var(--shadow-md);
+}
+
+.catalog-overflow.is-open .catalog-overflow-panel {
+  display: block;
+}
+
+.catalog-overflow-item {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.55rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  padding: 0.55rem 0.65rem;
+  text-align: left;
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.catalog-overflow-item:hover,
+.catalog-overflow-item:focus-visible {
+  background: var(--color-surface);
+  outline: none;
+}
+
+.catalog-overflow-icon {
+  display: inline-flex;
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+}
+
+.catalog-overflow-icon svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.btn-action-more {
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+}
+
+.btn-action-more:hover {
+  background: color-mix(in srgb, var(--color-text-muted) 14%, var(--color-bg));
+  color: var(--color-text);
+}
+
 .btn-action {
   display: inline-flex;
   width: 2.125rem;
@@ -1124,6 +1267,47 @@ h6 {
   }
 }
 
+.ficha-hero-docente .ficha-avatar img {
+  width: 6rem;
+  height: 6rem;
+}
+
+.ficha-hero-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+@media (min-width: 768px) {
+  .ficha-hero-top {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+}
+
+.ficha-documento {
+  margin: 0.35rem 0 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.ficha-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+@media (min-width: 768px) {
+  .ficha-hero-actions {
+    justify-content: flex-start;
+  }
+}
+
 .ficha-avatar {
   flex-shrink: 0;
 }
@@ -1142,6 +1326,11 @@ h6 {
   .ficha-avatar img {
     width: 7rem;
     height: 7rem;
+  }
+
+  .ficha-hero-docente .ficha-avatar img {
+    width: 6rem;
+    height: 6rem;
   }
 }
 
@@ -1167,11 +1356,10 @@ h6 {
 .ficha-nombre {
   margin: 0;
   font-family: var(--font-heading);
-  font-size: clamp(1.35rem, 1.2vw + 1rem, 1.85rem);
+  font-size: clamp(1.2rem, 1.1vw + 0.95rem, 1.65rem);
   font-weight: var(--font-bold);
   line-height: 1.25;
   letter-spacing: 0.01em;
-  text-transform: uppercase;
   color: var(--color-brand-ink);
   text-wrap: balance;
 }
@@ -1198,14 +1386,22 @@ h6 {
   width: 100%;
 }
 
+.ficha-panels-2 {
+  grid-template-columns: 1fr;
+}
+
 @media (min-width: 768px) {
-  .ficha-panels {
+  .ficha-panels:not(.ficha-panels-2) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ficha-panels-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (min-width: 1200px) {
-  .ficha-panels {
+  .ficha-panels:not(.ficha-panels-2) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
@@ -1236,6 +1432,22 @@ h6 {
   flex-direction: column;
   gap: 0.95rem;
   margin: 0;
+}
+
+.ficha-fields-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.95rem 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .ficha-fields-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ficha-field-span {
+    grid-column: 1 / -1;
+  }
 }
 
 .ficha-field dt {
@@ -1271,6 +1483,86 @@ h6 {
   font-size: var(--text-base);
   line-height: 1.65;
   color: var(--color-text);
+}
+
+.ficha-actividad-stats {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 640px) {
+  .ficha-actividad-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.ficha-actividad-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.ficha-actividad-stat-value {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  color: var(--color-primary);
+}
+
+.ficha-actividad-stat-label {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.ficha-actividad-table-wrap {
+  overflow-x: auto;
+}
+
+.ficha-actividad-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.ficha-actividad-table th,
+.ficha-actividad-table td {
+  padding: 0.65rem 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.ficha-actividad-table th {
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-muted);
+}
+
+.ficha-ver-todos {
+  margin-top: 0.75rem;
+  border: none;
+  background: transparent;
+  padding: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+.ficha-ver-todos:hover {
+  text-decoration: underline;
+}
+
+.ficha-meta {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
 }
 
 .ficha-panel-roles {

@@ -14,13 +14,16 @@
 
   function fillRoles(container, selectedIds) {
     const selected = new Set(selectedIds || []);
-    container.innerHTML = DocentesData.ROLES.map(
-      (rol) => `
+    const roles = typeof DocentesData.rolesActivos === "function" ? DocentesData.rolesActivos() : DocentesData.ROLES;
+    container.innerHTML = roles
+      .map(
+        (rol) => `
       <label class="flex items-center gap-2 rounded-md border border-border bg-bg px-3 py-2.5 text-sm text-text">
         <input type="checkbox" name="roles" value="${rol.id}" ${selected.has(rol.id) ? "checked" : ""} class="h-4 w-4 rounded border-border text-primary" />
         <span>${CatalogTable.escapeHtml(rol.nombre)}</span>
       </label>`
-    ).join("");
+      )
+      .join("");
   }
 
   function fillSelect(select, options, current, emptyLabel) {
@@ -243,6 +246,16 @@
 
     if (title) title.textContent = isEdit ? "Editar docente" : "Nuevo docente";
 
+    const passwordNote = document.querySelector("[data-password-note]");
+    if (passwordNote) passwordNote.classList.toggle("hidden", isEdit);
+
+    const emailHint = document.querySelector("[data-email-hint]");
+    if (emailHint) {
+      emailHint.textContent = isEdit
+        ? "Es el login. Cámbialo con cuidado: el docente usará este correo para ingresar."
+        : "Login institucional (único). No se define contraseña a mano.";
+    }
+
     fillRoles(rolesBox, isEdit ? existing.roles : ["rol-2"]);
     fillTiposDocumento(tipoSelect, isEdit ? existing.tipo_documento_id : "td-1");
     fillSelect(gradoSelect, DocentesData.GRADOS, isEdit ? existing.grado_academico_id : "", "Seleccionar…");
@@ -301,8 +314,23 @@
         codigo_orcid: document.getElementById("doc-orcid").value.trim(),
         cv_url: document.getElementById("doc-cv").value.trim(),
         biografia: document.getElementById("doc-bio").value.trim(),
+        created_at: isEdit ? existing.created_at : new Date().toISOString(),
+        updated_at: new Date().toISOString(),
         roles,
       };
+
+      const orcid = row.codigo_orcid;
+      if (orcid && !/^\d{4}-\d{4}-\d{4}-\d{4}$/.test(orcid)) {
+        toast("ORCID debe tener el formato 0000-0000-0000-0000", "warning");
+        return;
+      }
+
+      const tipoClave =
+        (window.TiposDocumentoData && TiposDocumentoData.clave(row.tipo_documento_id)) || "";
+      if (tipoClave === "DNI" && !/^\d{8}$/.test(row.documento)) {
+        toast("El DNI debe tener 8 dígitos", "warning");
+        return;
+      }
 
       if (
         !row.tipo_documento_id ||

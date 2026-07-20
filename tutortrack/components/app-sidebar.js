@@ -28,6 +28,16 @@
       dashboard: { label: "Dashboard", path: "admin/dashboard.html" },
       groups: [
         {
+          label: "Usuarios y acceso",
+          items: [
+            { label: "Docentes", path: "admin/docentes.html" },
+            { label: "Estudiantes", path: "admin/estudiantes.html" },
+            { label: "Receptores", path: "admin/receptores.html" },
+            { label: "Usuarios", path: "admin/usuarios.html" },
+            { label: "Roles y permisos", path: "admin/roles-permisos.html" },
+          ],
+        },
+        {
           label: "Catálogos",
           items: [
             { label: "Ciclos", path: "admin/ciclos.html" },
@@ -37,18 +47,12 @@
             { label: "Tipos de documento", path: "admin/tipos-documento.html" },
             { label: "Áreas", path: "admin/areas.html" },
             { label: "Tipos de ficha", path: "admin/tipos-ficha.html" },
-            { label: "Tipos de pregunta", path: "admin/tipos-pregunta.html" },
             { label: "Entidades receptoras", path: "admin/entidades-receptoras.html" },
-            { label: "Tipos de estado de derivación", path: "admin/tipos-estado-derivacion.html" },
-            { label: "Usuarios", path: "admin/usuarios.html" },
-            { label: "Roles y permisos", path: "admin/roles-permisos.html" },
           ],
         },
         {
-          label: "Gestión por periodo",
+          label: "Organización del período",
           items: [
-            { label: "Docentes", path: "admin/docentes.html" },
-            { label: "Estudiantes", path: "admin/estudiantes.html" },
             { label: "Configuración del período", path: "admin/gestion-periodo.html" },
             { label: "Matrículas", path: "admin/matriculas.html" },
             { label: "Avanzar estudiantes", path: "admin/avanzar-estudiantes.html" },
@@ -58,7 +62,7 @@
           label: "Fichas",
           items: [
             { label: "Plantillas de fichas", path: "admin/fichas.html" },
-            { label: "Asignación a ciclos", path: "admin/fichas-asignacion.html" },
+            { label: "Asignación a ciclos", path: "admin/fichas-ciclo-periodo.html" },
           ],
         },
         {

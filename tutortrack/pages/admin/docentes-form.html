@@ -74,7 +74,7 @@
           <form id="docente-form" data-docente-form class="space-y-5" novalidate>
             <!-- 1. Identidad -->
             <section class="app-card p-5 sm:p-6">
-              <h3 class="section-title">Identidad</h3>
+              <h3 class="section-title">1 · Identidad</h3>
               <p class="mt-1 text-sm text-text-muted">Documento y datos personales. Puedes consultar RENIEC con el DNI.</p>
 
               <div class="mt-5 space-y-4">
@@ -113,7 +113,7 @@
                           </svg>
                         </button>
                       </div>
-                      <p class="form-hint">La lupa consulta RENIEC (simulado, solo DNI).</p>
+                      <p class="form-hint" data-doc-hint>DNI = 8 dígitos. La lupa consulta RENIEC (simulado, solo DNI).</p>
                     </div>
                   </div>
 
@@ -136,8 +136,9 @@
                       <label for="doc-sexo" class="form-label">Sexo</label>
                       <select id="doc-sexo" name="sexo" class="form-input">
                         <option value="">Seleccionar…</option>
-                        <option value="F">Femenino</option>
                         <option value="M">Masculino</option>
+                        <option value="F">Femenino</option>
+                        <option value="N">No especificado</option>
                       </select>
                     </div>
                     <div>
@@ -150,9 +151,12 @@
 
             <!-- 2. Contacto y acceso -->
             <section class="app-card p-5 sm:p-6">
-              <h3 class="section-title">Contacto y acceso</h3>
+              <h3 class="section-title">2 · Contacto y acceso</h3>
               <p class="mt-1 text-sm text-text-muted">
-                El correo institucional sirve para iniciar sesión. La contraseña inicial se genera automáticamente a partir del número de documento.
+                El correo institucional sirve para iniciar sesión.
+              </p>
+              <p data-password-note class="mt-2 rounded-md border border-border bg-surface px-3 py-2 text-sm text-text-muted">
+                La contraseña inicial será el número de documento.
               </p>
               <div class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
@@ -166,7 +170,7 @@
                     class="form-input"
                     placeholder="nombre.apellido@unamba.edu.pe"
                   />
-                  <p class="form-hint">Login institucional (único). No se define contraseña a mano.</p>
+                  <p class="form-hint" data-email-hint>Login institucional (único). No se define contraseña a mano.</p>
                 </div>
                 <div>
                   <label for="doc-email-personal" class="form-label">Correo personal</label>
@@ -209,8 +213,8 @@
 
             <!-- 3. Perfil académico -->
             <section class="app-card p-5 sm:p-6">
-              <h3 class="section-title">Perfil académico</h3>
-              <p class="mt-1 text-sm text-text-muted">Datos del perfil docente (opcionales).</p>
+              <h3 class="section-title">3 · Perfil académico <span class="font-normal text-text-muted">(opcional)</span></h3>
+              <p class="mt-1 text-sm text-text-muted">Datos del perfil docente.</p>
               <div class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                   <label for="doc-grado" class="form-label">Grado académico</label>
@@ -246,10 +250,10 @@
               </div>
             </section>
 
-            <!-- 5. Roles -->
+            <!-- 4. Roles -->
             <section class="app-card p-5 sm:p-6">
-              <h3 class="section-title">Roles</h3>
-              <p class="mt-1 text-sm text-text-muted">Elige al menos un rol para este usuario.</p>
+              <h3 class="section-title">4 · Roles <span class="text-danger">*</span> <span class="font-normal text-text-muted">(al menos uno)</span></h3>
+              <p class="mt-1 text-sm text-text-muted">Solo se listan roles activos. Un docente puede tener varios.</p>
               <div data-roles-checklist class="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-2"></div>
             </section>
 

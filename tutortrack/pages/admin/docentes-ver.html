@@ -28,36 +28,45 @@
 
       <main class="flex-1 p-4 sm:p-6 lg:p-8">
         <div class="ficha-page" data-ficha>
-          <div class="ficha-toolbar">
-            <div>
-              <a href="docentes.html" class="ficha-back">← Volver al listado</a>
-              <h1 class="ficha-page-title">Ficha del docente</h1>
-            </div>
-            <div class="ficha-toolbar-actions">
-              <a data-ficha-editar href="#" class="btn-primary inline-flex">Editar</a>
-            </div>
-          </div>
+          <a href="docentes.html" class="ficha-back">← Volver al listado</a>
 
-          <header class="ficha-hero">
+          <header class="ficha-hero ficha-hero-docente">
             <div data-ficha-avatar class="ficha-avatar"></div>
             <div class="ficha-hero-body">
-              <div class="ficha-hero-meta">
+              <div class="ficha-hero-top">
+                <div class="min-w-0">
+                  <h2 data-ficha-nombre class="ficha-nombre"></h2>
+                  <p data-ficha-documento class="ficha-documento"></p>
+                </div>
                 <span data-ficha-estado></span>
               </div>
-              <h2 data-ficha-nombre class="ficha-nombre"></h2>
-              <p data-ficha-grado class="ficha-grado"></p>
-              <p data-ficha-especialidad class="ficha-especialidad"></p>
+              <div class="ficha-hero-actions">
+                <a data-ficha-editar href="#" class="btn-secondary inline-flex">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" />
+                  </svg>
+                  Editar
+                </a>
+                <button type="button" data-ficha-password class="btn-secondary inline-flex">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />
+                  </svg>
+                  Contraseña
+                </button>
+                <button type="button" data-ficha-auditoria class="btn-secondary inline-flex">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                  </svg>
+                  Auditoría
+                </button>
+              </div>
             </div>
           </header>
 
-          <div class="ficha-panels">
+          <div class="ficha-panels ficha-panels-2">
             <section class="ficha-panel" aria-labelledby="ficha-identidad">
               <h3 id="ficha-identidad" class="ficha-panel-title">Identidad</h3>
               <dl class="ficha-fields">
-                <div class="ficha-field">
-                  <dt>Documento</dt>
-                  <dd data-ficha-documento></dd>
-                </div>
                 <div class="ficha-field">
                   <dt>Sexo</dt>
                   <dd data-ficha-sexo></dd>
@@ -90,39 +99,59 @@
                 </div>
               </dl>
             </section>
-
-            <section class="ficha-panel" aria-labelledby="ficha-academico">
-              <h3 id="ficha-academico" class="ficha-panel-title">Perfil académico</h3>
-              <dl class="ficha-fields">
-                <div class="ficha-field">
-                  <dt>Grado académico</dt>
-                  <dd data-ficha-grado-full></dd>
-                </div>
-                <div class="ficha-field">
-                  <dt>Especialidad</dt>
-                  <dd data-ficha-esp-full></dd>
-                </div>
-                <div class="ficha-field">
-                  <dt>ORCID</dt>
-                  <dd data-ficha-orcid></dd>
-                </div>
-                <div class="ficha-field">
-                  <dt>CV</dt>
-                  <dd data-ficha-cv></dd>
-                </div>
-              </dl>
-            </section>
           </div>
 
-          <section class="ficha-panel ficha-panel-wide" aria-labelledby="ficha-bio-title">
-            <h3 id="ficha-bio-title" class="ficha-panel-title">Biografía</h3>
-            <p data-ficha-bio class="ficha-bio-text"></p>
+          <section class="ficha-panel ficha-panel-wide" aria-labelledby="ficha-academico">
+            <h3 id="ficha-academico" class="ficha-panel-title">Perfil académico</h3>
+            <dl class="ficha-fields ficha-fields-grid">
+              <div class="ficha-field">
+                <dt>Grado</dt>
+                <dd data-ficha-grado-full></dd>
+              </div>
+              <div class="ficha-field">
+                <dt>Especialidad</dt>
+                <dd data-ficha-esp-full></dd>
+              </div>
+              <div class="ficha-field">
+                <dt>ORCID</dt>
+                <dd data-ficha-orcid></dd>
+              </div>
+              <div class="ficha-field">
+                <dt>CV</dt>
+                <dd data-ficha-cv></dd>
+              </div>
+              <div class="ficha-field ficha-field-span">
+                <dt>Biografía</dt>
+                <dd data-ficha-bio></dd>
+              </div>
+            </dl>
+          </section>
+
+          <section class="ficha-panel ficha-panel-wide" aria-labelledby="ficha-actividad">
+            <h3 id="ficha-actividad" class="ficha-panel-title">Actividad de tutoría</h3>
+            <div class="ficha-actividad-stats" data-ficha-actividad-stats></div>
+            <div class="ficha-actividad-table-wrap" data-ficha-actividad-wrap>
+              <table class="ficha-actividad-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Período</th>
+                    <th scope="col">Ciclo(s)</th>
+                    <th scope="col" class="text-right">Tutorados</th>
+                  </tr>
+                </thead>
+                <tbody data-ficha-actividad-body></tbody>
+              </table>
+              <button type="button" data-ficha-ver-todos class="ficha-ver-todos hidden">Ver todos</button>
+            </div>
+            <p data-ficha-actividad-empty class="ficha-roles-empty hidden">Sin actividad de tutoría registrada.</p>
           </section>
 
           <section class="ficha-panel ficha-panel-wide ficha-panel-roles" aria-labelledby="ficha-roles-title">
-            <h3 id="ficha-roles-title" class="ficha-panel-title">Roles asignados</h3>
+            <h3 id="ficha-roles-title" class="ficha-panel-title">Roles</h3>
             <div data-ficha-roles></div>
           </section>
+
+          <p data-ficha-meta class="ficha-meta"></p>
         </div>
 
         <div data-ficha-empty class="ficha-empty-wrap hidden">
@@ -132,11 +161,17 @@
       </main>
     </div>
 
+    <app-modal-confirm></app-modal-confirm>
+    <app-modal-historial></app-modal-historial>
     <app-toast></app-toast>
+
     <script src="../../js/theme.js"></script>
     <script src="../../js/site-paths.js"></script>
     <script src="../../components/app-sidebar.js"></script>
     <script src="../../components/app-topbar.js"></script>
+    <script src="../../components/app-modal-confirm.js"></script>
+    <script src="../../js/auditoria-data.js"></script>
+    <script src="../../components/app-modal-historial.js"></script>
     <script src="../../components/app-toast.js"></script>
     <script src="../../js/tipos-documento-data.js"></script>
     <script src="../../js/docentes-data.js"></script>

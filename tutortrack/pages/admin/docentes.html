@@ -27,7 +27,47 @@
       ></app-topbar>
 
       <main class="flex-1 p-4 sm:p-6 lg:p-8">
-        <section class="app-card catalog-panel" data-catalog data-audit-table="docente" data-delete-toast="Docente eliminado">
+        <!-- Cards de resumen (conteo global inmutable) -->
+        <div class="people-summary" data-people-summary aria-label="Resumen de docentes">
+          <article class="people-summary-card people-summary-total">
+            <div class="people-summary-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+              </svg>
+            </div>
+            <div>
+              <p class="people-summary-label">Total docentes</p>
+              <p class="people-summary-value" data-summary-total>0</p>
+              <p class="people-summary-sub">registrados</p>
+            </div>
+          </article>
+          <article class="people-summary-card people-summary-active">
+            <div class="people-summary-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+              </svg>
+            </div>
+            <div>
+              <p class="people-summary-label">Activos</p>
+              <p class="people-summary-value" data-summary-activos>0</p>
+              <p class="people-summary-sub">con acceso habilitado</p>
+            </div>
+          </article>
+          <article class="people-summary-card people-summary-inactive">
+            <div class="people-summary-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
+              </svg>
+            </div>
+            <div>
+              <p class="people-summary-label">Inactivos</p>
+              <p class="people-summary-value" data-summary-inactivos>0</p>
+              <p class="people-summary-sub">sin acceso</p>
+            </div>
+          </article>
+        </div>
+
+        <section class="app-card catalog-panel mt-5" data-catalog data-audit-table="docente" data-delete-toast="Docente eliminado">
           <div class="catalog-head">
             <div>
               <h2 class="font-heading">Docentes</h2>
@@ -57,8 +97,14 @@
                 type="search"
                 data-catalog-search
                 class="catalog-input"
-                placeholder="Buscar por nombre, documento o correo…"
+                placeholder="Buscar por nombre, apellido, documento o correo…"
               />
+            </div>
+            <div class="catalog-field">
+              <label for="filter-especialidad">Especialidad</label>
+              <select id="filter-especialidad" data-filter="especialidad" class="catalog-select min-w-[11rem]">
+                <option value="">Todas</option>
+              </select>
             </div>
             <div class="catalog-field">
               <label for="filter-estado">Estado</label>

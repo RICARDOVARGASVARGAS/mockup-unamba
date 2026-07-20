@@ -398,10 +398,12 @@ CREATE TABLE docente (
 
 ### Tabla 9 · `estudiante`
 
-Perfil 1:1 de `usuario`. Mínima: anchor + `codigo_universitario`. El ciclo,
-la escuela y el estado (activo/egresado) NO son campos — se derivan (ciclo
-vía matrícula) o están fuera de alcance (escuela diferida; estado se infiere
-por ausencia de matrícula en el periodo vigente).
+Perfil 1:1 de `usuario`. Anchor + `codigo_universitario` + `estado` (ciclo de
+vida académico). El **ciclo** NO es campo — se deriva de la matrícula del
+período vigente (`estudiante_ciclo_periodo`); la **escuela** queda diferida
+(fuera de alcance). El **estado** (activo/egresado/retirado) SÍ es explícito:
+antes se infería por ausencia de matrícula (ambiguo), ahora se marca al
+avanzar/egresar/retirar.
 
 | Campo | Tipo | Nulo | Notas |
 |-------|------|:----:|-------|
@@ -409,11 +411,18 @@ por ausencia de matrícula en el periodo vigente).
 | `usuario_id` | `BIGINT UNSIGNED` | NO | FK → `usuario(id)`, **UNIQUE** (1:1) |
 | `codigo_universitario` | `VARCHAR(20)` | NO | **UNIQUE** |
 | `codigo_orcid` | `VARCHAR(19)` | SÍ | opcional (CV futuro) |
+| `estado` | `VARCHAR(10)` | NO | DEFAULT `activo` — ciclo de vida académico: `activo` / `egresado` / `retirado`. CHECK en BD |
 | `created_at` | `TIMESTAMP` | SÍ | |
 | `updated_at` | `TIMESTAMP` | SÍ | |
 | `deleted_at` | `TIMESTAMP` | SÍ | soft delete |
 
-**Índices:** PK (`id`) · **UNIQUE (`usuario_id`)** · **UNIQUE (`codigo_universitario`)**.
+**Índices:** PK (`id`) · **UNIQUE (`usuario_id`)** · **UNIQUE (`codigo_universitario`)** · índice en `estado`.
+
+**`estado` (ciclo de vida) vs `usuario.activo` (acceso):** son distintos.
+`estado` = situación académica (`activo` cursando, `egresado` terminó,
+`retirado` abandonó); `usuario.activo` = si puede iniciar sesión. Un egresado
+puede conservar acceso para ver su historial. Los egresados/retirados **no**
+entran en las propuestas de "Avanzar estudiantes" ni cuentan como padrón activo.
 
 ```sql
 CREATE TABLE estudiante (
@@ -421,13 +430,17 @@ CREATE TABLE estudiante (
   usuario_id            BIGINT UNSIGNED  NOT NULL,
   codigo_universitario  VARCHAR(20)      NOT NULL,
   codigo_orcid          VARCHAR(19)      NULL,
+  estado                VARCHAR(10)      NOT NULL DEFAULT 'activo',
+  -- Valores válidos: 'activo' = cursando, 'egresado' = terminó, 'retirado' = abandonó
   created_at            TIMESTAMP        NULL,
   updated_at            TIMESTAMP        NULL,
   deleted_at            TIMESTAMP        NULL,
   PRIMARY KEY (id),
   UNIQUE KEY uq_estudiante_usuario (usuario_id),
   UNIQUE KEY uq_estudiante_codigo (codigo_universitario),
-  CONSTRAINT fk_estudiante_usuario FOREIGN KEY (usuario_id) REFERENCES usuario (id)
+  KEY idx_estudiante_estado (estado),
+  CONSTRAINT fk_estudiante_usuario FOREIGN KEY (usuario_id) REFERENCES usuario (id),
+  CONSTRAINT chk_estudiante_estado CHECK (estado IN ('activo', 'egresado', 'retirado'))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
@@ -832,10 +845,10 @@ matrícula por período académico** — no puede estar en el 1° ciclo Y en el
 2° ciclo dentro del mismo 2026-I. Esta unicidad se valida en código cruzando
 el `periodo_academico_id` que se deriva del `ciclo_periodo_id`.
 
-**Sin `activo` ni `deleted_at`:** el estado del estudiante (activo, egresado,
-retirado) se **infiere** por ausencia de matrícula en el período vigente — no
-existe un campo explícito de estado. Si más adelante se necesita distinguir
-"egresado" de "retirado" para reportes, se revisita esta decisión.
+**Sin `activo` ni `deleted_at`:** esta tabla no lleva estado propio. El estado
+del estudiante (`activo` / `egresado` / `retirado`) vive **explícito** en
+`estudiante.estado` — se marca al avanzar/egresar/retirar, ya **no** se infiere
+por ausencia de matrícula.
 
 **"Avanzar estudiantes"** (al abrir un período nuevo):
 1. El sistema propone matricular a cada estudiante del período anterior en el

@@ -1,5 +1,5 @@
 /**
- * docentes-ver.js — ficha de solo lectura del docente.
+ * docentes-ver.js — ficha de solo lectura del docente (DISEÑO-FRONTEND.md).
  */
 (function () {
   const toast = (message, type = "success") =>
@@ -21,14 +21,33 @@
   function sexoLabel(sexo) {
     if (sexo === "F") return "Femenino";
     if (sexo === "M") return "Masculino";
+    if (sexo === "N") return "No especificado";
     return "—";
+  }
+
+  function calcEdad(iso) {
+    if (!iso) return null;
+    const d = new Date(`${iso}T00:00:00`);
+    if (Number.isNaN(d.getTime())) return null;
+    const today = new Date();
+    let age = today.getFullYear() - d.getFullYear();
+    const m = today.getMonth() - d.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < d.getDate())) age -= 1;
+    return age >= 0 ? age : null;
   }
 
   function formatDate(iso) {
     if (!iso) return "—";
     const d = new Date(`${iso}T00:00:00`);
     if (Number.isNaN(d.getTime())) return iso;
-    return d.toLocaleDateString("es-PE", { day: "2-digit", month: "long", year: "numeric" });
+    return d.toLocaleDateString("es-PE", { day: "2-digit", month: "2-digit", year: "numeric" });
+  }
+
+  function formatDateTime(iso) {
+    if (!iso) return "—";
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return formatDate(String(iso).slice(0, 10));
+    return d.toLocaleDateString("es-PE", { day: "2-digit", month: "2-digit", year: "numeric" });
   }
 
   function setText(selector, value) {
@@ -41,55 +60,179 @@
     if (el) el.innerHTML = html;
   }
 
-  function render(row) {
-    const name = DocentesData.nombreCompleto(row);
-    const nameUpper = name.toLocaleUpperCase("es-PE");
-    const grado = DocentesData.gradoNombre(row.grado_academico_id);
-    const esp = DocentesData.especialidadNombre(row.especialidad_id);
+  function docLabel(row) {
     const clave =
       (window.TiposDocumentoData && TiposDocumentoData.clave(row.tipo_documento_id)) || "";
-    const src = DocentesData.resolveFotoUrl(DocentesData.fotoSrc(row));
+    return `${clave ? `${clave} ` : ""}${row.documento || ""}`.trim() || "—";
+  }
 
-    document.title = `${name} | TutorTrack (Mockup)`;
+  function externalLink(url, label) {
+    const href = (url || "").trim();
+    if (!href) return "—";
+    return `<a href="${esc(href)}" target="_blank" rel="noopener noreferrer">${esc(label || href)} <span aria-hidden="true">↗</span></a>`;
+  }
+
+  function orcidLink(code) {
+    const v = (code || "").trim();
+    if (!v) return "—";
+    return `<a href="https://orcid.org/${esc(v)}" target="_blank" rel="noopener noreferrer">${esc(v)} <span aria-hidden="true">↗</span></a>`;
+  }
+
+  function renderActividad(row) {
+    const act = DocentesData.actividadTutoria(row.id);
+    const statsEl = document.querySelector("[data-ficha-actividad-stats]");
+    const body = document.querySelector("[data-ficha-actividad-body]");
+    const wrap = document.querySelector("[data-ficha-actividad-wrap]");
+    const empty = document.querySelector("[data-ficha-actividad-empty]");
+    const verTodos = document.querySelector("[data-ficha-ver-todos]");
+    if (!statsEl || !body) return;
+
+    statsEl.innerHTML = `
+      <div class="ficha-actividad-stat">
+        <span class="ficha-actividad-stat-value">${esc(act.periodos)}</span>
+        <span class="ficha-actividad-stat-label">períodos</span>
+      </div>
+      <div class="ficha-actividad-stat">
+        <span class="ficha-actividad-stat-value">${esc(act.tutorados_vigentes)}</span>
+        <span class="ficha-actividad-stat-label">tutorados vigentes</span>
+      </div>
+      <div class="ficha-actividad-stat">
+        <span class="ficha-actividad-stat-value">${esc(act.tutorados_historico)}</span>
+        <span class="ficha-actividad-stat-label">tutorados histórico</span>
+      </div>`;
+
+    const rows = act.por_periodo || [];
+    if (!rows.length && !act.periodos && !act.tutorados_historico) {
+      wrap?.classList.add("hidden");
+      empty?.classList.remove("hidden");
+      return;
+    }
+
+    empty?.classList.add("hidden");
+    wrap?.classList.remove("hidden");
+
+    const LIMIT = 5;
+    let showingAll = false;
+
+    function paint() {
+      const slice = showingAll ? rows : rows.slice(0, LIMIT);
+      body.innerHTML = slice.length
+        ? slice
+            .map(
+              (r) => `
+          <tr>
+            <td class="font-medium text-text">${esc(r.periodo)}</td>
+            <td>
+              <div class="flex flex-wrap gap-1">
+                ${(r.ciclos || [])
+                  .map((c) => `<span class="badge badge-neutral">${esc(c)}</span>`)
+                  .join("")}
+              </div>
+            </td>
+            <td class="text-right font-medium text-text">${esc(r.tutorados)}</td>
+          </tr>`
+            )
+            .join("")
+        : `<tr><td colspan="3" class="text-text-muted">Sin detalle por período.</td></tr>`;
+
+      if (verTodos) {
+        const need = rows.length > LIMIT;
+        verTodos.classList.toggle("hidden", !need);
+        verTodos.textContent = showingAll ? "Ver menos" : "Ver todos";
+      }
+    }
+
+    verTodos?.addEventListener("click", () => {
+      showingAll = !showingAll;
+      paint();
+    });
+
+    paint();
+  }
+
+  function bindActions(row) {
+    const edit = document.querySelector("[data-ficha-editar]");
+    if (edit) edit.href = `docentes-form.html?id=${encodeURIComponent(row.id)}`;
+
+    document.querySelector("[data-ficha-password]")?.addEventListener("click", () => {
+      const nombre = DocentesData.nombreConGrado(row);
+      const doc = docLabel(row);
+      AppConfirm.request({
+        title: "Restablecer contraseña",
+        confirmLabel: "Restablecer",
+        cancelLabel: "Cancelar",
+        variant: "warning",
+        messageHtml: `
+          <p><span class="font-medium text-text">Docente:</span> ${esc(nombre)}</p>
+          <p><span class="font-medium text-text">Documento:</span> ${esc(doc)}</p>
+          <p class="pt-1">La nueva contraseña será el número de documento:
+            <strong class="text-text font-semibold">${esc(row.documento || "—")}</strong>
+          </p>
+          <p class="rounded-md border border-warning/30 bg-warning-bg px-3 py-2 text-warning">
+            La contraseña actual dejará de funcionar. El docente deberá cambiarla al ingresar.
+          </p>`,
+      }).then((ok) => {
+        if (!ok) return;
+        if (window.AuditoriaData) {
+          AuditoriaData.log({
+            accion: "restablecer_contraseña",
+            tabla_afectada: "docente",
+            registro_id: row.id,
+            valores_anteriores: null,
+            valores_nuevos: { documento: row.documento || null },
+          });
+        }
+        toast("Contraseña restablecida");
+      });
+    });
+
+    document.querySelector("[data-ficha-auditoria]")?.addEventListener("click", () => {
+      const detail = {
+        tabla: "docente",
+        registroId: row.id,
+        titulo: DocentesData.nombreConGrado(row),
+      };
+      if (window.AppHistorial) AppHistorial.open(detail);
+      else document.dispatchEvent(new CustomEvent("app:historial-open", { detail }));
+    });
+  }
+
+  function render(row) {
+    const nameWithGrado = DocentesData.nombreConGrado(row);
+    const grado = DocentesData.gradoNombre(row.grado_academico_id);
+    const esp = DocentesData.especialidadNombre(row.especialidad_id);
+    const src = DocentesData.resolveFotoUrl(DocentesData.fotoSrc(row));
+    const edad = calcEdad(row.fecha_nacimiento);
+    const fnac =
+      row.fecha_nacimiento
+        ? `${formatDate(row.fecha_nacimiento)}${edad != null ? ` (${edad})` : ""}`
+        : "—";
+
+    document.title = `${nameWithGrado} | TutorTrack (Mockup)`;
 
     setHtml(
       "[data-ficha-avatar]",
-      `<img src="${esc(src)}" alt="Foto de ${esc(name)}" width="112" height="112" />`
+      `<img src="${esc(src)}" alt="Foto de ${esc(DocentesData.nombreCompleto(row))}" width="96" height="96" />`
     );
     setHtml(
       "[data-ficha-estado]",
       row.activo !== false
-        ? '<span class="badge badge-success">Activo</span>'
-        : '<span class="badge badge-neutral">Inactivo</span>'
+        ? '<span class="badge badge-success"><span aria-hidden="true">●</span> Activo</span>'
+        : '<span class="badge badge-neutral"><span aria-hidden="true">○</span> Inactivo</span>'
     );
-    setText("[data-ficha-nombre]", nameUpper);
-    setText("[data-ficha-grado]", grado || "Sin grado académico");
-    setText("[data-ficha-especialidad]", esp ? `Especialidad · ${esp}` : "Sin especialidad registrada");
-
-    setText(
-      "[data-ficha-documento]",
-      clave || row.documento ? `${clave ? `${clave} ` : ""}${row.documento || ""}`.trim() : "—"
-    );
+    setText("[data-ficha-nombre]", nameWithGrado);
+    setText("[data-ficha-documento]", docLabel(row));
     setText("[data-ficha-sexo]", sexoLabel(row.sexo));
-    setText("[data-ficha-fnac]", formatDate(row.fecha_nacimiento));
+    setText("[data-ficha-fnac]", fnac);
     setText("[data-ficha-email]", dash(row.email));
     setText("[data-ficha-email-personal]", dash(row.email_personal));
     setText("[data-ficha-cel1]", dash(row.celular_principal));
     setText("[data-ficha-cel2]", dash(row.celular_secundario));
     setText("[data-ficha-grado-full]", dash(grado));
     setText("[data-ficha-esp-full]", dash(esp));
-    setText("[data-ficha-orcid]", dash(row.codigo_orcid));
-
-    const cvEl = document.querySelector("[data-ficha-cv]");
-    if (cvEl) {
-      const cv = (row.cv_url || "").trim();
-      cvEl.innerHTML = cv
-        ? `<a href="${esc(cv)}" target="_blank" rel="noopener noreferrer">Abrir CV</a>`
-        : "—";
-    }
-
-    const bio = (row.biografia || "").trim();
-    setText("[data-ficha-bio]", bio || "Sin biografía registrada.");
+    setHtml("[data-ficha-orcid]", orcidLink(row.codigo_orcid));
+    setHtml("[data-ficha-cv]", externalLink(row.cv_url, row.cv_url));
+    setText("[data-ficha-bio]", dash(row.biografia));
 
     const roles = row.roles || [];
     setHtml(
@@ -104,8 +247,13 @@
         : '<p class="ficha-roles-empty">Sin roles asignados</p>'
     );
 
-    const edit = document.querySelector("[data-ficha-editar]");
-    if (edit) edit.href = `docentes-form.html?id=${encodeURIComponent(row.id)}`;
+    setText(
+      "[data-ficha-meta]",
+      `Registrado: ${formatDateTime(row.created_at)}  ·  Última actualización: ${formatDateTime(row.updated_at)}`
+    );
+
+    renderActividad(row);
+    bindActions(row);
   }
 
   document.addEventListener("DOMContentLoaded", () => {

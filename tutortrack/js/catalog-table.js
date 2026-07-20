@@ -33,6 +33,8 @@
     '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>';
   const ICON_SORT =
     '<svg class="catalog-sort-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4.5 5.5 8 2l3.5 3.5h-7Zm0 5L8 14l3.5-3.5h-7Z" opacity=".35"/><path data-up d="M4.5 5.5 8 2l3.5 3.5h-7Z"/><path data-down d="M4.5 10.5 8 14l3.5-3.5h-7Z"/></svg>';
+  const ICON_MORE =
+    '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.75"/><circle cx="12" cy="12" r="1.75"/><circle cx="19" cy="12" r="1.75"/></svg>';
 
   function escapeHtml(value) {
     return String(value ?? "")
@@ -56,24 +58,116 @@
     return String(a).localeCompare(String(b), "es", { numeric: true, sensitivity: "base" });
   }
 
+  function closeOverflowMenus(except) {
+    document.querySelectorAll("[data-overflow-menu].is-open").forEach((menu) => {
+      if (except && menu === except) return;
+      menu.classList.remove("is-open");
+      const panel = menu.querySelector("[data-overflow-panel]");
+      if (panel) panel.hidden = true;
+      menu.querySelector("[data-overflow-trigger]")?.setAttribute("aria-expanded", "false");
+    });
+  }
+
+  let overflowDocBound = false;
+
+  function overflowMenuHtml(row, options) {
+    const id = escapeHtml(row.id);
+    const extras =
+      typeof options.overflowExtra === "function" ? options.overflowExtra(row, escapeHtml) || [] : [];
+    const items = [];
+
+    if (options.onResetPassword) {
+      items.push({
+        action: "reset-password",
+        label: "Restablecer contraseña",
+        icon: ICON_RESET_PASSWORD,
+      });
+    }
+    if (options.auditTable) {
+      items.push({
+        action: "history",
+        label: "Auditoría",
+        icon: ICON_HISTORY,
+      });
+    }
+    extras.forEach((ex) => {
+      if (!ex || !ex.label) return;
+      items.push({
+        action: ex.action || "extra",
+        label: ex.label,
+        icon: ex.icon || "",
+        extraId: ex.id || "",
+      });
+    });
+
+    if (!items.length) return "";
+
+    const list = items
+      .map(
+        (it) => `
+      <button
+        type="button"
+        class="catalog-overflow-item"
+        data-overflow-action="${escapeHtml(it.action)}"
+        data-overflow-extra="${escapeHtml(it.extraId || "")}"
+        data-row-id="${id}"
+        role="menuitem"
+      >
+        ${it.icon ? `<span class="catalog-overflow-icon" aria-hidden="true">${it.icon}</span>` : ""}
+        <span>${escapeHtml(it.label)}</span>
+      </button>`
+      )
+      .join("");
+
+    return `
+      <div class="catalog-overflow" data-overflow-menu>
+        <button
+          type="button"
+          class="btn-action btn-action-more"
+          data-overflow-trigger
+          data-row-id="${id}"
+          title="Más acciones"
+          aria-label="Más acciones"
+          aria-haspopup="menu"
+          aria-expanded="false"
+        >
+          ${ICON_MORE}
+        </button>
+        <div class="catalog-overflow-panel" data-overflow-panel role="menu" hidden>
+          ${list}
+        </div>
+      </div>`;
+  }
+
   function actionButtons(row, deleteLabel, options) {
     const name = escapeHtml(deleteLabel(row));
     const id = escapeHtml(row.id);
+    const useOverflow = Boolean(options.overflowMenu);
     const viewBtn = options.onView
       ? `<button type="button" class="btn-action btn-action-view" data-row-view data-row-id="${id}" title="Ver ficha" aria-label="Ver ficha">
         ${ICON_VIEW}
       </button>`
       : "";
-    const resetBtn = options.onResetPassword
-      ? `<button type="button" class="btn-action btn-action-accent" data-row-reset-password data-row-id="${id}" title="Restablecer contraseña" aria-label="Restablecer contraseña">
+    const resetBtn =
+      !useOverflow && options.onResetPassword
+        ? `<button type="button" class="btn-action btn-action-accent" data-row-reset-password data-row-id="${id}" title="Restablecer contraseña" aria-label="Restablecer contraseña">
         ${ICON_RESET_PASSWORD}
       </button>`
-      : "";
-    const historyBtn = options.auditTable
-      ? `<button type="button" class="btn-action btn-action-history" data-row-history data-row-id="${id}" title="Historial" aria-label="Historial">
+        : "";
+    const historyBtn =
+      !useOverflow && options.auditTable
+        ? `<button type="button" class="btn-action btn-action-history" data-row-history data-row-id="${id}" title="Historial" aria-label="Historial">
         ${ICON_HISTORY}
       </button>`
-      : "";
+        : "";
+    const deleteBtn = options.onDeleteAsk
+      ? `<button type="button" class="btn-action btn-action-danger" data-row-delete-ask data-row-id="${id}" title="Eliminar" aria-label="Eliminar">
+        ${ICON_DELETE}
+      </button>`
+      : `<button type="button" class="btn-action btn-action-danger" data-delete-trigger data-delete-name="${name}" data-row-id="${id}" title="Eliminar" aria-label="Eliminar">
+        ${ICON_DELETE}
+      </button>`;
+    const overflow = useOverflow ? overflowMenuHtml(row, options) : "";
     return `
       ${viewBtn}
       <button type="button" class="btn-action btn-action-edit" data-row-edit data-row-id="${id}" title="Editar" aria-label="Editar">
@@ -81,9 +175,8 @@
       </button>
       ${resetBtn}
       ${historyBtn}
-      <button type="button" class="btn-action btn-action-danger" data-delete-trigger data-delete-name="${name}" data-row-id="${id}" title="Eliminar" aria-label="Eliminar">
-        ${ICON_DELETE}
-      </button>`;
+      ${deleteBtn}
+      ${overflow}`;
   }
 
   class CatalogTable {
@@ -184,6 +277,17 @@
         });
       });
 
+      if (!overflowDocBound) {
+        overflowDocBound = true;
+        document.addEventListener("click", (event) => {
+          if (event.target.closest("[data-overflow-menu]")) return;
+          closeOverflowMenus();
+        });
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") closeOverflowMenus();
+        });
+      }
+
       this.root.addEventListener("click", (event) => {
         const sortBtn = event.target.closest("[data-sort-key]");
         if (sortBtn) {
@@ -191,6 +295,43 @@
           this.toggleSort(sortBtn.dataset.sortKey);
           return;
         }
+
+        const overflowTrigger = event.target.closest("[data-overflow-trigger]");
+        if (overflowTrigger) {
+          event.preventDefault();
+          event.stopPropagation();
+          const menu = overflowTrigger.closest("[data-overflow-menu]");
+          const panel = menu?.querySelector("[data-overflow-panel]");
+          const opening = !menu?.classList.contains("is-open");
+          closeOverflowMenus(opening ? menu : null);
+          if (!menu || !panel) return;
+          menu.classList.toggle("is-open", opening);
+          panel.hidden = !opening;
+          overflowTrigger.setAttribute("aria-expanded", opening ? "true" : "false");
+          return;
+        }
+
+        const overflowItem = event.target.closest("[data-overflow-action]");
+        if (overflowItem) {
+          event.preventDefault();
+          const row = this.data.find((r) => r.id === overflowItem.dataset.rowId);
+          closeOverflowMenus();
+          if (!row) return;
+          const action = overflowItem.dataset.overflowAction;
+          if (action === "reset-password") {
+            this.askResetPassword(row);
+            return;
+          }
+          if (action === "history") {
+            this.openHistory(row);
+            return;
+          }
+          if (typeof this.options.onOverflowAction === "function") {
+            this.options.onOverflowAction(row, action, overflowItem.dataset.overflowExtra || "");
+          }
+          return;
+        }
+
         const viewBtn = event.target.closest("[data-row-view]");
         if (viewBtn && this.options.onView) {
           const row = this.data.find((r) => r.id === viewBtn.dataset.rowId);
@@ -203,40 +344,40 @@
           if (row) this.options.onEdit(row);
           return;
         }
+        const deleteAskBtn = event.target.closest("[data-row-delete-ask]");
+        if (deleteAskBtn && this.options.onDeleteAsk) {
+          const row = this.data.find((r) => r.id === deleteAskBtn.dataset.rowId);
+          if (!row) return;
+          Promise.resolve(this.options.onDeleteAsk(row)).then((result) => {
+            if (!result) return;
+            if (result === "deleted" || result === true) {
+              this.remove(row.id, { skipAudit: true });
+              this.logAudit("eliminar", row.id, row, null);
+              if (this.options.onDelete) this.options.onDelete(row.id);
+            } else if (result === "deactivated") {
+              this.update(row.id, { activo: false });
+              if (typeof this.options.onDeactivate === "function") {
+                this.options.onDeactivate(row.id);
+              }
+            } else if (result === "activated") {
+              this.update(row.id, { activo: true });
+              if (typeof this.options.onActivate === "function") {
+                this.options.onActivate(row.id);
+              }
+            }
+          });
+          return;
+        }
         const resetBtn = event.target.closest("[data-row-reset-password]");
         if (resetBtn && this.options.onResetPassword) {
           const row = this.data.find((r) => r.id === resetBtn.dataset.rowId);
-          if (!row) return;
-          const name = this.historyLabel(row);
-          const ask = window.AppConfirm
-            ? AppConfirm.request({
-                title: "Restablecer contraseña",
-                message: `¿Restablecer la contraseña de "${name}"? Se regenerará a partir del número de documento.`,
-                confirmLabel: "Restablecer",
-                cancelLabel: "Cancelar",
-                variant: "warning",
-              })
-            : Promise.resolve(window.confirm(`¿Restablecer la contraseña de "${name}"?`));
-          ask.then((ok) => {
-            if (!ok) return;
-            this.options.onResetPassword(row);
-            this.logAudit("restablecer_contraseña", row.id, null, {
-              documento: row.documento || null,
-            });
-          });
+          if (row) this.askResetPassword(row);
           return;
         }
         const historyBtn = event.target.closest("[data-row-history]");
         if (historyBtn && this.options.auditTable) {
           const row = this.data.find((r) => r.id === historyBtn.dataset.rowId);
-          if (!row) return;
-          const detail = {
-            tabla: this.options.auditTable,
-            registroId: row.id,
-            titulo: this.historyLabel(row),
-          };
-          if (window.AppHistorial) AppHistorial.open(detail);
-          else document.dispatchEvent(new CustomEvent("app:historial-open", { detail }));
+          if (row) this.openHistory(row);
           return;
         }
         const pageBtn = event.target.closest("[data-page]");
@@ -254,6 +395,44 @@
         this.logAudit("eliminar", id, before || null, null);
         if (this.options.onDelete) this.options.onDelete(id);
       });
+    }
+
+    askResetPassword(row) {
+      if (!this.options.onResetPassword) return;
+      const name = this.historyLabel(row);
+      const customPrompt =
+        typeof this.options.resetPasswordPrompt === "function"
+          ? this.options.resetPasswordPrompt(row)
+          : null;
+      const ask = customPrompt
+        ? Promise.resolve(customPrompt)
+        : window.AppConfirm
+          ? AppConfirm.request({
+              title: "Restablecer contraseña",
+              message: `¿Restablecer la contraseña de "${name}"? Se regenerará a partir del número de documento.`,
+              confirmLabel: "Restablecer",
+              cancelLabel: "Cancelar",
+              variant: "warning",
+            })
+          : Promise.resolve(window.confirm(`¿Restablecer la contraseña de "${name}"?`));
+      Promise.resolve(ask).then((ok) => {
+        if (!ok) return;
+        this.options.onResetPassword(row);
+        this.logAudit("restablecer_contraseña", row.id, null, {
+          documento: row.documento || null,
+        });
+      });
+    }
+
+    openHistory(row) {
+      if (!this.options.auditTable) return;
+      const detail = {
+        tabla: this.options.auditTable,
+        registroId: row.id,
+        titulo: this.historyLabel(row),
+      };
+      if (window.AppHistorial) AppHistorial.open(detail);
+      else document.dispatchEvent(new CustomEvent("app:historial-open", { detail }));
     }
 
     applySearch() {
@@ -507,7 +686,9 @@
       view: ICON_VIEW,
       resetPassword: ICON_RESET_PASSWORD,
       history: ICON_HISTORY,
+      more: ICON_MORE,
     },
     escapeHtml,
+    closeOverflowMenus,
   };
 })();

@@ -182,9 +182,10 @@ Receptor / Psicología
   vista de lectura sobre `auditoria` (los cambios de estado de las
   derivaciones de su entidad).
 
-> **Pendiente de aplicar en `components/app-sidebar.js`:** el menú en código
-> aún tiene la estructura anterior. Esta es la estructura **objetivo**; se
-> alinea el `app-sidebar.js` cuando se acuerde tocar código.
+> **Aplicado en `components/app-sidebar.js`:** el menú admin coincide con este
+> árbol (Usuarios y acceso · Catálogos · Organización del período · Fichas ·
+> Alertas y derivación). Sin *Tipos de pregunta* ni *Tipos de estado de
+> derivación* como ítems de menú.
 
 ---
 
@@ -197,10 +198,10 @@ Al **implementar** cada pantalla según este diseño, marca su casilla
 no esté construida en código según este doc, queda **⬜ Pendiente**.
 
 **Administrador › Usuarios y acceso › Docentes**
-- [ ] Listado (tabla + 3 cards)
-- [ ] Formulario (crear / editar)
-- [ ] Ficha (ver, solo lectura)
-- [ ] Modales: Restablecer contraseña · Eliminar · Auditoría
+- [x] Listado (tabla + 3 cards)
+- [x] Formulario (crear / editar)
+- [x] Ficha (ver, solo lectura)
+- [x] Modales: Restablecer contraseña · Eliminar · Auditoría
 
 **Administrador › Usuarios y acceso › Estudiantes**
 - [ ] Listado (tabla + 3 cards)
@@ -223,6 +224,24 @@ no esté construida en código según este doc, queda **⬜ Pendiente**.
 **Administrador › Usuarios y acceso › Roles y permisos**
 - [ ] Pantalla maestro-detalle (roles + permisos por módulo)
 - [ ] Modales (Nuevo/Editar rol · Eliminar/Desactivar rol)
+
+**Administrador › Catálogos**
+- [ ] Especialidades
+- [ ] Tipos de documento
+- [ ] Áreas
+- [ ] Tipos de ficha
+- [ ] Grados académicos
+- [ ] Ciclos
+- [ ] Periodos académicos (especial: único activo)
+- [ ] Entidades receptoras — listado + modal
+- [ ] Estados de derivación — sub-página (pipeline por entidad)
+
+**Administrador › Organización del período**
+- [ ] Configuración del período (hub: ciclos + clonar + historial)
+- [ ] Docentes del ciclo (sub-editor / drawer)
+- [ ] Temario (árbol por ciclo+período) — compartido con Docente
+- [ ] Matrículas
+- [ ] Avanzar estudiantes
 
 ---
 
@@ -250,7 +269,7 @@ patrones conviene extraer de verdad (evitar abstracción prematura).
 
 ---
 
-### Administrador › Usuarios y acceso › Docentes — Listado — ⬜ Pendiente
+### Administrador › Usuarios y acceso › Docentes — Listado — ✅ Hecho
 
 - **Archivos (al codificar):** `pages/admin/docentes.html` + `js/docentes.js`.
 - **Objetivo:** escanear rápido quién es quién, su estado de acceso y sus
@@ -314,7 +333,7 @@ patrones conviene extraer de verdad (evitar abstracción prematura).
 
 ---
 
-### Administrador › Usuarios y acceso › Docentes — Formulario (crear / editar) — ⬜ Pendiente
+### Administrador › Usuarios y acceso › Docentes — Formulario (crear / editar) — ✅ Hecho
 
 - **Archivos (al codificar):** `pages/admin/docentes-form.html` + `js/docentes-form.js`.
 - **Tipo:** página aparte (no modal) — la entidad es rica. La **misma pantalla**
@@ -427,7 +446,7 @@ Completa la identidad, el contacto y el perfil académico.       (opcional, arri
 
 ---
 
-### Administrador › Usuarios y acceso › Docentes — Ficha (ver, solo lectura) — ⬜ Pendiente
+### Administrador › Usuarios y acceso › Docentes — Ficha (ver, solo lectura) — ✅ Hecho
 
 - **Archivos (al codificar):** `pages/admin/docentes-ver.html` + `js/docentes-ver.js`.
 - **Tipo:** vista de consulta, **solo lectura**. Se llega desde la acción 👁 del
@@ -503,7 +522,7 @@ Un docente puede acumular cientos de tutorados (p. ej. 10 períodos × 20 = 200)
 
 ---
 
-### Administrador › Usuarios y acceso › Docentes — Modales — ⬜ Pendiente
+### Administrador › Usuarios y acceso › Docentes — Modales — ✅ Hecho
 
 Usan componentes ya existentes: `<app-modal-confirm>` y `<app-modal-historial>`.
 Son **genéricos** — sirven igual para Estudiantes, Receptores y Usuarios; solo
@@ -625,18 +644,24 @@ Docentes. Aquí solo se documenta lo **propio**; lo idéntico se referencia.
 ### Administrador › Usuarios y acceso › Estudiantes — Listado — ⬜ Pendiente
 
 - **Archivos (al codificar):** `pages/admin/estudiantes.html` + `js/estudiantes.js`.
-- **Cards (3):** Total · Activos · Inactivos — igual que Docentes (conteo global
-  inmutable; `usuario.activo`; soft-deleted fuera).
+- **Cards (3):** Total · Activos · No activos (egresados/retirados) — conteo
+  global inmutable, por **estado académico** (`estudiante.estado`).
 - **Barra:** Buscar por nombre, apellido, **código universitario**, documento o
-  correo · filtro **Estado** · Limpiar. **Sin** filtro de Especialidad.
+  correo · filtro **Estado** (Activo / Egresado / Retirado) · Limpiar. **Sin**
+  filtro de Especialidad.
+- **Dos estados distintos:** la columna Estado muestra el **académico**
+  (`estudiante.estado`: activo/egresado/retirado); el **acceso/login**
+  (`usuario.activo`) se ve/edita en el formulario. No confundirlos.
 ```
 [ 320 Total ]  [ 298 Activos ]  [ 22 Inactivos ]
 N° │ Estudiante          │ Código univ. │ Documento    │ Contacto        │ Estado   │ Acciones
  1 │ (foto) Ana Quispe M.│ 2021-1001    │ DNI 72154893 │ a.quispe@una... │ ● Activo │ 👁 ✏ ⋯
 ```
 - **Columnas (7):** N° · Estudiante (foto + nombre) · **Código universitario** ·
-  Documento (tipo + número) · Contacto (correo + celular) · Estado (badge) ·
-  Acciones.
+  Documento (tipo + número) · Contacto (correo + celular) · **Estado académico**
+  (badge: Activo / Egresado / Retirado) · Acciones.
+  - En el "⋯" se agrega **Marcar egresado / retirado / reactivar** (setea
+    `estudiante.estado`).
   - **Sin columna Roles:** un estudiante casi siempre tiene solo el rol
     `Estudiante`; se ve en la ficha. (Docentes/Usuarios sí la llevan.)
 - **Acciones:** Ver · Editar · Eliminar + "⋯" (Restablecer contraseña ·
@@ -990,3 +1015,554 @@ Roles y permisos                                    6 roles · 5 activos · 48 p
 > Reglas duras: **protegido = candado total** (ni nombre ni permisos);
 > **clave inmutable** tras crear; **permisos solo lectura** como catálogo (se
 > asignan, no se crean).
+
+---
+
+## Catálogos
+
+Los 8 catálogos comparten un **molde común** (abajo). Cada uno solo define sus
+**columnas/campos propios**. Se documentan de lo simple a lo especial.
+
+### Patrón base «Catálogo simple» (guía)
+
+**Tabla:**
+```
+Catálogo                                        [ ⟳ Actualizar ]  [ + Nuevo registro ]
+Descripción breve del catálogo.
+
+┌─────────────────────┐  ┌─────────────────────┐  ┌─────────────────────┐
+│ 📋  TOTAL           │  │ ✔  ACTIVOS          │  │ ⏸  INACTIVOS        │
+│ 12                  │  │ 10                  │  │ 2                   │
+└─────────────────────┘  └─────────────────────┘  └─────────────────────┘
+
+Buscar:[ … ]        Estado:[ Todos ▾ ]        [🔍][✕]
+Mostrando 1–10 de 12
+┌─────┬──────────────────────────┬────────────────┬─────────────────────┐
+│ N°  │ [ campos propios ]       │ Estado         │ Acciones            │
+├─────┼──────────────────────────┼────────────────┼─────────────────────┤
+│  1  │ …                        │ [ ● Activo  ⇄ ]│  ✏     🕵     🗑    │
+│  2  │ …                        │ [ ○ Inactivo⇄ ]│  ✏     🕵     🗑    │
+└─────┴──────────────────────────┴────────────────┴─────────────────────┘
+                                                    ‹ 1  2 ›   Filas:[10 ▾]
+```
+- **Cards (3):** Total · Activos · Inactivos — informativas, conteo global
+  inmutable (igual que en personas). BD: `activo`.
+- **Estado:** toggle interactivo `⇄` en la fila → **activar/desactivar** al
+  instante (sin abrir modal).
+- **Acciones (3 botones visibles, con color):**
+  | Botón | Acción | Color |
+  |---|---|---|
+  | ✏ Editar | abre el modal de edición | azul |
+  | 🕵 Historial | `<app-modal-historial>` (auditoría de ese registro) | naranja |
+  | 🗑 Eliminar | `<app-modal-confirm>`; **bloqueado si está en uso** (FK) → sugiere desactivar | rojo |
+- **Barra:** Buscar (por nombre) + filtro Estado + Limpiar.
+- **Motor:** `js/catalog-table.js` + estilos `catalog-*`. Paginación 5/10/…
+
+**Formulario (modal — alta/edición):**
+```
+┌─ Nuevo registro ─────────────────────────┐
+│  [ campo propio 1 ]*                      │
+│  [ campo propio 2 ]   (según el catálogo) │
+│  Estado    [ ● Activo | ○ Inactivo ]      │
+│                    [ Cancelar ]  [ Guardar ]│
+└──────────────────────────────────────────┘
+```
+- Alta y edición en el **mismo modal** (título "Nuevo…" / "Editar…").
+- Los **campos propios varían** por catálogo; el toggle **Estado** siempre está.
+- Validación: unicidad de `nombre`/`clave` (según el catálogo).
+
+**Reglas comunes (los 8):**
+- **Eliminar solo si no está en uso** (la FK lo impide) → si se usa, se
+  **desactiva** (`activo = 0`).
+- **Catálogos con `clave`:** la `clave` es editable **solo al crear** (el código
+  y/o la IA dependen de ella); al **editar** se muestra **bloqueada**.
+- **Auditoría** por fila (🕵) en todos.
+- Cards, buscador, filtro Estado y paginación **iguales** en los 8.
+- **Toasts:** "[Registro] creado / actualizado / eliminado / activado /
+  desactivado".
+
+**Columnas/campos propios por catálogo** (el resto es el molde):
+
+| Catálogo | Columnas propias | Campos del modal |
+|---|---|---|
+| Especialidades | Nombre | Nombre* |
+| Tipos de documento | Clave · Nombre | Clave* · Nombre* |
+| Áreas | Clave · Nombre | Clave* · Nombre* |
+| Tipos de ficha | Clave · Nombre | Clave* · Nombre* |
+| Grados académicos | Nombre · Abreviatura · Orden | Nombre* · Abreviatura* · Orden |
+| Ciclos | Nombre · Orden | Nombre* · Orden* |
+| Periodos académicos | Nombre · Inicio · Fin | Nombre* · Fechas (único activo) |
+| Entidades receptoras | Clave · Nombre | Clave* · Nombre* · Descripción (+ estados anidados) |
+
+> **Candidato a patrón reutilizable:** todo el molde de catálogo. Revisar al
+> final junto con los 8.
+
+### Administrador › Catálogos › Especialidades — ⬜ Pendiente
+
+- **Archivos (al codificar):** `pages/admin/especialidades.html` + `js/especialidades.js`.
+- **Instancia más simple del molde.** Columna propia: **Nombre**.
+- **Columnas (4):** N° · Nombre · Estado (toggle) · Acciones (✏ · 🕵 · 🗑).
+- **Modal Nueva / Editar:** **Nombre*** (único) + Estado (toggle). **Nada más.**
+  - *Corrección vs. mockup viejo:* **no** lleva "N° de orden" — la tabla
+    `especialidad` es solo `nombre` + `activo`.
+- **Eliminar 🗑:** bloqueado si está en uso por algún docente (FK
+  `docente.especialidad_id`) → sugiere **Desactivar**. Si nunca se usó → elimina.
+- **BD:** `especialidad` (`nombre` UNIQUE, `activo`).
+- **Datos placeholder:** Marketing, Finanzas, Gestión Pública, Recursos
+  Humanos, Contabilidad.
+
+### Administrador › Catálogos › Tipos de documento — ⬜ Pendiente
+
+- **Archivos (al codificar):** `pages/admin/tipos-documento.html` +
+  `js/tipos-documento.js` + `js/tipos-documento-data.js` (seed **compartido**
+  con los selects de los formularios de persona).
+- **Columnas (5):** N° · **Clave** · **Nombre** · Estado (toggle) · Acciones.
+- **Modal Nuevo / Editar:** **Clave*** · **Nombre*** · Estado.
+  - `clave` bloqueada al editar — valida el documento (ej. `DNI` = 8 dígitos).
+- **Eliminar 🗑:** bloqueado si está en uso por algún `usuario`
+  (`usuario.tipo_documento_id`) → **Desactivar**.
+- **BD:** `tipo_documento` (`clave` UNIQUE, `nombre` UNIQUE, `activo`).
+- **Datos placeholder:** DNI (`DNI`), Carné de Extranjería (`CE`),
+  Pasaporte (`PAS`).
+
+### Administrador › Catálogos › Áreas — ⬜ Pendiente
+
+- **Archivos (al codificar):** `pages/admin/areas.html` + `js/areas.js`.
+- **Columnas (5):** N° · **Clave** · **Nombre** (con `descripción` como línea
+  secundaria/tooltip) · Estado (toggle) · Acciones.
+- **Modal Nuevo / Editar:** **Clave*** · **Nombre*** · **Descripción** · Estado.
+  - `clave` bloqueada al editar — **la usa la IA** en su respuesta JSON
+    (`personal_social`, `salud_mental`…); cambiarla rompería el mapeo.
+- **Eliminar 🗑:** bloqueado si tiene `pregunta` o `alerta_ia` referenciada →
+  **Desactivar**.
+- **BD:** `area` (`clave` UNIQUE, `nombre` UNIQUE, `descripcion`, `activo`).
+- **Datos placeholder:** Personal y social, Salud corporal y mental, Académico,
+  Económico, Vocacional y profesional.
+
+### Administrador › Catálogos › Tipos de ficha — ⬜ Pendiente
+
+- **Archivos (al codificar):** `pages/admin/tipos-ficha.html` + `js/tipos-ficha.js`.
+- **Columnas (6):** N° · **Clave** · **Nombre** (con `descripción` en tooltip) ·
+  **Orden** · Estado (toggle) · Acciones.
+- **Modal Nuevo / Editar:** **Clave*** · **Nombre*** · **Descripción** ·
+  **Orden** · Estado.
+  - `clave` bloqueada al editar — identificador estable para el código.
+  - `orden` controla el orden de aparición en los selects del formulario de
+    fichas.
+- **Eliminar 🗑:** bloqueado si tiene alguna `ficha` referenciada → **Desactivar**.
+- **BD:** `tipo_ficha` (`clave` UNIQUE, `nombre` UNIQUE, `descripcion`, `orden`,
+  `activo`).
+- **Datos placeholder:** Diagnóstico (`diagnostico`), Seguimiento
+  (`seguimiento`), Grupal (`grupal`), Encuesta (`encuesta`).
+
+### Administrador › Catálogos › Grados académicos — ⬜ Pendiente
+
+Añade `orden` al molde base. Lista **ordenada por `orden`**; se reordena con
+**flechas ⇅** (subir/bajar la fila **intercambia el orden** — sin teclear
+números).
+```
+Grados académicos                              [ ⟳ Actualizar ]  [ + Nuevo grado ]
+[ 4 Total ]  [ 4 Activos ]  [ 0 Inactivos ]
+┌─────┬────────┬──────────────┬──────────────┬───────────┬───────────┐
+│ N°  │ Orden  │ Nombre       │ Abreviatura  │ Estado    │ Acciones  │
+├─────┼────────┼──────────────┼──────────────┼───────────┼───────────┤
+│  1  │ ⇅ 1    │ Bachiller    │ Bach.        │ ● Activo  │ ✏ 🕵 🗑   │
+│  2  │ ⇅ 2    │ Licenciado   │ Lic.         │ ● Activo  │ ✏ 🕵 🗑   │
+└─────┴────────┴──────────────┴──────────────┴───────────┴───────────┘
+```
+- **Archivos (al codificar):** `pages/admin/grados-academicos.html` + `js/grados-academicos.js`.
+- **Columnas (6):** N° · **Orden** (⇅) · Nombre · **Abreviatura** · Estado · Acciones.
+- **Modal Nuevo / Editar:** **Nombre*** · **Abreviatura*** · Estado. El orden lo
+  maneja la lista (un grado nuevo se agrega al final).
+- **Abreviatura obligatoria y única** (`Bach.`, `Lic.`, `Mg.`, `Dr.`) — se usa
+  en listados densos (ej. columna Docente).
+- **Eliminar 🗑:** bloqueado si algún docente lo usa
+  (`docente.grado_academico_id`) → **Desactivar**.
+- **BD:** `grado_academico` (`nombre` UNIQUE, `abreviatura` UNIQUE, `orden`,
+  `activo`).
+- **Datos placeholder:** Bachiller (`Bach.`), Licenciado (`Lic.`), Magíster
+  (`Mg.`), Doctor (`Dr.`).
+
+### Administrador › Catálogos › Ciclos — ⬜ Pendiente
+
+Añade `orden` **único y obligatorio**. Lista **ordenada por `orden`**; se
+reordena con **flechas ⇅** que hacen un **intercambio atómico** (no puede haber
+dos ciclos con el mismo orden).
+```
+Ciclos                                         [ ⟳ Actualizar ]  [ + Nuevo ciclo ]
+[ 10 Total ]  [ 10 Activos ]  [ 0 Inactivos ]
+┌─────┬────────┬────────────────┬───────────┬───────────┐
+│ N°  │ Orden  │ Nombre         │ Estado    │ Acciones  │
+├─────┼────────┼────────────────┼───────────┼───────────┤
+│  1  │ ⇅ 1    │ Primer ciclo   │ ● Activo  │ ✏ 🕵 🗑   │
+│  2  │ ⇅ 2    │ Segundo ciclo  │ ● Activo  │ ✏ 🕵 🗑   │
+└─────┴────────┴────────────────┴───────────┴───────────┘
+```
+- **Archivos (al codificar):** `pages/admin/ciclos.html` + `js/ciclos.js`.
+- **Columnas (5):** N° · **Orden** (⇅) · Nombre · Estado · Acciones.
+- **Modal Nuevo / Editar:** **Nombre*** · Estado. El `orden` se asigna solo al
+  final al crear y se cambia con las flechas ⇅.
+- **Particularidad — `orden` ÚNICO y obligatorio:** las flechas ⇅ intercambian
+  el orden de forma atómica. El `orden` alimenta **"Avanzar estudiantes"** (el
+  ciclo siguiente = `orden` + 1), así que debe estar correcto.
+- **Eliminar 🗑:** bloqueado si está referenciado por `ciclo_periodo` →
+  **Desactivar**. *(Nota BD: `ciclo` no tiene `deleted_at`; se retira con
+  `activo = 0`.)*
+- **BD:** `ciclo` (`nombre` UNIQUE, `orden` UNIQUE, `activo`).
+- **Datos placeholder:** Primer ciclo … Décimo ciclo (`orden` 1–10).
+
+### Administrador › Catálogos › Periodos académicos — ⬜ Pendiente
+
+**Especial:** el "Estado" no es un toggle libre — **solo un período es vigente**
+a la vez. Activar uno **desactiva al anterior** (regla **funcional**, en
+transacción; MySQL no la puede imponer nativamente). Aplica **solo al período**
+(el semestre `2026-I`), **no** a `ciclo` (los niveles 1°–10° corren varios en
+paralelo — ver "Ciclo ≠ Período").
+```
+Periodos académicos                            [ ⟳ Actualizar ]  [ + Nuevo período ]
+
+┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐
+│ 📋  TOTAL        │  │ ✔  VIGENTE       │  │ ⏸  NO VIGENTES   │
+│ 8                │  │ 2026-I           │  │ 7                │
+└──────────────────┘  └──────────────────┘  └──────────────────┘
+
+Buscar:[ nombre… ]   Estado:[ Todos ▾ ] (Todos · Vigente · No vigente)   [🔍][✕]
+┌─────┬───────────┬────────────┬────────────┬────────────────────┬───────────┐
+│ N°  │ Nombre    │ Inicio     │ Fin        │ Estado             │ Acciones  │
+├─────┼───────────┼────────────┼────────────┼────────────────────┼───────────┤
+│  1  │ 2026-I    │ 01/03/2026 │ 31/07/2026 │ ● Vigente          │ ✏ 🕵 🗑   │
+│  2  │ 2025-II   │ 01/08/2025 │ 20/12/2025 │ [ Marcar vigente ] │ ✏ 🕵 🗑   │
+└─────┴───────────┴────────────┴────────────┴────────────────────┴───────────┘
+```
+- **Archivos (al codificar):** `pages/admin/periodos-academicos.html` + `js/periodos-academicos.js`.
+- **Cards adaptadas** (Total/Activos/Inactivos no aplica): **Total** · **Vigente**
+  (muestra el nombre, resaltado) · **No vigentes**.
+- **Columnas (6):** N° · Nombre (`2026-I`) · Fecha inicio · Fecha fin ·
+  **Estado** · Acciones.
+- **Estado NO es toggle libre:** la fila vigente muestra `● Vigente`; las demás,
+  un botón **[ Marcar vigente ]**. Filtro Estado: Todos / Vigente / No vigente.
+- **Aviso "sin período vigente":** si ningún período está activo, mostrar un
+  aviso arriba ("No hay período vigente. Marca uno para habilitar matrículas y
+  fichas.") — todo el sistema opera sobre el vigente.
+
+**Modal (Nuevo / Editar):**
+```
+┌─ Nuevo período ────────────────────────────┐
+│ Nombre*        [ 2026-II ]                 │
+│ Fecha inicio   [ dd/mm/aaaa ]              │
+│ Fecha fin      [ dd/mm/aaaa ]              │
+│ ⓘ Se crea como NO vigente. Se activa luego │
+│    con "Marcar vigente".                   │
+│                    [ Cancelar ]  [ Guardar ]│
+└────────────────────────────────────────────┘
+```
+- **Campos:** **Nombre*** (`2026-I`, único) · **Fecha inicio** · **Fecha fin**
+  (ambas opcionales). **Sin toggle de estado:** nace no vigente (`activo = 0`).
+- **Validación:** si ambas fechas están, `inicio ≤ fin`.
+
+**Acción "Marcar vigente" (con confirmación — es crítico):**
+```
+┌─ Marcar período vigente ───────────────────────┐
+│ ¿Marcar 2026-II como período vigente?          │
+│ El período actual (2026-I) dejará de serlo.    │
+│ Matrículas, fichas y alertas pasarán a operar  │
+│ sobre 2026-II.                                 │
+│                   [ Cancelar ]  [ Marcar vigente ]│
+└────────────────────────────────────────────────┘
+```
+- Al confirmar: activa ese período y **desactiva el anterior** en una sola
+  transacción. Toast: "2026-II es ahora el período vigente".
+
+**Eliminar 🗑:** permitido **solo** si **no es el vigente** y **no tiene
+`ciclo_periodo`** asociado. Si tiene datos → bloqueo: "Este período tiene
+ciclos/matrículas asociados; es historial y no se puede eliminar." *(Aquí no hay
+"desactivar": `activo` es la vigencia, no un borrado suave; `periodo_academico`
+no tiene `deleted_at`.)*
+
+- **BD:** `periodo_academico` (`nombre` UNIQUE, `fecha_inicio`, `fecha_fin`,
+  `activo` = vigente). Reglas: **un solo `activo = 1`**; `inicio ≤ fin`.
+- **Datos placeholder:** 2024-I, 2024-II, 2025-I, 2025-II, 2026-I (vigente).
+
+> **No incluye "Clonar período"**: copiar la configuración (ciclos/docentes/
+> temario) a un período nuevo pertenece a **Organización del período** (Módulo
+> 2). Este catálogo solo administra la lista y cuál es el vigente.
+
+### Administrador › Catálogos › Entidades receptoras — ⬜ Pendiente
+
+**El catálogo más rico:** es un catálogo normal (`clave`·`nombre`·`descripción`),
+**pero** cada entidad tiene su **propia línea de estados** (`tipo_estado_derivacion`)
+— el pipeline por el que pasa una derivación. Se diseña en **2 niveles**.
+
+#### Nivel 1 — Listado de entidades
+```
+Entidades receptoras                           [ ⟳ Actualizar ]  [ + Nueva entidad ]
+[ 3 Total ]  [ 3 Activas ]  [ 0 Inactivas ]
+Buscar:[ nombre o clave… ]   Estado:[ Todos ▾ ]   [🔍][✕]
+┌─────┬──────────────────┬──────────────┬────────────┬───────────┬──────────────────────┐
+│ N°  │ Clave            │ Nombre       │ Estados    │ Estado    │ Acciones             │
+├─────┼──────────────────┼──────────────┼────────────┼───────────┼──────────────────────┤
+│  1  │ psicologia       │ Psicología   │ 5 pasos ▸  │ ● Activa  │ ✏  🔀 Estados  🕵  🗑 │
+│  2  │ servicios_medicos│ Serv. médicos│ 5 pasos ▸  │ ● Activa  │ ✏  🔀 Estados  🕵  🗑 │
+│  3  │ bienestar        │ Bienestar    │ 4 pasos ▸  │ ● Activa  │ ✏  🔀 Estados  🕵  🗑 │
+└─────┴──────────────────┴──────────────┴────────────┴───────────┴──────────────────────┘
+```
+- **Archivos (al codificar):** `pages/admin/entidades-receptoras.html` + `js/entidades-receptoras.js`.
+- **Molde base** + columna/acción propia **Estados** (nº de pasos + acceso al editor).
+- **Modal Nueva / Editar entidad:** **Clave*** (bloqueada al editar — la usa la
+  IA y la validación de roles) · **Nombre*** · **Descripción** · Estado.
+- **🔀 Estados:** abre el editor de pipeline (Nivel 2).
+- **Eliminar 🗑:** bloqueado si tiene `derivacion` o estados configurados →
+  **Desactivar**.
+- **BD:** `entidad_receptora` (`clave` UNIQUE, `nombre` UNIQUE, `descripcion`,
+  `activo`).
+- **Datos placeholder:** Psicología (`psicologia`), Servicios médicos
+  (`servicios_medicos`), Bienestar universitario (`bienestar`).
+
+#### Nivel 2 — Estados de derivación (pipeline por entidad)
+
+Se llega desde 🔀. **Sub-página** (`entidades-receptoras-estados.html?id=`), no
+modal — el editor tiene su propio reordenar + modales de agregar/editar, y un
+modal-sobre-modal se sentiría apretado. Se diseña como **línea de tiempo
+editable** (es un flujo).
+```
+← Volver a entidades          Estados de derivación — Psicología    [ + Agregar estado ]
+
+  ⇅  ①  Derivado                     clave: derivado        ● Activo    ✏
+  │
+  ⇅  ②  En evaluación psicológica    clave: en_evaluacion   ● Activo    ✏
+  │
+  ⇅  ③  En terapia                   clave: en_terapia      ● Activo    ✏
+  │
+  ⇅  ④  Resuelto                     clave: resuelto        ● Activo    ✏
+  │
+  ⇅  ⑤  Cerrado                      clave: cerrado         ● Activo    ✏
+
+  ▸ Estados retirados (2)   — se conservan por historial, no se borran
+```
+- **Archivos (al codificar):** `pages/admin/entidades-receptoras-estados.html` +
+  `js/entidades-receptoras-estados.js`.
+- **Timeline vertical numerada** por `orden`, con línea conectora.
+- **Reordenar con ⇅** (igual que Ciclos: `orden` **único por entidad** →
+  intercambio atómico).
+- **Cada paso:** nombre + `clave` (mono) + badge Activo + ✏ Editar.
+- **[+ Agregar estado]:** modal **Clave*** · **Nombre*** (el `orden` se asigna al
+  final).
+- **✏ Editar estado:** **Nombre** editable · Estado (activo). **Clave bloqueada**
+  (el historial depende de ella).
+- **Retirar en vez de borrar:** el toggle `activo = 0` **no borra** — mueve el
+  paso a **"Estados retirados"** (colapsado). Derivaciones antiguas lo siguen
+  referenciando (FK intacta).
+- **BD:** `tipo_estado_derivacion` (FK `entidad_receptora_id`, `clave` UNIQUE por
+  entidad, `nombre`, `orden` UNIQUE por entidad, `activo`).
+
+**Por qué evolucionar el pipeline NO rompe nada** (regla de historial):
+- Cada `derivacion` guarda un **FK al estado**; los estados **nunca se borran**,
+  se **retiran** (`activo = 0`).
+- Pasar de 5 a 4 pasos = retirar/agregar filas; las **derivaciones antiguas**
+  siguen apuntando a su estado (aunque esté retirado, la fila existe y es
+  legible); las **nuevas** solo ven los `activo = 1`.
+- Un hard delete de un estado en uso lo **bloquea la FK** (RESTRICT) — por eso la
+  UI ofrece **"Retirar", no "Eliminar"**.
+- **Reglas:** quitar → `activo = 0`; agregar → nueva fila; reordenar → swap de
+  `orden` en transacción; renombrar → edita `nombre` (la `clave` no cambia).
+
+---
+
+## Organización del período (Módulo 2)
+
+Todo este grupo trabaja **sobre un período** (seleccionable). El nodo central es
+`ciclo_periodo` (un ciclo dentro de un período); de él cuelgan docentes, temario
+y matrículas.
+
+### Administrador › Organización del período › Configuración del período — ⬜ Pendiente
+
+Hub que **arma la estructura** de un período: qué ciclos tiene, qué docentes
+tutoran cada uno y su temario. **No crea el período** (eso es el catálogo
+"Periodos académicos"); aquí se **configura** uno existente.
+```
+Configuración del período   Período: [ 2026-I ▾  ● Vigente ]   [🕵 Historial]  [⧉ Clonar desde…]  [+ Agregar ciclos]
+
+┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐
+│ 📚 CICLOS         │  │ 👥 DOCENTES       │  │ 🎓 MATRICULADOS   │
+│ 10               │  │ 14 asignados     │  │ 195              │
+└──────────────────┘  └──────────────────┘  └──────────────────┘
+
+┌─────┬────────────────┬─────────────┬─────────────┬───────────────┬────────────────────────────┐
+│ N°  │ Ciclo          │ Docentes    │ Temario     │ Matriculados  │ Acciones                   │
+├─────┼────────────────┼─────────────┼─────────────┼───────────────┼────────────────────────────┤
+│  1  │ Primer ciclo   │ 2 tutores   │ 8 temas     │ 20            │ 👥 Docentes  📋 Temario  🗑 │
+│  2  │ Segundo ciclo  │ 1 tutor     │ 6 temas     │ 18            │ 👥 Docentes  📋 Temario  🗑 │
+└─────┴────────────────┴─────────────┴─────────────┴───────────────┴────────────────────────────┘
+```
+- **Archivos (al codificar):** `pages/admin/gestion-periodo.html` + `js/gestion-periodo.js`.
+- **Selector de período** (default: **vigente**): lista **todos** los períodos
+  existentes; cambiarlo re-scopea la pantalla. Un período aparece aquí apenas se
+  crea en el catálogo (no hace falta que sea vigente).
+- **3 cards** del período: Ciclos configurados · Docentes asignados · Matriculados.
+- **Tabla de ciclos del período** (`ciclo_periodo`): contadores (docentes,
+  temario, matriculados) + acciones por fila.
+- **[+ Agregar ciclos]** — **multi-selección**: marca uno o varios ciclos del
+  catálogo que aún no estén en el período → crea las filas `ciclo_periodo`.
+- **[⧉ Clonar desde…]** — **clonado inteligente (merge)**: copia de un período
+  origen **solo los ciclos que faltan** (con sus docentes y temario) y **omite
+  los que ya existen** (no los toca). Muestra el detalle antes de confirmar:
+  ```
+  ┌─ Clonar desde 2025-II → 2026-I ───────────────────────┐
+  │ Se agregarán 7 ciclos (con docentes y temario):       │
+  │   + 4°, 5°, 6°, 7°, 8°, 9°, 10° ciclo                  │
+  │ Se omiten 3 que ya existen (no se tocan): 1°, 2°, 3°   │
+  │                          [ Cancelar ]  [ Clonar 7 ]   │
+  └───────────────────────────────────────────────────────┘
+  ```
+  **No** clona matrículas. Calza con `UNIQUE (ciclo_id, periodo)` (lo existente se salta).
+- **[🕵 Historial]** — **Historial de movimientos** del período: quién agregó/
+  quitó ciclos y asignó/quitó docentes, con fecha. **BD:** `auditoria` filtrando
+  `ciclo_periodo` + `docente_ciclo_periodo` de ese período.
+- **[🗑 Quitar]** un ciclo del período: **bloqueado si ya tiene** docentes,
+  temario o matriculados (hijos históricos) → primero se vacía.
+- **Estado vacío:** si el período no tiene ciclos → "Este período aún no tiene
+  ciclos configurados" + [ + Agregar ciclos ] y [ ⧉ Clonar desde otro período ].
+- **BD:** `ciclo_periodo` (UNIQUE `ciclo_id`+`periodo_academico_id`; sin
+  `activo`/`deleted_at` — es estructural).
+
+#### Sub-editor 👥 Docentes del ciclo (drawer)
+
+Gestiona `docente_ciclo_periodo`: el **pool de tutores** de ese ciclo+período.
+Luego, en Matrículas, cada estudiante se asigna a **uno** de ellos.
+```
+Docentes — Primer ciclo · 2026-I                        [ + Asignar docentes ]
+┌──────────────────────────────┬─────────────┬───────────┐
+│ Docente                      │ Tutorados   │           │
+│ Dr. Raúl Quispe Mamani       │ 12          │ 🗑 Quitar │
+│ Mg. Lucía Torres Ávila       │  8          │ 🗑 Quitar │
+└──────────────────────────────┴─────────────┴───────────┘
+20 tutorados en el ciclo · 2 tutores · promedio 10 c/u
+```
+- **Tutorados = carga** de cada tutor en este ciclo+período (`estudiante_ciclo_periodo`).
+- **[+ Asignar docentes]** — **multi-select** con búsqueda: lista docentes
+  **activos** aún no asignados a este ciclo+período, mostrando su **carga total
+  en el período** (para balancear).
+- **🗑 Quitar:** bloqueado si el docente **tiene tutorados** en este ciclo+período
+  → "Reasígnalos en Matrículas antes de quitarlo".
+- **Dónde vive:** drawer lateral (no pierde el contexto del período).
+- **BD:** `docente_ciclo_periodo` (UNIQUE `docente_id`+`ciclo_periodo_id`, n:n;
+  quitar = borrar la fila).
+
+> **📋 Temario** se gestiona en su **propia pantalla** (árbol jerárquico) —
+> compartida con el rol Docente. Aquí solo se muestra el contador con enlace.
+> Ver «Temario» abajo.
+
+### Organización del período › Temario — ⬜ Pendiente
+
+Árbol de temas de tutoría de un **ciclo+período** (`temario`), de **profundidad
+libre** (tema → subtema → sub-subtema…). Es **por `ciclo_periodo`**: el temario
+de un ciclo en 2026-I es independiente del de 2026-II. **Pantalla compartida**:
+el admin llega desde el 📋 de Configuración del período; el Docente, desde su
+menú "Temario" (solo edita los ciclos que tutora).
+
+**No se rehace cada período:** al **clonar** un período, el temario se copia
+completo (con su jerarquía) → se parte de una copia y se ajusta. De cero solo la
+primera vez. La duplicación por período es intencional: preserva el historial
+(editar 2026-I no toca 2025-II).
+```
+← Volver a configuración      Temario — Primer ciclo · 2026-I       [ + Agregar tema ]
+
+⠿ ▾ 1. Adaptación a la vida universitaria           ✏   ➕ subtema   🗑
+      ⠿   1.1  Integración social                    ✏   🗑
+      ⠿   1.2  Manejo del tiempo                      ✏   🗑
+⠿ ▾ 2. Bienestar personal                           ✏   ➕ subtema   🗑
+      ⠿   2.1  Salud y hábitos                        ✏   🗑
+```
+- **Archivos (al codificar):** `pages/admin/temario.html` + `js/temario.js`
+  (recibe `?cp=<ciclo_periodo_id>`).
+- **Editor de árbol (outline):**
+  - **⠿ arrastrar** para reordenar entre hermanos (swap de `orden` en
+    transacción) y para **mover a otro padre** (arrastrar un ítem dentro de otro
+    lo vuelve subtema).
+  - **▾** expandir/colapsar. Numeración jerárquica (1, 1.1, 1.2…) según
+    `padre_id` + `orden`.
+  - **Por nodo:** ✏ editar texto · ➕ agregar subtema · 🗑 eliminar.
+  - **[+ Agregar tema]** crea un tema raíz al final.
+- **Eliminar un tema con subtemas:** confirma "se eliminará este tema y sus N
+  subtemas" (**cascada**) — la FK `padre_id` no permite subtemas huérfanos.
+- **BD:** `temario` (`ciclo_periodo_id`, `padre_id` auto-referencia, `tema`,
+  `orden` entre hermanos; sin `activo`/`deleted_at` → quitar = borrar fila).
+- **Compartida con Docente:** misma pantalla; el Docente solo accede a los
+  `ciclo_periodo` que tutora (regla de acceso).
+
+### Administrador › Organización del período › Matrículas — ⬜ Pendiente
+
+Mete estudiantes a un ciclo+período y les asigna **un** tutor del pool de ese
+ciclo. Muy manejable: asignación **individual** y **en lote**.
+```
+Matrículas    Período:[ 2026-I ▾ ●Vigente ]  Ciclo:[ Primer ciclo ▾ ]      [ + Matricular ]
+[ 20 Matriculados ]  [ 2 Tutores ]  [ prom. 10 c/u ]
+Buscar:[ nombre o código… ]   Tutor:[ Todos ▾ ]   [🔍][✕]
+┌────┬──────────────────────┬──────────────┬──────────────────────┬───────────┬──────────────────┐
+│ ☐  │ Estudiante           │ Código       │ Tutor asignado       │ Fichas    │ Acciones         │
+├────┼──────────────────────┼──────────────┼──────────────────────┼───────────┼──────────────────┤
+│ ☑  │ Ana Quispe Mamani    │ 2021-1001    │ Dr. Raúl Quispe   ✎  │ 2/3       │ 🔄 tutor   🗑    │
+│ ☑  │ Carlos Huanca Flores │ 2021-1002    │ Mg. Lucía Torres  ✎  │ 0/3       │ 🔄 tutor   🗑    │
+└────┴──────────────────────┴──────────────┴──────────────────────┴───────────┴──────────────────┘
+[ con seleccionados: Asignar tutor ▾ ]
+```
+- **Archivos (al codificar):** `pages/admin/matriculas.html` + `js/matriculas.js`.
+- **Selectores** Período (default vigente) + Ciclo → definen el `ciclo_periodo`.
+- **Cards:** Matriculados · Tutores · promedio de carga.
+- **Columnas:** ☐ (selección) · Estudiante · Código · **Tutor asignado** (✎
+  cambio rápido) · **Fichas** (llenadas/total) · Acciones (🔄 Cambiar tutor · 🗑 Quitar).
+- **[+ Matricular]** (modal):
+  - **Estudiantes:** multi-select con búsqueda; candidatos = `estado = activo` y
+    **sin matrícula en este período** (regla 1 matrícula/período).
+  - **Tutor:** del **pool del ciclo** (`docente_ciclo_periodo`), con su carga
+    para balancear.
+- **Asignar/Cambiar tutor:** el nuevo tutor debe estar en el pool del ciclo. **En
+  lote:** seleccionar filas → "Asignar tutor" (reparto rápido).
+- **🗑 Quitar:** bloqueado si el estudiante tiene **fichas llenadas** en este
+  `ciclo_periodo` (protege el historial).
+- **BD:** `estudiante_ciclo_periodo` (UNIQUE `estudiante`+`ciclo_periodo`;
+  `docente_id` ∈ pool del ciclo; 1 matrícula por período vía `periodo` derivado).
+- **Toasts:** "Estudiante matriculado", "Tutor actualizado", "Matrícula retirada".
+
+### Administrador › Organización del período › Avanzar estudiantes — ⬜ Pendiente
+
+Operación **masiva** al abrir un período: propone mover cada estudiante al ciclo
+siguiente, y tú **revisas y corriges**. **No es un botón ciego** — el sistema no
+sabe quién aprobó (no hay notas), así que **propone y tú decides**.
+```
+Avanzar estudiantes
+Origen: [ 2025-II ▾ ]   →   Destino: [ 2026-I ▾ ]           [ Generar propuesta ]
+
+Propuesta: 320   [ Avanza 280 ] [ Repite 30 ] [ Egresa 8 ] [ Excluir 2 ]   [ ⚠ Sin tutor: 5 ]
+Filtros:[ Acción ▾ ] [ Tutor ▾ ]   Buscar:[ … ]
+┌────┬────────────────┬───────────┬─────────────┬───────────────────┬──────────────┐
+│ ☑  │ Estudiante     │ Ciclo act.│ → Destino   │ Tutor destino     │ Acción       │
+├────┼────────────────┼───────────┼─────────────┼───────────────────┼──────────────┤
+│ ☑  │ Ana Quispe     │ 1° ciclo  │ 2° ciclo    │ Dr. Quispe     ✎  │ [ Avanza ▾ ] │
+│ ☑  │ Carlos Huanca  │ 3° ciclo  │ 3° ciclo    │ Mg. Torres     ✎  │ [ Repite ▾ ] │
+│ ☑  │ Diana Torres   │ 10° ciclo │ —           │ —                 │ [ Egresa ▾ ] │
+│ ☐  │ Luis Vega      │ 2° ciclo  │ 3° ciclo    │ ⚠ elegir tutor    │ [ Avanza ▾ ] │
+└────┴────────────────┴───────────┴─────────────┴───────────────────┴──────────────┘
+[ con seleccionados: Acción ▾ · Asignar tutor ▾ ]          [ Confirmar (318 marcados) ]
+```
+- **Archivos (al codificar):** `pages/admin/avanzar-estudiantes.html` + `js/avanzar-estudiantes.js`.
+- **Origen / Destino** (períodos) + **[Generar propuesta]**.
+- Solo considera estudiantes con `estado = activo` del período origen.
+- **Propuesta por estudiante** (editable):
+  - Ciclo siguiente (`orden` + 1); mismo tutor si sigue en el pool destino.
+  - Último ciclo (máximo `orden`) → propone **Egresa** (sin ciclo destino).
+  - Tutor ya no disponible (renunció) → **⚠ elegir tutor** del nuevo pool.
+- **Acción por fila:** Avanza / Repite (mismo ciclo) / Egresa / Excluir. Tutor
+  editable (✎, del pool destino).
+- **Contadores** grandes + **filtro por acción** y **"⚠ sin tutor"** → atiendes
+  solo las excepciones (los repetidores, los sin tutor); los fáciles quedan por
+  default.
+- **En lote:** seleccionar filas → fijar acción o asignar tutor.
+- **[Confirmar]** (una transacción, no toca el origen):
+  - Avanza / Repite → crea `estudiante_ciclo_periodo` (ciclo destino + tutor).
+  - Egresa → `estudiante.estado = egresado` (sin matrícula).
+  - Excluir → no hace nada.
+- **Validaciones:** sin matrícula previa en el destino; tutor ∈ pool del ciclo destino.
+- **BD:** `estudiante_ciclo_periodo` (insert) · `estudiante.estado` (egresar) ·
+  `ciclo.orden` (siguiente).
+- **Toasts:** "318 estudiantes procesados · 8 egresados".

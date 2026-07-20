@@ -5,14 +5,15 @@
 (function () {
   const STORAGE_KEY = "tutortrack-docentes";
   const VERSION_KEY = "tutortrack-docentes-version";
-  const STORAGE_VERSION = "seed-25-v4-inline-avatares";
+  const STORAGE_VERSION = "seed-25-v5-docentes-diseno";
 
   const AVATAR_M = "assets/img/avatares/usuario-m.svg";
   const AVATAR_F = "assets/img/avatares/usuario-f.svg";
 
   const ROLES = [
-    { id: "rol-2", nombre: "Docente-Tutor" },
-    { id: "rol-4", nombre: "Coordinador de tutoría" },
+    { id: "rol-1", nombre: "Administrador", activo: true },
+    { id: "rol-2", nombre: "Docente-Tutor", activo: true },
+    { id: "rol-4", nombre: "Coordinador de tutoría", activo: true },
   ];
 
   const GRADOS = [
@@ -29,6 +30,108 @@
     { id: "esp-4", nombre: "Recursos Humanos" },
     { id: "esp-5", nombre: "Contabilidad" },
   ];
+
+  /**
+   * Relaciones mock (docente_ciclo_periodo / estudiante_ciclo_periodo / derivacion).
+   * Sin filas → se puede soft-delete. Con historial → solo desactivar.
+   */
+  const RELACIONES = {
+    "doc-01": {
+      periodos_tutor: 8,
+      tutorados_vigentes: 20,
+      tutorados_historico: 160,
+      derivaciones: 3,
+      por_periodo: [
+        { periodo: "2026-I", ciclos: ["III", "V"], tutorados: 20 },
+        { periodo: "2025-II", ciclos: ["II", "IV"], tutorados: 20 },
+        { periodo: "2025-I", ciclos: ["I", "III"], tutorados: 18 },
+        { periodo: "2024-II", ciclos: ["II"], tutorados: 22 },
+        { periodo: "2024-I", ciclos: ["I", "II"], tutorados: 20 },
+      ],
+    },
+    "doc-02": {
+      periodos_tutor: 6,
+      tutorados_vigentes: 14,
+      tutorados_historico: 92,
+      derivaciones: 1,
+      por_periodo: [
+        { periodo: "2026-I", ciclos: ["IV"], tutorados: 14 },
+        { periodo: "2025-II", ciclos: ["III"], tutorados: 16 },
+        { periodo: "2025-I", ciclos: ["II"], tutorados: 15 },
+      ],
+    },
+    "doc-03": {
+      periodos_tutor: 4,
+      tutorados_vigentes: 12,
+      tutorados_historico: 48,
+      derivaciones: 0,
+      por_periodo: [
+        { periodo: "2026-I", ciclos: ["II"], tutorados: 12 },
+        { periodo: "2025-II", ciclos: ["I"], tutorados: 12 },
+      ],
+    },
+    "doc-07": {
+      periodos_tutor: 3,
+      tutorados_vigentes: 10,
+      tutorados_historico: 30,
+      derivaciones: 2,
+      por_periodo: [
+        { periodo: "2026-I", ciclos: ["V"], tutorados: 10 },
+        { periodo: "2025-II", ciclos: ["IV"], tutorados: 10 },
+      ],
+    },
+    "doc-09": {
+      periodos_tutor: 10,
+      tutorados_vigentes: 20,
+      tutorados_historico: 200,
+      derivaciones: 5,
+      por_periodo: [
+        { periodo: "2026-I", ciclos: ["III", "V"], tutorados: 20 },
+        { periodo: "2025-II", ciclos: ["II", "IV"], tutorados: 20 },
+        { periodo: "2025-I", ciclos: ["I", "III"], tutorados: 20 },
+        { periodo: "2024-II", ciclos: ["II", "IV"], tutorados: 20 },
+        { periodo: "2024-I", ciclos: ["I"], tutorados: 18 },
+      ],
+    },
+    "doc-11": {
+      periodos_tutor: 2,
+      tutorados_vigentes: 8,
+      tutorados_historico: 16,
+      derivaciones: 0,
+      por_periodo: [
+        { periodo: "2026-I", ciclos: ["I"], tutorados: 8 },
+        { periodo: "2025-II", ciclos: ["I"], tutorados: 8 },
+      ],
+    },
+    "doc-15": {
+      periodos_tutor: 5,
+      tutorados_vigentes: 0,
+      tutorados_historico: 55,
+      derivaciones: 1,
+      por_periodo: [
+        { periodo: "2025-II", ciclos: ["VI"], tutorados: 11 },
+        { periodo: "2025-I", ciclos: ["V"], tutorados: 12 },
+      ],
+    },
+    "doc-20": {
+      periodos_tutor: 7,
+      tutorados_vigentes: 18,
+      tutorados_historico: 110,
+      derivaciones: 4,
+      por_periodo: [
+        { periodo: "2026-I", ciclos: ["VI", "VIII"], tutorados: 18 },
+        { periodo: "2025-II", ciclos: ["V", "VII"], tutorados: 16 },
+      ],
+    },
+  };
+
+  const EMPTY_RELACIONES = {
+    periodos_tutor: 0,
+    tutorados_vigentes: 0,
+    tutorados_historico: 0,
+    derivaciones: 0,
+    por_periodo: [],
+  };
 
   /** Seed de prueba embebido — todos con grado; teléfonos y fotos parciales. */
   const SEED = [
@@ -247,7 +350,7 @@
     "biografia": "Docente de la Facultad de Administración UNAMBA.",
     "roles": [
       "rol-2",
-      "rol-4"
+      "rol-1"
     ]
   },
   {
@@ -655,6 +758,8 @@
       cv_url: row.cv_url || "",
       biografia: row.biografia || "",
       foto_perfil_url: row.foto_perfil_url || "",
+      created_at: row.created_at || "2026-02-03T11:02:00",
+      updated_at: row.updated_at || "2026-07-18T14:32:00",
       roles,
     };
   }
@@ -732,8 +837,27 @@
     save(load().filter((r) => r.id !== id));
   }
 
+  function setActivo(id, activo) {
+    const rows = load();
+    const idx = rows.findIndex((r) => r.id === id);
+    if (idx === -1) return null;
+    rows[idx] = {
+      ...rows[idx],
+      activo: Boolean(activo),
+      updated_at: new Date().toISOString(),
+    };
+    save(rows);
+    return rows[idx];
+  }
+
   function nombreCompleto(row) {
     return [row.nombres, row.apellido_paterno, row.apellido_materno].filter(Boolean).join(" ").trim();
+  }
+
+  function nombreConGrado(row) {
+    const abrev = gradoAbrev(row?.grado_academico_id);
+    const name = nombreCompleto(row);
+    return abrev ? `${abrev} ${name}` : name;
   }
 
   function iniciales(row) {
@@ -754,8 +878,16 @@
     return "../../" + String(url).replace(/^\.\.\//, "");
   }
 
+  function rolesActivos() {
+    return ROLES.filter((r) => r.activo !== false);
+  }
+
   function rolNombre(id) {
     return ROLES.find((r) => r.id === id)?.nombre || id;
+  }
+
+  function rolesLabel(ids) {
+    return (ids || []).map((id) => rolNombre(id)).filter(Boolean);
   }
 
   function gradoNombre(id) {
@@ -769,6 +901,33 @@
 
   function especialidadNombre(id) {
     return ESPECIALIDADES.find((r) => r.id === id)?.nombre || "";
+  }
+
+  function getRelaciones(id) {
+    return RELACIONES[id] ? { ...RELACIONES[id], por_periodo: [...(RELACIONES[id].por_periodo || [])] } : { ...EMPTY_RELACIONES, por_periodo: [] };
+  }
+
+  function tieneHistorial(id) {
+    const r = getRelaciones(id);
+    return r.periodos_tutor > 0 || r.tutorados_historico > 0 || r.derivaciones > 0;
+  }
+
+  function actividadTutoria(id) {
+    const r = getRelaciones(id);
+    return {
+      periodos: r.periodos_tutor,
+      tutorados_vigentes: r.tutorados_vigentes,
+      tutorados_historico: r.tutorados_historico,
+      por_periodo: r.por_periodo || [],
+    };
+  }
+
+  /** Conteos globales inmutables (sin soft-deleted). */
+  function resumenCounts(rows) {
+    const list = rows || load();
+    const total = list.length;
+    const activos = list.filter((r) => r.activo !== false).length;
+    return { total, activos, inactivos: total - activos };
   }
 
   async function resetFromSeed() {
@@ -794,13 +953,21 @@
     findById,
     upsert,
     remove,
+    setActivo,
     nombreCompleto,
+    nombreConGrado,
     iniciales,
     fotoSrc,
     resolveFotoUrl,
+    rolesActivos,
     rolNombre,
+    rolesLabel,
     gradoNombre,
     gradoAbrev,
     especialidadNombre,
+    getRelaciones,
+    tieneHistorial,
+    actividadTutoria,
+    resumenCounts,
   };
 })();
