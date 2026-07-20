@@ -1,6 +1,7 @@
 /**
- * usuarios.js — listado Admin › Usuarios y acceso › Usuarios (identidad maestra).
- * Cards + tabla (N°, Usuario, Documento, Perfiles, Roles, Estado) + overflow.
+ * receptores.js — listado Admin › Usuarios y acceso › Receptores.
+ * Cards Total/Activos/Inactivos (usuario.activo) · columna Entidad · sin Roles.
+ * Borrado permitido; aviso si es el único receptor activo de su entidad.
  */
 (function () {
   const toast = (message, type = "success") =>
@@ -11,26 +12,26 @@
   function mapRows(rows) {
     return rows.map((r) => ({
       ...r,
-      nombre_completo: UsuariosData.nombreCompleto(r),
+      nombre_completo: ReceptoresData.nombreCompleto(r),
       email: r.email || "",
-      roles: r.roles || r.rolIds || [],
+      entidad_nombre: ReceptoresData.entidadNombre(r.entidad_receptora_id),
     }));
   }
 
-  function fillRolFilter() {
-    const select = document.getElementById("filter-rol");
+  function fillEntidadFilter() {
+    const select = document.getElementById("filter-entidad");
     if (!select) return;
     const current = select.value;
     select.innerHTML =
-      `<option value="">Todos</option>` +
-      UsuariosData.rolesActivos()
-        .map((r) => `<option value="${esc(r.id)}">${esc(r.nombre)}</option>`)
-        .join("");
+      `<option value="">Todas</option>` +
+      ReceptoresData.ENTIDADES.map(
+        (e) => `<option value="${esc(e.id)}">${esc(e.nombre)}</option>`
+      ).join("");
     if (current) select.value = current;
   }
 
   function renderSummary(allRows) {
-    const { total, activos, inactivos } = UsuariosData.resumenCounts(allRows);
+    const { total, activos, inactivos } = ReceptoresData.resumenCounts(allRows);
     const set = (sel, n) => {
       const el = document.querySelector(sel);
       if (el) el.textContent = String(n);
@@ -40,22 +41,14 @@
     set("[data-summary-inactivos]", inactivos);
   }
 
-  function usuarioHtml(row, escapeFn) {
-    const name = UsuariosData.nombreCompleto(row);
-    const src = UsuariosData.resolveFotoUrl(UsuariosData.fotoSrc(row));
+  function receptorHtml(row, escapeFn) {
+    const name = ReceptoresData.nombreCompleto(row);
+    const src = ReceptoresData.resolveFotoUrl(ReceptoresData.fotoSrc(row));
     const avatar = `<img src="${escapeFn(src)}" alt="" class="h-10 w-10 shrink-0 rounded-full object-cover ring-1 ring-border" width="40" height="40" />`;
-    const email = row.email || "";
     return `
       <div class="flex min-w-0 items-center gap-3">
         ${avatar}
-        <div class="min-w-0">
-          <div class="font-medium text-text leading-snug">${escapeFn(name)}</div>
-          ${
-            email
-              ? `<div class="truncate text-xs text-text-muted">${escapeFn(email)}</div>`
-              : `<div class="text-xs text-text-muted">Sin correo</div>`
-          }
-        </div>
+        <div class="docente-nombre font-medium text-text leading-snug">${escapeFn(name)}</div>
       </div>`;
   }
 
@@ -71,20 +64,19 @@
       </div>`;
   }
 
-  function perfilesHtml(row, escapeFn) {
-    const tipos = UsuariosData.listaPerfiles(row);
-    if (!tipos.length) return `<span class="text-text-muted">—</span>`;
-    return `<div class="flex flex-wrap gap-1">${tipos
-      .map((t) => `<span class="badge badge-neutral">${escapeFn(UsuariosData.PERFIL_LABEL[t] || t)}</span>`)
-      .join("")}</div>`;
-  }
-
-  function rolesHtml(row, escapeFn) {
-    const labels = UsuariosData.rolesLabel(row.roles);
-    if (!labels.length) return `<span class="text-text-muted">Sin roles</span>`;
-    return `<div class="flex flex-wrap gap-1">${labels
-      .map((l) => `<span class="badge badge-neutral">${escapeFn(l)}</span>`)
-      .join("")}</div>`;
+  function contactoHtml(row, escapeFn) {
+    const email = row.email || "";
+    const tel = row.celular_principal || "";
+    if (!email && !tel) return `<span class="text-text-muted">—</span>`;
+    return `
+      <div class="min-w-0 leading-snug">
+        ${email ? `<div class="truncate text-text">${escapeFn(email)}</div>` : ""}
+        ${
+          tel
+            ? `<div class="text-xs text-text-muted">${escapeFn(tel)}</div>`
+            : `<div class="text-xs text-text-muted">Sin celular</div>`
+        }
+      </div>`;
   }
 
   function estadoHtml(row) {
@@ -99,14 +91,8 @@
     return `${clave ? `${clave} ` : ""}${row.documento || ""}`.trim() || "—";
   }
 
-  function tieneHistorialAuditoria(id) {
-    if (!window.AuditoriaData || typeof AuditoriaData.listByRegistro !== "function") return false;
-    const entries = AuditoriaData.listByRegistro("usuario", id) || [];
-    return entries.length > 0;
-  }
-
   function resetPasswordPrompt(row) {
-    const nombre = UsuariosData.nombreCompleto(row);
+    const nombre = ReceptoresData.nombreCompleto(row);
     const doc = docLabel(row);
     const num = row.documento || "—";
     return AppConfirm.request({
@@ -115,86 +101,75 @@
       cancelLabel: "Cancelar",
       variant: "warning",
       messageHtml: `
-        <p><span class="font-medium text-text">Usuario:</span> ${esc(nombre)}</p>
+        <p><span class="font-medium text-text">Receptor:</span> ${esc(nombre)}</p>
         <p><span class="font-medium text-text">Documento:</span> ${esc(doc)}</p>
         <p class="pt-1">La nueva contraseña será el número de documento:
           <strong class="text-text font-semibold">${esc(num)}</strong>
         </p>
         <p class="rounded-md border border-warning/30 bg-warning-bg px-3 py-2 text-warning">
-          La contraseña actual dejará de funcionar. El usuario deberá cambiarla al ingresar.
+          La contraseña actual dejará de funcionar. El receptor deberá cambiarla al ingresar.
         </p>`,
     });
   }
 
-  function askDeleteOrDeactivate(row) {
-    const nombre = UsuariosData.nombreCompleto(row);
+  function askDelete(row) {
+    const nombre = ReceptoresData.nombreCompleto(row);
     const doc = docLabel(row);
-    const perfiles = UsuariosData.listaPerfiles(row);
-    const conHistorial = tieneHistorialAuditoria(row.id);
+    const entidad = ReceptoresData.entidadNombre(row.entidad_receptora_id) || "su entidad";
+    const unico = ReceptoresData.esUnicoActivoDeEntidad(row.id);
 
-    if (!perfiles.length && !conHistorial) {
-      return AppConfirm.request({
-        title: "Eliminar usuario",
-        confirmLabel: "Eliminar",
-        cancelLabel: "Cancelar",
-        variant: "danger",
-        messageHtml: `
-          <p>¿Eliminar a <strong class="text-text">${esc(nombre)}</strong> (${esc(doc)})?</p>
-          <p>No tiene perfiles ni historial. Se eliminará la identidad (soft delete).</p>`,
-      }).then((ok) => {
-        if (!ok) return false;
-        UsuariosData.remove(row.id);
-        toast("Usuario eliminado");
-        renderSummary(UsuariosData.load());
-        return "deleted";
-      });
-    }
-
-    const bullets = [];
-    if (perfiles.length) {
-      bullets.push(
-        `Perfiles: ${perfiles.map((t) => UsuariosData.PERFIL_LABEL[t] || t).join(", ")}`
-      );
-    }
-    if (conHistorial) bullets.push("Registros de auditoría asociados");
+    const avisoUnico = unico
+      ? `<p class="rounded-md border border-warning/30 bg-warning-bg px-3 py-2 text-warning">
+          Es el único receptor activo de <strong>${esc(entidad)}</strong>; esa entidad quedaría sin nadie para gestionar derivaciones.
+        </p>`
+      : "";
 
     return AppConfirm.request({
-      title: "No se puede eliminar",
-      confirmLabel: "Desactivar usuario",
+      title: "Eliminar receptor",
+      confirmLabel: "Eliminar",
       cancelLabel: "Cancelar",
-      variant: "primary",
+      variant: "danger",
       messageHtml: `
-        <p><strong class="text-text">${esc(nombre)}</strong> no se puede eliminar:</p>
-        <ul class="list-disc pl-5 space-y-0.5">
-          ${bullets.map((b) => `<li>${esc(b)}</li>`).join("")}
-        </ul>
-        <p class="pt-1">Puedes desactivarlo: no podrá iniciar sesión (afecta toda la identidad).</p>`,
+        <p>¿Eliminar a <strong class="text-text">${esc(nombre)}</strong> (${esc(doc)})?</p>
+        <p>Se eliminará su perfil (soft delete). Las derivaciones de la entidad no se afectan.</p>
+        ${avisoUnico}
+        <p class="pt-1 text-text-muted">También puedes solo desactivar el acceso desde el menú ⋯.</p>`,
     }).then((ok) => {
       if (!ok) return false;
-      UsuariosData.setActivo(row.id, false);
-      toast("Usuario desactivado");
-      renderSummary(UsuariosData.load());
-      return "deactivated";
+      ReceptoresData.remove(row.id);
+      toast("Receptor eliminado");
+      renderSummary(ReceptoresData.load());
+      return "deleted";
     });
   }
 
   function toggleActivo(row) {
     const next = !(row.activo !== false);
     const label = next ? "Activar" : "Desactivar";
-    const nombre = UsuariosData.nombreCompleto(row);
+    const nombre = ReceptoresData.nombreCompleto(row);
+    const unico = !next && ReceptoresData.esUnicoActivoDeEntidad(row.id);
+    const entidad = ReceptoresData.entidadNombre(row.entidad_receptora_id) || "su entidad";
+
     return AppConfirm.request({
-      title: `${label} usuario`,
+      title: `${label} receptor`,
       confirmLabel: label,
       cancelLabel: "Cancelar",
       variant: next ? "primary" : "warning",
       messageHtml: next
         ? `<p>¿Activar a <strong class="text-text">${esc(nombre)}</strong>? Recuperará el acceso al sistema.</p>`
-        : `<p>¿Desactivar a <strong class="text-text">${esc(nombre)}</strong>? No podrá iniciar sesión.</p>`,
+        : `<p>¿Desactivar a <strong class="text-text">${esc(nombre)}</strong>? No podrá iniciar sesión.</p>
+           ${
+             unico
+               ? `<p class="rounded-md border border-warning/30 bg-warning-bg px-3 py-2 text-warning mt-2">
+                    Es el único receptor activo de ${esc(entidad)}.
+                  </p>`
+               : ""
+           }`,
     }).then((ok) => {
       if (!ok) return false;
-      UsuariosData.setActivo(row.id, next);
-      toast(next ? "Usuario activado" : "Usuario desactivado");
-      renderSummary(UsuariosData.load());
+      ReceptoresData.setActivo(row.id, next);
+      toast(next ? "Receptor activado" : "Receptor desactivado");
+      renderSummary(ReceptoresData.load());
       return next ? "activated" : "deactivated";
     });
   }
@@ -203,15 +178,8 @@
     const root = document.querySelector("[data-catalog]");
     if (!root || !window.CatalogTable) return null;
 
-    fillRolFilter();
+    fillEntidadFilter();
     renderSummary(rows);
-
-    const params = new URLSearchParams(window.location.search);
-    const rolFromUrl = params.get("rol");
-    if (rolFromUrl) {
-      const rolSelect = document.getElementById("filter-rol");
-      if (rolSelect) rolSelect.value = rolFromUrl;
-    }
 
     const table = CatalogTable.mount(root, {
       data: mapRows(rows),
@@ -227,15 +195,8 @@
       ],
       filters: [
         {
-          id: "perfil",
-          match: (r, value) => {
-            if (value === "sin") return !UsuariosData.tieneAlgúnPerfil(r);
-            return UsuariosData.tienePerfil(r, value);
-          },
-        },
-        {
-          id: "rol",
-          match: (r, value) => (r.roles || []).includes(value),
+          id: "entidad",
+          getValue: (r) => r.entidad_receptora_id || "",
         },
         {
           id: "estado",
@@ -243,8 +204,8 @@
         },
       ],
       initialSortKey: "apellido_paterno",
-      deleteLabel: (r) => UsuariosData.nombreCompleto(r),
-      historyLabel: (r) => UsuariosData.nombreCompleto(r),
+      deleteLabel: (r) => ReceptoresData.nombreCompleto(r),
+      historyLabel: (r) => ReceptoresData.nombreCompleto(r),
       columns: [
         {
           key: "_n",
@@ -256,10 +217,20 @@
         },
         {
           key: "nombres",
-          label: "Usuario",
+          label: "Receptor",
           primary: true,
-          sortValue: (r) => UsuariosData.nombreCompleto(r).toLowerCase(),
-          render: usuarioHtml,
+          sortValue: (r) => ReceptoresData.nombreCompleto(r).toLowerCase(),
+          render: receptorHtml,
+        },
+        {
+          key: "entidad_receptora_id",
+          label: "Entidad",
+          muted: true,
+          sortValue: (r) => (r.entidad_nombre || "").toLowerCase(),
+          render: (row, escapeFn) =>
+            row.entidad_nombre
+              ? escapeFn(row.entidad_nombre)
+              : `<span class="text-text-muted">—</span>`,
         },
         {
           key: "documento",
@@ -270,16 +241,11 @@
           render: documentoHtml,
         },
         {
-          key: "perfiles",
-          label: "Perfiles",
-          sortable: false,
-          render: perfilesHtml,
-        },
-        {
-          key: "roles",
-          label: "Roles",
-          sortable: false,
-          render: rolesHtml,
+          key: "email",
+          label: "Contacto",
+          muted: true,
+          sortValue: (r) => (r.email || "").toLowerCase(),
+          render: contactoHtml,
         },
         {
           key: "activo",
@@ -290,16 +256,16 @@
         },
       ],
       onView: (row) => {
-        window.location.href = `usuarios-ver.html?id=${encodeURIComponent(row.id)}`;
+        window.location.href = `receptores-ver.html?id=${encodeURIComponent(row.id)}`;
       },
       onEdit: (row) => {
-        window.location.href = `usuarios-form.html?id=${encodeURIComponent(row.id)}`;
+        window.location.href = `receptores-form.html?id=${encodeURIComponent(row.id)}`;
       },
       resetPasswordPrompt,
       onResetPassword: () => {
         toast("Contraseña restablecida");
       },
-      onDeleteAsk: askDeleteOrDeactivate,
+      onDeleteAsk: askDelete,
       overflowExtra: (row) => [
         {
           id: "toggle-activo",
@@ -310,32 +276,26 @@
       onOverflowAction: (row, action) => {
         if (action !== "toggle-activo") return;
         toggleActivo(row).then((result) => {
-          if (!result) return;
-          table.setData(mapRows(UsuariosData.load()));
+          if (result) table.setData(mapRows(ReceptoresData.load()));
         });
       },
       onDeactivate: () => {
-        table.setData(mapRows(UsuariosData.load()));
+        table.setData(mapRows(ReceptoresData.load()));
       },
       onActivate: () => {
-        table.setData(mapRows(UsuariosData.load()));
+        table.setData(mapRows(ReceptoresData.load()));
       },
       onDelete: () => {
-        renderSummary(UsuariosData.load());
+        renderSummary(ReceptoresData.load());
       },
     });
 
-    if (rolFromUrl) {
-      table.filterValues.rol = rolFromUrl;
-      table.render();
-    }
-
     document.querySelector("[data-open-create]")?.addEventListener("click", () => {
-      window.location.href = "usuarios-form.html";
+      window.location.href = "receptores-form.html";
     });
 
     document.querySelector("[data-catalog-refresh]")?.addEventListener("click", () => {
-      const fresh = UsuariosData.load();
+      const fresh = ReceptoresData.load();
       table.setData(mapRows(fresh));
       renderSummary(fresh);
       toast("Lista actualizada");
@@ -345,16 +305,14 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    if (!window.UsuariosData || !window.CatalogTable) return;
+    if (!window.ReceptoresData || !window.CatalogTable) return;
 
     const params = new URLSearchParams(window.location.search);
     const saved = params.get("saved");
     if (saved === "created" || saved === "1") {
-      toast("Usuario registrado");
+      toast("Receptor registrado");
     } else if (saved === "updated") {
-      toast("Usuario actualizado");
-    } else if (saved === "desactivado") {
-      toast("Usuario desactivado");
+      toast("Receptor actualizado");
     }
     if (saved) {
       params.delete("saved");
@@ -364,14 +322,14 @@
 
     const empty = document.querySelector("[data-catalog-empty] p");
 
-    UsuariosData.ready()
+    ReceptoresData.ready()
       .then((rows) => mountTable(rows))
       .catch((err) => {
         console.error(err);
-        if (empty) empty.textContent = "No se pudieron cargar los usuarios.";
+        if (empty) empty.textContent = "No se pudieron cargar los receptores de prueba.";
         document.querySelector("[data-catalog-empty]")?.classList.remove("hidden");
         document.querySelector("[data-catalog-table-wrap]")?.classList.add("hidden");
-        toast("Error al cargar usuarios", "danger");
+        toast("Error al cargar receptores", "danger");
       });
   });
 })();

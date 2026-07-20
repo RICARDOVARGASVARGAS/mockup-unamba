@@ -204,26 +204,26 @@ no esté construida en código según este doc, queda **⬜ Pendiente**.
 - [x] Modales: Restablecer contraseña · Eliminar · Auditoría
 
 **Administrador › Usuarios y acceso › Estudiantes**
-- [ ] Listado (tabla + 3 cards)
-- [ ] Formulario (crear / editar)
-- [ ] Ficha (ver, solo lectura)
-- [ ] Modales (reusa los genéricos)
+- [x] Listado (tabla + 3 cards)
+- [x] Formulario (crear / editar)
+- [x] Ficha (ver, solo lectura)
+- [x] Modales (reusa los genéricos)
 
 **Administrador › Usuarios y acceso › Receptores**
-- [ ] Listado (tabla + 3 cards)
-- [ ] Formulario (crear / editar)
-- [ ] Ficha (ver, solo lectura)
-- [ ] Modales (reusa los genéricos)
+- [x] Listado (tabla + 3 cards)
+- [x] Formulario (crear / editar)
+- [x] Ficha (ver, solo lectura)
+- [x] Modales (reusa los genéricos)
 
 **Administrador › Usuarios y acceso › Usuarios**
-- [ ] Listado (identidad maestra: Perfiles + Roles)
-- [ ] Formulario (crear / editar: identidad + roles)
-- [ ] Ficha (ver, con bloque Perfiles)
-- [ ] Modales (genéricos + Agregar/Quitar perfil)
+- [x] Listado (identidad maestra: Perfiles + Roles)
+- [x] Formulario (crear / editar: identidad + roles)
+- [x] Ficha (ver, con bloque Perfiles)
+- [x] Modales (genéricos + Agregar/Quitar perfil)
 
 **Administrador › Usuarios y acceso › Roles y permisos**
-- [ ] Pantalla maestro-detalle (roles + permisos por módulo)
-- [ ] Modales (Nuevo/Editar rol · Eliminar/Desactivar rol)
+- [x] Pantalla maestro-detalle (roles + permisos por módulo)
+- [x] Modales (Nuevo/Editar rol · Eliminar/Desactivar rol)
 
 **Administrador › Catálogos**
 - [ ] Especialidades
@@ -641,7 +641,7 @@ Docentes. Aquí solo se documenta lo **propio**; lo idéntico se referencia.
 **Perfil `estudiante`** = `codigo_universitario` (obligatorio, único) +
 `codigo_orcid` (opcional). Sin grado, especialidad, CV ni biografía.
 
-### Administrador › Usuarios y acceso › Estudiantes — Listado — ⬜ Pendiente
+### Administrador › Usuarios y acceso › Estudiantes — Listado — ✅ Hecho
 
 - **Archivos (al codificar):** `pages/admin/estudiantes.html` + `js/estudiantes.js`.
 - **Cards (3):** Total · Activos · No activos (egresados/retirados) — conteo
@@ -668,7 +668,7 @@ N° │ Estudiante          │ Código univ. │ Documento    │ Contacto     
   Auditoría · Activar/Desactivar).
 - **BD:** `estudiante` + `usuario`; Código = `estudiante.codigo_universitario`.
 
-### Administrador › Usuarios y acceso › Estudiantes — Formulario (crear / editar) — ⬜ Pendiente
+### Administrador › Usuarios y acceso › Estudiantes — Formulario (crear / editar) — ✅ Hecho
 
 - **Archivos (al codificar):** `pages/admin/estudiantes-form.html` + `js/estudiantes-form.js`.
 - **Secciones 1 (Identidad) y 2 (Contacto y acceso):** **idénticas a Docentes**
@@ -690,7 +690,7 @@ N° │ Estudiante          │ Código univ. │ Documento    │ Contacto     
   (NULL) · resto en `usuario` · roles en `usuario_rol`.
 - Responsive: igual que Docentes.
 
-### Administrador › Usuarios y acceso › Estudiantes — Ficha (ver, solo lectura) — ⬜ Pendiente
+### Administrador › Usuarios y acceso › Estudiantes — Ficha (ver, solo lectura) — ✅ Hecho
 
 - **Archivos (al codificar):** `pages/admin/estudiantes-ver.html` + `js/estudiantes-ver.js`.
 ```
@@ -728,7 +728,7 @@ N° │ Estudiante          │ Código univ. │ Documento    │ Contacto     
 - **Roles** (chips) al final; **Metadatos** (`created_at`/`updated_at`).
 - Campos vacíos = "—". Responsive igual que la ficha de Docentes.
 
-### Administrador › Usuarios y acceso › Estudiantes — Modales — ⬜ Pendiente
+### Administrador › Usuarios y acceso › Estudiantes — Modales — ✅ Hecho
 
 Los 3 genéricos (igual que Docentes). Solo cambia el **chequeo de relaciones**
 del borrado:
@@ -751,7 +751,7 @@ Reusa el patrón «Listado de personas», los 3 modales genéricos y los toasts.
 usuario). Es el perfil más simple. *(Término técnico del modelo; en UI se
 muestra siempre junto a su entidad — "Receptor / Psicología".)*
 
-### Administrador › Usuarios y acceso › Receptores — Listado — ⬜ Pendiente
+### Administrador › Usuarios y acceso › Receptores — Listado — ✅ Hecho
 
 - **Archivos (al codificar):** `pages/admin/receptores.html` + `js/receptores.js`.
 - **Cards (3):** Total · Activos · Inactivos — igual que los demás (conteo
@@ -770,7 +770,7 @@ N° │ Receptor            │ Entidad     │ Documento    │ Contacto       
 - **BD:** `receptor` + `usuario` + `entidad_receptora`; Entidad =
   `entidad_receptora.nombre`.
 
-### Administrador › Usuarios y acceso › Receptores — Formulario (crear / editar) — ⬜ Pendiente
+### Administrador › Usuarios y acceso › Receptores — Formulario (crear / editar) — ✅ Hecho
 
 - **Archivos (al codificar):** `pages/admin/receptores-form.html` + `js/receptores-form.js`.
 - **Secciones 1 (Identidad) y 2 (Contacto y acceso):** idénticas a Docentes.
@@ -789,7 +789,7 @@ N° │ Receptor            │ Entidad     │ Documento    │ Contacto       
 - **BD:** `receptor.entidad_receptora_id` (FK, NOT NULL). Backend crea
   usuario + receptor + rol en transacción.
 
-### Administrador › Usuarios y acceso › Receptores — Ficha (ver, solo lectura) — ⬜ Pendiente
+### Administrador › Usuarios y acceso › Receptores — Ficha (ver, solo lectura) — ✅ Hecho
 
 - **Archivos (al codificar):** `pages/admin/receptores-ver.html` + `js/receptores-ver.js`.
 ```
@@ -824,7 +824,7 @@ N° │ Receptor            │ Entidad     │ Documento    │ Contacto       
   - *Pendiente Módulo 4:* enlace a "Casos derivados" (pantalla aún no diseñada).
 - **Roles** (chips) al final; **Metadatos**.
 
-### Administrador › Usuarios y acceso › Receptores — Modales — ⬜ Pendiente
+### Administrador › Usuarios y acceso › Receptores — Modales — ✅ Hecho
 
 Los 3 genéricos. **Particularidad:** `receptor` **no tiene FKs entrantes**
 (nada apunta a `receptor.id`; las derivaciones cuelgan de la entidad), así que
@@ -859,7 +859,7 @@ Receptores son las vistas especializadas de cada perfil.
 > arregla desde aquí: se **agrega** el perfil correcto y se **quita** el que
 > sobra — sin recrear la persona.
 
-### Administrador › Usuarios y acceso › Usuarios — Listado — ⬜ Pendiente
+### Administrador › Usuarios y acceso › Usuarios — Listado — ✅ Hecho
 
 - **Archivos (al codificar):** `pages/admin/usuarios.html` + `js/usuarios.js`.
 - **Cards (3):** Total · Activos · Inactivos (conteo global inmutable).
@@ -880,7 +880,7 @@ N° │ Usuario                │ Documento    │ Perfiles      │ Roles     
 - **BD:** `usuario` + `usuario_rol`→`rol` + existencia de fila en
   `docente`/`estudiante`/`receptor`.
 
-### Administrador › Usuarios y acceso › Usuarios — Formulario (crear / editar) — ⬜ Pendiente
+### Administrador › Usuarios y acceso › Usuarios — Formulario (crear / editar) — ✅ Hecho
 
 - **Archivos (al codificar):** `pages/admin/usuarios-form.html` + `js/usuarios-form.js`.
 - **Secciones 1 (Identidad) y 2 (Contacto y acceso):** idénticas a las demás.
@@ -900,7 +900,7 @@ N° │ Usuario                │ Documento    │ Perfiles      │ Roles     
 - Contraseña autogenerada = documento. Responsive igual.
 - **BD:** `usuario` + `usuario_rol`.
 
-### Administrador › Usuarios y acceso › Usuarios — Ficha (ver) — ⬜ Pendiente
+### Administrador › Usuarios y acceso › Usuarios — Ficha (ver) — ✅ Hecho
 
 - **Archivos (al codificar):** `pages/admin/usuarios-ver.html` + `js/usuarios-ver.js`.
 ```
@@ -928,7 +928,7 @@ N° │ Usuario                │ Documento    │ Perfiles      │ Roles     
 - Sin bloque de actividad propio (la actividad vive en las fichas de perfil).
 - **BD:** existencia de `docente`/`estudiante`/`receptor` + `usuario_rol`.
 
-### Administrador › Usuarios y acceso › Usuarios — Modales — ⬜ Pendiente
+### Administrador › Usuarios y acceso › Usuarios — Modales — ✅ Hecho
 
 Los 3 genéricos **+ 2 de perfil**:
 - **Restablecer contraseña 🔑 / Auditoría 🕵:** idénticos.
@@ -947,7 +947,7 @@ Los 3 genéricos **+ 2 de perfil**:
 
 ---
 
-### Administrador › Usuarios y acceso › Roles y permisos — ⬜ Pendiente
+### Administrador › Usuarios y acceso › Roles y permisos — ✅ Hecho
 
 - **Archivos (al codificar):** `pages/admin/roles-permisos.html` + `js/roles-permisos.js`.
 - **Tipo:** **RBAC puro** (asignar permisos a roles) — **no** es un listado de
@@ -1493,7 +1493,9 @@ primera vez. La duplicación por período es intencional: preserva el historial
 ### Administrador › Organización del período › Matrículas — ⬜ Pendiente
 
 Mete estudiantes a un ciclo+período y les asigna **un** tutor del pool de ese
-ciclo. Muy manejable: asignación **individual** y **en lote**.
+ciclo. Muy manejable: asignación **individual** y **en lote**. Es la puerta de
+los **ingresantes nuevos** (ej. al 1° ciclo); los **continuadores** entran en
+masa por "Avanzar estudiantes".
 ```
 Matrículas    Período:[ 2026-I ▾ ●Vigente ]  Ciclo:[ Primer ciclo ▾ ]      [ + Matricular ]
 [ 20 Matriculados ]  [ 2 Tutores ]  [ prom. 10 c/u ]

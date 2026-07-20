@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Estudiante | TutorTrack (Mockup)</title>
+    <title>Receptor | TutorTrack (Mockup)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -19,7 +19,7 @@
     <app-sidebar></app-sidebar>
     <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
       <app-topbar
-        page-title="Estudiantes"
+        page-title="Receptores"
         user-name="Ricardo Vargas Vargas"
         user-role="Administrador"
         user-initials="RV"
@@ -30,14 +30,14 @@
         <div class="space-y-5">
           <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div class="min-w-0">
-              <a href="estudiantes.html" class="text-sm font-medium text-primary hover:text-primary-dark">← Volver al listado</a>
-              <h2 data-form-page-title class="mt-1 font-heading text-xl font-bold text-text">Nuevo estudiante</h2>
-              <p class="mt-1 text-sm text-text-muted">Completa la identidad, el contacto y los datos de estudiante.</p>
+              <a href="receptores.html" class="text-sm font-medium text-primary hover:text-primary-dark">← Volver al listado</a>
+              <h2 data-form-page-title class="mt-1 font-heading text-xl font-bold text-text">Nuevo receptor</h2>
+              <p class="mt-1 text-sm text-text-muted">Completa la identidad, el contacto y la entidad receptora.</p>
             </div>
 
             <div class="foto-upload self-start sm:self-auto">
-              <input id="est-foto-file" type="file" accept="image/*" class="sr-only" tabindex="-1" />
-              <input type="hidden" id="est-foto" name="foto_perfil_url" form="estudiante-form" value="" />
+              <input id="rec-foto-file" type="file" accept="image/*" class="sr-only" tabindex="-1" />
+              <input type="hidden" id="rec-foto" name="foto_perfil_url" form="receptor-form" value="" />
               <div class="foto-upload-wrap">
                 <button
                   type="button"
@@ -71,38 +71,23 @@
             </div>
           </div>
 
-          <form id="estudiante-form" data-estudiante-form class="space-y-5" novalidate>
+          <form id="receptor-form" data-receptor-form class="space-y-5" novalidate>
             <section class="app-card p-5 sm:p-6">
               <h3 class="section-title">1 · Identidad</h3>
               <p class="mt-1 text-sm text-text-muted">Documento y datos personales. Puedes consultar RENIEC con el DNI.</p>
-
               <div class="mt-5 space-y-4">
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div>
-                    <label for="est-tipo-documento" class="form-label">Tipo de documento <span class="text-danger">*</span></label>
-                    <select id="est-tipo-documento" name="tipo_documento_id" required class="form-input">
+                    <label for="rec-tipo-documento" class="form-label">Tipo de documento <span class="text-danger">*</span></label>
+                    <select id="rec-tipo-documento" name="tipo_documento_id" required class="form-input">
                       <option value="">Seleccionar…</option>
                     </select>
                   </div>
                   <div>
-                    <label for="est-documento" class="form-label">Número de documento <span class="text-danger">*</span></label>
+                    <label for="rec-documento" class="form-label">Número de documento <span class="text-danger">*</span></label>
                     <div class="flex gap-2">
-                      <input
-                        id="est-documento"
-                        name="documento"
-                        type="text"
-                        required
-                        autocomplete="off"
-                        class="form-input min-w-0 flex-1"
-                        placeholder="Ej. 71234567"
-                      />
-                      <button
-                        type="button"
-                        data-reniec-buscar
-                        class="btn-secondary btn-icon shrink-0"
-                        title="Buscar en RENIEC"
-                        aria-label="Buscar en RENIEC"
-                      >
+                      <input id="rec-documento" name="documento" type="text" required autocomplete="off" class="form-input min-w-0 flex-1" placeholder="Ej. 41235678" />
+                      <button type="button" data-reniec-buscar class="btn-secondary btn-icon shrink-0" title="Buscar en RENIEC" aria-label="Buscar en RENIEC">
                         <svg data-reniec-icon viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                         </svg>
@@ -115,25 +100,24 @@
                     <p class="form-hint">DNI = 8 dígitos. La lupa consulta RENIEC (simulado, solo DNI).</p>
                   </div>
                 </div>
-
                 <div>
-                  <label for="est-nombres" class="form-label">Nombres <span class="text-danger">*</span></label>
-                  <input id="est-nombres" name="nombres" type="text" required class="form-input" placeholder="Ej. Ana Sofía" />
+                  <label for="rec-nombres" class="form-label">Nombres <span class="text-danger">*</span></label>
+                  <input id="rec-nombres" name="nombres" type="text" required class="form-input" placeholder="Ej. Rosa" />
                 </div>
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div>
-                    <label for="est-apaterno" class="form-label">Apellido paterno <span class="text-danger">*</span></label>
-                    <input id="est-apaterno" name="apellido_paterno" type="text" required class="form-input" placeholder="Ej. Mamani" />
+                    <label for="rec-apaterno" class="form-label">Apellido paterno <span class="text-danger">*</span></label>
+                    <input id="rec-apaterno" name="apellido_paterno" type="text" required class="form-input" placeholder="Ej. Medina" />
                   </div>
                   <div>
-                    <label for="est-amaterno" class="form-label">Apellido materno <span class="text-danger">*</span></label>
-                    <input id="est-amaterno" name="apellido_materno" type="text" required class="form-input" placeholder="Ej. Flores" />
+                    <label for="rec-amaterno" class="form-label">Apellido materno <span class="text-danger">*</span></label>
+                    <input id="rec-amaterno" name="apellido_materno" type="text" required class="form-input" placeholder="Ej. Ccahua" />
                   </div>
                 </div>
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div>
-                    <label for="est-sexo" class="form-label">Sexo</label>
-                    <select id="est-sexo" name="sexo" class="form-input">
+                    <label for="rec-sexo" class="form-label">Sexo</label>
+                    <select id="rec-sexo" name="sexo" class="form-input">
                       <option value="">Seleccionar…</option>
                       <option value="M">Masculino</option>
                       <option value="F">Femenino</option>
@@ -141,8 +125,8 @@
                     </select>
                   </div>
                   <div>
-                    <label for="est-fnac" class="form-label">Fecha de nacimiento</label>
-                    <input id="est-fnac" name="fecha_nacimiento" type="date" class="form-input" />
+                    <label for="rec-fnac" class="form-label">Fecha de nacimiento</label>
+                    <input id="rec-fnac" name="fecha_nacimiento" type="date" class="form-input" />
                   </div>
                 </div>
               </div>
@@ -156,97 +140,56 @@
               </p>
               <div class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                  <label for="est-email" class="form-label">Correo de acceso <span class="text-danger">*</span></label>
-                  <input
-                    id="est-email"
-                    name="email"
-                    type="email"
-                    required
-                    autocomplete="username"
-                    class="form-input"
-                    placeholder="nombre.apellido@unamba.edu.pe"
-                  />
+                  <label for="rec-email" class="form-label">Correo de acceso <span class="text-danger">*</span></label>
+                  <input id="rec-email" name="email" type="email" required autocomplete="username" class="form-input" placeholder="nombre.apellido@unamba.edu.pe" />
                   <p class="form-hint" data-email-hint>Login institucional (único). No se define contraseña a mano.</p>
                 </div>
                 <div>
-                  <label for="est-email-personal" class="form-label">Correo personal</label>
-                  <input
-                    id="est-email-personal"
-                    name="email_personal"
-                    type="email"
-                    class="form-input"
-                    placeholder="correo@gmail.com"
-                  />
-                  <p class="form-hint">Solo contacto — no sirve para ingresar al sistema.</p>
+                  <label for="rec-email-personal" class="form-label">Correo personal</label>
+                  <input id="rec-email-personal" name="email_personal" type="email" class="form-input" placeholder="correo@gmail.com" />
                 </div>
                 <div>
-                  <label for="est-cel-principal" class="form-label">Celular principal</label>
-                  <input id="est-cel-principal" name="celular_principal" type="tel" class="form-input" placeholder="999 888 777" />
+                  <label for="rec-cel-principal" class="form-label">Celular principal</label>
+                  <input id="rec-cel-principal" name="celular_principal" type="tel" class="form-input" placeholder="999 888 777" />
                 </div>
                 <div>
-                  <label for="est-cel-secundario" class="form-label">Celular secundario</label>
-                  <input id="est-cel-secundario" name="celular_secundario" type="tel" class="form-input" placeholder="988 777 666" />
+                  <label for="rec-cel-secundario" class="form-label">Celular secundario</label>
+                  <input id="rec-cel-secundario" name="celular_secundario" type="tel" class="form-input" placeholder="988 777 666" />
                 </div>
                 <div>
                   <span class="form-label">Estado de acceso</span>
-                  <button
-                    type="button"
-                    id="est-activo-toggle"
-                    class="status-toggle status-toggle-lg mt-1.5"
-                    role="switch"
-                    aria-checked="true"
-                    aria-label="Estado del usuario"
-                  >
+                  <button type="button" id="rec-activo-toggle" class="status-toggle status-toggle-lg mt-1.5" role="switch" aria-checked="true" aria-label="Estado del usuario">
                     <span class="status-toggle-thumb" aria-hidden="true"></span>
                     <span class="status-toggle-label" data-on>Activo</span>
                     <span class="status-toggle-label" data-off>Inactivo</span>
                   </button>
-                  <input id="est-activo" type="checkbox" checked class="sr-only" tabindex="-1" aria-hidden="true" />
-                  <p class="form-hint">Inactivo = no puede iniciar sesión. Distinto del estado académico.</p>
+                  <input id="rec-activo" type="checkbox" checked class="sr-only" tabindex="-1" aria-hidden="true" />
+                  <p class="form-hint">Inactivo = no puede iniciar sesión.</p>
                 </div>
               </div>
             </section>
 
             <section class="app-card p-5 sm:p-6">
-              <h3 class="section-title">3 · Datos de estudiante</h3>
-              <p class="mt-1 text-sm text-text-muted">Código universitario (único) y ORCID opcional.</p>
-              <div class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div>
-                  <label for="est-codigo" class="form-label">Código universitario <span class="text-danger">*</span></label>
-                  <input
-                    id="est-codigo"
-                    name="codigo_universitario"
-                    type="text"
-                    required
-                    maxlength="20"
-                    class="form-input"
-                    placeholder="Ej. 2021-1001"
-                  />
-                </div>
-                <div>
-                  <label for="est-orcid" class="form-label">ORCID</label>
-                  <input
-                    id="est-orcid"
-                    name="codigo_orcid"
-                    type="text"
-                    maxlength="19"
-                    class="form-input"
-                    placeholder="0000-0000-0000-0000"
-                  />
-                </div>
+              <h3 class="section-title">3 · Datos del receptor</h3>
+              <p class="mt-1 text-sm text-text-muted">Entidad a la que pertenece este receptor.</p>
+              <div class="mt-5">
+                <label for="rec-entidad" class="form-label">Entidad receptora <span class="text-danger">*</span></label>
+                <select id="rec-entidad" name="entidad_receptora_id" required class="form-input max-w-md">
+                  <option value="">Seleccionar…</option>
+                </select>
               </div>
             </section>
 
             <section class="app-card p-5 sm:p-6">
               <h3 class="section-title">4 · Roles <span class="text-danger">*</span> <span class="font-normal text-text-muted">(al menos uno)</span></h3>
-              <p class="mt-1 text-sm text-text-muted">Solo se listan roles activos. Default: Estudiante.</p>
+              <p class="mt-1 text-sm text-text-muted">Solo se listan roles activos. Default: Receptor.</p>
               <div data-roles-checklist class="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-2"></div>
             </section>
 
             <div class="sticky bottom-0 z-10 -mx-4 border-t border-border bg-bg/95 px-4 py-3 backdrop-blur sm:-mx-0 sm:rounded-lg sm:border sm:px-5">
               <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-                <a href="estudiantes.html" class="btn-secondary inline-flex justify-center">Cancelar</a>
-                <button type="submit" class="btn-primary">Guardar estudiante</button>
+                <a href="receptores.html" class="btn-secondary inline-flex justify-center">Cancelar</a>
+                <button type="submit" class="btn-primary">Guardar receptor</button>
               </div>
             </div>
           </form>
@@ -265,7 +208,7 @@
     <script src="../../js/auditoria-data.js"></script>
     <script src="../../js/tipos-documento-data.js"></script>
     <script src="../../js/usuarios-data.js"></script>
-    <script src="../../js/estudiantes-data.js"></script>
-    <script src="../../js/estudiantes-form.js"></script>
+    <script src="../../js/receptores-data.js"></script>
+    <script src="../../js/receptores-form.js"></script>
   </body>
 </html>

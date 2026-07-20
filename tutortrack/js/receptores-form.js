@@ -1,5 +1,5 @@
 /**
- * estudiantes-form.js — alta/edición Estudiante (usuario + perfil + roles).
+ * receptores-form.js — alta/edición Receptor (usuario + receptor + roles).
  */
 (function () {
   const toast = (message, type = "success") =>
@@ -13,10 +13,7 @@
 
   function fillRoles(container, selectedIds) {
     const selected = new Set(selectedIds || []);
-    const roles =
-      typeof EstudiantesData.rolesActivos === "function"
-        ? EstudiantesData.rolesActivos()
-        : EstudiantesData.ROLES;
+    const roles = ReceptoresData.rolesActivos();
     container.innerHTML = roles
       .map(
         (rol) => `
@@ -32,7 +29,7 @@
     select.innerHTML = `<option value="">${CatalogTable.escapeHtml(emptyLabel)}</option>${options
       .map(
         (opt) =>
-          `<option value="${CatalogTable.escapeHtml(opt.id || opt.value)}" ${(opt.id || opt.value) === current ? "selected" : ""}>${CatalogTable.escapeHtml(opt.nombre || opt.label)}</option>`
+          `<option value="${CatalogTable.escapeHtml(opt.id)}" ${opt.id === current ? "selected" : ""}>${CatalogTable.escapeHtml(opt.nombre)}</option>`
       )
       .join("")}`;
   }
@@ -45,8 +42,8 @@
   }
 
   function syncActivoToggle(activo) {
-    const toggle = document.getElementById("est-activo-toggle");
-    const checkbox = document.getElementById("est-activo");
+    const toggle = document.getElementById("rec-activo-toggle");
+    const checkbox = document.getElementById("rec-activo");
     if (!toggle || !checkbox) return;
     checkbox.checked = !!activo;
     toggle.setAttribute("aria-checked", activo ? "true" : "false");
@@ -59,8 +56,8 @@
   }
 
   function bindFotoUpload(initialUrl) {
-    const fileInput = document.getElementById("est-foto-file");
-    const hidden = document.getElementById("est-foto");
+    const fileInput = document.getElementById("rec-foto-file");
+    const hidden = document.getElementById("rec-foto");
     const trigger = document.querySelector("[data-foto-trigger]");
     const preview = document.querySelector("[data-foto-preview]");
     const empty = document.querySelector("[data-foto-empty]");
@@ -120,19 +117,12 @@
   }
 
   const RENIEC_EXTRA = {
-    "78000001": {
-      nombres: "Patricia",
-      apellido_paterno: "López",
-      apellido_materno: "Quispe",
+    "79000001": {
+      nombres: "Lucía",
+      apellido_paterno: "Paredes",
+      apellido_materno: "Gutierrez",
       sexo: "F",
-      fecha_nacimiento: "2003-08-15",
-    },
-    "78000002": {
-      nombres: "Andrés",
-      apellido_paterno: "Medina",
-      apellido_materno: "Castro",
-      sexo: "M",
-      fecha_nacimiento: "2002-03-22",
+      fecha_nacimiento: "1991-05-20",
     },
   };
 
@@ -149,7 +139,7 @@
     const doc = String(documento || "").trim();
     if (!doc) return null;
     if (RENIEC_EXTRA[doc]) return { ...RENIEC_EXTRA[doc] };
-    const row = EstudiantesData.load().find((r) => String(r.documento).trim() === doc);
+    const row = ReceptoresData.load().find((r) => String(r.documento).trim() === doc);
     if (!row) return null;
     return {
       nombres: row.nombres || "",
@@ -161,16 +151,16 @@
   }
 
   function applyReniecResult(person) {
-    document.getElementById("est-nombres").value = person.nombres || "";
-    document.getElementById("est-apaterno").value = person.apellido_paterno || "";
-    document.getElementById("est-amaterno").value = person.apellido_materno || "";
-    document.getElementById("est-fnac").value = person.fecha_nacimiento || "";
-    if (person.sexo) document.getElementById("est-sexo").value = person.sexo;
+    document.getElementById("rec-nombres").value = person.nombres || "";
+    document.getElementById("rec-apaterno").value = person.apellido_paterno || "";
+    document.getElementById("rec-amaterno").value = person.apellido_materno || "";
+    document.getElementById("rec-fnac").value = person.fecha_nacimiento || "";
+    if (person.sexo) document.getElementById("rec-sexo").value = person.sexo;
   }
 
   function bindReniecSearch(tipoSelect) {
     const btn = document.querySelector("[data-reniec-buscar]");
-    const docInput = document.getElementById("est-documento");
+    const docInput = document.getElementById("rec-documento");
     if (!btn || !docInput) return;
 
     const run = async () => {
@@ -180,25 +170,20 @@
         docInput.focus();
         return;
       }
-
-      const tipoId = tipoSelect.value;
       const clave =
-        (window.TiposDocumentoData && TiposDocumentoData.clave(tipoId)) || "";
+        (window.TiposDocumentoData && TiposDocumentoData.clave(tipoSelect.value)) || "";
       if (clave && clave !== "DNI") {
         toast("La consulta RENIEC del mockup aplica solo a DNI", "warning");
         return;
       }
-
       setReniecLoading(btn, true);
       await new Promise((resolve) => setTimeout(resolve, 1100));
       const person = lookupReniecMock(documento);
       setReniecLoading(btn, false);
-
       if (!person) {
         toast("No se encontró", "warning");
         return;
       }
-
       applyReniecResult(person);
       toast("Datos cargados desde RENIEC (simulado)");
     };
@@ -220,21 +205,20 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    const form = document.querySelector("[data-estudiante-form]");
-    if (!form || !window.EstudiantesData) return;
-
-    EstudiantesData.ready()
+    const form = document.querySelector("[data-receptor-form]");
+    if (!form || !window.ReceptoresData) return;
+    ReceptoresData.ready()
       .then(() => initForm(form))
       .catch((err) => {
         console.error(err);
-        toast("No se pudieron cargar los estudiantes de prueba.", "danger");
+        toast("No se pudieron cargar los receptores de prueba.", "danger");
       });
   });
 
   function initForm(form) {
     const params = new URLSearchParams(window.location.search);
     const editId = params.get("id");
-    const existing = editId ? EstudiantesData.findById(editId) : null;
+    const existing = editId ? ReceptoresData.findById(editId) : null;
     const isEdit = Boolean(existing);
     const fromUsuario =
       params.get("from_usuario") === "1" && window.UsuariosData
@@ -244,86 +228,89 @@
 
     const title = document.querySelector("[data-form-page-title]");
     const rolesBox = document.querySelector("[data-roles-checklist]");
-    const tipoSelect = document.getElementById("est-tipo-documento");
-    const activoToggle = document.getElementById("est-activo-toggle");
-    const backLink = document.querySelector('a[href="estudiantes.html"]');
+    const tipoSelect = document.getElementById("rec-tipo-documento");
+    const entidadSelect = document.getElementById("rec-entidad");
+    const activoToggle = document.getElementById("rec-activo-toggle");
+    const backLink = document.querySelector('a[href="receptores.html"]');
 
     if (title) {
       title.textContent = isEdit
-        ? "Editar estudiante"
+        ? "Editar receptor"
         : fromUsuario
-          ? "Agregar perfil de estudiante"
-          : "Nuevo estudiante";
+          ? "Agregar perfil de receptor"
+          : "Nuevo receptor";
     }
 
     if (fromUsuario && backLink) {
       backLink.href = `usuarios-ver.html?id=${encodeURIComponent(fromUsuarioId)}`;
       backLink.textContent = "← Volver a la ficha";
     }
-    document.querySelectorAll('a.btn-secondary[href="estudiantes.html"]').forEach((a) => {
+    document.querySelectorAll('a.btn-secondary[href="receptores.html"]').forEach((a) => {
       if (!fromUsuarioId) return;
       a.href = `usuarios-ver.html?id=${encodeURIComponent(fromUsuarioId)}`;
     });
 
-    const passwordNote = document.querySelector("[data-password-note]");
-    if (passwordNote) passwordNote.classList.toggle("hidden", isEdit || Boolean(fromUsuario));
-
+    document.querySelector("[data-password-note]")?.classList.toggle("hidden", isEdit || Boolean(fromUsuario));
     const emailHint = document.querySelector("[data-email-hint]");
     if (emailHint) {
       emailHint.textContent = isEdit
-        ? "Es el login. Cámbialo con cuidado: el estudiante usará este correo para ingresar."
+        ? "Es el login. Cámbialo con cuidado: el receptor usará este correo para ingresar."
         : fromUsuario
-          ? "Identidad reutilizada — solo lectura. Completa los datos de estudiante abajo."
+          ? "Identidad reutilizada — solo lectura. Completa la entidad receptora abajo."
           : "Login institucional (único). No se define contraseña a mano.";
     }
 
-    fillRoles(rolesBox, isEdit ? existing.roles : ["rol-3"]);
+    fillRoles(rolesBox, isEdit ? existing.roles : ["rol-5"]);
     fillTiposDocumento(tipoSelect, isEdit ? existing.tipo_documento_id : fromUsuario?.tipo_documento_id || "td-1");
+    fillSelect(
+      entidadSelect,
+      ReceptoresData.entidadesActivas(),
+      isEdit ? existing.entidad_receptora_id : "",
+      "Seleccionar…"
+    );
     bindReniecSearch(tipoSelect);
     bindFotoUpload(isEdit ? existing.foto_perfil_url : fromUsuario?.foto_perfil_url || "");
 
     activoToggle.addEventListener("click", () => {
-      syncActivoToggle(!document.getElementById("est-activo").checked);
+      syncActivoToggle(!document.getElementById("rec-activo").checked);
     });
 
     if (isEdit) {
-      document.getElementById("est-documento").value = existing.documento || "";
-      document.getElementById("est-nombres").value = existing.nombres || "";
-      document.getElementById("est-apaterno").value = existing.apellido_paterno || "";
-      document.getElementById("est-amaterno").value = existing.apellido_materno || "";
-      document.getElementById("est-sexo").value = existing.sexo || "";
-      document.getElementById("est-fnac").value = existing.fecha_nacimiento || "";
-      document.getElementById("est-email").value = existing.email || "";
-      document.getElementById("est-email-personal").value = existing.email_personal || "";
-      document.getElementById("est-cel-principal").value = existing.celular_principal || "";
-      document.getElementById("est-cel-secundario").value = existing.celular_secundario || "";
-      document.getElementById("est-codigo").value = existing.codigo_universitario || "";
-      document.getElementById("est-orcid").value = existing.codigo_orcid || "";
+      document.getElementById("rec-documento").value = existing.documento || "";
+      document.getElementById("rec-nombres").value = existing.nombres || "";
+      document.getElementById("rec-apaterno").value = existing.apellido_paterno || "";
+      document.getElementById("rec-amaterno").value = existing.apellido_materno || "";
+      document.getElementById("rec-sexo").value = existing.sexo || "";
+      document.getElementById("rec-fnac").value = existing.fecha_nacimiento || "";
+      document.getElementById("rec-email").value = existing.email || "";
+      document.getElementById("rec-email-personal").value = existing.email_personal || "";
+      document.getElementById("rec-cel-principal").value = existing.celular_principal || "";
+      document.getElementById("rec-cel-secundario").value = existing.celular_secundario || "";
       syncActivoToggle(existing.activo !== false);
     } else if (fromUsuario) {
-      document.getElementById("est-documento").value = fromUsuario.documento || "";
-      document.getElementById("est-nombres").value = fromUsuario.nombres || "";
-      document.getElementById("est-apaterno").value = fromUsuario.apellido_paterno || "";
-      document.getElementById("est-amaterno").value = fromUsuario.apellido_materno || "";
-      document.getElementById("est-sexo").value = fromUsuario.sexo || "";
-      document.getElementById("est-fnac").value = fromUsuario.fecha_nacimiento || "";
-      document.getElementById("est-email").value = fromUsuario.email || "";
-      document.getElementById("est-email-personal").value = fromUsuario.email_personal || "";
-      document.getElementById("est-cel-principal").value = fromUsuario.celular_principal || "";
-      document.getElementById("est-cel-secundario").value = fromUsuario.celular_secundario || "";
+      document.getElementById("rec-documento").value = fromUsuario.documento || "";
+      document.getElementById("rec-nombres").value = fromUsuario.nombres || "";
+      document.getElementById("rec-apaterno").value = fromUsuario.apellido_paterno || "";
+      document.getElementById("rec-amaterno").value = fromUsuario.apellido_materno || "";
+      document.getElementById("rec-sexo").value = fromUsuario.sexo || "";
+      document.getElementById("rec-fnac").value = fromUsuario.fecha_nacimiento || "";
+      document.getElementById("rec-email").value = fromUsuario.email || "";
+      document.getElementById("rec-email-personal").value = fromUsuario.email_personal || "";
+      document.getElementById("rec-cel-principal").value = fromUsuario.celular_principal || "";
+      document.getElementById("rec-cel-secundario").value = fromUsuario.celular_secundario || "";
       syncActivoToggle(fromUsuario.activo !== false);
       [
-        "est-tipo-documento",
-        "est-documento",
-        "est-nombres",
-        "est-apaterno",
-        "est-amaterno",
-        "est-sexo",
-        "est-fnac",
-        "est-email",
-        "est-email-personal",
-        "est-cel-principal",
-        "est-cel-secundario",
+        "rec-tipo-documento",
+        "rec-documento",
+        "rec-nombres",
+        "rec-apaterno",
+        "rec-amaterno",
+        "rec-sexo",
+        "rec-fnac",
+        "rec-email",
+        "rec-email-personal",
+        "rec-cel-principal",
+        "rec-cel-secundario",
       ].forEach((id) => {
         const el = document.getElementById(id);
         if (!el) return;
@@ -349,33 +336,25 @@
       }
 
       const row = {
-        id: isEdit ? existing.id : `est-${Date.now()}`,
+        id: isEdit ? existing.id : `rec-${Date.now()}`,
         tipo_documento_id: fromUsuario ? fromUsuario.tipo_documento_id : tipoSelect.value,
-        documento: document.getElementById("est-documento").value.trim(),
-        nombres: document.getElementById("est-nombres").value.trim(),
-        apellido_paterno: document.getElementById("est-apaterno").value.trim(),
-        apellido_materno: document.getElementById("est-amaterno").value.trim(),
-        sexo: document.getElementById("est-sexo").value,
-        fecha_nacimiento: document.getElementById("est-fnac").value,
-        email: document.getElementById("est-email").value.trim(),
-        email_personal: document.getElementById("est-email-personal").value.trim(),
-        celular_principal: document.getElementById("est-cel-principal").value.trim(),
-        celular_secundario: document.getElementById("est-cel-secundario").value.trim(),
-        foto_perfil_url: document.getElementById("est-foto").value,
-        activo: document.getElementById("est-activo").checked,
-        estado: isEdit ? existing.estado || "activo" : "activo",
-        codigo_universitario: document.getElementById("est-codigo").value.trim(),
-        codigo_orcid: document.getElementById("est-orcid").value.trim(),
+        documento: document.getElementById("rec-documento").value.trim(),
+        nombres: document.getElementById("rec-nombres").value.trim(),
+        apellido_paterno: document.getElementById("rec-apaterno").value.trim(),
+        apellido_materno: document.getElementById("rec-amaterno").value.trim(),
+        sexo: document.getElementById("rec-sexo").value,
+        fecha_nacimiento: document.getElementById("rec-fnac").value,
+        email: document.getElementById("rec-email").value.trim(),
+        email_personal: document.getElementById("rec-email-personal").value.trim(),
+        celular_principal: document.getElementById("rec-cel-principal").value.trim(),
+        celular_secundario: document.getElementById("rec-cel-secundario").value.trim(),
+        foto_perfil_url: document.getElementById("rec-foto").value,
+        activo: document.getElementById("rec-activo").checked,
+        entidad_receptora_id: entidadSelect.value,
         created_at: isEdit ? existing.created_at : new Date().toISOString(),
         updated_at: new Date().toISOString(),
         roles,
       };
-
-      const orcid = row.codigo_orcid;
-      if (orcid && !/^\d{4}-\d{4}-\d{4}-\d{4}$/.test(orcid)) {
-        toast("ORCID debe tener el formato 0000-0000-0000-0000", "warning");
-        return;
-      }
 
       const tipoClave =
         (window.TiposDocumentoData && TiposDocumentoData.clave(row.tipo_documento_id)) || "";
@@ -391,13 +370,13 @@
         !row.apellido_paterno ||
         !row.apellido_materno ||
         !row.email ||
-        !row.codigo_universitario
+        !row.entidad_receptora_id
       ) {
         toast("Completa los campos obligatorios", "warning");
         return;
       }
 
-      const others = EstudiantesData.load().filter((r) => r.id !== row.id);
+      const others = ReceptoresData.load().filter((r) => r.id !== row.id);
       if (
         others.some(
           (r) =>
@@ -412,36 +391,27 @@
         toast("Ya existe un usuario con ese correo de acceso", "warning");
         return;
       }
-      if (
-        others.some(
-          (r) =>
-            String(r.codigo_universitario).toLowerCase() === row.codigo_universitario.toLowerCase()
-        )
-      ) {
-        toast("Ya existe un estudiante con ese código universitario", "warning");
-        return;
-      }
 
-      EstudiantesData.upsert(row);
+      ReceptoresData.upsert(row);
       if (fromUsuarioId && window.UsuariosData) {
-        UsuariosData.linkPerfil(fromUsuarioId, "estudiante", row.id);
+        UsuariosData.linkPerfil(fromUsuarioId, "receptor", row.id);
       }
       if (window.AuditoriaData) {
         AuditoriaData.log({
           accion: isEdit ? "editar" : "crear",
-          tabla_afectada: "estudiante",
+          tabla_afectada: "receptor",
           registro_id: row.id,
           valores_anteriores: isEdit ? existing : null,
           valores_nuevos: row,
         });
       }
       if (fromUsuarioId) {
-        window.location.href = `usuarios-ver.html?id=${encodeURIComponent(fromUsuarioId)}&saved=perfil&perfil=estudiante`;
+        window.location.href = `usuarios-ver.html?id=${encodeURIComponent(fromUsuarioId)}&saved=perfil&perfil=receptor`;
         return;
       }
       window.location.href = isEdit
-        ? "estudiantes.html?saved=updated"
-        : "estudiantes.html?saved=created";
+        ? "receptores.html?saved=updated"
+        : "receptores.html?saved=created";
     });
   }
 })();

@@ -1,14 +1,98 @@
 /**
  * estudiantes-data.js — store mockup Estudiante (usuario + perfil estudiante).
- * Seed embebido (sin fetch) para que funcione sin Live Server.
+ * `estado` = ciclo de vida académico (activo/egresado/retirado).
+ * `activo` = acceso/login (`usuario.activo`). Son distintos.
  */
 (function () {
   const STORAGE_KEY = "tutortrack-estudiantes";
   const VERSION_KEY = "tutortrack-estudiantes-version";
-  const STORAGE_VERSION = "seed-25-v1-inline";
+  const STORAGE_VERSION = "seed-24-v2-estado-academico";
 
   const AVATAR_M = "assets/img/avatares/usuario-m.svg";
   const AVATAR_F = "assets/img/avatares/usuario-f.svg";
+
+  const ROLES = [{ id: "rol-3", nombre: "Estudiante", activo: true }];
+
+  const ESTADOS = [
+    { id: "activo", nombre: "Activo" },
+    { id: "egresado", nombre: "Egresado" },
+    { id: "retirado", nombre: "Retirado" },
+  ];
+
+  /**
+   * Historial mock (estudiante_ciclo_periodo → ciclo_periodo → periodo/ciclo/docente).
+   * Sin filas → se puede soft-delete. Con matrículas/fichas → solo desactivar.
+   */
+  const HISTORIAL = {
+    "est-01": {
+      matriculas: 3,
+      fichas_llenadas: 5,
+      por_periodo: [
+        { periodo: "2026-I", ciclo: "V", tutor: "Dr. Carlos Quispe Mamani", vigente: true },
+        { periodo: "2025-II", ciclo: "IV", tutor: "Mg. María Elena Huamán Torres", vigente: false },
+        { periodo: "2025-I", ciclo: "III", tutor: "Mg. María Elena Huamán Torres", vigente: false },
+      ],
+    },
+    "est-02": {
+      matriculas: 4,
+      fichas_llenadas: 8,
+      por_periodo: [
+        { periodo: "2026-I", ciclo: "VI", tutor: "Lic. José Luis Condori Paucar", vigente: true },
+        { periodo: "2025-II", ciclo: "V", tutor: "Dr. Carlos Quispe Mamani", vigente: false },
+        { periodo: "2025-I", ciclo: "IV", tutor: "Dr. Carlos Quispe Mamani", vigente: false },
+        { periodo: "2024-II", ciclo: "III", tutor: "Mg. Roberto Chávez Rojas", vigente: false },
+      ],
+    },
+    "est-03": {
+      matriculas: 2,
+      fichas_llenadas: 2,
+      por_periodo: [
+        { periodo: "2026-I", ciclo: "III", tutor: "Bach. Ana Rosa Béjar Salas", vigente: true },
+        { periodo: "2025-II", ciclo: "II", tutor: "Bach. Ana Rosa Béjar Salas", vigente: false },
+      ],
+    },
+    "est-04": {
+      matriculas: 6,
+      fichas_llenadas: 12,
+      por_periodo: [
+        { periodo: "2026-I", ciclo: "VIII", tutor: "Dr. Fernando Cárdenas López", vigente: true },
+        { periodo: "2025-II", ciclo: "VII", tutor: "Dr. Fernando Cárdenas López", vigente: false },
+      ],
+    },
+    "est-06": {
+      matriculas: 3,
+      fichas_llenadas: 4,
+      por_periodo: [
+        { periodo: "2026-I", ciclo: "V", tutor: "Mg. Patricia Aguilar Vera", vigente: true },
+        { periodo: "2025-II", ciclo: "IV", tutor: "Mg. Patricia Aguilar Vera", vigente: false },
+      ],
+    },
+    "est-08": {
+      matriculas: 8,
+      fichas_llenadas: 15,
+      por_periodo: [
+        { periodo: "2025-II", ciclo: "X", tutor: "Dr. Héctor Ramírez Soto", vigente: false },
+        { periodo: "2025-I", ciclo: "IX", tutor: "Dr. Héctor Ramírez Soto", vigente: false },
+      ],
+    },
+    "est-10": {
+      matriculas: 1,
+      fichas_llenadas: 0,
+      por_periodo: [
+        { periodo: "2026-I", ciclo: "I", tutor: "Lic. Rosa María Valencia Castro", vigente: true },
+      ],
+    },
+    "est-12": {
+      matriculas: 2,
+      fichas_llenadas: 1,
+      por_periodo: [
+        { periodo: "2026-I", ciclo: "II", tutor: "Mg. Claudia Mendoza Pinto", vigente: true },
+        { periodo: "2025-II", ciclo: "I", tutor: "Mg. Claudia Mendoza Pinto", vigente: false },
+      ],
+    },
+  };
+
+  const EMPTY_HISTORIAL = { matriculas: 0, fichas_llenadas: 0, por_periodo: [] };
 
   const SEED = [
     {
@@ -26,8 +110,12 @@
       celular_secundario: "",
       foto_perfil_url: "assets/img/estudiantes/estudiante-1.jpg",
       activo: true,
+      estado: "activo",
       codigo_universitario: "2021-1001",
       codigo_orcid: "",
+      roles: ["rol-3"],
+      created_at: "2026-02-03T11:02:00",
+      updated_at: "2026-07-18T14:32:00",
     },
     {
       id: "est-02",
@@ -44,8 +132,10 @@
       celular_secundario: "920111099",
       foto_perfil_url: "assets/img/estudiantes/estudiante-2.jpg",
       activo: true,
+      estado: "activo",
       codigo_universitario: "2021-1002",
       codigo_orcid: "0000-0003-1111-2222",
+      roles: ["rol-3"],
     },
     {
       id: "est-03",
@@ -62,8 +152,10 @@
       celular_secundario: "",
       foto_perfil_url: "",
       activo: true,
+      estado: "activo",
       codigo_universitario: "2022-1103",
       codigo_orcid: "",
+      roles: ["rol-3"],
     },
     {
       id: "est-04",
@@ -80,8 +172,10 @@
       celular_secundario: "",
       foto_perfil_url: "",
       activo: true,
+      estado: "activo",
       codigo_universitario: "2020-0904",
       codigo_orcid: "",
+      roles: ["rol-3"],
     },
     {
       id: "est-05",
@@ -98,8 +192,10 @@
       celular_secundario: "",
       foto_perfil_url: "",
       activo: false,
+      estado: "retirado",
       codigo_universitario: "2021-1005",
       codigo_orcid: "",
+      roles: ["rol-3"],
     },
     {
       id: "est-06",
@@ -116,8 +212,10 @@
       celular_secundario: "",
       foto_perfil_url: "",
       activo: true,
+      estado: "activo",
       codigo_universitario: "2021-1006",
       codigo_orcid: "0000-0002-3333-4444",
+      roles: ["rol-3"],
     },
     {
       id: "est-07",
@@ -134,8 +232,10 @@
       celular_secundario: "",
       foto_perfil_url: "",
       activo: true,
+      estado: "activo",
       codigo_universitario: "2023-1207",
       codigo_orcid: "",
+      roles: ["rol-3"],
     },
     {
       id: "est-08",
@@ -152,15 +252,344 @@
       celular_secundario: "",
       foto_perfil_url: "",
       activo: true,
+      estado: "egresado",
       codigo_universitario: "2019-0808",
       codigo_orcid: "",
+      roles: ["rol-3"],
+    },
+    {
+      id: "est-09",
+      tipo_documento_id: "td-1",
+      documento: "78901234",
+      nombres: "Lucía Fernanda",
+      apellido_paterno: "Torres",
+      apellido_materno: "Ávila",
+      sexo: "F",
+      fecha_nacimiento: "2003-03-11",
+      email: "l.torres@unamba.edu.pe",
+      email_personal: "",
+      celular_principal: "920111009",
+      celular_secundario: "",
+      foto_perfil_url: "assets/img/estudiantes/estudiante-1.jpg",
+      activo: true,
+      estado: "activo",
+      codigo_universitario: "2022-1109",
+      codigo_orcid: "",
+      roles: ["rol-3"],
+    },
+    {
+      id: "est-10",
+      tipo_documento_id: "td-1",
+      documento: "79012345",
+      nombres: "Mateo",
+      apellido_paterno: "Vargas",
+      apellido_materno: "Luna",
+      sexo: "M",
+      fecha_nacimiento: "2005-08-22",
+      email: "m.vargas@unamba.edu.pe",
+      email_personal: "",
+      celular_principal: "920111010",
+      celular_secundario: "",
+      foto_perfil_url: "",
+      activo: true,
+      estado: "activo",
+      codigo_universitario: "2025-0110",
+      codigo_orcid: "",
+      roles: ["rol-3"],
+    },
+    {
+      id: "est-11",
+      tipo_documento_id: "td-1",
+      documento: "70123456",
+      nombres: "Sofía",
+      apellido_paterno: "Béjar",
+      apellido_materno: "Salas",
+      sexo: "F",
+      fecha_nacimiento: "2002-06-05",
+      email: "s.bejar@unamba.edu.pe",
+      email_personal: "sofia.bejar@gmail.com",
+      celular_principal: "",
+      celular_secundario: "",
+      foto_perfil_url: "",
+      activo: true,
+      estado: "egresado",
+      codigo_universitario: "2019-0811",
+      codigo_orcid: "0000-0003-5555-6666",
+      roles: ["rol-3"],
+    },
+    {
+      id: "est-12",
+      tipo_documento_id: "td-1",
+      documento: "70234567",
+      nombres: "Sebastián",
+      apellido_paterno: "Flores",
+      apellido_materno: "Cruz",
+      sexo: "M",
+      fecha_nacimiento: "2004-10-17",
+      email: "s.flores@unamba.edu.pe",
+      email_personal: "",
+      celular_principal: "920111012",
+      celular_secundario: "920111088",
+      foto_perfil_url: "assets/img/estudiantes/estudiante-2.jpg",
+      activo: true,
+      estado: "activo",
+      codigo_universitario: "2023-1212",
+      codigo_orcid: "",
+      roles: ["rol-3"],
+    },
+    {
+      id: "est-13",
+      tipo_documento_id: "td-1",
+      documento: "70345678",
+      nombres: "Daniela",
+      apellido_paterno: "Aguilar",
+      apellido_materno: "Vera",
+      sexo: "F",
+      fecha_nacimiento: "2003-12-01",
+      email: "d.aguilar@unamba.edu.pe",
+      email_personal: "",
+      celular_principal: "920111013",
+      celular_secundario: "",
+      foto_perfil_url: "",
+      activo: true,
+      estado: "activo",
+      codigo_universitario: "2022-1113",
+      codigo_orcid: "",
+      roles: ["rol-3"],
+    },
+    {
+      id: "est-14",
+      tipo_documento_id: "td-1",
+      documento: "70456789",
+      nombres: "Gabriel",
+      apellido_paterno: "Espinoza",
+      apellido_materno: "Pinto",
+      sexo: "M",
+      fecha_nacimiento: "2001-04-25",
+      email: "g.espinoza@unamba.edu.pe",
+      email_personal: "",
+      celular_principal: "",
+      celular_secundario: "",
+      foto_perfil_url: "",
+      activo: false,
+      estado: "retirado",
+      codigo_universitario: "2020-0914",
+      codigo_orcid: "",
+      roles: ["rol-3"],
+    },
+    {
+      id: "est-15",
+      tipo_documento_id: "td-3",
+      documento: "AB123456",
+      nombres: "Nicole",
+      apellido_paterno: "Yupanqui",
+      apellido_materno: "Ramos",
+      sexo: "F",
+      fecha_nacimiento: "2004-09-14",
+      email: "n.yupanqui@unamba.edu.pe",
+      email_personal: "",
+      celular_principal: "920111015",
+      celular_secundario: "",
+      foto_perfil_url: "",
+      activo: true,
+      estado: "activo",
+      codigo_universitario: "2023-1215",
+      codigo_orcid: "",
+      roles: ["rol-3"],
+    },
+    {
+      id: "est-16",
+      tipo_documento_id: "td-1",
+      documento: "70567890",
+      nombres: "Ángel",
+      apellido_paterno: "Delgado",
+      apellido_materno: "Nuñez",
+      sexo: "M",
+      fecha_nacimiento: "2002-11-08",
+      email: "a.delgado@unamba.edu.pe",
+      email_personal: "",
+      celular_principal: "920111016",
+      celular_secundario: "",
+      foto_perfil_url: "",
+      activo: true,
+      estado: "activo",
+      codigo_universitario: "2021-1016",
+      codigo_orcid: "",
+      roles: ["rol-3"],
+    },
+    {
+      id: "est-17",
+      tipo_documento_id: "td-1",
+      documento: "70678901",
+      nombres: "Melissa",
+      apellido_paterno: "Ortiz",
+      apellido_materno: "Vega",
+      sexo: "F",
+      fecha_nacimiento: "2003-01-29",
+      email: "m.ortiz@unamba.edu.pe",
+      email_personal: "mel.ortiz@gmail.com",
+      celular_principal: "920111017",
+      celular_secundario: "",
+      foto_perfil_url: "",
+      activo: true,
+      estado: "activo",
+      codigo_universitario: "2022-1117",
+      codigo_orcid: "",
+      roles: ["rol-3"],
+    },
+    {
+      id: "est-18",
+      tipo_documento_id: "td-1",
+      documento: "70789012",
+      nombres: "Kevin",
+      apellido_paterno: "Poma",
+      apellido_materno: "Hancco",
+      sexo: "M",
+      fecha_nacimiento: "2004-07-03",
+      email: "k.poma@unamba.edu.pe",
+      email_personal: "",
+      celular_principal: "",
+      celular_secundario: "",
+      foto_perfil_url: "",
+      activo: true,
+      estado: "activo",
+      codigo_universitario: "2023-1218",
+      codigo_orcid: "",
+      roles: ["rol-3"],
+    },
+    {
+      id: "est-19",
+      tipo_documento_id: "td-1",
+      documento: "70890123",
+      nombres: "Andrea",
+      apellido_paterno: "Arce",
+      apellido_materno: "Molina",
+      sexo: "F",
+      fecha_nacimiento: "2002-05-19",
+      email: "a.arce@unamba.edu.pe",
+      email_personal: "",
+      celular_principal: "920111019",
+      celular_secundario: "",
+      foto_perfil_url: "assets/img/estudiantes/estudiante-1.jpg",
+      activo: true,
+      estado: "activo",
+      codigo_universitario: "2021-1019",
+      codigo_orcid: "",
+      roles: ["rol-3"],
+    },
+    {
+      id: "est-20",
+      tipo_documento_id: "td-1",
+      documento: "70901234",
+      nombres: "Cristian",
+      apellido_paterno: "Zúñiga",
+      apellido_materno: "Peña",
+      sexo: "M",
+      fecha_nacimiento: "2001-08-27",
+      email: "c.zuniga@unamba.edu.pe",
+      email_personal: "",
+      celular_principal: "920111020",
+      celular_secundario: "",
+      foto_perfil_url: "",
+      activo: true,
+      estado: "egresado",
+      codigo_universitario: "2019-0820",
+      codigo_orcid: "",
+      roles: ["rol-3"],
+    },
+    {
+      id: "est-21",
+      tipo_documento_id: "td-1",
+      documento: "71012345",
+      nombres: "Paula",
+      apellido_paterno: "Navarro",
+      apellido_materno: "Meza",
+      sexo: "F",
+      fecha_nacimiento: "2005-02-14",
+      email: "p.navarro@unamba.edu.pe",
+      email_personal: "",
+      celular_principal: "920111021",
+      celular_secundario: "",
+      foto_perfil_url: "",
+      activo: true,
+      estado: "activo",
+      codigo_universitario: "2025-0121",
+      codigo_orcid: "",
+      roles: ["rol-3"],
+    },
+    {
+      id: "est-22",
+      tipo_documento_id: "td-1",
+      documento: "71123456",
+      nombres: "Renato",
+      apellido_paterno: "Salazar",
+      apellido_materno: "Díaz",
+      sexo: "M",
+      fecha_nacimiento: "2003-11-30",
+      email: "r.salazar@unamba.edu.pe",
+      email_personal: "",
+      celular_principal: "",
+      celular_secundario: "",
+      foto_perfil_url: "",
+      activo: true,
+      estado: "activo",
+      codigo_universitario: "2022-1122",
+      codigo_orcid: "",
+      roles: ["rol-3"],
+    },
+    {
+      id: "est-23",
+      tipo_documento_id: "td-1",
+      documento: "71234568",
+      nombres: "Fiorella",
+      apellido_paterno: "Cabrera",
+      apellido_materno: "Ríos",
+      sexo: "F",
+      fecha_nacimiento: "2004-03-07",
+      email: "f.cabrera@unamba.edu.pe",
+      email_personal: "",
+      celular_principal: "920111023",
+      celular_secundario: "",
+      foto_perfil_url: "",
+      activo: true,
+      estado: "activo",
+      codigo_universitario: "2023-1223",
+      codigo_orcid: "",
+      roles: ["rol-3"],
+    },
+    {
+      id: "est-24",
+      tipo_documento_id: "td-1",
+      documento: "71345679",
+      nombres: "Óscar",
+      apellido_paterno: "Medina",
+      apellido_materno: "Quispe",
+      sexo: "M",
+      fecha_nacimiento: "2002-09-16",
+      email: "o.medina@unamba.edu.pe",
+      email_personal: "",
+      celular_principal: "920111024",
+      celular_secundario: "",
+      foto_perfil_url: "",
+      activo: true,
+      estado: "activo",
+      codigo_universitario: "2021-1024",
+      codigo_orcid: "",
+      roles: ["rol-3"],
     },
   ];
 
   let cachedSeed = null;
   let readyPromise = null;
 
+  function normalizeEstado(estado) {
+    const v = String(estado || "activo").toLowerCase();
+    if (v === "egresado" || v === "retirado" || v === "activo") return v;
+    return "activo";
+  }
+
   function normalizeRow(row) {
+    const roles = [...(row.roles || ["rol-3"])];
     return {
       ...row,
       email: row.email || row.correo_electronico || "",
@@ -168,9 +597,13 @@
       celular_principal: row.celular_principal || "",
       celular_secundario: row.celular_secundario || "",
       activo: row.activo !== false,
+      estado: normalizeEstado(row.estado),
       codigo_universitario: row.codigo_universitario || "",
       codigo_orcid: row.codigo_orcid || "",
       foto_perfil_url: row.foto_perfil_url || "",
+      created_at: row.created_at || "2026-02-03T11:02:00",
+      updated_at: row.updated_at || "2026-07-18T14:32:00",
+      roles,
     };
   }
 
@@ -247,6 +680,32 @@
     save(load().filter((r) => r.id !== id));
   }
 
+  function setActivo(id, activo) {
+    const rows = load();
+    const idx = rows.findIndex((r) => r.id === id);
+    if (idx === -1) return null;
+    rows[idx] = {
+      ...rows[idx],
+      activo: Boolean(activo),
+      updated_at: new Date().toISOString(),
+    };
+    save(rows);
+    return rows[idx];
+  }
+
+  function setEstado(id, estado) {
+    const rows = load();
+    const idx = rows.findIndex((r) => r.id === id);
+    if (idx === -1) return null;
+    rows[idx] = {
+      ...rows[idx],
+      estado: normalizeEstado(estado),
+      updated_at: new Date().toISOString(),
+    };
+    save(rows);
+    return rows[idx];
+  }
+
   function nombreCompleto(row) {
     return [row.nombres, row.apellido_paterno, row.apellido_materno].filter(Boolean).join(" ").trim();
   }
@@ -268,6 +727,55 @@
     return "../../" + String(url).replace(/^\.\.\//, "");
   }
 
+  function rolesActivos() {
+    return ROLES.filter((r) => r.activo !== false);
+  }
+
+  function rolNombre(id) {
+    return ROLES.find((r) => r.id === id)?.nombre || id;
+  }
+
+  function rolesLabel(ids) {
+    return (ids || []).map((id) => rolNombre(id)).filter(Boolean);
+  }
+
+  function estadoNombre(estado) {
+    return ESTADOS.find((e) => e.id === normalizeEstado(estado))?.nombre || "Activo";
+  }
+
+  function getHistorial(id) {
+    const h = HISTORIAL[id];
+    return h
+      ? { ...h, por_periodo: [...(h.por_periodo || [])] }
+      : { ...EMPTY_HISTORIAL, por_periodo: [] };
+  }
+
+  function tieneHistorial(id) {
+    const h = getHistorial(id);
+    return h.matriculas > 0 || h.fichas_llenadas > 0;
+  }
+
+  function historialTutoria(id) {
+    const h = getHistorial(id);
+    const vigente = (h.por_periodo || []).find((p) => p.vigente) || h.por_periodo[0] || null;
+    return {
+      periodos_cursados: (h.por_periodo || []).length,
+      ciclo_actual: vigente?.ciclo || "—",
+      tutor_actual: vigente?.tutor || "—",
+      por_periodo: h.por_periodo || [],
+      matriculas: h.matriculas,
+      fichas_llenadas: h.fichas_llenadas,
+    };
+  }
+
+  /** Cards: Total · Activos (estado=activo) · No activos (egresado+retirado). */
+  function resumenCounts(rows) {
+    const list = rows || load();
+    const total = list.length;
+    const activos = list.filter((r) => normalizeEstado(r.estado) === "activo").length;
+    return { total, activos, inactivos: total - activos };
+  }
+
   async function resetFromSeed() {
     sessionStorage.removeItem(STORAGE_KEY);
     sessionStorage.setItem(VERSION_KEY, STORAGE_VERSION);
@@ -277,6 +785,8 @@
   }
 
   window.EstudiantesData = {
+    ROLES,
+    ESTADOS,
     AVATAR_M,
     AVATAR_F,
     SEED,
@@ -288,9 +798,19 @@
     findById,
     upsert,
     remove,
+    setActivo,
+    setEstado,
     nombreCompleto,
     iniciales,
     fotoSrc,
     resolveFotoUrl,
+    rolesActivos,
+    rolNombre,
+    rolesLabel,
+    estadoNombre,
+    getHistorial,
+    tieneHistorial,
+    historialTutoria,
+    resumenCounts,
   };
 })();

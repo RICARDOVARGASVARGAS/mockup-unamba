@@ -236,6 +236,11 @@
     const editId = params.get("id");
     const existing = editId ? DocentesData.findById(editId) : null;
     const isEdit = Boolean(existing);
+    const fromUsuario =
+      params.get("from_usuario") === "1" && window.UsuariosData
+        ? UsuariosData.consumeStashForPerfil()
+        : null;
+    const fromUsuarioId = fromUsuario?.usuario_id || null;
 
     const title = document.querySelector("[data-form-page-title]");
     const rolesBox = document.querySelector("[data-roles-checklist]");
@@ -243,25 +248,43 @@
     const gradoSelect = document.getElementById("doc-grado");
     const espSelect = document.getElementById("doc-especialidad");
     const activoToggle = document.getElementById("doc-activo-toggle");
+    const backLink = document.querySelector('a[href="docentes.html"]');
 
-    if (title) title.textContent = isEdit ? "Editar docente" : "Nuevo docente";
+    if (title) {
+      title.textContent = isEdit
+        ? "Editar docente"
+        : fromUsuario
+          ? "Agregar perfil de docente"
+          : "Nuevo docente";
+    }
+
+    if (fromUsuario && backLink) {
+      backLink.href = `usuarios-ver.html?id=${encodeURIComponent(fromUsuarioId)}`;
+      backLink.textContent = "← Volver a la ficha";
+    }
+    document.querySelectorAll('a.btn-secondary[href="docentes.html"]').forEach((a) => {
+      if (!fromUsuarioId) return;
+      a.href = `usuarios-ver.html?id=${encodeURIComponent(fromUsuarioId)}`;
+    });
 
     const passwordNote = document.querySelector("[data-password-note]");
-    if (passwordNote) passwordNote.classList.toggle("hidden", isEdit);
+    if (passwordNote) passwordNote.classList.toggle("hidden", isEdit || Boolean(fromUsuario));
 
     const emailHint = document.querySelector("[data-email-hint]");
     if (emailHint) {
       emailHint.textContent = isEdit
         ? "Es el login. Cámbialo con cuidado: el docente usará este correo para ingresar."
-        : "Login institucional (único). No se define contraseña a mano.";
+        : fromUsuario
+          ? "Identidad reutilizada — solo lectura. Completa el perfil académico abajo."
+          : "Login institucional (único). No se define contraseña a mano.";
     }
 
     fillRoles(rolesBox, isEdit ? existing.roles : ["rol-2"]);
-    fillTiposDocumento(tipoSelect, isEdit ? existing.tipo_documento_id : "td-1");
+    fillTiposDocumento(tipoSelect, isEdit ? existing.tipo_documento_id : fromUsuario?.tipo_documento_id || "td-1");
     fillSelect(gradoSelect, DocentesData.GRADOS, isEdit ? existing.grado_academico_id : "", "Seleccionar…");
     fillSelect(espSelect, DocentesData.ESPECIALIDADES, isEdit ? existing.especialidad_id : "", "Seleccionar…");
     bindReniecSearch(tipoSelect);
-    bindFotoUpload(isEdit ? existing.foto_perfil_url : "");
+    bindFotoUpload(isEdit ? existing.foto_perfil_url : fromUsuario?.foto_perfil_url || "");
 
     activoToggle.addEventListener("click", () => {
       syncActivoToggle(!document.getElementById("doc-activo").checked);
@@ -282,6 +305,42 @@
       document.getElementById("doc-cv").value = existing.cv_url || "";
       document.getElementById("doc-bio").value = existing.biografia || "";
       syncActivoToggle(existing.activo !== false);
+    } else if (fromUsuario) {
+      document.getElementById("doc-documento").value = fromUsuario.documento || "";
+      document.getElementById("doc-nombres").value = fromUsuario.nombres || "";
+      document.getElementById("doc-apaterno").value = fromUsuario.apellido_paterno || "";
+      document.getElementById("doc-amaterno").value = fromUsuario.apellido_materno || "";
+      document.getElementById("doc-sexo").value = fromUsuario.sexo || "";
+      document.getElementById("doc-fnac").value = fromUsuario.fecha_nacimiento || "";
+      document.getElementById("doc-email").value = fromUsuario.email || "";
+      document.getElementById("doc-email-personal").value = fromUsuario.email_personal || "";
+      document.getElementById("doc-cel-principal").value = fromUsuario.celular_principal || "";
+      document.getElementById("doc-cel-secundario").value = fromUsuario.celular_secundario || "";
+      syncActivoToggle(fromUsuario.activo !== false);
+      [
+        "doc-tipo-documento",
+        "doc-documento",
+        "doc-nombres",
+        "doc-apaterno",
+        "doc-amaterno",
+        "doc-sexo",
+        "doc-fnac",
+        "doc-email",
+        "doc-email-personal",
+        "doc-cel-principal",
+        "doc-cel-secundario",
+      ].forEach((id) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.readOnly = el.tagName === "INPUT";
+        if (el.tagName === "SELECT") el.disabled = true;
+        el.classList.add("opacity-80");
+      });
+      document.querySelector("[data-reniec-buscar]")?.setAttribute("disabled", "true");
+      document.querySelector("[data-foto-trigger]")?.setAttribute("disabled", "true");
+      document.querySelector("[data-foto-quitar]")?.classList.add("hidden");
+      activoToggle.setAttribute("disabled", "true");
+      if (rolesBox) rolesBox.classList.add("pointer-events-none", "opacity-80");
     } else {
       syncActivoToggle(true);
     }
@@ -296,7 +355,7 @@
 
       const row = {
         id: isEdit ? existing.id : `doc-${Date.now()}`,
-        tipo_documento_id: tipoSelect.value,
+        tipo_documento_id: fromUsuario ? fromUsuario.tipo_documento_id : tipoSelect.value,
         documento: document.getElementById("doc-documento").value.trim(),
         nombres: document.getElementById("doc-nombres").value.trim(),
         apellido_paterno: document.getElementById("doc-apaterno").value.trim(),
@@ -361,6 +420,9 @@
       }
 
       DocentesData.upsert(row);
+      if (fromUsuarioId && window.UsuariosData) {
+        UsuariosData.linkPerfil(fromUsuarioId, "docente", row.id);
+      }
       if (window.AuditoriaData) {
         AuditoriaData.log({
           accion: isEdit ? "editar" : "crear",
@@ -369,6 +431,10 @@
           valores_anteriores: isEdit ? existing : null,
           valores_nuevos: row,
         });
+      }
+      if (fromUsuarioId) {
+        window.location.href = `usuarios-ver.html?id=${encodeURIComponent(fromUsuarioId)}&saved=perfil&perfil=docente`;
+        return;
       }
       window.location.href = isEdit ? "docentes.html?saved=updated" : "docentes.html?saved=created";
     });

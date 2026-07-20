@@ -1,5 +1,5 @@
 /**
- * usuarios-form.js — alta/edición Usuario (admin, coordinador, receptor).
+ * usuarios-form.js — alta/edición Usuario (identidad + roles; sin sección de perfil).
  */
 (function () {
   const toast = (message, type = "success") =>
@@ -7,15 +7,14 @@
 
   const MAX_FOTO_BYTES = 2 * 1024 * 1024;
 
-  const ROLES_ALL = [
-    { id: "rol-1", nombre: "Administrador" },
-    { id: "rol-2", nombre: "Docente-Tutor" },
-    { id: "rol-3", nombre: "Estudiante" },
-    { id: "rol-4", nombre: "Coordinador de tutoría" },
-    { id: "rol-5", nombre: "Psicólogo" },
-    { id: "rol-6", nombre: "Servicios médicos" },
-    { id: "rol-7", nombre: "Trabajo social" },
-  ];
+  const HINT_POR_ROL = {
+    "rol-2":
+      'El rol «Docente-Tutor» requiere un perfil de docente para asignar tutorías. Podrás agregarlo después desde la ficha.',
+    "rol-3":
+      'El rol «Estudiante» requiere un perfil de estudiante para matrículas y fichas. Podrás agregarlo después desde la ficha.',
+    "rol-5":
+      'El rol «Receptor» requiere un perfil de receptor vinculado a una entidad. Podrás agregarlo después desde la ficha.',
+  };
 
   function selectedRoles(form) {
     return [...form.querySelectorAll('[name="roles"]:checked')].map((el) => el.value);
@@ -23,13 +22,38 @@
 
   function fillRoles(container, selectedIds) {
     const selected = new Set(selectedIds || []);
-    container.innerHTML = ROLES_ALL.map(
-      (rol) => `
+    const roles = UsuariosData.rolesActivos();
+    container.innerHTML = roles
+      .map(
+        (rol) => `
       <label class="flex items-center gap-2 rounded-md border border-border bg-bg px-3 py-2.5 text-sm text-text">
-        <input type="checkbox" name="roles" value="${rol.id}" ${selected.has(rol.id) ? "checked" : ""} class="h-4 w-4 rounded border-border text-primary" />
+        <input type="checkbox" name="roles" value="${CatalogTable.escapeHtml(rol.id)}" ${selected.has(rol.id) ? "checked" : ""} class="h-4 w-4 rounded border-border text-primary" data-rol-implica="${CatalogTable.escapeHtml(rol.implica || "")}" />
         <span>${CatalogTable.escapeHtml(rol.nombre)}</span>
       </label>`
-    ).join("");
+      )
+      .join("");
+  }
+
+  function updateRolPerfilHint(form, perfiles) {
+    const hint = document.querySelector("[data-roles-perfil-hint]");
+    if (!hint) return;
+    const roles = selectedRoles(form);
+    const messages = [];
+    roles.forEach((rolId) => {
+      const rol = UsuariosData.ROLES.find((r) => r.id === rolId);
+      if (!rol?.implica) return;
+      if (UsuariosData.tienePerfil({ perfiles }, rol.implica)) return;
+      if (HINT_POR_ROL[rolId]) messages.push(HINT_POR_ROL[rolId]);
+    });
+    if (!messages.length) {
+      hint.classList.add("hidden");
+      hint.innerHTML = "";
+      return;
+    }
+    hint.classList.remove("hidden");
+    hint.innerHTML = `<p class="font-medium text-primary mb-1">Aviso</p>${messages
+      .map((m) => `<p>${CatalogTable.escapeHtml(m)}</p>`)
+      .join("")}`;
   }
 
   function fillTiposDocumento(select, currentId) {
@@ -122,8 +146,20 @@
   }
 
   const RENIEC_EXTRA = {
-    "70001001": { nombres: "Paola", apellido_paterno: "Huanca", apellido_materno: "Ramos", sexo: "F", fecha_nacimiento: "1991-03-17" },
-    "70001002": { nombres: "José Luis", apellido_paterno: "Mendoza", apellido_materno: "Apaza", sexo: "M", fecha_nacimiento: "1985-08-25" },
+    "70001001": {
+      nombres: "Paola",
+      apellido_paterno: "Huanca",
+      apellido_materno: "Ramos",
+      sexo: "F",
+      fecha_nacimiento: "1991-03-17",
+    },
+    "70001002": {
+      nombres: "José Luis",
+      apellido_paterno: "Mendoza",
+      apellido_materno: "Apaza",
+      sexo: "M",
+      fecha_nacimiento: "1985-08-25",
+    },
   };
 
   function setReniecLoading(btn, loading) {
@@ -179,7 +215,10 @@
       await new Promise((resolve) => setTimeout(resolve, 1100));
       const person = lookupReniecMock(documento);
       setReniecLoading(btn, false);
-      if (!person) { toast("No se encontró", "warning"); return; }
+      if (!person) {
+        toast("No se encontró", "warning");
+        return;
+      }
       applyReniecResult(person);
       toast("Datos cargados desde RENIEC (simulado)");
     };
@@ -193,7 +232,10 @@
     });
 
     docInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") { e.preventDefault(); btn.click(); }
+      if (e.key === "Enter") {
+        e.preventDefault();
+        btn.click();
+      }
     });
   }
 
@@ -214,6 +256,7 @@
     const editId = params.get("id");
     const existing = editId ? UsuariosData.findById(editId) : null;
     const isEdit = Boolean(existing);
+    const perfiles = existing?.perfiles || {};
 
     const title = document.querySelector("[data-form-page-title]");
     const rolesBox = document.querySelector("[data-roles-checklist]");
@@ -222,7 +265,7 @@
 
     if (title) title.textContent = isEdit ? "Editar usuario" : "Nuevo usuario";
 
-    fillRoles(rolesBox, isEdit ? existing.rolIds : []);
+    fillRoles(rolesBox, isEdit ? existing.roles || existing.rolIds : []);
     fillTiposDocumento(tipoSelect, isEdit ? existing.tipo_documento_id : "td-1");
     bindReniecSearch(tipoSelect);
     bindFotoUpload(isEdit ? existing.foto_perfil_url : "");
@@ -230,6 +273,8 @@
     activoToggle.addEventListener("click", () => {
       syncActivoToggle(!document.getElementById("usr-activo").checked);
     });
+
+    rolesBox.addEventListener("change", () => updateRolPerfilHint(form, perfiles));
 
     if (isEdit) {
       document.getElementById("usr-documento").value = existing.documento || "";
@@ -247,10 +292,12 @@
       syncActivoToggle(true);
     }
 
+    updateRolPerfilHint(form, perfiles);
+
     form.addEventListener("submit", (event) => {
       event.preventDefault();
-      const rolIds = selectedRoles(form);
-      if (!rolIds.length) {
+      const roles = selectedRoles(form);
+      if (!roles.length) {
         toast("Asigna al menos un rol", "warning");
         return;
       }
@@ -270,16 +317,32 @@
         celular_secundario: document.getElementById("usr-cel-secundario").value.trim(),
         foto_perfil_url: document.getElementById("usr-foto").value,
         activo: document.getElementById("usr-activo").checked,
-        rolIds,
+        roles,
+        perfiles: isEdit ? existing.perfiles : {},
+        created_at: isEdit ? existing.created_at : new Date().toISOString(),
+        updated_at: new Date().toISOString(),
       };
 
-      if (!row.tipo_documento_id || !row.documento || !row.nombres || !row.apellido_paterno || !row.apellido_materno || !row.email) {
+      if (
+        !row.tipo_documento_id ||
+        !row.documento ||
+        !row.nombres ||
+        !row.apellido_paterno ||
+        !row.apellido_materno ||
+        !row.email
+      ) {
         toast("Completa los campos obligatorios", "warning");
         return;
       }
 
       const others = UsuariosData.load().filter((r) => r.id !== row.id);
-      if (others.some((r) => r.tipo_documento_id === row.tipo_documento_id && String(r.documento).trim() === row.documento)) {
+      if (
+        others.some(
+          (r) =>
+            r.tipo_documento_id === row.tipo_documento_id &&
+            String(r.documento).trim() === row.documento
+        )
+      ) {
         toast("Ya existe un usuario con ese tipo y número de documento", "warning");
         return;
       }

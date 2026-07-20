@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ficha usuario | TutorTrack (Mockup)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap"
+    />
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <app-sidebar></app-sidebar>
+    <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
+      <app-topbar
+        page-title="Usuarios"
+        user-name="Ricardo Vargas Vargas"
+        user-role="Administrador"
+        user-initials="RV"
+        user-avatar="assets/img/admin/ricardo-vargas.jpg"
+      ></app-topbar>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <div class="ficha-page" data-ficha>
+          <a href="usuarios.html" class="ficha-back">← Volver al listado</a>
+
+          <header class="ficha-hero ficha-hero-docente">
+            <div data-ficha-avatar class="ficha-avatar"></div>
+            <div class="ficha-hero-body">
+              <div class="ficha-hero-top">
+                <div class="min-w-0">
+                  <h2 data-ficha-nombre class="ficha-nombre"></h2>
+                  <p data-ficha-ids class="ficha-documento"></p>
+                </div>
+                <span data-ficha-estado></span>
+              </div>
+              <div class="ficha-hero-actions">
+                <a data-ficha-editar href="#" class="btn-secondary inline-flex">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" />
+                  </svg>
+                  Editar
+                </a>
+                <button type="button" data-ficha-password class="btn-secondary inline-flex">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />
+                  </svg>
+                  Contraseña
+                </button>
+                <button type="button" data-ficha-auditoria class="btn-secondary inline-flex">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                  </svg>
+                  Auditoría
+                </button>
+              </div>
+            </div>
+          </header>
+
+          <div class="ficha-panels ficha-panels-2">
+            <section class="ficha-panel" aria-labelledby="ficha-identidad">
+              <h3 id="ficha-identidad" class="ficha-panel-title">Identidad</h3>
+              <dl class="ficha-fields">
+                <div class="ficha-field">
+                  <dt>Sexo</dt>
+                  <dd data-ficha-sexo></dd>
+                </div>
+                <div class="ficha-field">
+                  <dt>Fecha de nacimiento</dt>
+                  <dd data-ficha-fnac></dd>
+                </div>
+              </dl>
+            </section>
+
+            <section class="ficha-panel" aria-labelledby="ficha-contacto">
+              <h3 id="ficha-contacto" class="ficha-panel-title">Contacto y acceso</h3>
+              <dl class="ficha-fields">
+                <div class="ficha-field">
+                  <dt>Correo de acceso</dt>
+                  <dd data-ficha-email></dd>
+                </div>
+                <div class="ficha-field">
+                  <dt>Correo personal</dt>
+                  <dd data-ficha-email-personal></dd>
+                </div>
+                <div class="ficha-field">
+                  <dt>Celular principal</dt>
+                  <dd data-ficha-cel1></dd>
+                </div>
+                <div class="ficha-field">
+                  <dt>Celular secundario</dt>
+                  <dd data-ficha-cel2></dd>
+                </div>
+              </dl>
+            </section>
+          </div>
+
+          <section class="ficha-panel ficha-panel-wide" aria-labelledby="ficha-perfiles-title">
+            <h3 id="ficha-perfiles-title" class="ficha-panel-title">Perfiles</h3>
+            <p class="mt-1 text-sm text-text-muted">Enganches de negocio sobre esta identidad. Se agregan o quitan sin recrear a la persona.</p>
+            <ul data-ficha-perfiles class="mt-4 space-y-2"></ul>
+          </section>
+
+          <section class="ficha-panel ficha-panel-wide ficha-panel-roles" aria-labelledby="ficha-roles-title">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <h3 id="ficha-roles-title" class="ficha-panel-title !mb-0">Roles</h3>
+              <a data-ficha-gestionar-roles href="#" class="btn-secondary inline-flex text-sm">Gestionar</a>
+            </div>
+            <div data-ficha-roles class="mt-4"></div>
+          </section>
+
+          <p data-ficha-meta class="ficha-meta"></p>
+        </div>
+
+        <div data-ficha-empty class="ficha-empty-wrap hidden">
+          <p class="ficha-empty-text">No se encontró el usuario solicitado.</p>
+          <a href="usuarios.html" class="btn-secondary mt-4 inline-flex">Volver al listado</a>
+        </div>
+      </main>
+    </div>
+
+    <app-modal-confirm></app-modal-confirm>
+    <app-modal-historial></app-modal-historial>
+    <app-toast></app-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/site-paths.js"></script>
+    <script src="../../components/app-sidebar.js"></script>
+    <script src="../../components/app-topbar.js"></script>
+    <script src="../../components/app-modal-confirm.js"></script>
+    <script src="../../js/auditoria-data.js"></script>
+    <script src="../../components/app-modal-historial.js"></script>
+    <script src="../../components/app-toast.js"></script>
+    <script src="../../js/tipos-documento-data.js"></script>
+    <script src="../../js/docentes-data.js"></script>
+    <script src="../../js/estudiantes-data.js"></script>
+    <script src="../../js/receptores-data.js"></script>
+    <script src="../../js/usuarios-data.js"></script>
+    <script src="../../js/usuarios-ver.js"></script>
+  </body>
+</html>

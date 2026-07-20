@@ -6,7 +6,10 @@
     <title>Roles y permisos | TutorTrack (Mockup)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap"
+    />
     <link rel="stylesheet" href="../../css/tokens.css" />
     <link rel="stylesheet" href="../../css/base.css" />
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,130 +18,124 @@
   <body class="w-full bg-bg text-text font-body antialiased">
     <app-sidebar></app-sidebar>
     <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
-      <app-topbar page-title="Roles y permisos" user-name="Ricardo Vargas Vargas" user-role="Administrador" user-initials="RV" user-avatar="assets/img/admin/ricardo-vargas.jpg"></app-topbar>
+      <app-topbar
+        page-title="Roles y permisos"
+        user-name="Ricardo Vargas Vargas"
+        user-role="Administrador"
+        user-initials="RV"
+        user-avatar="assets/img/admin/ricardo-vargas.jpg"
+      ></app-topbar>
+
       <main class="flex-1 p-4 sm:p-6 lg:p-8">
-        <section class="app-card catalog-panel">
-          <div class="catalog-head">
-            <div>
-              <h2 class="font-heading">Roles y permisos</h2>
-              <p>RBAC: los permisos se asignan a roles, nunca directo al usuario</p>
-            </div>
-            <button type="button" data-open-create class="btn-primary">
-              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-              <span data-create-label>Nuevo rol</span>
-            </button>
+        <header class="mb-5 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 class="font-heading text-xl font-bold text-text">Roles y permisos</h2>
+            <p class="mt-1 text-sm text-text-muted">
+              RBAC: los permisos se asignan a roles, nunca directo al usuario.
+            </p>
           </div>
+          <p data-rbac-meta class="text-sm text-text-muted tabular-nums">—</p>
+        </header>
 
-          <div class="catalog-tabs" role="tablist" aria-label="Secciones RBAC">
-            <button type="button" class="catalog-tab" role="tab" data-tab="roles" aria-selected="true">Roles</button>
-            <button type="button" class="catalog-tab" role="tab" data-tab="permisos" aria-selected="false">Permisos</button>
+        <!-- Móvil: selector de rol + nuevo -->
+        <div class="rbac-mobile-bar mb-4 flex flex-wrap items-end gap-3 lg:hidden">
+          <div class="min-w-0 flex-1">
+            <label for="rbac-rol-select" class="form-label">Rol</label>
+            <select id="rbac-rol-select" data-rbac-rol-select class="form-input mt-1"></select>
           </div>
+          <button type="button" data-open-create-mobile class="btn-primary shrink-0">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            Nuevo rol
+          </button>
+        </div>
 
-          <!-- Panel Roles -->
-          <div data-panel="roles" data-catalog="roles" data-audit-table="rol">
-            <div class="catalog-query">
-              <div class="catalog-field catalog-field-grow">
-                <label for="search-roles">Buscar</label>
-                <input id="search-roles" type="search" data-catalog-search class="catalog-input" placeholder="Buscar rol…" />
-              </div>
-              <div class="catalog-field">
-                <label for="filter-ambito-rol">Ámbito</label>
-                <select id="filter-ambito-rol" data-filter="ambito" class="catalog-select min-w-[11rem]">
-                  <option value="">Todos</option>
-                  <option value="interno">Interno</option>
-                  <option value="receptor">Entidad receptora</option>
-                </select>
-              </div>
-              <div class="catalog-query-actions">
-                <button type="button" data-catalog-search-btn class="btn-secondary btn-icon" title="Buscar" aria-label="Buscar">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
-                </button>
-                <button type="button" data-catalog-clear class="btn-ghost btn-icon" title="Limpiar" aria-label="Limpiar">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
-                </button>
-              </div>
+        <div class="rbac-layout">
+          <!-- Panel izquierdo: Roles -->
+          <aside class="rbac-roles app-card" aria-label="Roles">
+            <div class="rbac-roles-head">
+              <h3 class="font-heading text-sm font-semibold text-text">Roles</h3>
+              <button type="button" data-open-create class="btn-primary btn-sm">
+                <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                Nuevo rol
+              </button>
             </div>
-            <div class="catalog-meta" data-catalog-meta></div>
-            <div class="catalog-table-wrap" data-catalog-table-wrap>
-              <table class="catalog-table">
-                <thead data-catalog-thead></thead>
-                <tbody data-catalog-body></tbody>
-              </table>
-            </div>
-            <div class="catalog-empty hidden" data-catalog-empty><p>No se encontraron roles.</p></div>
-            <div class="catalog-pagination" data-catalog-pagination></div>
-          </div>
+            <ul data-rbac-roles-list class="rbac-roles-list" role="listbox" aria-label="Lista de roles"></ul>
+          </aside>
 
-          <!-- Panel Permisos -->
-          <div data-panel="permisos" data-catalog="permisos" data-audit-table="permiso" class="hidden">
-            <div class="catalog-query">
-              <div class="catalog-field catalog-field-grow">
-                <label for="search-permisos">Buscar</label>
-                <input id="search-permisos" type="search" data-catalog-search class="catalog-input" placeholder="Buscar permiso…" />
-              </div>
-              <div class="catalog-field">
-                <label for="filter-modulo">Módulo</label>
-                <select id="filter-modulo" data-filter="modulo" class="catalog-select min-w-[11rem]">
-                  <option value="">Todos</option>
-                  <option value="usuarios">Usuarios y accesos</option>
-                  <option value="catalogos">Catálogos</option>
-                  <option value="tutoria">Tutoría</option>
-                  <option value="fichas">Fichas</option>
-                  <option value="alertas">Alertas / derivación</option>
-                </select>
-              </div>
-              <div class="catalog-query-actions">
-                <button type="button" data-catalog-search-btn class="btn-secondary btn-icon" title="Buscar" aria-label="Buscar">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
-                </button>
-                <button type="button" data-catalog-clear class="btn-ghost btn-icon" title="Limpiar" aria-label="Limpiar">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
-                </button>
-              </div>
+          <!-- Panel derecho: Permisos del rol -->
+          <section class="rbac-perms app-card" aria-label="Permisos del rol">
+            <div data-rbac-perms-empty class="rbac-perms-empty">
+              <p>Selecciona un rol para ver y asignar sus permisos.</p>
             </div>
-            <div class="catalog-meta" data-catalog-meta></div>
-            <div class="catalog-table-wrap" data-catalog-table-wrap>
-              <table class="catalog-table">
-                <thead data-catalog-thead></thead>
-                <tbody data-catalog-body></tbody>
-              </table>
+
+            <div data-rbac-perms-panel class="hidden">
+              <div class="rbac-perms-head">
+                <div class="min-w-0">
+                  <h3 class="font-heading text-base font-semibold text-text">
+                    Permisos de «<span data-rbac-rol-nombre></span>»
+                  </h3>
+                  <p class="mt-0.5 text-sm text-text-muted">
+                    <span data-rbac-asignados>0</span> de <span data-rbac-total>0</span> asignados
+                  </p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2 shrink-0">
+                  <div data-rbac-rol-toolbar class="hidden gap-1"></div>
+                  <button type="button" data-rbac-guardar class="btn-primary">
+                    Guardar cambios
+                  </button>
+                </div>
+              </div>
+
+              <div data-rbac-protegido-aviso class="rbac-protegido-aviso hidden" role="status">
+                Este rol está protegido. Sus permisos son de solo lectura.
+              </div>
+
+              <div data-rbac-modulos class="rbac-modulos"></div>
             </div>
-            <div class="catalog-empty hidden" data-catalog-empty><p>No se encontraron permisos.</p></div>
-            <div class="catalog-pagination" data-catalog-pagination></div>
-          </div>
-        </section>
+          </section>
+        </div>
       </main>
     </div>
 
-    <!-- Modal Rol (+ checklist permisos) -->
-    <div data-rol-backdrop class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
-      <div class="modal-panel max-w-lg w-full">
-        <h2 data-rol-title class="font-heading">Nuevo rol</h2>
+    <!-- Modal Nuevo / Editar rol -->
+    <div data-rol-backdrop class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4" role="dialog" aria-modal="true" aria-labelledby="rol-modal-title">
+      <div class="modal-panel max-w-md w-full">
+        <h2 id="rol-modal-title" data-rol-title class="font-heading text-lg font-semibold">Nuevo rol</h2>
         <form data-rol-form class="mt-4 space-y-4" novalidate>
           <input type="hidden" data-rol-editing-id />
-          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div>
-              <label for="rol-nombre" class="form-label">Nombre del rol <span class="text-danger">*</span></label>
-              <input id="rol-nombre" type="text" required class="form-input" placeholder="Ej. Docente-Tutor" />
-            </div>
-            <div>
-              <label for="rol-clave" class="form-label">Clave <span class="text-danger">*</span></label>
-              <input id="rol-clave" type="text" required class="form-input font-mono" placeholder="Ej. docente_tutor" />
-              <p class="form-hint">Identificador único en snake_case.</p>
-            </div>
+          <div>
+            <label for="rol-clave" class="form-label">Clave <span class="text-danger">*</span></label>
+            <input id="rol-clave" type="text" required class="form-input font-mono" placeholder="ej. coordinador_facultad" autocomplete="off" />
+            <p data-rol-clave-hint class="form-hint">Identificador estable (snake_case). Solo editable al crear.</p>
           </div>
           <div>
-            <label for="rol-ambito" class="form-label">Ámbito</label>
-            <select id="rol-ambito" class="form-input">
-              <option value="interno">Interno</option>
-              <option value="receptor">Entidad receptora</option>
-            </select>
+            <label for="rol-nombre" class="form-label">Nombre <span class="text-danger">*</span></label>
+            <input id="rol-nombre" type="text" required class="form-input" placeholder="Ej. Coordinador de facultad" />
           </div>
-          <fieldset>
-            <legend class="form-label">Permisos asignados</legend>
-            <p class="form-hint mb-2">Marque los permisos de este rol (RolPermiso). Agrupados por módulo.</p>
-            <div data-permisos-checklist class="max-h-64 overflow-y-auto rounded-md border border-border bg-bg p-3 space-y-3"></div>
-          </fieldset>
+          <div>
+            <label for="rol-desc" class="form-label">Descripción</label>
+            <textarea id="rol-desc" rows="2" class="form-input" placeholder="Para qué sirve este rol…"></textarea>
+          </div>
+          <div>
+            <span class="form-label">Estado</span>
+            <button
+              type="button"
+              id="rol-activo-toggle"
+              class="status-toggle status-toggle-lg mt-1.5"
+              role="switch"
+              aria-checked="true"
+              aria-label="Estado del rol"
+            >
+              <span class="status-toggle-thumb" aria-hidden="true"></span>
+              <span class="status-toggle-label" data-on>Activo</span>
+              <span class="status-toggle-label" data-off>Inactivo</span>
+            </button>
+            <input id="rol-activo" type="checkbox" checked class="sr-only" tabindex="-1" aria-hidden="true" />
+          </div>
           <div class="mt-6 flex justify-end gap-3">
             <button type="button" data-rol-cancel class="btn-secondary">Cancelar</button>
             <button type="submit" class="btn-primary">Guardar</button>
@@ -147,51 +144,17 @@
       </div>
     </div>
 
-    <!-- Modal Permiso -->
-    <div data-permiso-backdrop class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
-      <div class="modal-panel">
-        <h2 data-permiso-title class="font-heading">Nuevo permiso</h2>
-        <form data-permiso-form class="mt-4 space-y-4" novalidate>
-          <input type="hidden" data-permiso-editing-id />
-          <div>
-            <label for="permiso-nombre" class="form-label">Clave del permiso <span class="text-danger">*</span></label>
-            <input id="permiso-nombre" type="text" required class="form-input font-mono" placeholder="Ej. ver_alertas" />
-            <p class="form-hint">Identificador único en snake_case.</p>
-          </div>
-          <div>
-            <label for="permiso-desc" class="form-label">Descripción</label>
-            <input id="permiso-desc" type="text" class="form-input" placeholder="Ej. Ver alertas generadas por IA" />
-          </div>
-          <div>
-            <label for="permiso-modulo" class="form-label">Módulo</label>
-            <select id="permiso-modulo" class="form-input">
-              <option value="usuarios">Usuarios y accesos</option>
-              <option value="catalogos">Catálogos</option>
-              <option value="tutoria">Tutoría</option>
-              <option value="fichas">Fichas</option>
-              <option value="alertas">Alertas / derivación</option>
-            </select>
-          </div>
-          <div class="mt-6 flex justify-end gap-3">
-            <button type="button" data-permiso-cancel class="btn-secondary">Cancelar</button>
-            <button type="submit" class="btn-primary">Guardar</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
     <app-modal-confirm></app-modal-confirm>
-    <app-modal-historial></app-modal-historial>
     <app-toast></app-toast>
+
     <script src="../../js/theme.js"></script>
     <script src="../../js/site-paths.js"></script>
     <script src="../../components/app-sidebar.js"></script>
     <script src="../../components/app-topbar.js"></script>
     <script src="../../components/app-modal-confirm.js"></script>
-    <script src="../../js/auditoria-data.js"></script>
-    <script src="../../components/app-modal-historial.js"></script>
     <script src="../../components/app-toast.js"></script>
-    <script src="../../js/catalog-table.js"></script>
+    <script src="../../js/usuarios-data.js"></script>
+    <script src="../../js/roles-permisos-data.js"></script>
     <script src="../../js/roles-permisos.js"></script>
   </body>
 </html>

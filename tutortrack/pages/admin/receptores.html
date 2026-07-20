@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Usuarios | TutorTrack (Mockup)</title>
+    <title>Receptores | TutorTrack (Mockup)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -19,7 +19,7 @@
     <app-sidebar></app-sidebar>
     <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
       <app-topbar
-        page-title="Usuarios"
+        page-title="Receptores"
         user-name="Ricardo Vargas Vargas"
         user-role="Administrador"
         user-initials="RV"
@@ -27,7 +27,7 @@
       ></app-topbar>
 
       <main class="flex-1 p-4 sm:p-6 lg:p-8">
-        <div class="people-summary" data-people-summary aria-label="Resumen de usuarios">
+        <div class="people-summary" data-people-summary aria-label="Resumen de receptores">
           <article class="people-summary-card people-summary-total">
             <div class="people-summary-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
@@ -35,9 +35,9 @@
               </svg>
             </div>
             <div>
-              <p class="people-summary-label">Total usuarios</p>
+              <p class="people-summary-label">Total receptores</p>
               <p class="people-summary-value" data-summary-total>0</p>
-              <p class="people-summary-sub">identidades</p>
+              <p class="people-summary-sub">registrados</p>
             </div>
           </article>
           <article class="people-summary-card people-summary-active">
@@ -66,11 +66,11 @@
           </article>
         </div>
 
-        <section class="app-card catalog-panel mt-5" data-catalog data-audit-table="usuario" data-delete-toast="Usuario eliminado">
+        <section class="app-card catalog-panel mt-5" data-catalog data-audit-table="receptor" data-delete-toast="Receptor eliminado">
           <div class="catalog-head">
             <div>
-              <h2 class="font-heading">Usuarios</h2>
-              <p>Lista maestra de identidades. Asigna roles y agrega o quita perfiles.</p>
+              <h2 class="font-heading">Receptores</h2>
+              <p>Personal de entidades receptoras (Usuario + perfil + entidad)</p>
             </div>
             <div class="catalog-head-actions">
               <button type="button" data-catalog-refresh class="btn-secondary">
@@ -83,7 +83,7 @@
                 <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                 </svg>
-                Nuevo usuario
+                Nuevo receptor
               </button>
             </div>
           </div>
@@ -100,19 +100,9 @@
               />
             </div>
             <div class="catalog-field">
-              <label for="filter-perfil">Perfil</label>
-              <select id="filter-perfil" data-filter="perfil" class="catalog-select min-w-[10rem]">
-                <option value="">Todos</option>
-                <option value="docente">Docente</option>
-                <option value="estudiante">Estudiante</option>
-                <option value="receptor">Receptor</option>
-                <option value="sin">Sin perfil</option>
-              </select>
-            </div>
-            <div class="catalog-field">
-              <label for="filter-rol">Rol</label>
-              <select id="filter-rol" data-filter="rol" class="catalog-select min-w-[12rem]">
-                <option value="">Todos</option>
+              <label for="filter-entidad">Entidad</label>
+              <select id="filter-entidad" data-filter="entidad" class="catalog-select min-w-[12rem]">
+                <option value="">Todas</option>
               </select>
             </div>
             <div class="catalog-field">
@@ -145,7 +135,7 @@
             </table>
           </div>
           <div class="catalog-empty hidden" data-catalog-empty>
-            <p>No se encontraron usuarios con esos criterios.</p>
+            <p>No se encontraron receptores con esos criterios.</p>
           </div>
           <div class="catalog-pagination" data-catalog-pagination></div>
         </section>
@@ -166,7 +156,7 @@
     <script src="../../components/app-toast.js"></script>
     <script src="../../js/catalog-table.js"></script>
     <script src="../../js/tipos-documento-data.js"></script>
-    <script src="../../js/usuarios-data.js"></script>
-    <script src="../../js/usuarios.js"></script>
+    <script src="../../js/receptores-data.js"></script>
+    <script src="../../js/receptores.js"></script>
   </body>
 </html>
