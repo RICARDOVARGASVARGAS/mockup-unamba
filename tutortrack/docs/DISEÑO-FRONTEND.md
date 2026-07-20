@@ -237,11 +237,11 @@ no esté construida en código según este doc, queda **⬜ Pendiente**.
 - [x] Estados de derivación — sub-página (pipeline por entidad)
 
 **Administrador › Organización del período**
-- [ ] Configuración del período (hub: ciclos + clonar + historial)
-- [ ] Docentes del ciclo (sub-editor / drawer)
-- [ ] Temario (árbol por ciclo+período) — compartido con Docente
-- [ ] Matrículas
-- [ ] Avanzar estudiantes
+- [x] Configuración del período (hub: ciclos + clonar + historial)
+- [x] Docentes del ciclo (sub-editor / drawer)
+- [x] Temario (árbol por ciclo+período) — compartido con Docente
+- [x] Matrículas
+- [x] Avanzar estudiantes
 
 ---
 
@@ -1374,7 +1374,7 @@ Todo este grupo trabaja **sobre un período** (seleccionable). El nodo central e
 `ciclo_periodo` (un ciclo dentro de un período); de él cuelgan docentes, temario
 y matrículas.
 
-### Administrador › Organización del período › Configuración del período — ⬜ Pendiente
+### Administrador › Organización del período › Configuración del período — ✅ Hecho
 
 Hub que **arma la estructura** de un período: qué ciclos tiene, qué docentes
 tutoran cada uno y su temario. **No crea el período** (eso es el catálogo
@@ -1452,7 +1452,7 @@ Docentes — Primer ciclo · 2026-I                        [ + Asignar docentes 
 > compartida con el rol Docente. Aquí solo se muestra el contador con enlace.
 > Ver «Temario» abajo.
 
-### Organización del período › Temario — ⬜ Pendiente
+### Organización del período › Temario — ✅ Hecho
 
 Árbol de temas de tutoría de un **ciclo+período** (`temario`), de **profundidad
 libre** (tema → subtema → sub-subtema…). Es **por `ciclo_periodo`**: el temario
@@ -1490,7 +1490,7 @@ primera vez. La duplicación por período es intencional: preserva el historial
 - **Compartida con Docente:** misma pantalla; el Docente solo accede a los
   `ciclo_periodo` que tutora (regla de acceso).
 
-### Administrador › Organización del período › Matrículas — ⬜ Pendiente
+### Administrador › Organización del período › Matrículas — ✅ Hecho
 
 Mete estudiantes a un ciclo+período y les asigna **un** tutor del pool de ese
 ciclo. Muy manejable: asignación **individual** y **en lote**. Es la puerta de
@@ -1526,7 +1526,7 @@ Buscar:[ nombre o código… ]   Tutor:[ Todos ▾ ]   [🔍][✕]
   `docente_id` ∈ pool del ciclo; 1 matrícula por período vía `periodo` derivado).
 - **Toasts:** "Estudiante matriculado", "Tutor actualizado", "Matrícula retirada".
 
-### Administrador › Organización del período › Avanzar estudiantes — ⬜ Pendiente
+### Administrador › Organización del período › Avanzar estudiantes — ✅ Hecho
 
 Operación **masiva** al abrir un período: propone mover cada estudiante al ciclo
 siguiente, y tú **revisas y corriges**. **No es un botón ciego** — el sistema no

@@ -15,28 +15,24 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../../js/tailwind-config.js"></script>
   </head>
-  <body class="w-full bg-bg text-text font-body antialiased">
+  <body class="w-full bg-bg text-text font-body antialiased" data-role="docente">
     <app-sidebar></app-sidebar>
     <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
       <app-topbar
         page-title="Temario"
-        user-name="Ricardo Vargas Vargas"
-        user-role="Administrador"
-        user-initials="RV"
-        user-avatar="assets/img/admin/ricardo-vargas.jpg"
+        user-name="Carlos Quispe Mamani"
+        user-role="Docente-Tutor"
+        user-initials="CQ"
+        user-avatar="assets/img/docentes/docente-1.jpg"
       ></app-topbar>
 
       <main class="flex-1 p-4 sm:p-6 lg:p-8">
         <div class="temario-toolbar">
-          <div class="min-w-0 space-y-1">
-            <a id="btn-volver" href="gestion-periodo.html" class="inline-flex items-center gap-1 text-sm text-text-muted hover:text-primary">
-              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-              </svg>
-              Volver a configuración
-            </a>
+          <div class="min-w-0 space-y-2">
             <h2 id="page-title" class="font-heading text-xl font-bold text-text">Temario</h2>
-            <p class="text-sm text-text-muted"><span id="bc-ciclo"></span> · arrastra ⠿ para reordenar o anidar</p>
+            <p class="text-sm text-text-muted">Solo los ciclos que tutoras · <span id="bc-ciclo"></span></p>
+            <label for="sel-cp-docente" class="sr-only">Ciclo</label>
+            <select id="sel-cp-docente" class="form-input w-auto min-w-[14rem] hidden"></select>
           </div>
           <button type="button" id="btn-add-raiz" class="btn-primary">
             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
@@ -50,7 +46,7 @@
           <div id="tree-container"></div>
           <div id="tree-empty" class="hidden gp-empty">
             <p class="font-medium text-text">No hay temas para este ciclo</p>
-            <p class="mt-1 text-sm">Usa «Agregar tema» para comenzar el temario de tutoría.</p>
+            <p class="mt-1 text-sm">Usa «Agregar tema» para comenzar.</p>
           </div>
         </section>
       </main>

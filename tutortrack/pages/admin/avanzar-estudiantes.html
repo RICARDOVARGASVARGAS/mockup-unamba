@@ -6,7 +6,10 @@
     <title>Avanzar estudiantes | TutorTrack (Mockup)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap"
+    />
     <link rel="stylesheet" href="../../css/tokens.css" />
     <link rel="stylesheet" href="../../css/base.css" />
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,134 +18,118 @@
   <body class="w-full bg-bg text-text font-body antialiased">
     <app-sidebar></app-sidebar>
     <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
-      <app-topbar page-title="Avanzar estudiantes" user-name="Ricardo Vargas Vargas" user-role="Administrador" user-initials="RV" user-avatar="assets/img/admin/ricardo-vargas.jpg"></app-topbar>
+      <app-topbar
+        page-title="Avanzar estudiantes"
+        user-name="Ricardo Vargas Vargas"
+        user-role="Administrador"
+        user-initials="RV"
+        user-avatar="assets/img/admin/ricardo-vargas.jpg"
+      ></app-topbar>
 
       <main class="flex-1 p-4 sm:p-6 lg:p-8 space-y-5">
-
-        <!-- Encabezado con stepper -->
-        <section class="app-card p-5 sm:p-6">
-          <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+        <section class="app-card p-5">
+          <h2 class="font-heading text-xl font-bold">Avanzar estudiantes</h2>
+          <p class="mt-1 text-sm text-text-muted">
+            El sistema propone el ciclo siguiente; tú revisas y corriges. No es un botón ciego.
+          </p>
+          <div class="mt-4 flex flex-wrap items-end gap-3">
             <div>
-              <h2 class="font-heading text-xl font-bold text-text">Avanzar estudiantes</h2>
-              <p class="mt-1 text-sm text-text-muted">Matricula automáticamente a los estudiantes del período anterior en el siguiente ciclo.</p>
+              <label for="sel-origen" class="form-label">Origen</label>
+              <select id="sel-origen" class="form-input min-w-[9rem]"></select>
             </div>
-            <!-- Stepper visual -->
-            <div class="flex items-center gap-2 shrink-0">
-              <div id="step-1-indicator" class="flex items-center gap-2">
-                <span class="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">1</span>
-                <span class="text-sm font-semibold text-primary">Revisar propuesta</span>
-              </div>
-              <svg class="h-4 w-4 text-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-              </svg>
-              <div id="step-2-indicator" class="flex items-center gap-2">
-                <span id="step-2-badge" class="flex h-7 w-7 items-center justify-center rounded-full bg-border text-xs font-bold text-text-muted">2</span>
-                <span id="step-2-label" class="text-sm font-semibold text-text-muted">Confirmar</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <span class="pb-2.5 text-text-muted" aria-hidden="true">→</span>
             <div>
-              <label for="sel-origen" class="form-label">Período de origen</label>
-              <select id="sel-origen" class="form-input"></select>
+              <label for="sel-destino" class="form-label">Destino</label>
+              <select id="sel-destino" class="form-input min-w-[9rem]"></select>
             </div>
-            <div>
-              <label for="sel-destino" class="form-label">Período destino</label>
-              <select id="sel-destino" class="form-input"></select>
-            </div>
+            <button type="button" id="btn-generar" class="btn-primary">Generar propuesta</button>
           </div>
         </section>
 
-        <!-- Paso 1: Tabla de propuesta -->
-        <div id="paso-1" class="space-y-5">
-          <!-- Balance de carga -->
-          <section class="app-card p-4 sm:p-5">
-            <p class="text-xs font-semibold uppercase tracking-wider text-text-muted mb-3">Balance de carga (propuesta actual)</p>
-            <div id="balance-avanzar" class="flex flex-wrap gap-2"></div>
-          </section>
+        <div id="panel-propuesta" class="hidden space-y-4">
+          <div class="avanzar-counters" id="contadores" role="group" aria-label="Resumen de propuesta"></div>
 
-          <!-- Tabla propuesta -->
-          <section class="app-card">
-            <div class="catalog-head">
-              <div>
-                <h3 class="font-heading font-semibold text-text">Propuesta de avance</h3>
-                <p id="propuesta-resumen" class="text-sm text-text-muted mt-0.5"></p>
+          <section class="app-card catalog-panel">
+            <div class="catalog-query">
+              <div class="catalog-field">
+                <label for="filtro-accion">Acción</label>
+                <select id="filtro-accion" class="catalog-select min-w-[9rem]">
+                  <option value="">Todas</option>
+                  <option value="avanza">Avanza</option>
+                  <option value="repite">Repite</option>
+                  <option value="egresa">Egresa</option>
+                  <option value="excluir">Excluir</option>
+                  <option value="sin_tutor">⚠ Sin tutor</option>
+                </select>
               </div>
-              <div class="catalog-head-actions">
-                <label class="flex items-center gap-2 text-sm font-medium text-text cursor-pointer">
-                  <input id="check-todos" type="checkbox" checked class="h-4 w-4 rounded border-border text-primary" />
-                  Seleccionar todos
-                </label>
+              <div class="catalog-field">
+                <label for="filtro-tutor">Tutor destino</label>
+                <select id="filtro-tutor" class="catalog-select min-w-[11rem]">
+                  <option value="">Todos</option>
+                </select>
+              </div>
+              <div class="catalog-field catalog-field-grow">
+                <label for="filtro-buscar">Buscar</label>
+                <input id="filtro-buscar" type="search" class="catalog-input" placeholder="Nombre o código…" />
               </div>
             </div>
 
-            <div class="overflow-x-auto">
-              <table class="catalog-table" id="tabla-propuesta">
+            <div class="catalog-table-wrap">
+              <table class="catalog-table">
                 <thead>
                   <tr>
-                    <th class="w-10"><span class="sr-only">Incluir</span></th>
+                    <th class="w-10 text-center">
+                      <input id="check-all" type="checkbox" class="h-4 w-4 rounded border-border text-primary" aria-label="Seleccionar visibles" />
+                    </th>
                     <th>Estudiante</th>
-                    <th>Ciclo actual</th>
-                    <th>Ciclo propuesto</th>
-                    <th>Tutor propuesto</th>
+                    <th>Ciclo act.</th>
+                    <th>→ Destino</th>
+                    <th>Tutor destino</th>
+                    <th>Acción</th>
                   </tr>
                 </thead>
                 <tbody id="tbody-propuesta"></tbody>
               </table>
             </div>
 
-            <div class="flex justify-end p-5">
-              <button type="button" id="btn-confirmar-avance" class="btn-primary" disabled>
-                Confirmar avance
-                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                </svg>
-              </button>
+            <div class="bulk-bar is-visible" id="bulk-bar">
+              <span class="bulk-bar-count" id="bulk-count">Con seleccionados:</span>
+              <select id="bulk-accion" class="form-input w-auto py-1.5 text-sm">
+                <option value="">Acción…</option>
+                <option value="avanza">Avanza</option>
+                <option value="repite">Repite</option>
+                <option value="egresa">Egresa</option>
+                <option value="excluir">Excluir</option>
+              </select>
+              <select id="bulk-tutor" class="form-input w-auto min-w-[11rem] py-1.5 text-sm">
+                <option value="">Asignar tutor…</option>
+              </select>
+              <button type="button" id="btn-bulk" class="btn-secondary btn-sm">Aplicar</button>
+              <div class="ml-auto">
+                <button type="button" id="btn-confirmar" class="btn-primary">Confirmar</button>
+              </div>
             </div>
           </section>
         </div>
 
-        <!-- Paso 2: Confirmación -->
-        <div id="paso-2" class="hidden space-y-5">
-          <section class="app-card p-5 sm:p-6">
-            <h3 class="font-heading text-lg font-bold text-text">Confirmar matriculación</h3>
-            <p id="confirmacion-resumen" class="mt-2 text-sm text-text-muted"></p>
-
-            <div class="mt-5 space-y-4">
-              <div>
-                <p class="text-sm font-semibold text-text mb-2">Estudiantes que serán matriculados</p>
-                <div id="lista-incluidos" class="max-h-64 overflow-y-auto space-y-1 rounded-md border border-border bg-bg p-3"></div>
-              </div>
-
-              <div id="excluidos-section" class="hidden">
-                <p class="text-sm font-semibold text-text mb-2">Estudiantes excluidos (no serán matriculados)</p>
-                <div id="lista-excluidos" class="space-y-1 rounded-md border border-border bg-bg p-3"></div>
-              </div>
-            </div>
-
-            <div class="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-              <button type="button" id="btn-volver-editar" class="btn-secondary">
-                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-                </svg>
-                Volver y editar
-              </button>
-              <button type="button" id="btn-confirmar-matricular" class="btn-primary">Confirmar y matricular</button>
-            </div>
-          </section>
+        <div id="panel-vacio" class="app-card gp-empty">
+          <p class="font-medium text-text">Aún no hay propuesta</p>
+          <p class="mt-1 text-sm">Elige origen y destino, luego genera la propuesta para revisarla.</p>
         </div>
-
       </main>
     </div>
 
     <app-toast></app-toast>
+    <app-modal-confirm></app-modal-confirm>
 
     <script src="../../js/theme.js"></script>
     <script src="../../js/site-paths.js"></script>
     <script src="../../components/app-sidebar.js"></script>
     <script src="../../components/app-topbar.js"></script>
     <script src="../../components/app-toast.js"></script>
+    <script src="../../components/app-modal-confirm.js"></script>
+    <script src="../../js/gestion-periodo-data.js"></script>
+    <script src="../../js/matriculas-data.js"></script>
     <script src="../../js/avanzar-estudiantes-data.js"></script>
     <script src="../../js/avanzar-estudiantes.js"></script>
   </body>
