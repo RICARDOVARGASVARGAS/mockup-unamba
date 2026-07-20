@@ -17,29 +17,68 @@
     <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
       <app-topbar page-title="Periodos académicos" user-name="Ricardo Vargas Vargas" user-role="Administrador" user-initials="RV" user-avatar="assets/img/admin/ricardo-vargas.jpg"></app-topbar>
       <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <div class="people-summary catalog-summary" data-people-summary aria-label="Resumen de periodos">
+          <article class="people-summary-card people-summary-total">
+            <div class="people-summary-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+            </div>
+            <div>
+              <p class="people-summary-label">Total</p>
+              <p class="people-summary-value" data-summary-total>0</p>
+              <p class="people-summary-sub">periodos</p>
+            </div>
+          </article>
+          <article class="people-summary-card people-summary-active">
+            <div class="people-summary-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
+            </div>
+            <div>
+              <p class="people-summary-label">Vigente</p>
+              <p class="people-summary-value" data-summary-vigente>—</p>
+              <p class="people-summary-sub">periodo activo</p>
+            </div>
+          </article>
+          <article class="people-summary-card people-summary-inactive">
+            <div class="people-summary-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" /></svg>
+            </div>
+            <div>
+              <p class="people-summary-label">No vigentes</p>
+              <p class="people-summary-value" data-summary-inactivos>0</p>
+              <p class="people-summary-sub">historial</p>
+            </div>
+          </article>
+        </div>
+
+        <div data-sin-vigente class="catalog-aviso hidden" role="status">
+          No hay período vigente. Marca uno para habilitar matrículas y fichas.
+        </div>
+
         <section class="app-card catalog-panel" data-catalog data-audit-table="periodo_academico">
           <div class="catalog-head">
             <div>
               <h2 class="font-heading">Periodos académicos</h2>
-              <p>Solo un periodo puede estar vigente a la vez</p>
+              <p>Solo un período puede estar vigente a la vez. Aquí no se clona configuración.</p>
             </div>
-            <button type="button" data-open-create class="btn-primary">
-              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-              Nuevo periodo
-            </button>
+            <div class="catalog-head-actions">
+              <button type="button" data-catalog-refresh class="btn-secondary">Actualizar lista</button>
+              <button type="button" data-open-create class="btn-primary">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                Nuevo período
+              </button>
+            </div>
           </div>
-
           <div class="catalog-query">
             <div class="catalog-field catalog-field-grow">
               <label for="catalog-search">Buscar</label>
-              <input id="catalog-search" type="search" data-catalog-search class="catalog-input" placeholder="Buscar por nombre (ej. 2026-I)…" />
+              <input id="catalog-search" type="search" data-catalog-search class="catalog-input" placeholder="Buscar por nombre…" />
             </div>
             <div class="catalog-field">
               <label for="filter-estado">Estado</label>
-              <select id="filter-estado" data-filter="estado" class="catalog-select min-w-[10rem]">
+              <select id="filter-estado" data-filter="estado" class="catalog-select min-w-[11rem]">
                 <option value="">Todos</option>
                 <option value="vigente">Vigente</option>
-                <option value="inactivo">Inactivo</option>
+                <option value="no_vigente">No vigente</option>
               </select>
             </div>
             <div class="catalog-query-actions">
@@ -51,32 +90,26 @@
               </button>
             </div>
           </div>
-
           <div class="catalog-meta" data-catalog-meta></div>
           <div class="catalog-table-wrap" data-catalog-table-wrap>
-            <table class="catalog-table">
-              <thead data-catalog-thead></thead>
-              <tbody data-catalog-body></tbody>
-            </table>
+            <table class="catalog-table"><thead data-catalog-thead></thead><tbody data-catalog-body></tbody></table>
           </div>
-          <div class="catalog-empty hidden" data-catalog-empty>
-            <p>No se encontraron periodos con esos criterios.</p>
-          </div>
+          <div class="catalog-empty hidden" data-catalog-empty><p>No se encontraron periodos.</p></div>
           <div class="catalog-pagination" data-catalog-pagination></div>
         </section>
       </main>
     </div>
 
     <div data-form-backdrop class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
-      <div class="modal-panel">
-        <h2 data-form-title class="font-heading">Nuevo periodo académico</h2>
+      <div class="modal-panel max-w-md w-full">
+        <h2 data-form-title class="font-heading">Nuevo período</h2>
         <form data-form class="mt-4 space-y-4" novalidate>
           <input type="hidden" data-editing-id />
           <div>
-            <label for="periodo-nombre" class="form-label">Nombre</label>
-            <input id="periodo-nombre" type="text" required placeholder="Ej. 2026-II" class="form-input" />
+            <label for="periodo-nombre" class="form-label">Nombre <span class="text-danger">*</span></label>
+            <input id="periodo-nombre" type="text" required class="form-input" placeholder="Ej. 2026-II" />
           </div>
-          <div class="grid grid-cols-2 gap-3">
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div>
               <label for="periodo-inicio" class="form-label">Fecha inicio</label>
               <input id="periodo-inicio" type="date" class="form-input" />
@@ -86,11 +119,7 @@
               <input id="periodo-fin" type="date" class="form-input" />
             </div>
           </div>
-          <label class="flex items-center gap-2 text-sm text-text">
-            <input id="periodo-activo" type="checkbox" class="h-4 w-4 rounded border-border text-primary" />
-            Marcar como periodo vigente
-          </label>
-          <p class="form-hint">Al marcar este periodo como vigente, el anterior vigente pasa a inactivo.</p>
+          <p class="form-hint">Se crea como no vigente. Actívalo después con «Marcar vigente».</p>
           <div class="mt-6 flex justify-end gap-3">
             <button type="button" data-form-cancel class="btn-secondary">Cancelar</button>
             <button type="submit" class="btn-primary">Guardar</button>
@@ -111,6 +140,7 @@
     <script src="../../components/app-modal-historial.js"></script>
     <script src="../../components/app-toast.js"></script>
     <script src="../../js/catalog-table.js"></script>
+    <script src="../../js/catalog-simple.js"></script>
     <script src="../../js/periodos-academicos.js"></script>
   </body>
 </html>

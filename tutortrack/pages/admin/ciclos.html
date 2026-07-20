@@ -17,18 +17,20 @@
     <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
       <app-topbar page-title="Ciclos" user-name="Ricardo Vargas Vargas" user-role="Administrador" user-initials="RV" user-avatar="assets/img/admin/ricardo-vargas.jpg"></app-topbar>
       <main class="flex-1 p-4 sm:p-6 lg:p-8">
-        <section class="app-card catalog-panel" data-catalog data-audit-table="ciclo">
+        <section class="app-card catalog-panel mt-0" data-catalog data-audit-table="ciclo" data-delete-toast="Ciclo eliminado">
           <div class="catalog-head">
             <div>
               <h2 class="font-heading">Ciclos</h2>
-              <p>Niveles curriculares</p>
+              <p>Niveles curriculares (1.º–10.º) del catálogo académico</p>
             </div>
-            <button type="button" data-open-create class="btn-primary">
-              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-              Nuevo ciclo
-            </button>
+            <div class="catalog-head-actions">
+              <button type="button" data-catalog-refresh class="btn-secondary">Actualizar lista</button>
+              <button type="button" data-open-create class="btn-primary">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                Nuevo ciclo
+              </button>
+            </div>
           </div>
-
           <div class="catalog-query">
             <div class="catalog-field catalog-field-grow">
               <label for="catalog-search">Buscar</label>
@@ -51,55 +53,36 @@
               </button>
             </div>
           </div>
-
           <div class="catalog-meta" data-catalog-meta></div>
           <div class="catalog-table-wrap" data-catalog-table-wrap>
-            <table class="catalog-table">
-              <thead data-catalog-thead></thead>
-              <tbody data-catalog-body></tbody>
-            </table>
+            <table class="catalog-table"><thead data-catalog-thead></thead><tbody data-catalog-body></tbody></table>
           </div>
-          <div class="catalog-empty hidden" data-catalog-empty>
-            <p>No se encontraron ciclos con esos criterios.</p>
-          </div>
+          <div class="catalog-empty hidden" data-catalog-empty><p>No se encontraron ciclos.</p></div>
           <div class="catalog-pagination" data-catalog-pagination></div>
         </section>
       </main>
     </div>
 
     <div data-form-backdrop class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
-      <div class="modal-panel">
+      <div class="modal-panel max-w-md w-full">
         <h2 data-form-title class="font-heading">Nuevo ciclo</h2>
         <form data-form class="mt-4 space-y-4" novalidate>
           <input type="hidden" data-editing-id />
           <div>
-            <label for="ciclo-nombre" class="form-label">Nombre</label>
-            <input id="ciclo-nombre" name="nombre" type="text" required placeholder="Ej. Primer ciclo" class="form-input" />
-          </div>
-          <div>
-            <label for="ciclo-orden" class="form-label">N° de orden</label>
-            <input id="ciclo-orden" name="orden" type="number" min="1" required class="form-input" />
-            <p class="form-hint">Define la secuencia para listar y avanzar estudiantes (único).</p>
+            <label for="field-nombre" class="form-label">Nombre <span class="text-danger">*</span></label>
+            <input id="field-nombre" type="text" required class="form-input" placeholder="Ej. Primer ciclo" />
           </div>
           <div>
             <span class="form-label">Estado</span>
-            <button
-              type="button"
-              id="ciclo-activo-toggle"
-              class="status-toggle status-toggle-lg mt-1.5"
-              role="switch"
-              aria-checked="true"
-              aria-label="Estado del ciclo"
-            >
+            <button type="button" id="field-activo-toggle" class="status-toggle status-toggle-lg mt-1.5" role="switch" aria-checked="true" aria-label="Estado">
               <span class="status-toggle-thumb" aria-hidden="true"></span>
               <span class="status-toggle-label" data-on>Activo</span>
               <span class="status-toggle-label" data-off>Inactivo</span>
             </button>
-            <input id="ciclo-activo" type="checkbox" checked class="sr-only" tabindex="-1" aria-hidden="true" />
-            <p class="form-hint">Si está inactivo, no se ofrece en nuevas asignaciones o matrículas.</p>
+            <input id="field-activo" type="checkbox" checked class="sr-only" tabindex="-1" aria-hidden="true" />
           </div>
           <div class="mt-6 flex justify-end gap-3">
-            <button type="button" data-form-cancel class="btn-ghost">Cancelar</button>
+            <button type="button" data-form-cancel class="btn-secondary">Cancelar</button>
             <button type="submit" class="btn-primary">Guardar</button>
           </div>
         </form>
@@ -118,6 +101,7 @@
     <script src="../../components/app-modal-historial.js"></script>
     <script src="../../components/app-toast.js"></script>
     <script src="../../js/catalog-table.js"></script>
+    <script src="../../js/catalog-simple.js"></script>
     <script src="../../js/ciclos.js"></script>
   </body>
 </html>

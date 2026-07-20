@@ -226,15 +226,15 @@ no esté construida en código según este doc, queda **⬜ Pendiente**.
 - [x] Modales (Nuevo/Editar rol · Eliminar/Desactivar rol)
 
 **Administrador › Catálogos**
-- [ ] Especialidades
-- [ ] Tipos de documento
-- [ ] Áreas
-- [ ] Tipos de ficha
-- [ ] Grados académicos
-- [ ] Ciclos
-- [ ] Periodos académicos (especial: único activo)
-- [ ] Entidades receptoras — listado + modal
-- [ ] Estados de derivación — sub-página (pipeline por entidad)
+- [x] Especialidades
+- [x] Tipos de documento
+- [x] Áreas
+- [x] Tipos de ficha
+- [x] Grados académicos
+- [x] Ciclos
+- [x] Periodos académicos (especial: único activo)
+- [x] Entidades receptoras — listado + modal
+- [x] Estados de derivación — sub-página (pipeline por entidad)
 
 **Administrador › Organización del período**
 - [ ] Configuración del período (hub: ciclos + clonar + historial)
@@ -1097,7 +1097,7 @@ Mostrando 1–10 de 12
 > **Candidato a patrón reutilizable:** todo el molde de catálogo. Revisar al
 > final junto con los 8.
 
-### Administrador › Catálogos › Especialidades — ⬜ Pendiente
+### Administrador › Catálogos › Especialidades — ✅ Hecho
 
 - **Archivos (al codificar):** `pages/admin/especialidades.html` + `js/especialidades.js`.
 - **Instancia más simple del molde.** Columna propia: **Nombre**.
@@ -1111,7 +1111,7 @@ Mostrando 1–10 de 12
 - **Datos placeholder:** Marketing, Finanzas, Gestión Pública, Recursos
   Humanos, Contabilidad.
 
-### Administrador › Catálogos › Tipos de documento — ⬜ Pendiente
+### Administrador › Catálogos › Tipos de documento — ✅ Hecho
 
 - **Archivos (al codificar):** `pages/admin/tipos-documento.html` +
   `js/tipos-documento.js` + `js/tipos-documento-data.js` (seed **compartido**
@@ -1125,7 +1125,7 @@ Mostrando 1–10 de 12
 - **Datos placeholder:** DNI (`DNI`), Carné de Extranjería (`CE`),
   Pasaporte (`PAS`).
 
-### Administrador › Catálogos › Áreas — ⬜ Pendiente
+### Administrador › Catálogos › Áreas — ✅ Hecho
 
 - **Archivos (al codificar):** `pages/admin/areas.html` + `js/areas.js`.
 - **Columnas (5):** N° · **Clave** · **Nombre** (con `descripción` como línea
@@ -1139,7 +1139,7 @@ Mostrando 1–10 de 12
 - **Datos placeholder:** Personal y social, Salud corporal y mental, Académico,
   Económico, Vocacional y profesional.
 
-### Administrador › Catálogos › Tipos de ficha — ⬜ Pendiente
+### Administrador › Catálogos › Tipos de ficha — ✅ Hecho
 
 - **Archivos (al codificar):** `pages/admin/tipos-ficha.html` + `js/tipos-ficha.js`.
 - **Columnas (6):** N° · **Clave** · **Nombre** (con `descripción` en tooltip) ·
@@ -1155,7 +1155,7 @@ Mostrando 1–10 de 12
 - **Datos placeholder:** Diagnóstico (`diagnostico`), Seguimiento
   (`seguimiento`), Grupal (`grupal`), Encuesta (`encuesta`).
 
-### Administrador › Catálogos › Grados académicos — ⬜ Pendiente
+### Administrador › Catálogos › Grados académicos — ✅ Hecho
 
 Añade `orden` al molde base. Lista **ordenada por `orden`**; se reordena con
 **flechas ⇅** (subir/bajar la fila **intercambia el orden** — sin teclear
@@ -1183,7 +1183,7 @@ Grados académicos                              [ ⟳ Actualizar ]  [ + Nuevo gr
 - **Datos placeholder:** Bachiller (`Bach.`), Licenciado (`Lic.`), Magíster
   (`Mg.`), Doctor (`Dr.`).
 
-### Administrador › Catálogos › Ciclos — ⬜ Pendiente
+### Administrador › Catálogos › Ciclos — ✅ Hecho
 
 Añade `orden` **único y obligatorio**. Lista **ordenada por `orden`**; se
 reordena con **flechas ⇅** que hacen un **intercambio atómico** (no puede haber
@@ -1211,7 +1211,7 @@ Ciclos                                         [ ⟳ Actualizar ]  [ + Nuevo cic
 - **BD:** `ciclo` (`nombre` UNIQUE, `orden` UNIQUE, `activo`).
 - **Datos placeholder:** Primer ciclo … Décimo ciclo (`orden` 1–10).
 
-### Administrador › Catálogos › Periodos académicos — ⬜ Pendiente
+### Administrador › Catálogos › Periodos académicos — ✅ Hecho
 
 **Especial:** el "Estado" no es un toggle libre — **solo un período es vigente**
 a la vez. Activar uno **desactiva al anterior** (regla **funcional**, en
@@ -1287,7 +1287,7 @@ no tiene `deleted_at`.)*
 > temario) a un período nuevo pertenece a **Organización del período** (Módulo
 > 2). Este catálogo solo administra la lista y cuál es el vigente.
 
-### Administrador › Catálogos › Entidades receptoras — ⬜ Pendiente
+### Administrador › Catálogos › Entidades receptoras — ✅ Hecho
 
 **El catálogo más rico:** es un catálogo normal (`clave`·`nombre`·`descripción`),
 **pero** cada entidad tiene su **propia línea de estados** (`tipo_estado_derivacion`)

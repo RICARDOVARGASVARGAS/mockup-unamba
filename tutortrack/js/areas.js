@@ -1,93 +1,84 @@
 /**
- * areas.js — catálogo Area.
- * `grupo` es solo ayuda de filtro en el mockup (no es atributo del modelo).
+ * areas.js — Catálogos › Áreas (molde CatalogSimple).
  */
 (function () {
-  const SEED = [
-    { id: "a1", nombre: "Personal y social", grupo: "personal" },
-    { id: "a2", nombre: "Vida universitaria", grupo: "personal" },
-    { id: "a3", nombre: "Relaciones familiares", grupo: "personal" },
-    { id: "a4", nombre: "Salud corporal y mental", grupo: "salud" },
-    { id: "a5", nombre: "Consumo de sustancias", grupo: "salud" },
-    { id: "a6", nombre: "Hábitos de sueño y alimentación", grupo: "salud" },
-    { id: "a7", nombre: "Adaptación académica", grupo: "academico" },
-    { id: "a8", nombre: "Motivación y abandono", grupo: "academico" },
-    { id: "a9", nombre: "Servicios institucionales", grupo: "academico" },
-    { id: "a10", nombre: "Situación económica", grupo: "personal" },
-  ];
-
-  const GRUPO_LABEL = {
-    personal: "Personal / social",
-    salud: "Salud",
-    academico: "Académico / institucional",
-  };
-
-  const toast = (m, type = "success") =>
-    document.dispatchEvent(new CustomEvent("app:toast", { detail: { message: m, type } }));
+  const IN_USE = new Set(["area-1", "area-2"]); // pregunta / alerta_ia seed
 
   document.addEventListener("DOMContentLoaded", () => {
-    const root = document.querySelector("[data-catalog]");
-    const backdrop = document.querySelector("[data-form-backdrop]");
-    const form = document.querySelector("[data-form]");
-    const title = document.querySelector("[data-form-title]");
-    const editingId = document.querySelector("[data-editing-id]");
-    const nombre = document.getElementById("area-nombre");
-    const grupo = document.getElementById("area-grupo");
-
-    const open = (row) => {
-      if (row) {
-        title.textContent = "Editar área";
-        editingId.value = row.id;
-        nombre.value = row.nombre;
-        grupo.value = row.grupo;
-      } else {
-        title.textContent = "Nueva área";
-        editingId.value = "";
-        form.reset();
-      }
-      backdrop.classList.remove("hidden");
-      backdrop.classList.add("flex");
-      nombre.focus();
-    };
-    const close = () => {
-      backdrop.classList.add("hidden");
-      backdrop.classList.remove("flex");
-    };
-
-    const table = CatalogTable.mount(root, {
-      data: SEED,
-      pageSize: 5,
-      searchKeys: ["nombre"],
-      filters: [{ id: "grupo", getValue: (r) => r.grupo }],
-      sort: (a, b) => a.nombre.localeCompare(b.nombre, "es"),
-      columns: [
-        { key: "nombre", label: "Nombre", primary: true },
+    CatalogSimple.mount({
+      storageKey: "tutortrack-areas",
+      version: "areas-v2",
+      auditTable: "area",
+      idPrefix: "area",
+      labels: {
+        singular: "Área",
+        created: "Área creada",
+        updated: "Área actualizada",
+        deleted: "Área eliminada",
+        activated: "Área activada",
+        deactivated: "Área desactivada",
+      },
+      searchKeys: ["clave", "nombre", "descripcion"],
+      seed: [
         {
-          key: "grupo",
-          label: "Grupo",
-          muted: true,
-          render: (r, esc) => esc(GRUPO_LABEL[r.grupo] || r.grupo),
+          id: "area-1",
+          clave: "personal_social",
+          nombre: "Personal y social",
+          descripcion: "Vínculos, familia y adaptación a la vida universitaria.",
+          activo: true,
+        },
+        {
+          id: "area-2",
+          clave: "salud_mental",
+          nombre: "Salud corporal y mental",
+          descripcion: "Bienestar físico, emocional y hábitos de cuidado.",
+          activo: true,
+        },
+        {
+          id: "area-3",
+          clave: "academico",
+          nombre: "Académico",
+          descripcion: "Motivación, carga académica y riesgo de abandono.",
+          activo: true,
+        },
+        {
+          id: "area-4",
+          clave: "economico",
+          nombre: "Económico",
+          descripcion: "Situación económica y acceso a recursos.",
+          activo: true,
+        },
+        {
+          id: "area-5",
+          clave: "vocacional",
+          nombre: "Vocacional y profesional",
+          descripcion: "Orientación de carrera e inserción profesional.",
+          activo: true,
+        },
+        {
+          id: "area-6",
+          clave: "servicios",
+          nombre: "Servicios institucionales",
+          descripcion: "Uso de servicios de apoyo de la facultad (demo inactivo).",
+          activo: false,
         },
       ],
-      onEdit: open,
-    });
-
-    document.querySelector("[data-open-create]").addEventListener("click", () => open(null));
-    document.querySelector("[data-form-cancel]").addEventListener("click", close);
-    backdrop.addEventListener("click", (e) => e.target === backdrop && close());
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const n = nombre.value.trim();
-      if (!n) return;
-      const g = grupo.value;
-      if (editingId.value) {
-        table.update(editingId.value, { nombre: n, grupo: g });
-        toast("Área actualizada");
-      } else {
-        table.add({ id: `area-${Date.now()}`, nombre: n, grupo: g });
-        toast("Área creada");
-      }
-      close();
+      fields: [
+        { key: "clave", label: "Clave", required: true, unique: true },
+        {
+          key: "nombre",
+          label: "Nombre",
+          required: true,
+          unique: true,
+          primary: true,
+          secondaryKey: "descripcion",
+        },
+        { key: "descripcion", label: "Descripción", column: false },
+      ],
+      isInUse: (row) =>
+        IN_USE.has(row.id)
+          ? "Tiene preguntas o alertas IA asociadas (FK pregunta/alerta_ia)."
+          : false,
     });
   });
 })();

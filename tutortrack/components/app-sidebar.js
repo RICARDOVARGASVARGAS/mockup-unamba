@@ -40,13 +40,13 @@
         {
           label: "Catálogos",
           items: [
-            { label: "Ciclos", path: "admin/ciclos.html" },
-            { label: "Periodos académicos", path: "admin/periodos-academicos.html" },
-            { label: "Grados académicos", path: "admin/grados-academicos.html" },
             { label: "Especialidades", path: "admin/especialidades.html" },
             { label: "Tipos de documento", path: "admin/tipos-documento.html" },
             { label: "Áreas", path: "admin/areas.html" },
             { label: "Tipos de ficha", path: "admin/tipos-ficha.html" },
+            { label: "Grados académicos", path: "admin/grados-academicos.html" },
+            { label: "Ciclos", path: "admin/ciclos.html" },
+            { label: "Periodos académicos", path: "admin/periodos-academicos.html" },
             { label: "Entidades receptoras", path: "admin/entidades-receptoras.html" },
           ],
         },

@@ -17,28 +17,31 @@
     <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
       <app-topbar page-title="Tipos de ficha" user-name="Ricardo Vargas Vargas" user-role="Administrador" user-initials="RV" user-avatar="assets/img/admin/ricardo-vargas.jpg"></app-topbar>
       <main class="flex-1 p-4 sm:p-6 lg:p-8">
-        <section class="app-card catalog-panel" data-catalog data-audit-table="tipo_ficha">
+        <section class="app-card catalog-panel mt-0" data-catalog data-audit-table="tipo_ficha" data-delete-toast="Tipo de ficha eliminado">
           <div class="catalog-head">
             <div>
               <h2 class="font-heading">Tipos de ficha</h2>
-              <p>Clasificación de las fichas de tutoría (diagnóstico, seguimiento, grupal, etc.)</p>
+              <p>Clasificación de fichas de tutoría (diagnóstico, seguimiento, etc.)</p>
             </div>
-            <button type="button" data-open-create class="btn-primary">
-              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-              Nuevo tipo de ficha
-            </button>
+            <div class="catalog-head-actions">
+              <button type="button" data-catalog-refresh class="btn-secondary">Actualizar lista</button>
+              <button type="button" data-open-create class="btn-primary">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                Nuevo tipo de ficha
+              </button>
+            </div>
           </div>
           <div class="catalog-query">
             <div class="catalog-field catalog-field-grow">
               <label for="catalog-search">Buscar</label>
-              <input id="catalog-search" type="search" data-catalog-search class="catalog-input" placeholder="Buscar por nombre…" />
+              <input id="catalog-search" type="search" data-catalog-search class="catalog-input" placeholder="Buscar por clave o nombre…" />
             </div>
             <div class="catalog-field">
-              <label for="filter-uso">Estado uso</label>
-              <select id="filter-uso" data-filter="uso" class="catalog-select min-w-[12rem]">
+              <label for="filter-estado">Estado</label>
+              <select id="filter-estado" data-filter="estado" class="catalog-select min-w-[10rem]">
                 <option value="">Todos</option>
-                <option value="frecuente">Frecuente</option>
-                <option value="complementario">Complementario</option>
+                <option value="activo">Activo</option>
+                <option value="inactivo">Inactivo</option>
               </select>
             </div>
             <div class="catalog-query-actions">
@@ -52,31 +55,44 @@
           </div>
           <div class="catalog-meta" data-catalog-meta></div>
           <div class="catalog-table-wrap" data-catalog-table-wrap>
-            <table class="catalog-table">
-              <thead data-catalog-thead></thead>
-              <tbody data-catalog-body></tbody>
-            </table>
+            <table class="catalog-table"><thead data-catalog-thead></thead><tbody data-catalog-body></tbody></table>
           </div>
-          <div class="catalog-empty hidden" data-catalog-empty><p>No se encontraron tipos de ficha con esos criterios.</p></div>
+          <div class="catalog-empty hidden" data-catalog-empty><p>No se encontraron tipos de ficha.</p></div>
           <div class="catalog-pagination" data-catalog-pagination></div>
         </section>
       </main>
     </div>
+
     <div data-form-backdrop class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
-      <div class="modal-panel">
+      <div class="modal-panel max-w-md w-full">
         <h2 data-form-title class="font-heading">Nuevo tipo de ficha</h2>
         <form data-form class="mt-4 space-y-4" novalidate>
           <input type="hidden" data-editing-id />
           <div>
-            <label for="tipo-ficha-nombre" class="form-label">Nombre</label>
-            <input id="tipo-ficha-nombre" type="text" required class="form-input" placeholder="Ej. Diagnóstico" />
+            <label for="field-clave" class="form-label">Clave <span class="text-danger">*</span></label>
+            <input id="field-clave" type="text" required class="form-input" placeholder="Ej. diagnostico" autocomplete="off" />
+            <p class="mt-1 text-xs text-text-muted">Identificador estable para el código. Queda bloqueada al editar.</p>
           </div>
           <div>
-            <label for="tipo-ficha-uso" class="form-label">Estado uso</label>
-            <select id="tipo-ficha-uso" class="form-input">
-              <option value="frecuente">Frecuente</option>
-              <option value="complementario">Complementario</option>
-            </select>
+            <label for="field-nombre" class="form-label">Nombre <span class="text-danger">*</span></label>
+            <input id="field-nombre" type="text" required class="form-input" placeholder="Ej. Diagnóstico" />
+          </div>
+          <div>
+            <label for="field-descripcion" class="form-label">Descripción</label>
+            <textarea id="field-descripcion" rows="3" class="form-input" placeholder="Breve descripción del tipo…"></textarea>
+          </div>
+          <div>
+            <label for="field-orden" class="form-label">Orden <span class="text-danger">*</span></label>
+            <input id="field-orden" type="number" min="1" step="1" required class="form-input" placeholder="Ej. 1" />
+          </div>
+          <div>
+            <span class="form-label">Estado</span>
+            <button type="button" id="field-activo-toggle" class="status-toggle status-toggle-lg mt-1.5" role="switch" aria-checked="true" aria-label="Estado">
+              <span class="status-toggle-thumb" aria-hidden="true"></span>
+              <span class="status-toggle-label" data-on>Activo</span>
+              <span class="status-toggle-label" data-off>Inactivo</span>
+            </button>
+            <input id="field-activo" type="checkbox" checked class="sr-only" tabindex="-1" aria-hidden="true" />
           </div>
           <div class="mt-6 flex justify-end gap-3">
             <button type="button" data-form-cancel class="btn-secondary">Cancelar</button>
@@ -85,6 +101,7 @@
         </form>
       </div>
     </div>
+
     <app-modal-confirm></app-modal-confirm>
     <app-modal-historial></app-modal-historial>
     <app-toast></app-toast>
@@ -97,6 +114,7 @@
     <script src="../../components/app-modal-historial.js"></script>
     <script src="../../components/app-toast.js"></script>
     <script src="../../js/catalog-table.js"></script>
+    <script src="../../js/catalog-simple.js"></script>
     <script src="../../js/tipos-ficha.js"></script>
   </body>
 </html>
