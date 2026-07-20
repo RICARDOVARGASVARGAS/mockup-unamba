@@ -7,7 +7,7 @@
  *   user-role      — etiqueta de su rol (ej. "Docente-Tutor").
  *   user-initials  — iniciales para el avatar (si no hay foto).
  *   user-avatar    — opcional; ruta relativa a foto (usa getBasePath).
- *   user-ciclo     — opcional; solo Estudiante (ver MODELO-DATOS.md).
+ *   user-ciclo     — opcional; solo Estudiante (ver BD-BACKEND.md).
  *                   Si no se pasa, no se muestra.
  *
  * "Carrera" es fija para todo el sistema (Facultad de Administración,

@@ -19,11 +19,9 @@ Eres el **dueño técnico y de diseño del mockup TutorTrack**:
 
 1. `docs/BD-BACKEND.md` — esquema completo (tablas, campos, índices, APIs, reglas de negocio) — **fuente única** para todo lo relacionado con el modelo de datos
 2. `docs/FUNCIONALIDAD-BACKEND.md` — detalle de validaciones y lógica de cada endpoint
-3. `docs/ESPECIFICACION.md` — qué pantallas existen y qué hacen  
+3. `docs/DISEÑO-FRONTEND.md` — diseño visual del mockup (menú + pantallas)
 4. `components/app-sidebar.js` — menú canónico  
 5. `CLAUDE.md` — stack, prohibiciones, estado del proyecto  
-
-> `docs/MODELO-DATOS.md` fue **archivado** — su contenido fue superado y consolidado en `BD-BACKEND.md`. No leerlo para decisiones de modelado.
 
 ## Mandato de modelado (no negociable)
 

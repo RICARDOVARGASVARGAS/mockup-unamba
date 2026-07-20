@@ -4,7 +4,6 @@ Este documento es el **qué ejecutable**: esquema de base de datos (MySQL),
 reglas de funcionalidad y APIs probables del backend, módulo por módulo.
 El razonamiento y las decisiones de dominio están **integradas en este mismo
 documento** junto al esquema — es la **fuente única de verdad**.
-`MODELO-DATOS.md` fue archivado; no usarlo.
 
 > Frontend: fuera de alcance de este doc — el diseño ya está en la maqueta.
 

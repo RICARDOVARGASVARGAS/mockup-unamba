@@ -78,9 +78,6 @@ Resumen de lo que está cerrado:
   (`alerta_ia` → `derivacion` — sin `estado_derivacion`, trazabilidad
   cubierta por `auditoria`).
 
-> `docs/MODELO-DATOS.md` fue **archivado** — contenido consolidado en
-> `BD-BACKEND.md`. No usarlo como referencia.
-
 La malla curricular (`ciclo` como catálogo abierto, no fijo en 10)
 ya quedó resuelta como catálogo editable.
 
@@ -140,8 +137,9 @@ Contraste y foco visibles sobre el lienzo claro; tokens en `css/tokens.css`.
   documento se irá completando por partes.
 
 ## Estructura del repo (real, ajustar al crecer)
-- `/docs/ESPECIFICACION.md` → pantallas y módulos — cerrado (inventario)
-- `/docs/BD-BACKEND.md` → esquema completo (tablas, APIs, reglas, decisiones) — fuente única
+- `/docs/BD-BACKEND.md` → esquema completo (tablas, APIs, reglas, decisiones) — fuente única de datos
+- `/docs/FUNCIONALIDAD-BACKEND.md` → validaciones y lógica de cada endpoint
+- `/docs/DISEÑO-FRONTEND.md` → diseño visual del mockup (menú + pantallas) — fuente única de frontend
 - `/docs/AGENTE-ROL.md` → mandato del agente (UI/UX + front + dominio)
 - `/.cursor/rules/agente-rol.mdc` → misma regla, alwaysApply en Cursor
 - `/components` → `app-sidebar.js`, `app-topbar.js` (Custom Elements,
@@ -156,12 +154,11 @@ Contraste y foco visibles sobre el lienzo claro; tokens en `css/tokens.css`.
 - `index.html` → login (punto de entrada único, sin selector de rol)
 
 ## Estado actual
-- ~~Modelo de datos~~ — cerrado en `docs/BD-BACKEND.md` (fuente única;
-  `docs/MODELO-DATOS.md` archivado). 30 tablas + APIs M1-M3 completas;
-  M4 tablas completas, APIs pendientes.
+- ~~Modelo de datos~~ — cerrado en `docs/BD-BACKEND.md` (fuente única).
+  30 tablas + APIs M1-M3 completas; M4 tablas completas, APIs pendientes.
 - ~~Fase 0 — Compartido~~ — hecho: login único, `app-sidebar`
   (4 secciones visibles en demo), `app-topbar`, responsive, tema claro.
-- ~~Especificación~~ — cerrado en `docs/ESPECIFICACION.md`.
+- Diseño frontend — se documenta en `docs/DISEÑO-FRONTEND.md` (menú + pantallas).
 - ~~Fase 1 — Catálogos~~ — hecho: `ciclos`, `periodos-academicos`,
   `grados-academicos`, `especialidades`, `tipos-documento`, `areas`,
   `tipos-ficha`, `tipos-pregunta`, `entidades-receptoras`,

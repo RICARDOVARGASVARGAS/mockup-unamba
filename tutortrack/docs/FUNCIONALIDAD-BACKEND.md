@@ -95,9 +95,16 @@ esté activo. Los permisos nunca se asignan directo al usuario: solo vía rol.
 **`PUT /docentes/{id}`** — edita el perfil docente y los datos del `usuario`
 asociado.
 
-**`DELETE /docentes/{id}`** — **soft delete** del `docente` (`deleted_at`).
-No borra el `usuario` (puede seguir siendo estudiante u otro rol). Opcional:
-retirar el rol `docente_tutor`.
+**`DELETE /docentes/{id}`** — eliminar **solo si no tiene ninguna relación**.
+- Si existe ≥1 fila en `docente_ciclo_periodo` (asignado como tutor),
+  `estudiante_ciclo_periodo` (tuvo tutorados) o `derivacion` (creó
+  derivaciones) → **rechaza `409`/`422`** con el motivo y sugiere **desactivar**
+  (no se pierde historial). El frontend muestra los conteos.
+- Si **no** tiene relaciones → **soft delete** del `docente` (`deleted_at`). No
+  borra el `usuario` (puede seguir siendo estudiante u otro rol).
+- **Desactivar** (alternativa a eliminar cuando hay historial): se hace vía
+  `PATCH /usuarios/{id}/estado` (`activo = 0`) — el docente deja de ser
+  asignable y no inicia sesión, pero conserva todo su historial.
 
 **`/estudiantes`** — análogo a docentes:
 - `POST`: transacción usuario + `estudiante` + rol `estudiante`. Valida

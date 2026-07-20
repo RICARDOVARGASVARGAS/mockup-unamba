@@ -1,6 +1,6 @@
 /**
  * ciclos.js — catálogo Ciclo (nombre, orden, activo).
- * Ver docs/MODELO-DATOS.md § Ciclo.
+ * Ver docs/BD-BACKEND.md § Ciclo.
  */
 (function () {
   const NOMBRES = [
