@@ -1,4 +1,4 @@
-/**
+﻿/**
  * gestion-periodo-data.js — Configuración del período (Módulo 2).
  * Entidades: periodo_academico, ciclo, ciclo_periodo, docente_ciclo_periodo,
  * contadores de temario / matrículas (mock) + traza local de movimientos.
@@ -6,7 +6,7 @@
 (function () {
   const STORAGE_KEY = "tutortrack-gestion-periodo";
   const VERSION_KEY = "tutortrack-gestion-periodo-version";
-  const STORAGE_VERSION = "gp-v3-config-diseno";
+  const STORAGE_VERSION = "gp-v4-observaciones";
 
   const PERIODOS_SEED = [
     { id: "p-2024-2", nombre: "2024-II", fecha_inicio: "2024-08-01", fecha_fin: "2024-12-15", activo: false },
@@ -28,14 +28,15 @@
     { id: "ciclo-10", nombre: "Décimo ciclo", orden: 10, activo: true },
   ];
 
+  /** Mismos IDs/nombres/grados que docentes-data.js (nombreConGrado). */
   const DOCENTES = [
-    { id: "doc-01", nombre: "Dr. Raúl Quispe Mamani", activo: true },
-    { id: "doc-02", nombre: "Mg. Lucía Torres Ávila", activo: true },
-    { id: "doc-03", nombre: "Mg. Carlos Vargas Huanca", activo: true },
-    { id: "doc-04", nombre: "Lic. Ana Mendoza Flores", activo: true },
-    { id: "doc-05", nombre: "Mg. Patricia Flores Cárdenas", activo: true },
-    { id: "doc-06", nombre: "Lic. Jorge Mamani Juárez", activo: true },
-    { id: "doc-07", nombre: "Mg. Elena Condori Apaza", activo: true },
+    { id: "doc-01", nombre: "Bach. Carlos Quispe Mamani", activo: true },
+    { id: "doc-02", nombre: "Lic. María Elena Huamán Torres", activo: true },
+    { id: "doc-03", nombre: "Mg. José Luis Condori Paucar", activo: true },
+    { id: "doc-04", nombre: "Dr. Ana Rosa Béjar Salas", activo: true },
+    { id: "doc-05", nombre: "Bach. Pedro Ttito Flores", activo: true },
+    { id: "doc-06", nombre: "Lic. María Fernanda Quispe Condori", activo: true },
+    { id: "doc-07", nombre: "Mg. Roberto Chávez Rojas", activo: true },
   ];
 
   /** ciclo_periodos[periodoId][cicloId] = { id, n_matriculados, n_temas } */
@@ -63,29 +64,29 @@
     /** docentes_asignados[cpId] = [{ docente_id, nombre, n_tutorados }] */
     docentes_asignados: {
       "cp-251": [
-        { docente_id: "doc-01", nombre: "Dr. Raúl Quispe Mamani", n_tutorados: 15 },
-        { docente_id: "doc-02", nombre: "Mg. Lucía Torres Ávila", n_tutorados: 13 },
+        { docente_id: "doc-01", nombre: "Bach. Carlos Quispe Mamani", n_tutorados: 15 },
+        { docente_id: "doc-02", nombre: "Lic. María Elena Huamán Torres", n_tutorados: 13 },
       ],
-      "cp-252": [{ docente_id: "doc-03", nombre: "Mg. Carlos Vargas Huanca", n_tutorados: 26 }],
+      "cp-252": [{ docente_id: "doc-03", nombre: "Mg. José Luis Condori Paucar", n_tutorados: 26 }],
       "cp-253": [
-        { docente_id: "doc-01", nombre: "Dr. Raúl Quispe Mamani", n_tutorados: 16 },
-        { docente_id: "doc-05", nombre: "Mg. Patricia Flores Cárdenas", n_tutorados: 14 },
+        { docente_id: "doc-01", nombre: "Bach. Carlos Quispe Mamani", n_tutorados: 16 },
+        { docente_id: "doc-05", nombre: "Bach. Pedro Ttito Flores", n_tutorados: 14 },
       ],
-      "cp-254": [{ docente_id: "doc-02", nombre: "Mg. Lucía Torres Ávila", n_tutorados: 24 }],
-      "cp-255": [{ docente_id: "doc-06", nombre: "Lic. Jorge Mamani Juárez", n_tutorados: 22 }],
-      "cp-256": [{ docente_id: "doc-04", nombre: "Lic. Ana Mendoza Flores", n_tutorados: 20 }],
-      "cp-257": [{ docente_id: "doc-07", nombre: "Mg. Elena Condori Apaza", n_tutorados: 18 }],
-      "cp-258": [{ docente_id: "doc-03", nombre: "Mg. Carlos Vargas Huanca", n_tutorados: 16 }],
-      "cp-259": [{ docente_id: "doc-05", nombre: "Mg. Patricia Flores Cárdenas", n_tutorados: 14 }],
-      "cp-260": [{ docente_id: "doc-06", nombre: "Lic. Jorge Mamani Juárez", n_tutorados: 12 }],
+      "cp-254": [{ docente_id: "doc-02", nombre: "Lic. María Elena Huamán Torres", n_tutorados: 24 }],
+      "cp-255": [{ docente_id: "doc-06", nombre: "Lic. María Fernanda Quispe Condori", n_tutorados: 22 }],
+      "cp-256": [{ docente_id: "doc-04", nombre: "Dr. Ana Rosa Béjar Salas", n_tutorados: 20 }],
+      "cp-257": [{ docente_id: "doc-07", nombre: "Mg. Roberto Chávez Rojas", n_tutorados: 18 }],
+      "cp-258": [{ docente_id: "doc-03", nombre: "Mg. José Luis Condori Paucar", n_tutorados: 16 }],
+      "cp-259": [{ docente_id: "doc-05", nombre: "Bach. Pedro Ttito Flores", n_tutorados: 14 }],
+      "cp-260": [{ docente_id: "doc-06", nombre: "Lic. María Fernanda Quispe Condori", n_tutorados: 12 }],
       "cp-301": [
-        { docente_id: "doc-01", nombre: "Dr. Raúl Quispe Mamani", n_tutorados: 12 },
-        { docente_id: "doc-02", nombre: "Mg. Lucía Torres Ávila", n_tutorados: 8 },
+        { docente_id: "doc-01", nombre: "Bach. Carlos Quispe Mamani", n_tutorados: 12 },
+        { docente_id: "doc-02", nombre: "Lic. María Elena Huamán Torres", n_tutorados: 8 },
       ],
-      "cp-302": [{ docente_id: "doc-03", nombre: "Mg. Carlos Vargas Huanca", n_tutorados: 18 }],
+      "cp-302": [{ docente_id: "doc-03", nombre: "Mg. José Luis Condori Paucar", n_tutorados: 18 }],
       "cp-303": [
-        { docente_id: "doc-01", nombre: "Dr. Raúl Quispe Mamani", n_tutorados: 10 },
-        { docente_id: "doc-05", nombre: "Mg. Patricia Flores Cárdenas", n_tutorados: 12 },
+        { docente_id: "doc-01", nombre: "Bach. Carlos Quispe Mamani", n_tutorados: 10 },
+        { docente_id: "doc-05", nombre: "Bach. Pedro Ttito Flores", n_tutorados: 12 },
       ],
     },
     /** movimientos del período (auditoría de UI); también se escribe en AuditoriaData */
@@ -200,8 +201,8 @@
         usuario_nombre: "Ricardo Vargas Vargas",
         accion: "crear",
         tabla: "docente_ciclo_periodo",
-        resumen: "Se asignó Dr. Raúl Quispe Mamani a Primer ciclo",
-        valores_nuevos: { docente: "Dr. Raúl Quispe Mamani", ciclo: "Primer ciclo" },
+        resumen: "Se asignó Bach. Carlos Quispe Mamani a Primer ciclo",
+        valores_nuevos: { docente: "Bach. Carlos Quispe Mamani", ciclo: "Primer ciclo" },
       },
       {
         id: "mov-3",

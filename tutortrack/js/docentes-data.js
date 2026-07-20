@@ -5,7 +5,7 @@
 (function () {
   const STORAGE_KEY = "tutortrack-docentes";
   const VERSION_KEY = "tutortrack-docentes-version";
-  const STORAGE_VERSION = "seed-25-v5-docentes-diseno";
+  const STORAGE_VERSION = "seed-25-v7-observaciones";
 
   const AVATAR_M = "assets/img/avatares/usuario-m.svg";
   const AVATAR_F = "assets/img/avatares/usuario-f.svg";
@@ -35,94 +35,85 @@
    * Relaciones mock (docente_ciclo_periodo / estudiante_ciclo_periodo / derivacion).
    * Sin filas → se puede soft-delete. Con historial → solo desactivar.
    */
+  /**
+   * Conteos resumen = derivados de por_periodo (regla OBSERVACIONES §7).
+   * Ciclos = nombres del catálogo (no romanos).
+   */
+  function buildRelaciones(por_periodo, derivaciones) {
+    const vigente = por_periodo.find((p) => p.periodo === "2026-I");
+    return {
+      periodos_tutor: por_periodo.length,
+      tutorados_vigentes: vigente ? vigente.tutorados : 0,
+      tutorados_historico: por_periodo.reduce((s, p) => s + (Number(p.tutorados) || 0), 0),
+      derivaciones: derivaciones || 0,
+      por_periodo,
+    };
+  }
+
   const RELACIONES = {
-    "doc-01": {
-      periodos_tutor: 8,
-      tutorados_vigentes: 20,
-      tutorados_historico: 160,
-      derivaciones: 3,
-      por_periodo: [
-        { periodo: "2026-I", ciclos: ["III", "V"], tutorados: 20 },
-        { periodo: "2025-II", ciclos: ["II", "IV"], tutorados: 20 },
-        { periodo: "2025-I", ciclos: ["I", "III"], tutorados: 18 },
-        { periodo: "2024-II", ciclos: ["II"], tutorados: 22 },
-        { periodo: "2024-I", ciclos: ["I", "II"], tutorados: 20 },
+    "doc-01": buildRelaciones(
+      [
+        { periodo: "2026-I", ciclos: ["Tercer ciclo", "Quinto ciclo"], tutorados: 20 },
+        { periodo: "2025-II", ciclos: ["Segundo ciclo", "Cuarto ciclo"], tutorados: 20 },
+        { periodo: "2025-I", ciclos: ["Primer ciclo", "Tercer ciclo"], tutorados: 18 },
+        { periodo: "2024-II", ciclos: ["Segundo ciclo"], tutorados: 22 },
+        { periodo: "2024-I", ciclos: ["Primer ciclo", "Segundo ciclo"], tutorados: 20 },
       ],
-    },
-    "doc-02": {
-      periodos_tutor: 6,
-      tutorados_vigentes: 14,
-      tutorados_historico: 92,
-      derivaciones: 1,
-      por_periodo: [
-        { periodo: "2026-I", ciclos: ["IV"], tutorados: 14 },
-        { periodo: "2025-II", ciclos: ["III"], tutorados: 16 },
-        { periodo: "2025-I", ciclos: ["II"], tutorados: 15 },
+      3
+    ),
+    "doc-02": buildRelaciones(
+      [
+        { periodo: "2026-I", ciclos: ["Cuarto ciclo"], tutorados: 14 },
+        { periodo: "2025-II", ciclos: ["Tercer ciclo"], tutorados: 16 },
+        { periodo: "2025-I", ciclos: ["Segundo ciclo"], tutorados: 15 },
       ],
-    },
-    "doc-03": {
-      periodos_tutor: 4,
-      tutorados_vigentes: 12,
-      tutorados_historico: 48,
-      derivaciones: 0,
-      por_periodo: [
-        { periodo: "2026-I", ciclos: ["II"], tutorados: 12 },
-        { periodo: "2025-II", ciclos: ["I"], tutorados: 12 },
+      1
+    ),
+    "doc-03": buildRelaciones(
+      [
+        { periodo: "2026-I", ciclos: ["Segundo ciclo"], tutorados: 12 },
+        { periodo: "2025-II", ciclos: ["Primer ciclo"], tutorados: 12 },
       ],
-    },
-    "doc-07": {
-      periodos_tutor: 3,
-      tutorados_vigentes: 10,
-      tutorados_historico: 30,
-      derivaciones: 2,
-      por_periodo: [
-        { periodo: "2026-I", ciclos: ["V"], tutorados: 10 },
-        { periodo: "2025-II", ciclos: ["IV"], tutorados: 10 },
+      0
+    ),
+    "doc-07": buildRelaciones(
+      [
+        { periodo: "2026-I", ciclos: ["Quinto ciclo"], tutorados: 10 },
+        { periodo: "2025-II", ciclos: ["Cuarto ciclo"], tutorados: 10 },
       ],
-    },
-    "doc-09": {
-      periodos_tutor: 10,
-      tutorados_vigentes: 20,
-      tutorados_historico: 200,
-      derivaciones: 5,
-      por_periodo: [
-        { periodo: "2026-I", ciclos: ["III", "V"], tutorados: 20 },
-        { periodo: "2025-II", ciclos: ["II", "IV"], tutorados: 20 },
-        { periodo: "2025-I", ciclos: ["I", "III"], tutorados: 20 },
-        { periodo: "2024-II", ciclos: ["II", "IV"], tutorados: 20 },
-        { periodo: "2024-I", ciclos: ["I"], tutorados: 18 },
+      2
+    ),
+    "doc-09": buildRelaciones(
+      [
+        { periodo: "2026-I", ciclos: ["Tercer ciclo", "Quinto ciclo"], tutorados: 20 },
+        { periodo: "2025-II", ciclos: ["Segundo ciclo", "Cuarto ciclo"], tutorados: 20 },
+        { periodo: "2025-I", ciclos: ["Primer ciclo", "Tercer ciclo"], tutorados: 20 },
+        { periodo: "2024-II", ciclos: ["Segundo ciclo", "Cuarto ciclo"], tutorados: 20 },
+        { periodo: "2024-I", ciclos: ["Primer ciclo"], tutorados: 18 },
       ],
-    },
-    "doc-11": {
-      periodos_tutor: 2,
-      tutorados_vigentes: 8,
-      tutorados_historico: 16,
-      derivaciones: 0,
-      por_periodo: [
-        { periodo: "2026-I", ciclos: ["I"], tutorados: 8 },
-        { periodo: "2025-II", ciclos: ["I"], tutorados: 8 },
+      5
+    ),
+    "doc-11": buildRelaciones(
+      [
+        { periodo: "2026-I", ciclos: ["Primer ciclo"], tutorados: 8 },
+        { periodo: "2025-II", ciclos: ["Primer ciclo"], tutorados: 8 },
       ],
-    },
-    "doc-15": {
-      periodos_tutor: 5,
-      tutorados_vigentes: 0,
-      tutorados_historico: 55,
-      derivaciones: 1,
-      por_periodo: [
-        { periodo: "2025-II", ciclos: ["VI"], tutorados: 11 },
-        { periodo: "2025-I", ciclos: ["V"], tutorados: 12 },
+      0
+    ),
+    "doc-15": buildRelaciones(
+      [
+        { periodo: "2025-II", ciclos: ["Sexto ciclo"], tutorados: 11 },
+        { periodo: "2025-I", ciclos: ["Quinto ciclo"], tutorados: 12 },
       ],
-    },
-    "doc-20": {
-      periodos_tutor: 7,
-      tutorados_vigentes: 18,
-      tutorados_historico: 110,
-      derivaciones: 4,
-      por_periodo: [
-        { periodo: "2026-I", ciclos: ["VI", "VIII"], tutorados: 18 },
-        { periodo: "2025-II", ciclos: ["V", "VII"], tutorados: 16 },
+      1
+    ),
+    "doc-20": buildRelaciones(
+      [
+        { periodo: "2026-I", ciclos: ["Sexto ciclo", "Octavo ciclo"], tutorados: 18 },
+        { periodo: "2025-II", ciclos: ["Quinto ciclo", "Séptimo ciclo"], tutorados: 16 },
       ],
-    },
+      4
+    ),
   };
 
   const EMPTY_RELACIONES = {
@@ -260,12 +251,12 @@
     "id": "doc-06",
     "tipo_documento_id": "td-1",
     "documento": "42334455",
-    "nombres": "María Fernanda Alexandra",
-    "apellido_paterno": "Quispe Condori",
-    "apellido_materno": "Huamán de la Cruz",
+    "nombres": "María Fernanda",
+    "apellido_paterno": "Quispe",
+    "apellido_materno": "Condori",
     "sexo": "F",
     "fecha_nacimiento": "1987-04-12",
-    "email": "l.mamani@unamba.edu.pe",
+    "email": "m.quispe@unamba.edu.pe",
     "email_personal": "",
     "celular_principal": "910000096",
     "celular_secundario": "985000455",
@@ -360,7 +351,7 @@
     "nombres": "Silvia",
     "apellido_paterno": "Paredes",
     "apellido_materno": "Gutierrez",
-    "sexo": "M",
+    "sexo": "F",
     "fecha_nacimiento": "1991-08-07",
     "email": "s.paredes@unamba.edu.pe",
     "email_personal": "s.paredes.personal@gmail.com",
@@ -381,12 +372,12 @@
     "id": "doc-11",
     "tipo_documento_id": "td-1",
     "documento": "41122334",
-    "nombres": "Juan Carlos Eduardo",
-    "apellido_paterno": "Paucar Mendoza",
-    "apellido_materno": "Villavicencio",
+    "nombres": "Juan Carlos",
+    "apellido_paterno": "Paucar",
+    "apellido_materno": "Mendoza",
     "sexo": "M",
     "fecha_nacimiento": "1983-05-25",
-    "email": "m.salazar@unamba.edu.pe",
+    "email": "j.paucar@unamba.edu.pe",
     "email_personal": "",
     "celular_principal": "910000181",
     "celular_secundario": "985000910",
@@ -456,7 +447,7 @@
     "nombres": "Claudia",
     "apellido_paterno": "Mendoza",
     "apellido_materno": "Pinto",
-    "sexo": "M",
+    "sexo": "F",
     "fecha_nacimiento": "1992-03-09",
     "email": "c.mendoza@unamba.edu.pe",
     "email_personal": "",

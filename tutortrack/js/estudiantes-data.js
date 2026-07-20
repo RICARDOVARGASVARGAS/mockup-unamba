@@ -6,7 +6,7 @@
 (function () {
   const STORAGE_KEY = "tutortrack-estudiantes";
   const VERSION_KEY = "tutortrack-estudiantes-version";
-  const STORAGE_VERSION = "seed-24-v2-estado-academico";
+  const STORAGE_VERSION = "seed-24-v4-observaciones";
 
   const AVATAR_M = "assets/img/avatares/usuario-m.svg";
   const AVATAR_F = "assets/img/avatares/usuario-f.svg";
@@ -20,76 +20,90 @@
   ];
 
   /**
-   * Historial mock (estudiante_ciclo_periodo → ciclo_periodo → periodo/ciclo/docente).
-   * Sin filas → se puede soft-delete. Con matrículas/fichas → solo desactivar.
+   * Historial mock. `docente_id` → título derivado del grado real (DocentesData).
+   * Ciclos = nombres del catálogo.
    */
   const HISTORIAL = {
     "est-01": {
       matriculas: 3,
       fichas_llenadas: 5,
       por_periodo: [
-        { periodo: "2026-I", ciclo: "V", tutor: "Dr. Carlos Quispe Mamani", vigente: true },
-        { periodo: "2025-II", ciclo: "IV", tutor: "Mg. María Elena Huamán Torres", vigente: false },
-        { periodo: "2025-I", ciclo: "III", tutor: "Mg. María Elena Huamán Torres", vigente: false },
+        { periodo: "2026-I", ciclo: "Quinto ciclo", docente_id: "doc-01", vigente: true },
+        { periodo: "2025-II", ciclo: "Cuarto ciclo", docente_id: "doc-02", vigente: false },
+        { periodo: "2025-I", ciclo: "Tercer ciclo", docente_id: "doc-02", vigente: false },
       ],
     },
     "est-02": {
       matriculas: 4,
       fichas_llenadas: 8,
       por_periodo: [
-        { periodo: "2026-I", ciclo: "VI", tutor: "Lic. José Luis Condori Paucar", vigente: true },
-        { periodo: "2025-II", ciclo: "V", tutor: "Dr. Carlos Quispe Mamani", vigente: false },
-        { periodo: "2025-I", ciclo: "IV", tutor: "Dr. Carlos Quispe Mamani", vigente: false },
-        { periodo: "2024-II", ciclo: "III", tutor: "Mg. Roberto Chávez Rojas", vigente: false },
+        { periodo: "2026-I", ciclo: "Sexto ciclo", docente_id: "doc-03", vigente: true },
+        { periodo: "2025-II", ciclo: "Quinto ciclo", docente_id: "doc-01", vigente: false },
+        { periodo: "2025-I", ciclo: "Cuarto ciclo", docente_id: "doc-01", vigente: false },
+        { periodo: "2024-II", ciclo: "Tercer ciclo", docente_id: "doc-07", vigente: false },
       ],
     },
     "est-03": {
       matriculas: 2,
       fichas_llenadas: 2,
       por_periodo: [
-        { periodo: "2026-I", ciclo: "III", tutor: "Bach. Ana Rosa Béjar Salas", vigente: true },
-        { periodo: "2025-II", ciclo: "II", tutor: "Bach. Ana Rosa Béjar Salas", vigente: false },
+        { periodo: "2026-I", ciclo: "Tercer ciclo", docente_id: "doc-04", vigente: true },
+        { periodo: "2025-II", ciclo: "Segundo ciclo", docente_id: "doc-04", vigente: false },
       ],
     },
     "est-04": {
-      matriculas: 6,
+      matriculas: 2,
       fichas_llenadas: 12,
       por_periodo: [
-        { periodo: "2026-I", ciclo: "VIII", tutor: "Dr. Fernando Cárdenas López", vigente: true },
-        { periodo: "2025-II", ciclo: "VII", tutor: "Dr. Fernando Cárdenas López", vigente: false },
+        { periodo: "2026-I", ciclo: "Octavo ciclo", docente_id: "doc-09", vigente: true },
+        { periodo: "2025-II", ciclo: "Séptimo ciclo", docente_id: "doc-09", vigente: false },
       ],
     },
     "est-06": {
-      matriculas: 3,
+      matriculas: 2,
       fichas_llenadas: 4,
       por_periodo: [
-        { periodo: "2026-I", ciclo: "V", tutor: "Mg. Patricia Aguilar Vera", vigente: true },
-        { periodo: "2025-II", ciclo: "IV", tutor: "Mg. Patricia Aguilar Vera", vigente: false },
+        { periodo: "2026-I", ciclo: "Quinto ciclo", docente_id: "doc-08", vigente: true },
+        { periodo: "2025-II", ciclo: "Cuarto ciclo", docente_id: "doc-08", vigente: false },
       ],
     },
     "est-08": {
-      matriculas: 8,
+      matriculas: 2,
       fichas_llenadas: 15,
       por_periodo: [
-        { periodo: "2025-II", ciclo: "X", tutor: "Dr. Héctor Ramírez Soto", vigente: false },
-        { periodo: "2025-I", ciclo: "IX", tutor: "Dr. Héctor Ramírez Soto", vigente: false },
+        { periodo: "2025-II", ciclo: "Décimo ciclo", docente_id: "doc-13", vigente: false },
+        { periodo: "2025-I", ciclo: "Noveno ciclo", docente_id: "doc-13", vigente: false },
       ],
     },
     "est-10": {
       matriculas: 1,
       fichas_llenadas: 0,
       por_periodo: [
-        { periodo: "2026-I", ciclo: "I", tutor: "Lic. Rosa María Valencia Castro", vigente: true },
+        { periodo: "2026-I", ciclo: "Primer ciclo", docente_id: "doc-12", vigente: true },
       ],
     },
     "est-12": {
       matriculas: 2,
       fichas_llenadas: 1,
       por_periodo: [
-        { periodo: "2026-I", ciclo: "II", tutor: "Mg. Claudia Mendoza Pinto", vigente: true },
-        { periodo: "2025-II", ciclo: "I", tutor: "Mg. Claudia Mendoza Pinto", vigente: false },
+        { periodo: "2026-I", ciclo: "Segundo ciclo", docente_id: "doc-14", vigente: true },
+        { periodo: "2025-II", ciclo: "Primer ciclo", docente_id: "doc-14", vigente: false },
       ],
     },
+  };
+
+  /** Fallback si DocentesData no está cargado (mismo grado que seed docentes). */
+  const TUTOR_FALLBACK = {
+    "doc-01": "Bach. Carlos Quispe Mamani",
+    "doc-02": "Lic. María Elena Huamán Torres",
+    "doc-03": "Mg. José Luis Condori Paucar",
+    "doc-04": "Dr. Ana Rosa Béjar Salas",
+    "doc-07": "Mg. Roberto Chávez Rojas",
+    "doc-08": "Dr. Patricia Aguilar Vera",
+    "doc-09": "Bach. Fernando Cárdenas López",
+    "doc-12": "Dr. Rosa María Valencia Castro",
+    "doc-13": "Bach. Héctor Ramírez Soto",
+    "doc-14": "Lic. Claudia Mendoza Pinto",
   };
 
   const EMPTY_HISTORIAL = { matriculas: 0, fichas_llenadas: 0, por_periodo: [] };
@@ -743,11 +757,31 @@
     return ESTADOS.find((e) => e.id === normalizeEstado(estado))?.nombre || "Activo";
   }
 
+  function tutorLabel(docenteId, legacyTutor) {
+    if (docenteId && window.DocentesData) {
+      const row = DocentesData.findById(docenteId);
+      if (row) return DocentesData.nombreConGrado(row);
+    }
+    if (docenteId && TUTOR_FALLBACK[docenteId]) return TUTOR_FALLBACK[docenteId];
+    return legacyTutor || "—";
+  }
+
+  function enrichPorPeriodo(list) {
+    return (list || []).map((p) => ({
+      ...p,
+      tutor: tutorLabel(p.docente_id, p.tutor),
+    }));
+  }
+
   function getHistorial(id) {
     const h = HISTORIAL[id];
-    return h
-      ? { ...h, por_periodo: [...(h.por_periodo || [])] }
-      : { ...EMPTY_HISTORIAL, por_periodo: [] };
+    if (!h) return { ...EMPTY_HISTORIAL, por_periodo: [] };
+    const por = enrichPorPeriodo(h.por_periodo);
+    return {
+      ...h,
+      matriculas: por.length || h.matriculas || 0,
+      por_periodo: por,
+    };
   }
 
   function tieneHistorial(id) {
