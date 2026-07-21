@@ -34,13 +34,16 @@ documento** junto al esquema — es la **fuente única de verdad**.
 
 1. **Identidad y acceso** — `tipo_documento`, `usuario`, `rol`, `permiso`,
    `usuario_rol`, `rol_permiso`, `grado_academico`, `especialidad`,
-   `docente`, `estudiante`, `receptor`. _(✔ completo — 11 tablas)_
+   `docente`, `estudiante`, `receptor`, `apoderado`, `estudiante_apoderado`.
+   _(✔ completo — 13 tablas)_
 2. **Estructura académica** — `ciclo`, `periodo_academico`, `ciclo_periodo`,
    `docente_ciclo_periodo`, `temario`, `estudiante_ciclo_periodo`.
    _(✔ completo — 6 tablas)_
-3. **Fichas** — `tipo_ficha`, `area`, `ficha`, `pregunta`,
+3. **Fichas** — `tipo_ficha`, `area`, `ficha`, `ficha_ciclo`, `pregunta`,
    `opcion_pregunta`, `ficha_ciclo_periodo`, `ficha_llenada`, `respuesta`,
-   `respuesta_opcion`. _(✔ completo — 9 tablas)_
+   `respuesta_opcion`. _(✔ completo — 10 tablas)_
+   > `ficha_ciclo_periodo` es ahora la **ficha del docente** (dueño + habilitable);
+   > `ficha_ciclo` = para qué ciclos aplica cada plantilla (guía).
    > `tipo_pregunta` **eliminado como tabla** — reemplazado por 5 constantes en código.
 4. **IA / Alertas / Derivación** — `entidad_receptora`, `tipo_estado_derivacion`,
    `alerta_ia`, `derivacion`. _(✔ completo — 4 tablas)_
@@ -1364,7 +1367,9 @@ CREATE TABLE pregunta (
   CONSTRAINT chk_pregunta_padre CHECK (
     (ficha_id IS NOT NULL AND ficha_ciclo_periodo_id IS NULL) OR
     (ficha_id IS NULL     AND ficha_ciclo_periodo_id IS NOT NULL)
-  )
+  ),
+  CONSTRAINT chk_pregunta_tipo CHECK (tipo_pregunta IN
+    ('texto_abierto', 'alternativa_unica', 'respuesta_multiple', 'si_no', 'escala'))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
@@ -1627,7 +1632,8 @@ CREATE TABLE ficha_llenada (
   UNIQUE KEY uq_ficha_llenada (estudiante_id, ficha_ciclo_periodo_id),
   KEY idx_ficha_llenada_estado (estado),
   CONSTRAINT fk_fl_estudiante FOREIGN KEY (estudiante_id)          REFERENCES estudiante (id),
-  CONSTRAINT fk_fl_fcp        FOREIGN KEY (ficha_ciclo_periodo_id) REFERENCES ficha_ciclo_periodo (id)
+  CONSTRAINT fk_fl_fcp        FOREIGN KEY (ficha_ciclo_periodo_id) REFERENCES ficha_ciclo_periodo (id),
+  CONSTRAINT chk_fl_estado    CHECK (estado IN ('borrador', 'enviada'))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
@@ -2383,8 +2389,12 @@ CREATE TABLE alerta_ia (
   CONSTRAINT fk_alerta_ficha_llenada  FOREIGN KEY (ficha_llenada_id)              REFERENCES ficha_llenada (id),
   CONSTRAINT fk_alerta_area           FOREIGN KEY (area_id)                       REFERENCES area (id),
   CONSTRAINT fk_alerta_docente        FOREIGN KEY (docente_id)                    REFERENCES docente (id),
-  CONSTRAINT fk_alerta_entidad_sug    FOREIGN KEY (entidad_receptora_sugerida_id) REFERENCES entidad_receptora (id)
+  CONSTRAINT fk_alerta_entidad_sug    FOREIGN KEY (entidad_receptora_sugerida_id) REFERENCES entidad_receptora (id),
+  CONSTRAINT chk_alerta_nivel  CHECK (nivel_alerta IN ('Baja', 'Media', 'Alta')),
+  CONSTRAINT chk_alerta_estado CHECK (estado IN ('pendiente', 'revisada', 'derivada', 'descartada'))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- El `estudiante` de una alerta se deriva por join: alerta_ia → ficha_llenada.estudiante_id
+-- (alerta_ia no guarda estudiante_id directo).
 ```
 
 ### `derivacion` — expediente de derivación
@@ -2427,6 +2437,8 @@ y `auditoria` conserva el historial de todas las versiones anteriores.
 | `tipo_estado_derivacion_id` | `BIGINT UNSIGNED` | NO | FK → `tipo_estado_derivacion(id)` — **estado actual** del caso (desnormalizado para consultas eficientes; el historial de cambios está en `auditoria`) |
 | `motivo` | `TEXT` | NO | Texto libre del docente explicando por qué deriva al estudiante |
 | `nota` | `TEXT` | SÍ | Observación actual del receptor sobre el avance del caso; se sobreescribe con cada actualización — `auditoria` conserva el historial de versiones anteriores |
+| `visible_estudiante` | `TINYINT(1)` | NO | DEFAULT `0` — si el estudiante puede ver esta derivación. Lo activa **el profesional** (docente o receptor); por defecto **oculta** |
+| `mensaje_estudiante` | `VARCHAR(255)` | SÍ | mensaje **humano** para el estudiante cuando `visible_estudiante = 1` (ej. "Tu tutor te sugiere una cita con Bienestar"). **Nunca** se le muestra `motivo`/`justificacion` de la IA — solo este mensaje |
 | `created_at` | `TIMESTAMP` | SÍ | |
 | `updated_at` | `TIMESTAMP` | SÍ | |
 
@@ -2472,6 +2484,8 @@ CREATE TABLE derivacion (
   tipo_estado_derivacion_id   BIGINT UNSIGNED  NOT NULL,
   motivo                      TEXT             NOT NULL,
   nota                        TEXT             NULL,
+  visible_estudiante          TINYINT(1)       NOT NULL DEFAULT 0,
+  mensaje_estudiante          VARCHAR(255)     NULL,
   created_at                  TIMESTAMP        NULL,
   updated_at                  TIMESTAMP        NULL,
   PRIMARY KEY (id),

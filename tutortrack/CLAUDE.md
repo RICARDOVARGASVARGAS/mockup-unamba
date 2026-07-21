@@ -155,7 +155,8 @@ Contraste y foco visibles sobre el lienzo claro; tokens en `css/tokens.css`.
 
 ## Estado actual
 - ~~Modelo de datos~~ — cerrado en `docs/BD-BACKEND.md` (fuente única).
-  30 tablas + APIs M1-M3 completas; M4 tablas completas, APIs pendientes.
+  34 tablas + APIs M1-M4 completas (incluye apoderados, fichas per-docente y
+  visibilidad de derivación al estudiante).
 - ~~Fase 0 — Compartido~~ — hecho: login único, `app-sidebar`
   (4 secciones visibles en demo), `app-topbar`, responsive, tema claro.
 - Diseño frontend — se documenta en `docs/DISEÑO-FRONTEND.md` (menú + pantallas).
@@ -167,8 +168,11 @@ Contraste y foco visibles sobre el lienzo claro; tokens en `css/tokens.css`.
   `usuarios-form.html`, `docentes.html`, `docentes-form.html`.
 - ~~Fase 3 — Configuración por período~~ — hecho: `gestion-periodo.html`,
   `temario.html`, `matriculas.html`, `avanzar-estudiantes.html`.
-- ~~Fase 4 — Fichas~~ — hecho: `fichas.html`, `fichas-form.html`,
-  `fichas-ciclo-periodo.html` (admin); `fichas-tutorados.html`,
-  `ficha-respuestas.html` (docente); `mis-fichas.html`,
-  `llenar-ficha.html` (estudiante).
-- **Pendiente:** Fase 5 — IA / Alertas / Derivación + APIs M4.
+- ~~Fase 4 — Fichas~~ — hecho: `fichas.html` + `fichas-form.html` (plantillas
+  admin); `fichas-ciclo.html` + constructor compartido (docente); `mis-fichas.html`
+  + `llenar-ficha.html` (estudiante); `fichas-tutorados.html` +
+  `ficha-respuestas.html` (docente · matriz / respuestas).
+- ~~Fase 5 — Alertas / Derivación (mockup)~~ — hecho: docente/admin
+  `alertas` + `derivaciones`; receptor `casos` (kanban) + `historial`;
+  store `alertas-derivaciones-data.js`.
+- **Pendiente:** APIs M4 en backend real (el mockup ya refleja los endpoints).

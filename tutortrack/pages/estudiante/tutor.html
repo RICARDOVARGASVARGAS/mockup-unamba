@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mi tutor | TutorTrack (Mockup)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap"
+    />
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <app-sidebar></app-sidebar>
+    <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
+      <app-topbar
+        page-title="Mi tutor"
+        user-name="Ana Quispe Mamani"
+        user-role="Estudiante"
+        user-initials="AQ"
+        user-ciclo="5"
+        user-avatar="assets/img/estudiantes/estudiante-1.jpg"
+      ></app-topbar>
+
+      <main class="flex-1 space-y-5 p-4 sm:p-6 lg:p-8 max-w-xl">
+        <div>
+          <h2 class="font-heading text-xl font-bold text-text">Mi tutor</h2>
+          <p class="text-sm text-text-muted" data-contexto>2026-I · Quinto ciclo</p>
+        </div>
+
+        <section class="app-card p-5" data-tutor-card>
+          <div class="flex gap-4 items-start">
+            <img
+              data-tutor-foto
+              class="h-20 w-20 rounded-full object-cover shrink-0"
+              src="../../assets/img/docentes/docente-1.jpg"
+              alt=""
+              width="80"
+              height="80"
+            />
+            <div class="min-w-0">
+              <p class="font-heading text-lg font-semibold text-text" data-tutor-nombre>—</p>
+              <p class="text-sm text-text-muted" data-tutor-esp>—</p>
+              <p class="mt-2 text-sm text-text" data-tutor-email>—</p>
+              <p class="text-sm text-text" data-tutor-cel>—</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="app-card p-5" id="agendar">
+          <h3 class="section-title">Sobre la tutoría</h3>
+          <p class="mt-2 text-sm text-text leading-relaxed">
+            Tu tutor te acompaña en tu vida universitaria — no solo académica.
+            Escríbele cuando lo necesites. Si te compartieron un mensaje de seguimiento
+            desde Psicología u otro servicio, puedes preguntarle cómo agendar.
+          </p>
+        </section>
+
+        <p data-sin-tutor class="hidden rounded-xl border border-dashed border-border px-5 py-8 text-center text-sm text-text-muted">
+          Aún no tienes un tutor asignado; comunícate con coordinación.
+        </p>
+      </main>
+    </div>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/site-paths.js"></script>
+    <script src="../../components/app-sidebar.js"></script>
+    <script src="../../components/app-topbar.js"></script>
+    <script src="../../js/alertas-derivaciones-data.js"></script>
+    <script src="../../js/tutor.js"></script>
+  </body>
+</html>

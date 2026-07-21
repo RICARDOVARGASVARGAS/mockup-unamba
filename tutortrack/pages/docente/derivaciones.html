@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mis derivaciones | TutorTrack (Mockup)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap"
+    />
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <app-sidebar></app-sidebar>
+    <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
+      <app-topbar
+        page-title="Derivaciones"
+        user-name="Carlos Quispe Mamani"
+        user-role="Docente-Tutor"
+        user-initials="CQ"
+        user-avatar="assets/img/docentes/docente-1.jpg"
+      ></app-topbar>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8 space-y-4">
+        <!-- Lista -->
+        <section data-vista="lista" class="space-y-4">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <h2 class="font-heading text-xl font-bold text-text">Mis derivaciones</h2>
+              <p class="text-sm text-text-muted">Creas y observas el avance. El receptor mueve el estado.</p>
+            </div>
+            <button type="button" id="btn-nueva" class="btn-primary">+ Nueva derivación</button>
+          </div>
+
+          <div class="flex flex-wrap items-end gap-2">
+            <div class="catalog-field min-w-[10rem]">
+              <label for="filtro-entidad" class="form-label">Entidad</label>
+              <select id="filtro-entidad" class="catalog-select">
+                <option value="">Todas</option>
+              </select>
+            </div>
+            <div class="catalog-field min-w-[10rem]">
+              <label for="filtro-estado" class="form-label">Estado</label>
+              <select id="filtro-estado" class="catalog-select">
+                <option value="">Todos</option>
+              </select>
+            </div>
+            <div class="catalog-field min-w-[12rem] flex-1">
+              <label for="filtro-q" class="form-label">Buscar</label>
+              <input id="filtro-q" type="search" class="form-input" placeholder="Estudiante…" />
+            </div>
+            <button type="button" id="btn-limpiar" class="btn-ghost" data-catalog-clear aria-label="Limpiar">✕</button>
+          </div>
+
+          <div class="app-card overflow-x-auto p-0">
+            <table class="catalog-table">
+              <thead>
+                <tr>
+                  <th class="text-center w-12">N°</th>
+                  <th>Estudiante</th>
+                  <th>Entidad</th>
+                  <th>Estado actual</th>
+                  <th>Creada</th>
+                  <th class="text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody data-tbody></tbody>
+            </table>
+            <p data-vacio class="hidden px-6 py-10 text-center text-sm text-text-muted">Aún no has creado derivaciones.</p>
+          </div>
+        </section>
+
+        <!-- Detalle -->
+        <section data-vista="detalle" class="hidden space-y-4">
+          <button type="button" id="btn-volver" class="btn-ghost btn-sm">← Mis derivaciones</button>
+          <div class="app-card space-y-4 p-5">
+            <div class="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <h2 class="font-heading text-xl font-bold" data-det-titulo>—</h2>
+                <p class="mt-1 text-sm text-text-muted">Estado: <span data-det-estado class="font-semibold text-text">—</span></p>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-sm font-semibold">Motivo</h3>
+              <p class="mt-1 text-sm text-text" data-det-motivo>—</p>
+            </div>
+            <div class="flex flex-wrap gap-2 text-sm" data-det-origen></div>
+            <div>
+              <h3 class="text-sm font-semibold mb-2">Línea de tiempo</h3>
+              <ul class="timeline-list" data-det-timeline></ul>
+            </div>
+            <div data-det-visibilidad></div>
+            <p class="text-xs text-text-muted">Solo lectura del estado: el receptor de la entidad actualiza el pipeline.</p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Modal nueva derivación -->
+    <div id="modal-derivar-backdrop" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4" role="presentation">
+      <div class="modal-panel w-full max-w-lg" role="dialog" aria-modal="true" aria-labelledby="modal-derivar-title">
+        <h2 id="modal-derivar-title" class="font-heading text-lg font-bold">Nueva derivación</h2>
+        <form id="form-derivar" class="mt-4 space-y-3">
+          <input type="hidden" id="der-alerta-id" value="" />
+          <div class="catalog-field">
+            <label for="der-estudiante" class="form-label">Estudiante *</label>
+            <select id="der-estudiante" class="form-input" required></select>
+          </div>
+          <div class="catalog-field">
+            <label for="der-entidad" class="form-label">Entidad *</label>
+            <select id="der-entidad" class="form-input" required></select>
+          </div>
+          <div class="rounded-lg border border-border bg-surface px-3 py-2 text-sm" data-alerta-origen>
+            Alerta origen: <span class="text-text-muted">— (manual)</span>
+          </div>
+          <div class="catalog-field">
+            <label for="der-motivo" class="form-label">Motivo *</label>
+            <textarea id="der-motivo" class="form-input min-h-[5rem]" required placeholder="Describe por qué derivas…"></textarea>
+          </div>
+          <div class="flex justify-end gap-2 pt-2">
+            <button type="button" id="btn-derivar-cancelar" class="btn-secondary">Cancelar</button>
+            <button type="submit" class="btn-primary">Derivar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <app-toast></app-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/site-paths.js"></script>
+    <script src="../../components/app-sidebar.js"></script>
+    <script src="../../components/app-topbar.js"></script>
+    <script src="../../components/app-toast.js"></script>
+    <script src="../../js/fichas-data.js"></script>
+    <script src="../../js/fichas-ciclo-data.js"></script>
+    <script src="../../js/entidades-receptoras-data.js"></script>
+    <script src="../../js/alertas-derivaciones-data.js"></script>
+    <script src="../../js/derivaciones.js"></script>
+  </body>
+</html>

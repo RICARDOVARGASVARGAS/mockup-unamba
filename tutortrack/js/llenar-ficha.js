@@ -1,270 +1,294 @@
 /**
- * llenar-ficha.js — formulario del estudiante para llenar una ficha.
- * Autoguarda en borrador; botón "Enviar" habilitado solo si todo está contestado.
+ * llenar-ficha.js — Estudiante › Llenar ficha.
+ * Render por tipo · autoguardado borrador · enviar (bloquea).
  */
 (function () {
-  const toast = (msg, type = "success") =>
-    document.dispatchEvent(new CustomEvent("app:toast", { detail: { message: msg, type } }));
+  const toast = (message, type = "success") =>
+    document.dispatchEvent(new CustomEvent("app:toast", { detail: { message, type } }));
 
-  const params  = new URLSearchParams(window.location.search);
-  const fichaId = params.get("id")     || "mf-1";
-  const modoVer = params.get("modo") === "ver";
-  const nombre  = decodeURIComponent(params.get("nombre") || "Ficha");
+  const esc = (s) =>
+    String(s ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
 
-  let respuestas = {};   /* pregId → valor */
-  let preguntas  = [];
+  let fcp = null;
+  let llenado = null;
+  let soloLectura = false;
+  let saveTimer = null;
 
-  function escHtml(str) {
-    return String(str || "")
-      .replace(/&/g, "&amp;").replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  function estudianteId() {
+    return sessionStorage.getItem("tutortrack-demo-estudiante") || "est-1";
   }
 
-  /* ---------- progreso ---------- */
-  function contestadas() {
-    return preguntas.filter((p) => {
-      const v = respuestas[p.id];
-      if (v === undefined || v === null || v === "") return false;
-      if (Array.isArray(v)) return v.length > 0;
-      return true;
-    }).length;
+  function answersMap() {
+    const map = {};
+    (llenado?.respuestas || []).forEach((r) => {
+      map[r.pregunta_id] = r;
+    });
+    return map;
   }
 
-  function updateProgreso() {
-    const total = preguntas.length;
-    const done  = contestadas();
-    document.getElementById("progreso-bar").textContent = `${done} de ${total} contestadas`;
+  function widget(p, answer, disabled) {
+    const tipo = p.tipo_pregunta || p.tipo;
+    const name = `q-${p.id}`;
+    const dis = disabled ? "disabled" : "";
 
-    const btn    = document.getElementById("btn-enviar");
-    const aviso  = document.getElementById("aviso-incompleto");
-    const listo  = done === total;
-    btn.disabled = !listo;
-    aviso.classList.toggle("hidden", listo);
-  }
-
-  /* ---------- autoguardado ---------- */
-  let _saveTimer = null;
-  function autosave() {
-    clearTimeout(_saveTimer);
-    _saveTimer = setTimeout(() => {
-      LlenarFichaData.saveBorrador(fichaId, respuestas);
-      if (!modoVer) toast("Progreso guardado", "success");
-    }, 600);
-  }
-
-  /* ---------- render de cada pregunta ---------- */
-  function renderPregunta(preg) {
-    const areaCls = LlenarFichaData.AREA_COLORES[preg.area_id] || "badge-neutral";
-    const val     = respuestas[preg.id];
-    const disabled = modoVer ? "disabled" : "";
-
-    let inputHtml = "";
-
-    switch (preg.tipo) {
-      case "texto_abierto": {
-        const chars = (val || "").length;
-        inputHtml = `
-          <textarea id="inp-${preg.id}" data-preg="${preg.id}" data-tipo="texto_abierto"
-            rows="4" maxlength="1000"
-            class="form-textarea text-sm" placeholder="Escribe tu respuesta…" ${disabled}
-          >${escHtml(val || "")}</textarea>
-          <p class="mt-1 text-xs text-text-muted text-right"><span id="cnt-${preg.id}">${chars}</span>/1000 caracteres</p>`;
-        break;
-      }
-
-      case "si_no":
-        inputHtml = `
-          <div class="flex gap-3">
-            ${["Sí", "No"].map((op) => `
-              <button type="button"
-                class="si-no-btn flex-1 rounded-lg border py-2.5 text-sm font-medium ${!modoVer ? "hover:bg-primary/10" : "cursor-default"}
-                  ${val === op ? "selected border-primary bg-primary text-white" : "border-border text-text"}"
-                data-preg="${preg.id}" data-tipo="si_no" data-val="${op}" ${disabled}
-              >${op}</button>`).join("")}
-          </div>`;
-        break;
-
-      case "alternativa_unica":
-        inputHtml = `
-          <ul class="space-y-2">
-            ${preg.opciones.map((op) => `
-              <li>
-                <label class="flex items-start gap-3 cursor-pointer ${modoVer ? "pointer-events-none" : ""}">
-                  <input type="radio" name="radio-${preg.id}" value="${escHtml(op)}"
-                    class="mt-0.5 accent-primary"
-                    data-preg="${preg.id}" data-tipo="alternativa_unica"
-                    ${val === op ? "checked" : ""} ${disabled}
-                  />
-                  <span class="text-sm text-text">${escHtml(op)}</span>
-                </label>
-              </li>`).join("")}
-          </ul>`;
-        break;
-
-      case "respuesta_multiple": {
-        const checked = Array.isArray(val) ? val : [];
-        inputHtml = `
-          <ul class="space-y-2">
-            ${preg.opciones.map((op) => `
-              <li>
-                <label class="flex items-start gap-3 cursor-pointer ${modoVer ? "pointer-events-none" : ""}">
-                  <input type="checkbox" value="${escHtml(op)}"
-                    class="mt-0.5 accent-primary"
-                    data-preg="${preg.id}" data-tipo="respuesta_multiple"
-                    ${checked.includes(op) ? "checked" : ""} ${disabled}
-                  />
-                  <span class="text-sm text-text">${escHtml(op)}</span>
-                </label>
-              </li>`).join("")}
-          </ul>`;
-        break;
-      }
-
-      case "escala": {
-        const min = preg.escala_min || 1;
-        const max = preg.escala_max || 5;
-        inputHtml = `
-          <div>
-            <div class="flex gap-2 flex-wrap">
-              ${Array.from({ length: max - min + 1 }, (_, i) => i + min).map((n) => `
-                <button type="button"
-                  class="escala-btn flex h-10 w-10 items-center justify-center rounded-full border text-sm font-semibold
-                    ${!modoVer ? "hover:bg-primary/10 hover:border-primary hover:text-primary" : "cursor-default"}
-                    ${val === n ? "selected border-primary bg-primary text-white" : "border-border text-text"}"
-                  data-preg="${preg.id}" data-tipo="escala" data-val="${n}" ${disabled}
-                >${n}</button>`).join("")}
-            </div>
-            <div class="mt-1.5 flex justify-between text-xs text-text-muted" style="max-width:${(max - min + 1) * 3}rem">
-              <span>${escHtml(preg.escala_label_min || "")}</span>
-              <span>${escHtml(preg.escala_label_max || "")}</span>
-            </div>
-          </div>`;
-        break;
-      }
+    if (tipo === "texto_abierto") {
+      return `<textarea name="${esc(name)}" data-preg="${esc(p.id)}" data-tipo="texto_abierto" rows="3" class="form-textarea min-h-[5.5rem]" placeholder="Escribe tu respuesta…" ${dis}>${esc(answer?.respuesta_texto || "")}</textarea>`;
     }
 
+    if (tipo === "escala") {
+      const min = p.escala_min ?? 1;
+      const max = p.escala_max ?? 5;
+      const val = answer?.respuesta_valor;
+      const nums = [];
+      for (let n = min; n <= max; n += 1) nums.push(n);
+      return `
+        <div class="flex flex-wrap items-center gap-2 sm:gap-3" data-preg="${esc(p.id)}" data-tipo="escala">
+          <span class="text-xs text-text-muted">${esc(p.etiqueta_min || "")}</span>
+          ${nums
+            .map(
+              (n) => `
+            <label class="inline-flex min-h-[44px] min-w-[44px] cursor-pointer flex-col items-center justify-center gap-0.5 rounded-md border border-border px-2 py-1.5 text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/10">
+              <input type="radio" name="${esc(name)}" value="${n}" class="sr-only" ${val == n ? "checked" : ""} ${dis} />
+              <span class="font-semibold">${n}</span>
+            </label>`
+            )
+            .join("")}
+          <span class="text-xs text-text-muted">${esc(p.etiqueta_max || "")}</span>
+        </div>`;
+    }
+
+    const ops =
+      tipo === "si_no" && !(p.opciones || []).length
+        ? [
+            { id: `${p.id}-si`, texto: "Sí" },
+            { id: `${p.id}-no`, texto: "No" },
+          ]
+        : p.opciones || [];
+    const selected = new Set(answer?.opciones_ids || []);
+    const inputType = tipo === "respuesta_multiple" ? "checkbox" : "radio";
+
     return `
-      <div class="app-card p-5 space-y-4" id="card-${preg.id}">
-        <div class="flex flex-wrap items-center gap-2">
-          <span class="badge ${areaCls} shrink-0">${escHtml(preg.area_nombre)}</span>
-          <span class="text-xs text-text-muted">Pregunta ${preg.orden} de ${preguntas.length}</span>
-        </div>
-        <p class="font-medium text-text">${escHtml(preg.enunciado)}</p>
-        <div class="pl-1">${inputHtml}</div>
+      <div class="space-y-2" data-preg="${esc(p.id)}" data-tipo="${esc(tipo)}">
+        ${ops
+          .map(
+            (o) => `
+          <label class="flex min-h-[44px] cursor-pointer items-center gap-3 rounded-lg border border-border px-3 py-2.5 has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+            <input type="${inputType}" name="${esc(name)}" value="${esc(o.id)}" class="h-4 w-4 text-primary" ${selected.has(o.id) ? "checked" : ""} ${dis} />
+            <span class="text-sm text-text">${esc(o.texto)}</span>
+          </label>`
+          )
+          .join("")}
       </div>`;
   }
 
-  function renderAll() {
-    document.getElementById("preguntas-container").innerHTML =
-      preguntas.map(renderPregunta).join("");
+  function collectAnswers() {
+    const form = document.querySelector("[data-llenar-form]");
+    const preguntas = fcp.preguntas || [];
+    return preguntas.map((p) => {
+      const tipo = p.tipo_pregunta || p.tipo;
+      const base = {
+        id: `${llenado.id}-r${p.orden}`,
+        ficha_llenada_id: llenado.id,
+        pregunta_id: p.id,
+        respuesta_texto: null,
+        respuesta_valor: null,
+        observaciones_tutor: answersMap()[p.id]?.observaciones_tutor || "",
+        opciones_ids: [],
+      };
+
+      if (tipo === "texto_abierto") {
+        const el = form.querySelector(`[data-preg="${p.id}"]`);
+        base.respuesta_texto = el?.value?.trim() || "";
+        if (!base.respuesta_texto) return null;
+      } else if (tipo === "escala") {
+        const checked = form.querySelector(`[data-preg="${p.id}"] input:checked`);
+        if (!checked) return null;
+        base.respuesta_valor = Number(checked.value);
+      } else {
+        const checked = Array.from(
+          form.querySelectorAll(`[data-preg="${p.id}"] input:checked`)
+        );
+        if (!checked.length) return null;
+        base.opciones_ids = checked.map((c) => c.value);
+      }
+      return base;
+    }).filter(Boolean);
   }
 
-  /* ---------- eventos de respuesta ---------- */
-  function bindEvents() {
-    const container = document.getElementById("preguntas-container");
+  function updateProgress() {
+    const total = (fcp.preguntas || []).length;
+    const answered = collectAnswers().length;
+    const pct = total ? Math.round((answered / total) * 100) : 0;
+    const txt = document.querySelector("[data-progreso-texto]");
+    const bar = document.querySelector("[data-progreso-bar]");
+    if (txt) txt.textContent = `${answered} / ${total}`;
+    if (bar) bar.style.width = `${pct}%`;
+    const btn = document.querySelector("[data-btn-enviar]");
+    if (btn && !soloLectura) btn.disabled = answered < total;
+  }
 
-    /* textarea */
-    container.addEventListener("input", (e) => {
-      if (e.target.dataset.tipo === "texto_abierto") {
-        respuestas[e.target.dataset.preg] = e.target.value;
-        const cnt = document.getElementById(`cnt-${e.target.dataset.preg}`);
-        if (cnt) cnt.textContent = e.target.value.length;
-        updateProgreso();
-        autosave();
-      }
-      if (e.target.dataset.tipo === "alternativa_unica") {
-        respuestas[e.target.dataset.preg] = e.target.value;
-        updateProgreso();
-        autosave();
-      }
-      if (e.target.dataset.tipo === "respuesta_multiple") {
-        const pregId = e.target.dataset.preg;
-        const checkboxes = container.querySelectorAll(`[data-tipo="respuesta_multiple"][data-preg="${pregId}"]`);
-        respuestas[pregId] = Array.from(checkboxes).filter((c) => c.checked).map((c) => c.value);
-        updateProgreso();
-        autosave();
-      }
+  function setSaveIndicator(msg) {
+    const el = document.querySelector("[data-save-indicator]");
+    if (el) el.textContent = msg;
+  }
+
+  function ensureLlenado() {
+    const estId = estudianteId();
+    let fl = FichasCicloData.findLlenado(estId, fcp.id);
+    if (!fl) {
+      fl = {
+        id: `fl-${estId}-${fcp.id}`,
+        estudiante_id: estId,
+        ficha_ciclo_periodo_id: fcp.id,
+        estado: "borrador",
+        revisada: false,
+        fecha_enviado: null,
+        respuestas: [],
+      };
+      FichasCicloData.upsertLlenado(fl);
+    }
+    return fl;
+  }
+
+  function canOpen() {
+    const items = FichasCicloData.misFichasEstudiante(estudianteId());
+    const item = items.find((i) => i.fcp.id === fcp.id);
+    if (!item) return { ok: false, reason: "Ficha no encontrada" };
+    if (item.bloqueo === "no_habilitada") return { ok: false, reason: "Esta ficha aún no está disponible" };
+    if (item.bloqueo === "secuencia") return { ok: false, reason: "Completa la ficha anterior primero" };
+    return { ok: true, item };
+  }
+
+  function saveDraft(silent) {
+    if (soloLectura) return;
+    llenado = ensureLlenado();
+    if (llenado.estado === "enviada") {
+      soloLectura = true;
+      return;
+    }
+    llenado.estado = "borrador";
+    llenado.respuestas = collectAnswers();
+    FichasCicloData.upsertLlenado(llenado);
+    setSaveIndicator("Guardado ✓");
+    if (!silent) toast("Borrador guardado");
+    updateProgress();
+  }
+
+  function scheduleAutosave() {
+    if (soloLectura) return;
+    setSaveIndicator("Guardando…");
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => saveDraft(true), 600);
+  }
+
+  function enviar() {
+    if (soloLectura) return;
+    const answers = collectAnswers();
+    const total = (fcp.preguntas || []).length;
+    if (answers.length < total) {
+      toast("Responde todas las preguntas antes de enviar", "danger");
+      return;
+    }
+    AppConfirm.request({
+      title: "Enviar ficha",
+      confirmLabel: "Enviar",
+      cancelLabel: "Cancelar",
+      variant: "primary",
+      messageHtml:
+        "<p>Una vez enviada <strong class=\"text-text\">no podrás editarla</strong>. ¿Deseas continuar?</p>",
+    }).then((ok) => {
+      if (!ok) return;
+      llenado = ensureLlenado();
+      llenado.estado = "enviada";
+      llenado.fecha_enviado = new Date().toISOString();
+      llenado.respuestas = answers;
+      FichasCicloData.upsertLlenado(llenado);
+      toast("Ficha enviada");
+      window.location.href = "mis-fichas.html";
     });
-
-    /* botones (si_no + escala) */
-    container.addEventListener("click", (e) => {
-      const btn = e.target.closest("[data-tipo='si_no'], [data-tipo='escala']");
-      if (!btn || btn.disabled) return;
-
-      const pregId = btn.dataset.preg;
-      const tipo   = btn.dataset.tipo;
-      const val    = tipo === "escala" ? Number(btn.dataset.val) : btn.dataset.val;
-
-      respuestas[pregId] = val;
-
-      /* actualizar estilos de los hermanos */
-      const group = container.querySelectorAll(`[data-tipo="${tipo}"][data-preg="${pregId}"]`);
-      group.forEach((b) => {
-        const bVal = tipo === "escala" ? Number(b.dataset.val) : b.dataset.val;
-        b.classList.toggle("selected", bVal === val);
-        if (tipo === "si_no") {
-          b.classList.toggle("border-primary", bVal === val);
-          b.classList.toggle("bg-primary",     bVal === val);
-          b.classList.toggle("text-white",     bVal === val);
-          b.classList.toggle("border-border",  bVal !== val);
-          b.classList.toggle("text-text",      bVal !== val);
-        }
-      });
-
-      updateProgreso();
-      autosave();
-    });
   }
 
-  /* ---------- modal de envío ---------- */
-  function openEnviarModal() {
-    const bd = document.getElementById("modal-enviar-backdrop");
-    bd.classList.remove("hidden");
-    bd.classList.add("flex");
-  }
-  function closeEnviarModal() {
-    const bd = document.getElementById("modal-enviar-backdrop");
-    bd.classList.add("hidden");
-    bd.classList.remove("flex");
-  }
+  function render() {
+    const form = document.querySelector("[data-llenar-form]");
+    const map = answersMap();
+    document.querySelector("[data-ficha-nombre]").textContent = fcp.nombre;
 
-  /* ---------- init ---------- */
-  document.addEventListener("DOMContentLoaded", () => {
-    const base = window.getBasePath ? window.getBasePath() : "../../";
+    form.innerHTML = (fcp.preguntas || [])
+      .map((p, i) => {
+        const tipo = FichasData.tipoPreguntaLabel(p.tipo_pregunta || p.tipo);
+        return `
+        <fieldset class="rounded-xl border border-border bg-surface p-4">
+          <legend class="px-1 text-sm font-medium text-text">
+            ${i + 1}. ${esc(p.enunciado)}
+            <span class="ml-1 font-normal text-text-muted">· ${esc(tipo)}</span>
+          </legend>
+          <div class="mt-3">${widget(p, map[p.id], soloLectura)}</div>
+        </fieldset>`;
+      })
+      .join("");
 
-    document.getElementById("ficha-titulo").textContent = nombre;
-    document.getElementById("link-volver").href   = `${base}pages/estudiante/mis-fichas.html`;
-    document.getElementById("link-cancelar").href = `${base}pages/estudiante/mis-fichas.html`;
-
-    preguntas  = LlenarFichaData.getPreguntas(fichaId);
-
-    if (modoVer) {
-      /* Cargar respuestas enviadas (para modo ver, usamos las del store de respuestas del docente como ejemplo) */
-      const stored = LlenarFichaData.getBorrador(fichaId);
-      respuestas   = Object.assign({}, stored);
-      document.getElementById("btn-enviar").style.display = "none";
-      document.getElementById("link-cancelar").textContent = "Volver";
-    } else {
-      respuestas = LlenarFichaData.getBorrador(fichaId);
+    if (soloLectura) {
+      document.querySelector("[data-btn-borrador]")?.classList.add("hidden");
+      document.querySelector("[data-btn-enviar]")?.classList.add("hidden");
+      document.querySelector("[data-solo-lectura]")?.classList.remove("hidden");
     }
 
-    renderAll();
-    if (!modoVer) bindEvents();
-    updateProgreso();
+    updateProgress();
+  }
 
-    /* Btn enviar */
-    document.getElementById("btn-enviar").addEventListener("click", openEnviarModal);
-    document.getElementById("btn-modal-cancelar").addEventListener("click", closeEnviarModal);
-    document.getElementById("modal-enviar-backdrop").addEventListener("click", (e) => {
-      if (e.target === e.currentTarget) closeEnviarModal();
-    });
+  document.addEventListener("DOMContentLoaded", () => {
+    if (!window.FichasCicloData || !window.FichasData) return;
+    const q = new URLSearchParams(window.location.search);
+    const fcpId = q.get("fcp");
+    const ver = q.get("ver") === "1";
 
-    document.getElementById("btn-modal-confirmar").addEventListener("click", () => {
-      LlenarFichaData.saveBorrador(fichaId, respuestas);
-      MisFichasData.marcarEnviada(fichaId);
-      LlenarFichaData.clearBorrador(fichaId);
-      closeEnviarModal();
-      window.location.href = `${base}pages/estudiante/mis-fichas.html?enviada=1`;
-    });
+    Promise.all([FichasData.ready(), FichasCicloData.ready()])
+      .then(() => {
+        fcp = FichasCicloData.findFcp(fcpId);
+        if (!fcp) {
+          toast("Ficha no encontrada", "danger");
+          return;
+        }
+
+        const gate = canOpen();
+        if (!gate.ok && !ver) {
+          toast(gate.reason, "danger");
+          setTimeout(() => {
+            window.location.href = "mis-fichas.html";
+          }, 800);
+          return;
+        }
+
+        llenado = FichasCicloData.findLlenado(estudianteId(), fcp.id);
+        if (llenado?.estado === "enviada" || ver) {
+          soloLectura = true;
+          if (!llenado) llenado = { id: "tmp", respuestas: [] };
+        } else {
+          llenado = ensureLlenado();
+        }
+
+        render();
+
+        const form = document.querySelector("[data-llenar-form]");
+        form?.addEventListener("input", () => {
+          updateProgress();
+          scheduleAutosave();
+        });
+        form?.addEventListener("change", () => {
+          updateProgress();
+          scheduleAutosave();
+        });
+
+        document.querySelector("[data-btn-borrador]")?.addEventListener("click", () => saveDraft(false));
+        document.querySelector("[data-btn-enviar]")?.addEventListener("click", enviar);
+      })
+      .catch((err) => {
+        console.error(err);
+        toast("Error al abrir la ficha", "danger");
+      });
   });
 })();

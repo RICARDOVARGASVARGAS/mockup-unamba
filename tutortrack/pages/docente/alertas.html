@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mis alertas | TutorTrack (Mockup)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap"
+    />
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <app-sidebar></app-sidebar>
+    <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
+      <app-topbar
+        page-title="Mis alertas"
+        user-name="Carlos Quispe Mamani"
+        user-role="Docente-Tutor"
+        user-initials="CQ"
+        user-avatar="assets/img/docentes/docente-1.jpg"
+      ></app-topbar>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8 space-y-4">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h2 class="font-heading text-xl font-bold text-text">Mis alertas</h2>
+            <p class="text-sm text-text-muted">Señales detectadas por IA en fichas de tus tutorados. Confidencial — el estudiante no las ve.</p>
+          </div>
+          <span data-cola-pendientes class="inline-flex items-center gap-1.5 rounded-full bg-danger/10 px-3 py-1.5 text-sm font-medium text-danger">
+            🔴 <span data-cola-n>0</span> pendientes
+          </span>
+        </div>
+
+        <div class="flex flex-wrap gap-2" data-contadores role="tablist" aria-label="Filtrar por estado">
+          <button type="button" class="alerta-count-chip is-active" data-filtro-estado="pendiente" aria-pressed="true">
+            Pendientes <span data-c-pendiente>0</span>
+          </button>
+          <button type="button" class="alerta-count-chip" data-filtro-estado="revisada" aria-pressed="false">
+            Revisadas <span data-c-revisada>0</span>
+          </button>
+          <button type="button" class="alerta-count-chip" data-filtro-estado="derivada" aria-pressed="false">
+            Derivadas <span data-c-derivada>0</span>
+          </button>
+          <button type="button" class="alerta-count-chip" data-filtro-estado="descartada" aria-pressed="false">
+            Descartadas <span data-c-descartada>0</span>
+          </button>
+          <button type="button" class="alerta-count-chip" data-filtro-estado="" aria-pressed="false">
+            Todas
+          </button>
+        </div>
+
+        <div class="flex flex-wrap items-end gap-2">
+          <div class="catalog-field min-w-[8rem]">
+            <label for="filtro-nivel" class="form-label">Nivel</label>
+            <select id="filtro-nivel" class="catalog-select">
+              <option value="">Todos</option>
+              <option value="Alta">Alta</option>
+              <option value="Media">Media</option>
+              <option value="Baja">Baja</option>
+            </select>
+          </div>
+          <div class="catalog-field min-w-[10rem]">
+            <label for="filtro-area" class="form-label">Área</label>
+            <select id="filtro-area" class="catalog-select">
+              <option value="">Todas</option>
+            </select>
+          </div>
+          <div class="catalog-field min-w-[12rem] flex-1">
+            <label for="filtro-q" class="form-label">Buscar</label>
+            <input id="filtro-q" type="search" class="form-input" placeholder="Estudiante o código…" />
+          </div>
+          <button type="button" id="btn-limpiar" class="btn-ghost" data-catalog-clear aria-label="Limpiar filtros">✕</button>
+        </div>
+
+        <div data-lista class="space-y-3"></div>
+        <p data-vacio class="hidden rounded-xl border border-dashed border-border bg-surface px-6 py-12 text-center text-text-muted">
+          No tienes alertas en este filtro 🎉
+        </p>
+      </main>
+    </div>
+
+    <!-- Drawer detalle -->
+    <div id="drawer-alerta-backdrop" class="app-drawer-backdrop hidden" aria-hidden="true"></div>
+    <aside id="drawer-alerta" class="app-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-alerta-title" hidden>
+      <div class="app-drawer-head">
+        <div class="min-w-0">
+          <h2 id="drawer-alerta-title" class="font-heading text-lg font-semibold">Detalle de alerta</h2>
+          <p data-drawer-sub class="mt-0.5 text-sm text-text-muted truncate"></p>
+        </div>
+        <button type="button" id="btn-drawer-cerrar" class="btn-ghost btn-icon shrink-0" title="Cerrar" aria-label="Cerrar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div class="app-drawer-body space-y-4" data-drawer-body></div>
+      <div class="app-drawer-foot flex flex-wrap gap-2" data-drawer-foot></div>
+    </aside>
+
+    <app-toast></app-toast>
+    <app-modal-confirm></app-modal-confirm>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/site-paths.js"></script>
+    <script src="../../components/app-sidebar.js"></script>
+    <script src="../../components/app-topbar.js"></script>
+    <script src="../../components/app-toast.js"></script>
+    <script src="../../components/app-modal-confirm.js"></script>
+    <script src="../../js/fichas-data.js"></script>
+    <script src="../../js/fichas-ciclo-data.js"></script>
+    <script src="../../js/entidades-receptoras-data.js"></script>
+    <script src="../../js/alertas-derivaciones-data.js"></script>
+    <script src="../../js/alertas.js"></script>
+  </body>
+</html>

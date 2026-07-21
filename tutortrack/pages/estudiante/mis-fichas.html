@@ -6,7 +6,10 @@
     <title>Mis fichas | TutorTrack (Mockup)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap"
+    />
     <link rel="stylesheet" href="../../css/tokens.css" />
     <link rel="stylesheet" href="../../css/base.css" />
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,17 +18,38 @@
   <body class="w-full bg-bg text-text font-body antialiased">
     <app-sidebar></app-sidebar>
     <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
-      <app-topbar page-title="Mis fichas" user-name="Ana Lucía Quispe Mamani" user-role="Estudiante" user-initials="AQ" user-avatar=""></app-topbar>
+      <app-topbar
+        page-title="Mis fichas"
+        user-name="Ana Quispe Mamani"
+        user-role="Estudiante"
+        user-initials="AQ"
+        user-avatar="assets/img/estudiantes/estudiante-1.jpg"
+      ></app-topbar>
 
-      <main class="flex-1 p-4 sm:p-6 lg:p-8 space-y-5">
+      <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <div class="mx-auto w-full max-w-lg">
+          <div class="flex flex-wrap items-end justify-between gap-2">
+            <div>
+              <h2 class="font-heading text-xl font-bold text-text">Mis fichas</h2>
+              <p class="mt-0.5 text-sm text-text-muted" data-contexto>
+                2026-I · Quinto ciclo
+              </p>
+            </div>
+            <p class="text-sm text-text-muted">
+              Tutor: <span class="font-medium text-text" data-tutor>Dr. Quispe</span>
+            </p>
+          </div>
 
-        <div>
-          <h2 class="font-heading text-xl font-bold text-text">Mis fichas</h2>
-          <p class="mt-0.5 text-sm text-text-muted">1° Ciclo · 2026-I · Tutor: Mg. Hugo Vargas H.</p>
+          <div class="mt-3">
+            <label for="sel-estudiante" class="form-label text-xs">Demo · ver como</label>
+            <select id="sel-estudiante" class="form-input"></select>
+          </div>
+
+          <div data-fichas-list class="mt-5 space-y-3"></div>
+          <div data-fichas-empty class="hidden mt-8 rounded-lg border border-dashed border-border py-10 text-center text-sm text-text-muted">
+            No hay fichas asignadas todavía.
+          </div>
         </div>
-
-        <div id="fichas-grid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
-
       </main>
     </div>
 
@@ -36,7 +60,8 @@
     <script src="../../components/app-sidebar.js"></script>
     <script src="../../components/app-topbar.js"></script>
     <script src="../../components/app-toast.js"></script>
-    <script src="../../js/mis-fichas-data.js"></script>
+    <script src="../../js/fichas-data.js"></script>
+    <script src="../../js/fichas-ciclo-data.js"></script>
     <script src="../../js/mis-fichas.js"></script>
   </body>
 </html>

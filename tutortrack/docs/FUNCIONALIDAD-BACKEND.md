@@ -314,7 +314,8 @@ permisos los define el desarrollador y se **siembran**.
 - Edita encabezado. **No** toca preguntas — esas tienen su propio endpoint.
 
 **`DELETE /fichas/{id}`**
-- Rechaza si tiene `ficha_ciclo_periodo` referenciada (ya fue asignada a algún ciclo+período). Usar `PATCH /fichas/{id}/estado` para desactivarla.
+- Rechaza si alguna `ficha_ciclo_periodo` la referencia como `ficha_origen_id` (ya
+  fue **clonada** por algún docente). Usar `PATCH /fichas/{id}/estado` para desactivarla.
 
 **`PATCH /fichas/{id}/estado`**
 - Body: `{ activo: 0 | 1 }`. Activa o desactiva la plantilla.
@@ -376,9 +377,15 @@ exigen que el `docente_id` autenticado sea dueño / esté asignado al `cp_id`.
 - **Crear de cero:** body `{ desde_cero: true, tipo_ficha_id, nombre, descripcion? }`
   → `ficha_ciclo_periodo` sin preguntas (`ficha_origen_id = NULL`, `habilitada = 0`).
 
-**Preguntas de la ficha del docente:** mismos endpoints que la plantilla
-(`POST/PUT/DELETE /preguntas`, reordenar), pero apuntando al `ficha_ciclo_periodo_id`
-del clon. El docente edita libremente **su** copia sin tocar la plantilla.
+**Preguntas de la ficha del docente:** misma lógica que la plantilla, con rutas
+paralelas:
+- **Crear:** `POST /ciclos-periodos/{cp_id}/fichas/{fcp_id}/preguntas` (análogo a
+  `POST /fichas/{id}/preguntas`, pero llena `ficha_ciclo_periodo_id` en vez de `ficha_id`).
+- **Editar / eliminar / reordenar:** `PUT`/`DELETE /preguntas/{id}` y
+  `PUT /ciclos-periodos/{cp_id}/fichas/{fcp_id}/preguntas/reordenar` (los de
+  `pregunta` van por `id`, sirven para ambos padres gracias al CHECK XOR
+  `chk_pregunta_padre`).
+El docente edita libremente **su** copia sin tocar la plantilla.
 
 **`PATCH /ciclos-periodos/{cp_id}/fichas/{fcp_id}/habilitar`** _(docente dueño)_
 - Body: `{ habilitada: 0 | 1 }`. Habilita/inhabilita la ficha para sus estudiantes.
@@ -552,6 +559,14 @@ del clon. El docente edita libremente **su** copia sin tocar la plantilla.
 - Rechaza `422` si la alerta ya tiene una `derivacion` asociada (`alerta_ia_id` en alguna fila de `derivacion`): "No se puede descartar una alerta que ya generó una derivación."
 - Actualiza `estado → 'descartada'`.
 
+**`PATCH /mis-alertas/{id}/reactivar`** _(docente autenticado)_
+- Valida autorización (mismo criterio).
+- Solo aplica si `estado = 'descartada'` → la vuelve a `'revisada'` para poder
+  derivarla (deshace un descarte hecho por error). **Sin cambio de esquema** —
+  es solo una transición de estado.
+- *(Alternativa siempre disponible: derivar **manual** sin alerta —
+  `derivacion.alerta_ia_id` es opcional — aunque la alerta siga descartada.)*
+
 **`GET /alertas`** _(admin)_
 - Sin filtro automático por docente — el admin ve todo.
 - Filtros: `?docente_id=`, `?estudiante_id=`, `?estado=`, `?nivel_alerta=`, `?area_id=`, `?ciclo_periodo_id=`, `?fecha_desde=`, `?fecha_hasta=`, `?page=`.
@@ -626,8 +641,36 @@ Responde `200` con la derivación actualizada.
 
 ---
 
+**`PATCH /derivaciones/{id}/visibilidad`** _(docente creador / receptor de la entidad)_
+
+Controla si el **estudiante** puede ver esta derivación.
+1. **Validar acceso:** debe ser el `docente_id` creador **o** el receptor de la
+   `entidad_receptora_id` de la derivación. Si no → `403`.
+2. **Body:** `{ visible_estudiante: 0 | 1, mensaje_estudiante? }`.
+   - Al poner `1`, se recomienda enviar `mensaje_estudiante` (mensaje **humano**);
+     si viene vacío, el frontend muestra un texto genérico.
+3. **Actualiza** `derivacion.visible_estudiante` (+ `mensaje_estudiante`). El cambio
+   queda en `auditoria`.
+   - **Nunca** expone `motivo` ni `justificacion` de la IA al estudiante — solo el
+     `mensaje_estudiante`.
+
+---
+
+**`GET /mi-seguimiento`** _(estudiante autenticado)_
+
+- Devuelve **solo** las derivaciones **propias** con `visible_estudiante = 1`.
+- Respuesta **saneada**: `entidad_receptora.nombre` + `mensaje_estudiante` (o un
+  texto genérico) + un indicador simple ("en seguimiento"). **No** incluye
+  `motivo`, `justificacion`, la alerta, ni el estado interno del pipeline.
+- Si no hay ninguna visible → lista vacía (el estudiante no ve nada).
+
+---
+
 **Notas de seguridad del módulo:**
-- Un estudiante **nunca ve** sus propias alertas ni derivaciones — la confidencialidad protege el proceso de tutoría.
+- Un estudiante **nunca ve** sus **alertas**. De sus **derivaciones** solo ve las
+  marcadas `visible_estudiante = 1` por el profesional, y **saneadas** (entidad +
+  `mensaje_estudiante`) — nunca `motivo`, `justificacion` ni el estado interno.
+  La confidencialidad protege el proceso de tutoría.
 - El docente solo ve alertas y derivaciones de sus **propios tutorados** (verificar siempre contra `estudiante_ciclo_periodo`).
 - El receptor solo ve derivaciones para **su entidad** (verificar siempre contra `receptor.entidad_receptora_id`).
 - Ningún endpoint de este módulo expone datos de otros docentes o entidades.

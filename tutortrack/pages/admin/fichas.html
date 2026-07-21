@@ -3,10 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fichas | TutorTrack (Mockup)</title>
+    <title>Plantillas de fichas | TutorTrack (Mockup)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap"
+    />
     <link rel="stylesheet" href="../../css/tokens.css" />
     <link rel="stylesheet" href="../../css/base.css" />
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,27 +18,72 @@
   <body class="w-full bg-bg text-text font-body antialiased">
     <app-sidebar></app-sidebar>
     <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
-      <app-topbar page-title="Plantillas de fichas" user-name="Ricardo Vargas Vargas" user-role="Administrador" user-initials="RV" user-avatar="assets/img/admin/ricardo-vargas.jpg"></app-topbar>
+      <app-topbar
+        page-title="Plantillas de fichas"
+        user-name="Ricardo Vargas Vargas"
+        user-role="Administrador"
+        user-initials="RV"
+        user-avatar="assets/img/admin/ricardo-vargas.jpg"
+      ></app-topbar>
 
       <main class="flex-1 p-4 sm:p-6 lg:p-8">
-        <section class="app-card catalog-panel" data-catalog data-audit-table="ficha" data-delete-toast="Plantilla eliminada">
+        <div class="people-summary" data-people-summary aria-label="Resumen de plantillas">
+          <article class="people-summary-card people-summary-total">
+            <div class="people-summary-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+              </svg>
+            </div>
+            <div>
+              <p class="people-summary-label">Total</p>
+              <p class="people-summary-value" data-summary-total>0</p>
+              <p class="people-summary-sub">plantillas</p>
+            </div>
+          </article>
+          <article class="people-summary-card people-summary-active">
+            <div class="people-summary-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+              </svg>
+            </div>
+            <div>
+              <p class="people-summary-label">Activas</p>
+              <p class="people-summary-value" data-summary-activos>0</p>
+              <p class="people-summary-sub">clonables</p>
+            </div>
+          </article>
+          <article class="people-summary-card people-summary-inactive">
+            <div class="people-summary-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
+              </svg>
+            </div>
+            <div>
+              <p class="people-summary-label">Inactivas</p>
+              <p class="people-summary-value" data-summary-inactivos>0</p>
+              <p class="people-summary-sub">no clonables</p>
+            </div>
+          </article>
+        </div>
+
+        <section class="app-card catalog-panel mt-5" data-catalog data-audit-table="ficha" data-delete-toast="Plantilla eliminada">
           <div class="catalog-head">
             <div>
               <h2 class="font-heading">Plantillas de fichas</h2>
-              <p>Diseña las fichas que los estudiantes completarán durante el ciclo.</p>
+              <p>Biblioteca general. El docente las clona desde «Fichas de mi ciclo».</p>
             </div>
             <div class="catalog-head-actions">
               <button type="button" data-catalog-refresh class="btn-secondary">
                 <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182" />
                 </svg>
-                Actualizar lista
+                Actualizar
               </button>
               <button type="button" data-open-create class="btn-primary">
                 <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                 </svg>
-                Nueva ficha
+                Nueva plantilla
               </button>
             </div>
           </div>
@@ -48,6 +96,12 @@
             <div class="catalog-field">
               <label for="filter-tipo">Tipo</label>
               <select id="filter-tipo" data-filter="tipo" class="catalog-select min-w-[11rem]">
+                <option value="">Todos</option>
+              </select>
+            </div>
+            <div class="catalog-field">
+              <label for="filter-ciclo">Ciclo</label>
+              <select id="filter-ciclo" data-filter="ciclo" class="catalog-select min-w-[11rem]">
                 <option value="">Todos</option>
               </select>
             </div>
@@ -81,7 +135,7 @@
             </table>
           </div>
           <div class="catalog-empty hidden" data-catalog-empty>
-            <p>No se encontraron fichas con esos criterios.</p>
+            <p>No se encontraron plantillas con esos criterios.</p>
           </div>
           <div class="catalog-pagination" data-catalog-pagination></div>
         </section>
@@ -102,6 +156,7 @@
     <script src="../../components/app-toast.js"></script>
     <script src="../../js/catalog-table.js"></script>
     <script src="../../js/fichas-data.js"></script>
+    <script src="../../js/fichas-ciclo-data.js"></script>
     <script src="../../js/fichas.js"></script>
   </body>
 </html>

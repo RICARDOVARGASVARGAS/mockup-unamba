@@ -60,10 +60,7 @@
         },
         {
           label: "Fichas",
-          items: [
-            { label: "Plantillas de fichas", path: "admin/fichas.html" },
-            { label: "Asignación a ciclos", path: "admin/fichas-ciclo-periodo.html" },
-          ],
+          items: [{ label: "Plantillas de fichas", path: "admin/fichas.html" }],
         },
         {
           label: "Alertas y derivación",
@@ -89,7 +86,10 @@
         },
         {
           label: "Fichas",
-          items: [{ label: "Fichas de mis tutorados", path: "docente/fichas-tutorados.html" }],
+          items: [
+            { label: "Fichas de mi ciclo", path: "docente/fichas-ciclo.html" },
+            { label: "Fichas de mis tutorados", path: "docente/fichas-tutorados.html" },
+          ],
         },
         {
           label: "Alertas",

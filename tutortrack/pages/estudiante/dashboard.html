@@ -4,88 +4,60 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inicio Estudiante | TutorTrack (Mockup)</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" />
-
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap"
+    />
     <link rel="stylesheet" href="../../css/tokens.css" />
     <link rel="stylesheet" href="../../css/base.css" />
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../../js/tailwind-config.js"></script>
   </head>
   <body class="w-full bg-bg text-text font-body antialiased">
     <app-sidebar></app-sidebar>
-
     <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
       <app-topbar
         page-title="Inicio"
-        user-name="Ana Torres Rojas"
+        user-name="Ana Quispe Mamani"
         user-role="Estudiante"
-        user-initials="AT"
+        user-initials="AQ"
         user-ciclo="5"
         user-avatar="assets/img/estudiantes/estudiante-1.jpg"
       ></app-topbar>
 
-      <main class="flex-1 space-y-8 p-4 sm:p-6 lg:p-8">
-        <section class="campus-strip" aria-label="Bienvenida">
-          <img
-            class="campus-strip__media"
-            src="../../assets/img/campus/banner_2.png"
-            alt=""
-            width="1200"
-            height="400"
-            decoding="async"
-          />
-          <div class="campus-strip__overlay" aria-hidden="true"></div>
-          <div class="campus-strip__content">
-            <p>Ciclo 5° · Periodo 2026-I</p>
-            <h2>Hola, Ana</h2>
+      <main class="flex-1 space-y-5 p-4 sm:p-6 lg:p-8 max-w-3xl">
+        <div>
+          <h2 class="font-heading text-2xl font-bold text-text">Hola, <span data-nombre>Ana</span> 👋</h2>
+          <p class="text-sm text-text-muted" data-contexto>Quinto ciclo · 2026-I</p>
+        </div>
+
+        <!-- Tarjetas de seguimiento (solo si visible_estudiante=1) -->
+        <div data-seguimiento class="space-y-3" hidden></div>
+
+        <section class="app-card p-5">
+          <h3 class="section-title">Tu próxima ficha</h3>
+          <div class="mt-3 flex flex-wrap items-center justify-between gap-3" data-proxima-ficha>
+            <p class="text-sm text-text-muted">Cargando…</p>
           </div>
         </section>
 
-        <section class="priority-band" data-tone="accent" aria-label="Ficha pendiente">
-          <div>
-            <span class="badge badge-accent">Pendiente</span>
-            <h2 class="mt-2">Tienes una ficha de seguimiento por llenar</h2>
-            <p>Semana 9 · Te toma unos minutos. Tus respuestas son confidenciales.</p>
-          </div>
-          <a href="fichas.html" class="btn-primary shrink-0">Llenar ahora</a>
-        </section>
-
-        <section class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <section class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div class="app-card p-5">
-            <h2 class="section-title">Mi tutor asignado</h2>
-            <div class="mt-4 flex items-center gap-3">
-              <img class="avatar-photo avatar-photo-lg" src="../../assets/img/docentes/docente-1.jpg" alt="" width="48" height="48" />
-              <div>
-                <p class="text-sm font-medium text-text">Carlos Quispe Mamani</p>
-                <p class="text-sm text-text-muted">Docente-Tutor · Ciclo 5°</p>
-              </div>
+            <h3 class="section-title">Tu progreso</h3>
+            <div class="mt-3 h-2.5 overflow-hidden rounded-full bg-border">
+              <div class="h-full rounded-full bg-primary" data-progreso-bar style="width: 40%"></div>
             </div>
-            <a href="tutor.html" class="section-link mt-4 inline-block">Ver detalle</a>
+            <p class="mt-2 text-sm text-text-muted" data-progreso-label>—</p>
           </div>
-
           <div class="app-card p-5">
-            <div class="flex items-center justify-between gap-2">
-              <h2 class="section-title">Historial de fichas</h2>
-              <a href="fichas.html" class="section-link">Ver todas</a>
+            <h3 class="section-title">Tu tutor</h3>
+            <div class="mt-3" data-tutor-card>
+              <p class="text-sm font-medium text-text" data-tutor-nombre>—</p>
+              <p class="text-sm text-text-muted" data-tutor-email>—</p>
             </div>
-            <ul class="mt-4 divide-y divide-border">
-              <li class="flex items-start justify-between gap-3 py-3 first:pt-0 last:pb-0">
-                <p class="text-sm text-text">Ficha de seguimiento — semana 8</p>
-                <span class="badge badge-success shrink-0">Enviada</span>
-              </li>
-              <li class="flex items-start justify-between gap-3 py-3 first:pt-0 last:pb-0">
-                <p class="text-sm text-text">Ficha grupal — bienestar universitario</p>
-                <span class="badge badge-success shrink-0">Enviada</span>
-              </li>
-              <li class="flex items-start justify-between gap-3 py-3 first:pt-0 last:pb-0">
-                <p class="text-sm text-text">Ficha de diagnóstico</p>
-                <span class="badge badge-success shrink-0">Enviada</span>
-              </li>
-            </ul>
+            <a href="tutor.html" class="section-link mt-3 inline-block">Ver detalle</a>
           </div>
         </section>
       </main>
@@ -95,5 +67,10 @@
     <script src="../../js/site-paths.js"></script>
     <script src="../../components/app-sidebar.js"></script>
     <script src="../../components/app-topbar.js"></script>
+    <script src="../../js/fichas-data.js"></script>
+    <script src="../../js/fichas-ciclo-data.js"></script>
+    <script src="../../js/entidades-receptoras-data.js"></script>
+    <script src="../../js/alertas-derivaciones-data.js"></script>
+    <script src="../../js/dashboard-estudiante.js"></script>
   </body>
 </html>

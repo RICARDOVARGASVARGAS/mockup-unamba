@@ -1,8 +1,11 @@
 /**
  * app-toast.js — notificación superior centrada (<app-toast>).
  * Una sola instancia por página. Escucha "app:toast" en `document`:
- *   detail: { message: string, type?: "success"|"error"|"warning"|"info" }
- * Por defecto: success. Baja desde arriba; auto-cierra a los 4.5s o con X.
+ *   detail: { title, subtitle?, type? }  — preferido
+ *   detail: { message, type? }           — compat: message → título
+ * Tipos: success | info | warning | error | danger (alias de error).
+ * Duración: success/info 4s · warning/danger 6s. Cierre con ✕.
+ * Posición superior centrada; slide-down al entrar; fade-out al salir.
  */
 (function () {
   const ICONS = {
@@ -17,10 +20,24 @@
   };
 
   const TYPES = new Set(["success", "error", "warning", "info"]);
+  const DURATION_MS = {
+    success: 4000,
+    info: 4000,
+    warning: 6000,
+    error: 6000,
+  };
+  const EXIT_MS = 320;
 
   function normalizeType(type) {
     if (type === "danger") return "error";
     return TYPES.has(type) ? type : "success";
+  }
+
+  /** Título obligatorio; subtitle opcional. Compat: message → title. */
+  function resolveCopy(detail = {}) {
+    const title = String(detail.title ?? detail.message ?? "").trim();
+    const subtitle = String(detail.subtitle ?? "").trim();
+    return { title, subtitle };
   }
 
   class AppToast extends HTMLElement {
@@ -29,7 +46,10 @@
         <div class="app-toast-host" aria-live="polite" aria-relevant="additions">
           <div data-toast class="app-toast" hidden role="status">
             <span data-toast-icon class="app-toast-icon" aria-hidden="true"></span>
-            <p data-toast-message class="app-toast-message"></p>
+            <div class="app-toast-body">
+              <p data-toast-title class="app-toast-title"></p>
+              <p data-toast-subtitle class="app-toast-subtitle" hidden></p>
+            </div>
             <button type="button" data-toast-close class="app-toast-close" aria-label="Cerrar notificación">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">${ICONS.close}</svg>
             </button>
@@ -37,43 +57,55 @@
         </div>
       `;
       this.timer = null;
+      this.exitTimer = null;
       this.init();
     }
 
     init() {
       const toast = this.querySelector("[data-toast]");
-      const messageEl = this.querySelector("[data-toast-message]");
+      const titleEl = this.querySelector("[data-toast-title]");
+      const subtitleEl = this.querySelector("[data-toast-subtitle]");
       const iconEl = this.querySelector("[data-toast-icon]");
 
       const hide = () => {
-        toast.hidden = true;
+        clearTimeout(this.timer);
+        clearTimeout(this.exitTimer);
+        if (toast.hidden) return;
         toast.classList.remove("is-visible");
+        this.exitTimer = setTimeout(() => {
+          toast.hidden = true;
+        }, EXIT_MS);
       };
 
       const show = (detail = {}) => {
-        const text = detail.message || "";
-        if (!text) return;
+        const { title, subtitle } = resolveCopy(detail);
+        if (!title) return;
         const type = normalizeType(detail.type);
 
+        clearTimeout(this.timer);
+        clearTimeout(this.exitTimer);
+
         toast.dataset.type = type;
-        messageEl.textContent = text;
+        titleEl.textContent = title;
+        if (subtitle) {
+          subtitleEl.textContent = subtitle;
+          subtitleEl.hidden = false;
+        } else {
+          subtitleEl.textContent = "";
+          subtitleEl.hidden = true;
+        }
         iconEl.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">${ICONS[type]}</svg>`;
 
         toast.hidden = false;
-        // Reinicia animación de entrada
         toast.classList.remove("is-visible");
         void toast.offsetWidth;
         toast.classList.add("is-visible");
 
-        clearTimeout(this.timer);
-        this.timer = setTimeout(hide, 4500);
+        this.timer = setTimeout(hide, DURATION_MS[type] ?? 4000);
       };
 
       document.addEventListener("app:toast", (event) => show(event.detail || {}));
-      this.querySelector("[data-toast-close]").addEventListener("click", () => {
-        clearTimeout(this.timer);
-        hide();
-      });
+      this.querySelector("[data-toast-close]").addEventListener("click", hide);
     }
   }
 

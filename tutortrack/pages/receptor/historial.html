@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Historial de seguimiento | TutorTrack (Mockup)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap"
+    />
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <app-sidebar></app-sidebar>
+    <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
+      <app-topbar
+        page-title="Historial de seguimiento"
+        user-name="Rosa Medina Ccahua"
+        user-role="Receptor · Psicología"
+        user-initials="RM"
+        user-avatar="assets/img/avatares/usuario-f.svg"
+      ></app-topbar>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8 space-y-4">
+        <div>
+          <h2 class="font-heading text-xl font-bold text-text">
+            Historial de seguimiento · <span data-entidad-nombre>Psicología</span>
+          </h2>
+          <p class="text-sm text-text-muted">
+            Registro cronológico de movimientos (auditoría). Solo lectura — complementa el kanban y el timeline por caso.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-end gap-2">
+          <div class="catalog-field min-w-[10rem]">
+            <label for="filtro-estudiante" class="form-label">Estudiante</label>
+            <select id="filtro-estudiante" class="catalog-select">
+              <option value="">Todos</option>
+            </select>
+          </div>
+          <div class="catalog-field min-w-[10rem]">
+            <label for="filtro-estado" class="form-label">Estado</label>
+            <select id="filtro-estado" class="catalog-select">
+              <option value="">Todos</option>
+            </select>
+          </div>
+          <div class="catalog-field">
+            <label for="filtro-desde" class="form-label">Desde</label>
+            <input id="filtro-desde" type="date" class="form-input" />
+          </div>
+          <div class="catalog-field">
+            <label for="filtro-hasta" class="form-label">Hasta</label>
+            <input id="filtro-hasta" type="date" class="form-input" />
+          </div>
+          <div class="catalog-field min-w-[12rem] flex-1">
+            <label for="filtro-q" class="form-label">Buscar</label>
+            <input id="filtro-q" type="search" class="form-input" placeholder="Quién, estudiante, nota…" />
+          </div>
+          <button type="button" id="btn-limpiar" class="btn-ghost" data-catalog-clear aria-label="Limpiar">✕</button>
+        </div>
+
+        <div data-feed class="space-y-0"></div>
+        <p data-vacio class="hidden rounded-xl border border-dashed border-border px-6 py-12 text-center text-text-muted">
+          No hay movimientos con estos filtros.
+        </p>
+      </main>
+    </div>
+
+    <app-toast></app-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/site-paths.js"></script>
+    <script src="../../components/app-sidebar.js"></script>
+    <script src="../../components/app-topbar.js"></script>
+    <script src="../../components/app-toast.js"></script>
+    <script src="../../js/entidades-receptoras-data.js"></script>
+    <script src="../../js/alertas-derivaciones-data.js"></script>
+    <script src="../../js/historial.js"></script>
+  </body>
+</html>

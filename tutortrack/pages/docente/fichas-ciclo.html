@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fichas de mi ciclo | TutorTrack (Mockup)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap"
+    />
+    <link rel="stylesheet" href="../../css/tokens.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../js/tailwind-config.js"></script>
+  </head>
+  <body class="w-full bg-bg text-text font-body antialiased">
+    <app-sidebar></app-sidebar>
+    <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
+      <app-topbar
+        page-title="Fichas de mi ciclo"
+        user-name="Carlos Quispe Mamani"
+        user-role="Docente-Tutor"
+        user-initials="CQ"
+        user-avatar="assets/img/docentes/docente-1.jpg"
+      ></app-topbar>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <div class="people-summary" data-people-summary aria-label="Resumen">
+          <article class="people-summary-card people-summary-total">
+            <div class="people-summary-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+              </svg>
+            </div>
+            <div>
+              <p class="people-summary-label">Mis fichas</p>
+              <p class="people-summary-value" data-summary-total>0</p>
+              <p class="people-summary-sub">en este ciclo</p>
+            </div>
+          </article>
+          <article class="people-summary-card people-summary-active">
+            <div class="people-summary-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+              </svg>
+            </div>
+            <div>
+              <p class="people-summary-label">Habilitadas</p>
+              <p class="people-summary-value" data-summary-hab>0</p>
+              <p class="people-summary-sub">visibles al estudiante</p>
+            </div>
+          </article>
+          <article class="people-summary-card people-summary-inactive">
+            <div class="people-summary-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.146a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.908.274-1.812.564-2.659.813m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
+              </svg>
+            </div>
+            <div>
+              <p class="people-summary-label">Estudiantes</p>
+              <p class="people-summary-value" data-summary-est>0</p>
+              <p class="people-summary-sub">del ciclo</p>
+            </div>
+          </article>
+        </div>
+
+        <section class="app-card catalog-panel mt-5">
+          <div class="catalog-head">
+            <div>
+              <h2 class="font-heading">Fichas de mi ciclo</h2>
+              <p>Clona de la biblioteca o crea de cero; habilita a tu ritmo.</p>
+            </div>
+            <div class="catalog-head-actions flex flex-wrap items-center gap-2">
+              <div class="catalog-field">
+                <label for="sel-periodo" class="sr-only">Período</label>
+                <select id="sel-periodo" class="catalog-select min-w-[9rem]">
+                  <option value="per-2026-1">2026-I · Vigente</option>
+                </select>
+              </div>
+              <div class="catalog-field">
+                <label for="sel-ciclo" class="sr-only">Ciclo</label>
+                <select id="sel-ciclo" class="catalog-select min-w-[10rem]">
+                  <option value="ciclo-5">Quinto ciclo</option>
+                </select>
+              </div>
+              <div class="relative" data-nueva-menu>
+                <button type="button" data-nueva-trigger class="btn-primary" aria-haspopup="menu" aria-expanded="false">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                  Nueva ficha
+                  <svg class="h-3.5 w-3.5 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+                </button>
+                <div data-nueva-panel class="catalog-overflow-panel absolute right-0 z-20 mt-1 hidden min-w-[14rem]" role="menu">
+                  <button type="button" class="catalog-overflow-item" data-clonar role="menuitem">Clonar de plantilla…</button>
+                  <button type="button" class="catalog-overflow-item" data-desde-cero role="menuitem">Crear de cero</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="catalog-table-wrap mt-4">
+            <table class="catalog-table">
+              <thead>
+                <tr>
+                  <th class="text-center w-12">N°</th>
+                  <th>Ficha</th>
+                  <th>Tipo</th>
+                  <th class="text-center">Preguntas</th>
+                  <th class="text-center">Habilitada</th>
+                  <th>Llenado</th>
+                  <th class="text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody data-fcp-body></tbody>
+            </table>
+          </div>
+          <div data-fcp-empty class="hidden catalog-empty"><p>Aún no tienes fichas en este ciclo.</p></div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Modal clonar -->
+    <div data-clonar-backdrop class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
+      <div class="modal-panel w-full max-w-lg">
+        <h2 class="font-heading text-lg font-semibold">Clonar de plantilla</h2>
+        <p class="mt-1 text-sm text-text-muted">Biblioteca activa. La sugerencia de ciclo es guía, no bloquea.</p>
+        <div data-clonar-list class="mt-4 max-h-80 space-y-2 overflow-y-auto"></div>
+        <div class="mt-4 flex justify-end">
+          <button type="button" data-clonar-cerrar class="btn-secondary">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal crear de cero -->
+    <div data-cero-backdrop class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
+      <div class="modal-panel w-full max-w-md">
+        <h2 class="font-heading text-lg font-semibold">Crear ficha de cero</h2>
+        <div class="mt-4 space-y-3">
+          <div>
+            <label for="cero-nombre" class="form-label">Nombre <span class="text-danger">*</span></label>
+            <input id="cero-nombre" type="text" class="form-input" placeholder="Nombre de la ficha" />
+          </div>
+          <div>
+            <label for="cero-tipo" class="form-label">Tipo <span class="text-danger">*</span></label>
+            <select id="cero-tipo" class="form-input"></select>
+          </div>
+          <div>
+            <label for="cero-desc" class="form-label">Descripción</label>
+            <textarea id="cero-desc" rows="2" class="form-textarea"></textarea>
+          </div>
+        </div>
+        <div class="mt-4 flex justify-end gap-2">
+          <button type="button" data-cero-cerrar class="btn-secondary">Cancelar</button>
+          <button type="button" data-cero-crear class="btn-primary">Crear y editar</button>
+        </div>
+      </div>
+    </div>
+
+    <app-modal-confirm></app-modal-confirm>
+    <app-toast></app-toast>
+
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/site-paths.js"></script>
+    <script src="../../components/app-sidebar.js"></script>
+    <script src="../../components/app-topbar.js"></script>
+    <script src="../../components/app-modal-confirm.js"></script>
+    <script src="../../components/app-toast.js"></script>
+    <script src="../../js/fichas-data.js"></script>
+    <script src="../../js/fichas-ciclo-data.js"></script>
+    <script src="../../js/fichas-ciclo.js"></script>
+  </body>
+</html>

@@ -4,20 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard Docente-Tutor | TutorTrack (Mockup)</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" />
-
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap"
+    />
     <link rel="stylesheet" href="../../css/tokens.css" />
     <link rel="stylesheet" href="../../css/base.css" />
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../../js/tailwind-config.js"></script>
   </head>
   <body class="w-full bg-bg text-text font-body antialiased">
     <app-sidebar></app-sidebar>
-
     <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
       <app-topbar
         page-title="Dashboard"
@@ -27,93 +26,45 @@
         user-avatar="assets/img/docentes/docente-1.jpg"
       ></app-topbar>
 
-      <main class="flex-1 space-y-8 p-4 sm:p-6 lg:p-8">
-        <section class="campus-strip" aria-label="Contexto">
-          <img
-            class="campus-strip__media"
-            src="../../assets/img/campus/banner_1.png"
-            alt=""
-            width="1200"
-            height="400"
-            decoding="async"
-          />
-          <div class="campus-strip__overlay" aria-hidden="true"></div>
-          <div class="campus-strip__content">
-            <p>Ciclo 5° · Periodo 2026-I</p>
-            <h2>Mis tutorados</h2>
-          </div>
-        </section>
+      <main class="flex-1 space-y-6 p-4 sm:p-6 lg:p-8">
+        <h2 class="font-heading text-xl font-bold text-text">Dashboard · Docente-Tutor</h2>
 
-        <section class="priority-band" data-tone="danger" aria-label="Prioridad">
-          <div>
-            <span class="badge badge-danger">Urgente</span>
-            <h2 class="mt-2">3 alertas IA requieren tu revisión</h2>
-            <p>Revisa las señales detectadas antes de decidir una derivación.</p>
-          </div>
-          <a href="alertas.html" class="btn-primary shrink-0">Revisar ahora</a>
-        </section>
-
-        <section aria-label="Indicadores" class="stat-strip stat-strip-3">
+        <section aria-label="KPIs" class="stat-strip">
           <div class="stat-strip-item" data-tone="primary">
-            <span class="stat-strip-value">32</span>
-            <span class="stat-strip-label">Tutorados a mi cargo</span>
-            <span class="stat-strip-meta">Ciclo 5°</span>
+            <span class="stat-strip-value" data-kpi-tutorados>0</span>
+            <span class="stat-strip-label">Tutorados</span>
           </div>
           <div class="stat-strip-item" data-tone="warning">
-            <span class="stat-strip-value">6</span>
-            <span class="stat-strip-label">Fichas por revisar</span>
-            <span class="stat-strip-meta">Esta semana</span>
+            <span class="stat-strip-value" data-kpi-por-rev>0</span>
+            <span class="stat-strip-label">Fichas por rev.</span>
           </div>
           <div class="stat-strip-item" data-tone="danger">
-            <span class="stat-strip-value">3</span>
-            <span class="stat-strip-label">Alertas pendientes</span>
-            <span class="stat-strip-meta">Requieren revisión</span>
+            <span class="stat-strip-value" data-kpi-alertas>0</span>
+            <span class="stat-strip-label">Alertas</span>
+          </div>
+          <div class="stat-strip-item">
+            <span class="stat-strip-value" data-kpi-deriv>0</span>
+            <span class="stat-strip-label">Derivaciones</span>
           </div>
         </section>
 
-        <section class="grid grid-cols-1 gap-6 lg:grid-cols-3">
-          <div>
-            <h2 class="section-title">Accesos rápidos</h2>
-            <nav class="quick-links mt-3" aria-label="Accesos rápidos">
-              <a href="tutorados.html">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Z" /></svg>
-                Ver mis tutorados
-              </a>
-              <a href="fichas.html">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>
-                Revisar fichas pendientes
-              </a>
-              <a href="alertas.html" data-urgent>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" /></svg>
-                Alertas de mis tutorados
-              </a>
-            </nav>
+        <section class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <div class="app-card p-5">
+            <h3 class="section-title">Por revisar</h3>
+            <ul class="mt-3 space-y-2" data-lista-por-revisar></ul>
+            <a href="fichas-tutorados.html" class="section-link mt-3 inline-block">Ir a revisar</a>
           </div>
-
+          <div class="app-card p-5">
+            <h3 class="section-title">Alertas recientes</h3>
+            <ul class="mt-3 space-y-2" data-lista-alertas></ul>
+            <a href="alertas.html" class="section-link mt-3 inline-block">Ver alertas</a>
+          </div>
           <div class="app-card p-5 lg:col-span-2">
-            <h2 class="section-title">Fichas enviadas recientemente</h2>
-            <ul class="mt-4 divide-y divide-border">
-              <li class="flex items-start justify-between gap-3 py-3 first:pt-0 last:pb-0">
-                <div class="flex gap-3">
-                  <img class="avatar-photo" src="../../assets/img/estudiantes/estudiante-1.jpg" alt="" width="40" height="40" />
-                  <div>
-                    <p class="text-sm font-medium text-text">Ficha de seguimiento — semana 8</p>
-                    <p class="text-sm text-text-muted">Enviada hoy, 08:40 a.m.</p>
-                  </div>
-                </div>
-                <span class="badge badge-info shrink-0">Sin revisar</span>
-              </li>
-              <li class="flex items-start justify-between gap-3 py-3 first:pt-0 last:pb-0">
-                <div class="flex gap-3">
-                  <img class="avatar-photo" src="../../assets/img/estudiantes/estudiante-2.jpg" alt="" width="40" height="40" />
-                  <div>
-                    <p class="text-sm font-medium text-text">Ficha de diagnóstico</p>
-                    <p class="text-sm text-text-muted">Enviada ayer</p>
-                  </div>
-                </div>
-                <span class="badge badge-success shrink-0">Revisada</span>
-              </li>
-            </ul>
+            <h3 class="section-title">Avance de mis tutorados</h3>
+            <div class="mt-3 h-2.5 overflow-hidden rounded-full bg-border">
+              <div class="h-full rounded-full bg-primary" data-avance-bar style="width: 70%"></div>
+            </div>
+            <p class="mt-2 text-sm text-text-muted" data-avance-label>—</p>
           </div>
         </section>
       </main>
@@ -123,5 +74,10 @@
     <script src="../../js/site-paths.js"></script>
     <script src="../../components/app-sidebar.js"></script>
     <script src="../../components/app-topbar.js"></script>
+    <script src="../../js/fichas-data.js"></script>
+    <script src="../../js/fichas-ciclo-data.js"></script>
+    <script src="../../js/entidades-receptoras-data.js"></script>
+    <script src="../../js/alertas-derivaciones-data.js"></script>
+    <script src="../../js/dashboard-docente.js"></script>
   </body>
 </html>

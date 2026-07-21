@@ -2128,6 +2128,33 @@ select.form-input:focus {
   height: 1.15rem;
 }
 
+.app-toast-body {
+  flex: 1;
+  min-width: 0;
+  padding-top: 0.15rem;
+}
+
+.app-toast-title {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  line-height: 1.35;
+  color: var(--color-text);
+}
+
+.app-toast-subtitle {
+  margin: 0.2rem 0 0;
+  font-size: var(--text-xs, 0.8125rem);
+  font-weight: var(--font-normal, 400);
+  line-height: 1.4;
+  color: var(--color-text-muted);
+}
+
+.app-toast-subtitle[hidden] {
+  display: none !important;
+}
+
+/* Compat: callers antiguos que aún apuntan a .app-toast-message */
 .app-toast-message {
   flex: 1;
   min-width: 0;
@@ -2973,4 +3000,188 @@ select.form-input:focus {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+/* ?? Módulo 4: Alertas / Derivaciones ?? */
+.alerta-count-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 9999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.alerta-count-chip:hover {
+  border-color: color-mix(in srgb, var(--color-primary) 40%, var(--color-border));
+  color: var(--color-text);
+}
+.alerta-count-chip.is-active {
+  border-color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  color: var(--color-primary);
+}
+.alerta-card {
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  background: var(--color-surface, var(--color-bg));
+  padding: 1rem 1.15rem;
+}
+.alerta-nivel {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+.alerta-nivel--alta {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+.alerta-nivel--media {
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+}
+.alerta-nivel--baja {
+  background: color-mix(in srgb, var(--color-primary) 12%, transparent);
+  color: var(--color-primary);
+}
+.alerta-estado {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.alerta-estado--pendiente { color: var(--color-danger); }
+.alerta-estado--revisada { color: var(--color-primary); }
+.alerta-estado--derivada { color: var(--color-success); }
+.alerta-estado--descartada { color: var(--color-text-muted); }
+
+.timeline-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.timeline-item {
+  position: relative;
+  padding: 0 0 1rem 1.25rem;
+  border-left: 2px solid var(--color-border);
+}
+.timeline-item:last-child { border-left-color: transparent; padding-bottom: 0; }
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: -0.4rem;
+  top: 0.2rem;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 9999px;
+  background: var(--color-border);
+  border: 2px solid var(--color-bg);
+}
+.timeline-item.is-done::before {
+  background: var(--color-primary);
+}
+.timeline-item.is-pending {
+  opacity: 0.55;
+}
+.timeline-item.is-pending::before {
+  background: transparent;
+  border-color: var(--color-border);
+}
+
+.kanban-board {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  align-items: flex-start;
+}
+.kanban-col {
+  flex: 0 0 15.5rem;
+  min-width: 15.5rem;
+  background: color-mix(in srgb, var(--color-primary) 4%, var(--color-bg));
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  padding: 0.65rem;
+}
+.kanban-col-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.65rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+.kanban-col-count {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  background: var(--color-bg);
+  border-radius: 9999px;
+  padding: 0.1rem 0.45rem;
+}
+.kanban-card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  padding: 0.65rem 0.75rem;
+  margin-bottom: 0.5rem;
+  cursor: grab;
+}
+.kanban-card:active { cursor: grabbing; }
+.kanban-card.dragging { opacity: 0.5; }
+.kanban-col.is-drop-target {
+  outline: 2px dashed var(--color-primary);
+  outline-offset: 2px;
+}
+
+.vista-toggle {
+  display: inline-flex;
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+.vista-toggle button {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+  border: none;
+  cursor: pointer;
+}
+.vista-toggle button.is-active {
+  background: color-mix(in srgb, var(--color-primary) 12%, transparent);
+  color: var(--color-primary);
+}
+.vista-toggle button + button {
+  border-left: 1px solid var(--color-border);
+}
+
+.historial-feed-item {
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  padding: 0.85rem 1rem;
+  background: var(--color-surface, var(--color-bg));
+}
+.historial-feed-item + .historial-feed-item {
+  margin-top: 0.65rem;
+}
+
+.seguimiento-card {
+  border: 1px solid color-mix(in srgb, var(--color-primary) 22%, var(--color-border));
+  border-radius: 0.75rem;
+  padding: 1rem 1.15rem;
+  background: color-mix(in srgb, var(--color-primary) 6%, var(--color-bg));
 }

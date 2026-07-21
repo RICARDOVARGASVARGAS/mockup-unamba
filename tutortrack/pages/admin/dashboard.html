@@ -4,20 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard Administrador | TutorTrack (Mockup)</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" />
-
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap"
+    />
     <link rel="stylesheet" href="../../css/tokens.css" />
     <link rel="stylesheet" href="../../css/base.css" />
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../../js/tailwind-config.js"></script>
   </head>
   <body class="w-full bg-bg text-text font-body antialiased">
     <app-sidebar></app-sidebar>
-
     <div class="app-canvas flex min-h-screen flex-col lg:pl-72">
       <app-topbar
         page-title="Dashboard"
@@ -27,135 +26,55 @@
         user-avatar="assets/img/admin/ricardo-vargas.jpg"
       ></app-topbar>
 
-      <main class="flex-1 space-y-8 p-4 sm:p-6 lg:p-8">
-        <section class="campus-strip" aria-label="Contexto">
-          <img
-            class="campus-strip__media"
-            src="../../assets/img/campus/banner_3.png"
-            alt=""
-            width="1200"
-            height="400"
-            decoding="async"
-          />
-          <div class="campus-strip__overlay" aria-hidden="true"></div>
-          <div class="campus-strip__content">
-            <p>Periodo académico 2026-I · Facultad de Administración</p>
-            <h2>Resumen de tutoría</h2>
-          </div>
-        </section>
+      <main class="flex-1 space-y-6 p-4 sm:p-6 lg:p-8" data-dashboard>
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <h2 class="font-heading text-xl font-bold text-text">Dashboard · Administrador</h2>
+          <span class="text-sm text-text-muted">Período: <strong class="text-text">2026-I</strong> · ● Vigente</span>
+        </div>
 
-        <section class="priority-band" data-tone="warning" aria-label="Prioridad">
-          <div>
-            <span class="badge badge-warning">Acción requerida</span>
-            <h2 class="mt-2">27 alertas IA sin revisar</h2>
-            <p>Señales detectadas en fichas de tutoría que aún no tienen revisión docente.</p>
-          </div>
-          <a href="alertas.html" class="btn-primary shrink-0">Revisar alertas</a>
-        </section>
-
-        <section aria-label="Indicadores" class="stat-strip">
+        <section aria-label="KPIs" class="stat-strip">
           <div class="stat-strip-item" data-tone="primary">
-            <span class="stat-strip-value">3,182</span>
-            <span class="stat-strip-label">Estudiantes matriculados</span>
-            <span class="stat-strip-meta">Periodo 2026-I</span>
+            <span class="stat-strip-value" data-kpi-matriculados>320</span>
+            <span class="stat-strip-label">Matriculados</span>
           </div>
           <div class="stat-strip-item">
-            <span class="stat-strip-value">96</span>
-            <span class="stat-strip-label">Docentes-tutores activos</span>
-            <span class="stat-strip-meta">Con ciclo asignado</span>
-          </div>
-          <div class="stat-strip-item" data-tone="warning">
-            <span class="stat-strip-value">27</span>
-            <span class="stat-strip-label">Alertas IA pendientes</span>
-            <span class="stat-strip-meta">Sin revisar</span>
+            <span class="stat-strip-value" data-kpi-docentes>24</span>
+            <span class="stat-strip-label">Docentes activos</span>
           </div>
           <div class="stat-strip-item" data-tone="danger">
-            <span class="stat-strip-value">14</span>
-            <span class="stat-strip-label">Casos en seguimiento</span>
-            <span class="stat-strip-meta">Psicología / salud</span>
+            <span class="stat-strip-value" data-kpi-alertas>0</span>
+            <span class="stat-strip-label">Alertas pend.</span>
+          </div>
+          <div class="stat-strip-item" data-tone="warning">
+            <span class="stat-strip-value" data-kpi-deriv>0</span>
+            <span class="stat-strip-label">Deriv. abiertas</span>
           </div>
         </section>
 
-        <section class="grid grid-cols-1 gap-6 lg:grid-cols-3">
-          <div class="lg:col-span-1">
-            <h2 class="section-title">Accesos rápidos</h2>
-            <nav class="quick-links mt-3" aria-label="Accesos rápidos">
-              <a href="gestion-periodo.html">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-                Configuración del período
-              </a>
-              <a href="fichas.html">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>
-                Nueva plantilla de ficha
-              </a>
-              <a href="alertas.html" data-urgent>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" /></svg>
-                Revisar alertas IA
-              </a>
-            </nav>
+        <section class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <div class="app-card p-5">
+            <h3 class="section-title">Alertas por atender</h3>
+            <p class="mt-3 text-sm text-text" data-bloque-alertas>—</p>
+            <a href="alertas.html" class="section-link mt-3 inline-block">Ver alertas</a>
           </div>
-
-          <div class="app-card p-5 lg:col-span-1">
-            <h2 class="section-title">Actividad reciente</h2>
-            <ul class="mt-4 space-y-4">
-              <li class="flex gap-3">
-                <img class="avatar-photo-sm avatar-photo mt-0.5" src="../../assets/img/docentes/docente-1.jpg" alt="" width="32" height="32" />
-                <p class="text-sm text-text">
-                  <span class="font-medium">Carlos Quispe Mamani</span> revisó la ficha de un estudiante de 5° ciclo.
-                  <span class="block text-xs text-text-muted">Hace 25 minutos</span>
-                </p>
-              </li>
-              <li class="flex gap-3">
-                <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-danger"></span>
-                <p class="text-sm text-text">
-                  Alerta IA de nivel <span class="font-medium">Alta</span> en Personal y social.
-                  <span class="block text-xs text-text-muted">Hace 1 hora</span>
-                </p>
-              </li>
-              <li class="flex gap-3">
-                <img class="avatar-photo-sm avatar-photo mt-0.5" src="../../assets/img/admin/ricardo-vargas.jpg" alt="" width="32" height="32" />
-                <p class="text-sm text-text">
-                  <span class="font-medium">Ricardo Vargas Vargas</span> copió la configuración de 2026-I hacia 2026-II.
-                  <span class="block text-xs text-text-muted">Ayer</span>
-                </p>
-              </li>
-            </ul>
+          <div class="app-card p-5">
+            <h3 class="section-title">Derivaciones por entidad</h3>
+            <p class="mt-3 text-sm text-text" data-bloque-deriv>—</p>
+            <a href="derivaciones.html" class="section-link mt-3 inline-block">Ver derivaciones</a>
           </div>
-
-          <div class="app-card p-5 lg:col-span-1">
-            <div class="flex items-center justify-between gap-2">
-              <h2 class="section-title">Alertas IA recientes</h2>
-              <a href="alertas.html" class="section-link">Ver todas</a>
+          <div class="app-card p-5">
+            <h3 class="section-title">Avance de fichas</h3>
+            <div class="mt-3">
+              <div class="h-2.5 overflow-hidden rounded-full bg-border">
+                <div class="h-full rounded-full bg-primary" data-fichas-bar style="width: 73%"></div>
+              </div>
+              <p class="mt-2 text-sm text-text-muted" data-fichas-label>44/60 enviadas · 73%</p>
             </div>
-            <ul class="mt-4 divide-y divide-border">
-              <li class="flex items-start justify-between gap-3 py-3 first:pt-0 last:pb-0">
-                <div class="flex gap-3">
-                  <img class="avatar-photo avatar-photo-sm" src="../../assets/img/estudiantes/estudiante-1.jpg" alt="" width="32" height="32" />
-                  <div>
-                    <p class="text-sm font-medium text-text">Estudiante — 3° ciclo</p>
-                    <p class="text-sm text-text-muted">Personal y social · pendiente</p>
-                  </div>
-                </div>
-                <span class="badge badge-danger shrink-0">Alta</span>
-              </li>
-              <li class="flex items-start justify-between gap-3 py-3 first:pt-0 last:pb-0">
-                <div class="flex gap-3">
-                  <img class="avatar-photo avatar-photo-sm" src="../../assets/img/estudiantes/estudiante-2.jpg" alt="" width="32" height="32" />
-                  <div>
-                    <p class="text-sm font-medium text-text">Estudiante — 7° ciclo</p>
-                    <p class="text-sm text-text-muted">Salud corporal y mental</p>
-                  </div>
-                </div>
-                <span class="badge badge-warning shrink-0">Media</span>
-              </li>
-              <li class="flex items-start justify-between gap-3 py-3 first:pt-0 last:pb-0">
-                <div>
-                  <p class="text-sm font-medium text-text">Estudiante — 1° ciclo</p>
-                  <p class="text-sm text-text-muted">Desarrollo académico · derivado</p>
-                </div>
-                <span class="badge badge-neutral shrink-0">Derivada</span>
-              </li>
-            </ul>
+          </div>
+          <div class="app-card p-5">
+            <h3 class="section-title">Cobertura de tutoría</h3>
+            <p class="mt-3 text-sm text-text" data-cobertura>315/320 con tutor</p>
+            <p class="mt-1 text-sm text-warning font-medium" data-sin-tutor>⚠ 5 sin tutor</p>
           </div>
         </section>
       </main>
@@ -165,5 +84,8 @@
     <script src="../../js/site-paths.js"></script>
     <script src="../../components/app-sidebar.js"></script>
     <script src="../../components/app-topbar.js"></script>
+    <script src="../../js/entidades-receptoras-data.js"></script>
+    <script src="../../js/alertas-derivaciones-data.js"></script>
+    <script src="../../js/dashboard-admin.js"></script>
   </body>
 </html>
